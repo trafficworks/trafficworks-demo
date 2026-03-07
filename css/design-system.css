@@ -70,6 +70,8 @@ body {
 .nav-link { padding: 6px 12px; border-radius: 6px; font-size: var(--text-md); font-weight: 500; color: var(--text-secondary); text-decoration: none; cursor: pointer; transition: all .15s }
 .nav-link:hover { background: var(--steel-light); color: var(--text-primary) }
 .nav-link.active { background: var(--steel-light); color: var(--steel) }
+.nav-link.active { cursor: default; pointer-events: none; color: var(--steel); }
+.nav-link.active:hover { background: var(--steel-light); color: var(--steel); }
 .company-badge { font-size: var(--text-sm); font-weight: 500; color: var(--text-secondary); background: var(--off-white); padding: var(--space-xs) 10px; border-radius: 4px; letter-spacing: 0.2px; text-transform: uppercase }
 .user-avatar { width: 32px; height: 32px; background: var(--steel); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: var(--text-sm); font-weight: 600; cursor: pointer; transition: box-shadow .15s }
 .user-avatar:hover { box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--steel) }
