@@ -1,1 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrafficWorks — Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--gray-light:#C8C8C8;--off-white:#ECEAE4;--steel:#7A9BA8;--red:#F03030;--charcoal:#3C4248;--bg:#F5F4F0;--white:#FFFFFF;--border:#E0DED8;--text-primary:#2C3034;--text-secondary:#6B7178;--text-muted:#9CA0A6;--steel-light:rgba(122,155,168,0.1);--green:#3AA66A;--green-light:rgba(58,166,106,0.08);--amber:#D4920A;--amber-light:rgba(212,146,10,0.08);--red-light:rgba(240,48,48,0.08);--text-lg:15px;--text-md:13px;--text-sm:11px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text-primary);font-size:var(--text-md);line-height:1.5;-webkit-font-smoothing:antialiased}
 
+  .topnav{background:var(--white);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100}
+  .topnav-left{display:flex;align-items:center;gap:20px}
+  .logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+  .logo-mark{width:28px;height:28px;background:var(--charcoal);border-radius:6px;position:relative;overflow:hidden}
+  .logo-mark::before{content:'';position:absolute;bottom:0;left:0;right:0;height:8px;background:var(--red)}
+  .logo-mark::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:12px;height:2px;background:var(--white);border-radius:1px}
+  .logo-text{font-size:var(--text-lg);font-weight:600;color:var(--charcoal);letter-spacing:-0.3px}
+  .nav-divider{width:1px;height:24px;background:var(--border)}
+  .nav-links{display:flex;gap:4px}
+  .nav-link{padding:6px 12px;border-radius:6px;font-size:var(--text-md);font-weight:500;color:var(--text-secondary);text-decoration:none;cursor:pointer;transition:all .15s}
+  .nav-link:hover{background:var(--steel-light);color:var(--text-primary)}
+  .nav-link.active{background:var(--steel-light);color:var(--steel)}
+  .topnav-right{display:flex;align-items:center;gap:12px}
+  .company-badge{font-size:var(--text-sm);font-weight:500;color:var(--text-secondary);background:var(--off-white);padding:4px 10px;border-radius:4px;letter-spacing:0.2px;text-transform:uppercase}
+  .user-avatar{width:32px;height:32px;background:var(--steel);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:var(--text-sm);font-weight:600;cursor:pointer}
+
+  .main{max-width:1120px;margin:0 auto;padding:24px}
+
+  .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .page-title{font-size:var(--text-lg);font-weight:600;color:var(--charcoal)}
+  .page-count{font-size:var(--text-sm);color:var(--text-muted);margin-left:8px;font-weight:400}
+
+  .search-bar{display:flex;gap:8px;margin-bottom:16px}
+  .search-input{flex:1;max-width:320px;padding:8px 12px 8px 32px;border:1px solid var(--border);border-radius:6px;font-family:'Inter',sans-serif;font-size:var(--text-md);color:var(--text-primary);background:var(--white) url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239CA0A6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 10px center no-repeat;outline:none;transition:border-color .15s}
+  .search-input:focus{border-color:var(--steel)}
+  .search-input::placeholder{color:var(--text-muted)}
+
+  /* ARCHIVE CARD */
+  .archive-card{background:var(--white);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:visible;transition:border-color .15s}
+  .archive-card:hover{border-color:var(--gray-light)}
+  .archive-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;user-select:none;gap:16px}
+  .archive-header:hover{background:rgba(122,155,168,0.03)}
+  .archive-left{display:flex;align-items:center;gap:14px;flex:1;min-width:0}
+  .archive-chevron{width:18px;height:18px;color:var(--text-muted);transition:transform .2s;flex-shrink:0}
+  .archive-card.open .archive-chevron{transform:rotate(90deg)}
+  .archive-info{flex:1;min-width:0}
+  .archive-name{font-size:var(--text-md);font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .archive-meta{font-size:var(--text-sm);color:var(--text-muted);margin-top:2px;display:flex;gap:12px;flex-wrap:wrap}
+  .archive-right{display:flex;align-items:center;gap:16px;flex-shrink:0;position:relative}
+  .archive-files-count{font-size:var(--text-sm);font-weight:500;color:var(--text-muted);display:flex;align-items:center;gap:4px}
+  .archive-files-count svg{width:14px;height:14px}
+  .archive-files-count.complete{color:var(--green)}
+  .archive-date{font-size:var(--text-sm);color:var(--text-muted);min-width:80px;text-align:right}
+  .status-badge{display:inline-block;padding:4px 12px;border-radius:5px;font-size:11px;font-weight:600;letter-spacing:0.3px}
+  .status-complete{background:#2AB57E;color:var(--white)}
+
+  /* EXPANDED CONTENT */
+  .archive-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .archive-card.open .archive-body{max-height:2000px}
+  .archive-body-inner{padding:0 20px 16px;border-top:1px solid var(--border)}
+
+  .archive-summary{display:flex;gap:20px;padding:12px 0;flex-wrap:wrap}
+  .archive-summary-item{font-size:var(--text-sm);color:var(--text-secondary)}
+  .archive-summary-item strong{font-weight:600;color:var(--text-primary)}
+
+  /* TASK LIST - READ ONLY */
+  .task-list-section{margin-top:12px}
+  .task-list-label{font-size:var(--text-sm);font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:6px}
+  .task-row-simple{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg);font-size:var(--text-md)}
+  .task-row-simple:last-child{border-bottom:none}
+  .task-row-site{font-size:var(--text-sm);font-weight:600;color:var(--text-muted);min-width:28px}
+  .task-row-desc{color:var(--text-primary)}
+
+  /* FILE COLUMNS */
+  .file-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px}
+  .file-col{min-width:0}
+  .file-col-header{display:flex;align-items:center;gap:5px;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+  .file-col-header.is-pdf{color:#C53030}
+  .file-col-header.is-xlsx{color:#1B7A3D}
+  .file-col-header svg{width:13px;height:13px}
+  .file-col-item{display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:4px;font-size:var(--text-sm);cursor:pointer;transition:background .1s;color:var(--text-primary)}
+  .file-col-item:hover{background:var(--off-white)}
+  .file-col-item svg{width:11px;height:11px;flex-shrink:0}
+  .file-col-item.is-pdf svg{color:#C53030}
+  .file-col-item.is-xlsx svg{color:#1B7A3D}
+  .file-col-item .file-delete{margin-left:auto;opacity:0;pointer-events:none;cursor:pointer;color:var(--text-muted);font-size:14px;line-height:1;transition:opacity .15s}
+  .file-col-item .file-delete:hover{color:#FB6267}
+  .manage-mode .file-col-item .file-delete{opacity:0.6;pointer-events:auto}
+  .manage-mode .file-col-item{cursor:default}
+  .file-col-empty{font-size:var(--text-sm);color:var(--text-muted);padding:4px 8px;font-style:italic}
+
+  /* BULK UPLOAD */
+  .bulk-drop{border:1.5px dashed var(--gray-light);border-radius:6px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);margin-bottom:12px;max-height:0;overflow:hidden;padding:0 14px;margin-bottom:0;opacity:0}
+  .bulk-drop.show{max-height:120px;padding:14px;margin-bottom:12px;opacity:1}
+  .bulk-drop:hover,.bulk-drop.drag-over{border-color:var(--steel);background:var(--steel-light)}
+  .bulk-drop.drag-over{border-width:2px}
+
+  .upload-toggle{display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:var(--text-sm);color:var(--text-secondary);padding:3px 8px;border-radius:4px;transition:all .15s;border:none;background:none;font-family:'Inter',sans-serif;font-weight:500}
+  .upload-toggle:hover{color:var(--steel);background:var(--steel-light)}
+  .upload-toggle svg{width:13px;height:13px}
+  .upload-toggle.active{color:var(--steel);background:var(--steel-light)}
+
+  .bulk-drop svg{width:20px;height:20px;color:var(--text-muted);margin-bottom:4px}
+  .bulk-drop-text{font-size:var(--text-sm);color:var(--text-secondary)}
+  .bulk-drop-hint{font-size:var(--text-sm);color:var(--text-muted);margin-top:2px}
+  .bulk-file-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .archive-files-count.has-files{color:var(--green)}
+
+  /* MANAGE TOGGLE */
+  .files-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .manage-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:var(--text-sm);color:var(--text-muted);user-select:none;padding:3px 8px;border-radius:4px;transition:all .15s;border:none;background:none;font-family:'Inter',sans-serif}
+  .manage-toggle:hover{color:var(--text-secondary);background:var(--off-white)}
+  .manage-toggle.active{color:#FB6267;background:var(--red-light)}
+  .manage-toggle svg{width:13px;height:13px}
+
+  /* DOWNLOAD ICON ON HOVER */
+
+  /* KEBAB */
+  .kebab-btn{background:none;border:none;cursor:pointer;color:var(--text-muted);padding:6px;border-radius:4px;transition:all .15s;display:flex;align-items:center;flex-shrink:0}
+  .kebab-btn svg{width:18px;height:18px}
+  .kebab-btn:hover{background:var(--off-white);color:var(--text-primary)}
+  .kebab-menu{position:absolute;right:16px;top:40px;background:var(--white);border:1px solid var(--border);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,0.1);z-index:50;min-width:170px;padding:4px 0;display:none}
+  .kebab-menu.open{display:block}
+  .kebab-menu-item{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:var(--text-md);color:var(--text-primary);cursor:pointer;transition:background .1s;font-family:'Inter',sans-serif;border:none;background:none;width:100%;text-align:left}
+  .kebab-menu-item:hover{background:var(--bg)}
+  .kebab-menu-item.danger{color:#FB6267}
+  .kebab-menu-item.danger:hover{background:var(--red-light)}
+  .kebab-menu-item svg{width:14px;height:14px}
+
+  /* MODALS */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .15s}
+  .modal-overlay.visible{opacity:1;pointer-events:auto}
+  .modal{background:var(--white);border-radius:10px;padding:24px;width:420px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+  .modal-title{font-size:var(--text-lg);font-weight:600;color:var(--charcoal);margin-bottom:16px}
+  .modal-body{margin-bottom:16px;color:var(--text-secondary)}
+  .modal-row{margin-bottom:12px}
+  .modal-label{font-size:var(--text-sm);font-weight:500;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.3px}
+  .modal-input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-family:'Inter',sans-serif;font-size:var(--text-md);color:var(--text-primary);background:var(--white);outline:none;transition:border-color .15s}
+  .modal-input:focus{border-color:var(--steel)}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;font-family:'Inter',sans-serif;font-size:var(--text-md);font-weight:500;border:none;cursor:pointer;transition:all .15s}
+  .btn-ghost{background:none;color:var(--text-secondary)}.btn-ghost:hover{background:var(--off-white)}
+  .btn-solid{background:var(--charcoal);color:var(--white)}.btn-solid:hover{background:#2C3034}
+  .btn-danger{background:#FB6267;color:var(--white)}.btn-danger:hover{background:#e5585d}
+  .btn-restore{background:#615DB1;color:var(--white)}.btn-restore:hover{background:#524EA0}
+
+  .empty-state{text-align:center;padding:60px 20px;color:var(--text-muted)}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--charcoal);color:var(--white);padding:10px 20px;border-radius:6px;font-size:var(--text-md);font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;transition:all .25s ease;z-index:300;pointer-events:none}
+  .toast.visible{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:768px){
+    .topnav{padding:0 16px}.nav-links{display:none}.main{padding:16px}
+    .archive-header{padding:14px 16px;flex-wrap:wrap;gap:10px}
+    .archive-right{width:100%;justify-content:space-between}
+    .archive-body-inner{padding:0 16px 14px}
+    .archive-summary{gap:12px}
+    .search-input{max-width:100%}
+    .file-columns{grid-template-columns:1fr}
+    .bulk-file-list{gap:6px}
+    .file-counts{flex-wrap:wrap}
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-left">
+    <a class="logo" href="dashboard.html"><div class="logo-mark"></div><span class="logo-text">TrafficWorks</span></a>
+    <div class="nav-divider"></div>
+    <div class="nav-links"><a class="nav-link" href="dashboard.html">Projects</a><a class="nav-link" href="team.html">Team</a><a class="nav-link active" href="archive.html">Archive</a><a class="nav-link" href="billing.html">Billing</a></div>
+  </div>
+  <div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div></div>
+</nav>
+
+<div class="main">
+  <div class="page-header">
+    <div style="display:flex;align-items:baseline;gap:2px">
+      <span class="page-title">Archive</span>
+      <span class="page-count" id="archiveCount"></span>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input class="search-input" id="searchInput" placeholder="Search projects, clients…" oninput="renderArchive()">
+  </div>
+
+  <div id="archiveList"></div>
+</div>
+
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-title">Edit Project</div>
+    <div class="modal-row"><div class="modal-label">Project Name</div><input class="modal-input" type="text" id="editName"></div>
+    <div class="modal-row"><div class="modal-label">Project Number <span style="font-weight:400;color:var(--text-muted)">(optional)</span></div><input class="modal-input" type="text" id="editNum"></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeEditModal()">Cancel</button><button class="btn btn-solid" onclick="saveEdit()">Save Changes</button></div>
+  </div>
+</div>
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <div class="modal-title">Delete Project</div>
+    <div class="modal-body" id="deleteBody"></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button><button class="btn btn-danger" onclick="confirmDelete()">Delete Project</button></div>
+  </div>
+</div>
+<div class="modal-overlay" id="restoreModal">
+  <div class="modal">
+    <div class="modal-title">Restore Project</div>
+    <div class="modal-body" id="restoreBody"></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeRestoreModal()">Cancel</button><button class="btn btn-restore" onclick="confirmRestore()">Restore</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var archivedProjects=[
+  {id:1,name:'Civic Center Speed Survey',projectNum:'DEMO-2026-090',client:'City of Burbank',location:'Burbank, CA',
+   completedDate:'Feb 20, 2026',archivedDate:'Feb 22, 2026',
+   bulkFiles:['CivicCenter_EB_Speed.pdf','CivicCenter_WB_Speed.pdf','CivicCenter_EB_Speed.xlsx','CivicCenter_WB_Speed.xlsx','Downtown_TMC_Main.pdf','Downtown_TMC_Main.xlsx'],
+   tasks:[
+    {site:1,desc:'Speed Survey Civic Center EB'},
+    {site:2,desc:'Speed Survey Civic Center WB'},
+    {site:3,desc:'TMC Olive & San Fernando'},
+    {site:4,desc:'TMC Olive & Magnolia'},
+  ]},
+  {id:2,name:'University District Count Set',projectNum:'DEMO-2026-088',client:'City of Irvine',location:'Irvine, CA',
+   completedDate:'Feb 12, 2026',archivedDate:'Feb 14, 2026',
+   bulkFiles:['CampusLoop_ADT_NB.pdf','CampusLoop_ADT_SB.pdf','CampusLoop_ADT_NB.xlsx','CampusLoop_ADT_SB.xlsx','Bridge_Count_Bike.pdf'],
+   tasks:[
+    {site:1,desc:'ADT Campus Loop NB'},
+    {site:2,desc:'ADT Campus Loop SB'},
+    {site:3,desc:'Bike Count Bridge Plaza'},
+    {site:4,desc:'TMC Campus & California'},
+    {site:5,desc:'TMC Campus & University'},
+  ]},
+  {id:3,name:'Waterfront Before/After Review',projectNum:'DEMO-2026-081',client:'Port Mobility Partners',location:'San Pedro, CA',
+   completedDate:'Jan 28, 2026',archivedDate:'Jan 30, 2026',
+   bulkFiles:['Waterfront_BeforeAfter_Summary.pdf','Waterfront_BeforeAfter_Data.xlsx'],
+   tasks:[
+    {site:1,desc:'ADT Harbor Blvd NB'},
+    {site:2,desc:'ADT Harbor Blvd SB'},
+    {site:3,desc:'Ped Count 6th Street Plaza'},
+    {site:4,desc:'Bike Count Harbor Promenade'},
+  ]},
+];
+
+
+function renderArchive(){
+  var search=document.getElementById('searchInput').value.toLowerCase();
+  var filtered=archivedProjects.filter(function(p){
+    return !search||p.name.toLowerCase().indexOf(search)>-1||p.client.toLowerCase().indexOf(search)>-1||p.location.toLowerCase().indexOf(search)>-1||(p.projectNum&&p.projectNum.toLowerCase().indexOf(search)>-1);
+  });
+
+  document.getElementById('archiveCount').textContent=filtered.length+' project'+(filtered.length!==1?'s':'');
+
+  if(filtered.length===0){
+    document.getElementById('archiveList').innerHTML='<div class="empty-state">No archived projects match your search</div>';
+    return;
+  }
+
+  document.getElementById('archiveList').innerHTML=filtered.map(function(p){
+    var pdfCount=p.bulkFiles.filter(function(f){return /\.pdf$/i.test(f)}).length;
+    var xlsxCount=p.bulkFiles.filter(function(f){return /\.xlsx?$/i.test(f)}).length;
+    var totalFiles=p.bulkFiles.length;
+    var filesSummary=totalFiles>0?totalFiles+' file'+(totalFiles!==1?'s':''):'No files';
+
+    var tasksHTML=p.tasks.map(function(t){
+      return '<div class="task-row-simple">'+
+        '<span class="task-row-site">'+t.site+'</span>'+
+        '<span class="task-row-desc">'+t.desc+'</span></div>';
+    }).join('');
+
+    var filesHTML='';
+    if(p.bulkFiles.length>0){
+      var pdfs=[];var xlsxs=[];
+      p.bulkFiles.forEach(function(f,i){
+        if(/\.pdf$/i.test(f))pdfs.push({name:f,idx:i});
+        else xlsxs.push({name:f,idx:i});
+      });
+      var fileIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+      var pdfItems=pdfs.length>0?pdfs.map(function(f){
+        return '<div class="file-col-item is-pdf" onclick="event.stopPropagation();downloadFile('+p.id+','+f.idx+')">'+fileIcon+f.name+'<span class="file-delete" onclick="event.stopPropagation();deleteFile('+p.id+','+f.idx+')">&times;</span></div>';
+      }).join(''):'<div class="file-col-empty">No PDFs</div>';
+      var xlsxItems=xlsxs.length>0?xlsxs.map(function(f){
+        return '<div class="file-col-item is-xlsx" onclick="event.stopPropagation();downloadFile('+p.id+','+f.idx+')">'+fileIcon+f.name+'<span class="file-delete" onclick="event.stopPropagation();deleteFile('+p.id+','+f.idx+')">&times;</span></div>';
+      }).join(''):'<div class="file-col-empty">No Excel files</div>';
+      filesHTML='<div class="file-columns" id="filelist-'+p.id+'">'+
+        '<div class="file-col"><div class="file-col-header is-pdf">'+fileIcon+'PDFs ('+pdfs.length+')</div>'+pdfItems+'</div>'+
+        '<div class="file-col"><div class="file-col-header is-xlsx">'+fileIcon+'Excel ('+xlsxs.length+')</div>'+xlsxItems+'</div>'+
+      '</div>';
+    }
+
+    return '<div class="archive-card" id="archive-'+p.id+'">'+
+      '<div class="archive-header" onclick="toggleArchive('+p.id+')">'+
+        '<div class="archive-left">'+
+          '<svg class="archive-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>'+
+          '<div class="archive-info">'+
+            '<div class="archive-name">'+p.name+'</div>'+
+            '<div class="archive-meta">'+(p.projectNum?'<span style="font-weight:500;color:var(--text-secondary)">'+p.projectNum+'</span>':'')+'<span>'+p.client+'</span><span>'+p.tasks.length+' sites</span></div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="archive-right">'+
+          '<div class="archive-files-count'+(totalFiles>0?' has-files':'')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+filesSummary+'</div>'+
+          '<div class="archive-date">'+p.archivedDate+'</div>'+
+          '<button class="kebab-btn" onclick="event.stopPropagation();toggleKebab('+p.id+',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>'+
+          '<div class="kebab-menu" id="kebab-'+p.id+'">'+
+            '<button class="kebab-menu-item" onclick="event.stopPropagation();openEditModal('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'+
+            '<button class="kebab-menu-item" onclick="event.stopPropagation();openRestoreModal('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>Restore</button>'+
+            '<button class="kebab-menu-item danger" onclick="event.stopPropagation();openDeleteModal('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="archive-body"><div class="archive-body-inner">'+
+        '<div class="archive-summary">'+
+          '<div class="archive-summary-item">Completed <strong>'+p.completedDate+'</strong></div>'+
+          '<div class="archive-summary-item">Archived <strong>'+p.archivedDate+'</strong></div>'+
+          '<div style="flex:1"></div>'+
+          '<button class="upload-toggle" id="upload-btn-'+p.id+'" onclick="event.stopPropagation();toggleUpload('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload</button>'+
+          (totalFiles>0?'<button class="upload-toggle" onclick="event.stopPropagation();downloadAll('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download All</button>':'')+
+          (totalFiles>0?'<button class="manage-toggle" onclick="event.stopPropagation();toggleManage('+p.id+')" id="manage-btn-'+p.id+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Manage</button>':'')+
+        '</div>'+
+        '<div class="bulk-drop" id="dropzone-'+p.id+'" data-project-id="'+p.id+'" onclick="event.stopPropagation();bulkUpload('+p.id+')">'+
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>'+
+          '<div class="bulk-drop-text">Drop files or click to upload</div>'+
+          '<div class="bulk-drop-hint">PDF and Excel files only</div>'+
+        '</div>'+
+        filesHTML+
+        '<div class="task-list-section">'+
+          '<div class="task-list-label">Sites ('+p.tasks.length+')</div>'+
+          tasksHTML+
+        '</div>'+
+      '</div></div>'+
+    '</div>';
+  }).join('');
+}
+
+function toggleArchive(id){
+  document.getElementById('archive-'+id).classList.toggle('open');
+}
+
+/* KEBAB */
+var openKebab=null;
+function toggleKebab(id,e){
+  e.stopPropagation();
+  if(openKebab&&openKebab!==id){var old=document.getElementById('kebab-'+openKebab);if(old)old.classList.remove('open')}
+  var menu=document.getElementById('kebab-'+id);
+  var isOpen=menu.classList.contains('open');
+  menu.classList.remove('open');
+  if(!isOpen){menu.classList.add('open');openKebab=id}else{openKebab=null}
+}
+function closeKebabs(){if(openKebab){var el=document.getElementById('kebab-'+openKebab);if(el)el.classList.remove('open');openKebab=null}}
+document.addEventListener('click',closeKebabs);
+
+/* UPLOAD ZONE TOGGLE */
+var uploadModes={};
+function toggleUpload(projectId){
+  uploadModes[projectId]=!uploadModes[projectId];
+  var zone=document.getElementById('dropzone-'+projectId);
+  var btn=document.getElementById('upload-btn-'+projectId);
+  if(uploadModes[projectId]){
+    zone.classList.add('show');
+    btn.classList.add('active');
+  } else {
+    zone.classList.remove('show');
+    btn.classList.remove('active');
+  }
+}
+
+/* MANAGE FILES TOGGLE */
+var manageModes={};
+function toggleManage(projectId){
+  manageModes[projectId]=!manageModes[projectId];
+  var btn=document.getElementById('manage-btn-'+projectId);
+  var list=document.getElementById('filelist-'+projectId);
+  if(!btn)return;
+  if(manageModes[projectId]){
+    btn.classList.add('active');
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Done';
+    if(list)list.classList.add('manage-mode');
+  } else {
+    btn.classList.remove('active');
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Manage';
+    if(list)list.classList.remove('manage-mode');
+  }
+}
+
+/* DOWNLOAD FILE */
+function downloadFile(projectId,fileIndex){
+  if(manageModes[projectId])return; // no download in manage mode
+  var p=archivedProjects.find(function(x){return x.id===projectId});
+  if(!p)return;
+  var name=p.bulkFiles[fileIndex];
+  showToast('Downloading "'+name+'"');
+  // In production: window.open(fileUrl) or trigger real download
+}
+
+function downloadAll(projectId){
+  var p=archivedProjects.find(function(x){return x.id===projectId});
+  if(!p||!p.bulkFiles.length)return;
+  showToast('Downloading '+p.bulkFiles.length+' files as ZIP');
+  // In production: trigger server-side ZIP and download
+}
+
+/* DELETE FILE */
+function deleteFile(projectId,fileIndex){
+  if(!manageModes[projectId])return; // only delete in manage mode
+  var p=archivedProjects.find(function(x){return x.id===projectId});
+  if(!p)return;
+  var name=p.bulkFiles[fileIndex];
+  p.bulkFiles.splice(fileIndex,1);
+  renderArchive();
+  var card=document.getElementById('archive-'+projectId);
+  if(card)card.classList.add('open');
+  // re-activate manage mode
+  if(p.bulkFiles.length>0){
+    manageModes[projectId]=false;
+    toggleManage(projectId);
+  } else {
+    manageModes[projectId]=false;
+  }
+  showToast('"'+name+'" removed');
+}
+
+/* EDIT MODAL */
+var editTarget=null;
+function openEditModal(id){
+  closeKebabs();
+  editTarget=id;
+  var p=archivedProjects.find(function(x){return x.id===id});if(!p)return;
+  document.getElementById('editName').value=p.name;
+  document.getElementById('editNum').value=p.projectNum||'';
+  document.getElementById('editModal').classList.add('visible');
+  document.getElementById('editName').focus();
+}
+function closeEditModal(){document.getElementById('editModal').classList.remove('visible');editTarget=null}
+function saveEdit(){
+  if(!editTarget)return;
+  var p=archivedProjects.find(function(x){return x.id===editTarget});if(!p)return;
+  var n=document.getElementById('editName').value.trim();
+  if(!n){document.getElementById('editName').focus();return}
+  p.name=n;
+  p.projectNum=document.getElementById('editNum').value.trim();
+  closeEditModal();renderArchive();showToast('Project updated');
+}
+
+/* DELETE MODAL */
+var deleteTarget=null;
+function openDeleteModal(id){
+  closeKebabs();
+  deleteTarget=id;
+  var p=archivedProjects.find(function(x){return x.id===id});
+  document.getElementById('deleteBody').textContent='Permanently delete "'+((p?p.name:'this project'))+'" and all its files? This cannot be undone.';
+  document.getElementById('deleteModal').classList.add('visible');
+}
+function closeDeleteModal(){document.getElementById('deleteModal').classList.remove('visible');deleteTarget=null}
+function confirmDelete(){
+  if(!deleteTarget)return;
+  var p=archivedProjects.find(function(x){return x.id===deleteTarget});
+  archivedProjects=archivedProjects.filter(function(x){return x.id!==deleteTarget});
+  closeDeleteModal();renderArchive();showToast('"'+(p?p.name:'Project')+'" deleted');
+}
+
+/* RESTORE MODAL */
+var restoreTarget=null;
+function openRestoreModal(id){
+  closeKebabs();
+  restoreTarget=id;
+  var p=archivedProjects.find(function(x){return x.id===id});
+  document.getElementById('restoreBody').innerHTML='Restore "'+((p?p.name:'this project'))+'" to active projects?<div style="margin-top:8px;font-size:11px;color:#9CA0A6">All uploaded files will remain linked to this project.</div>';
+  document.getElementById('restoreModal').classList.add('visible');
+}
+function closeRestoreModal(){document.getElementById('restoreModal').classList.remove('visible');restoreTarget=null}
+function confirmRestore(){
+  if(!restoreTarget)return;
+  var p=archivedProjects.find(function(x){return x.id===restoreTarget});
+  archivedProjects=archivedProjects.filter(function(x){return x.id!==restoreTarget});
+  closeRestoreModal();renderArchive();showToast('"'+(p?p.name:'Project')+'" restored to active projects');
+}
+
+function bulkUpload(projectId){
+  var input=document.createElement('input');
+  input.type='file';
+  input.accept='.pdf,.xlsx,.xls';
+  input.multiple=true;
+  input.style.display='none';
+  input.addEventListener('change',function(){
+    var files=input.files;
+    if(!files.length)return;
+    var p=archivedProjects.find(function(x){return x.id===projectId});
+    if(!p)return;
+    for(var i=0;i<files.length;i++){
+      p.bulkFiles.push(files[i].name);
+    }
+    renderArchive();
+    showToast(files.length+' file'+(files.length!==1?'s':'')+' uploaded');
+    input.remove();
+  });
+  document.body.appendChild(input);
+  input.click();
+}
+
+function showToast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('visible');clearTimeout(el._timer);el._timer=setTimeout(function(){el.classList.remove('visible')},2500)}
+
+function initDropZones(){
+  document.querySelectorAll('.bulk-drop').forEach(function(zone){
+    var pid=parseInt(zone.dataset.projectId);
+    zone.addEventListener('dragover',function(e){e.preventDefault();e.stopPropagation();zone.classList.add('drag-over')});
+    zone.addEventListener('dragleave',function(e){e.preventDefault();e.stopPropagation();zone.classList.remove('drag-over')});
+    zone.addEventListener('drop',function(e){
+      e.preventDefault();e.stopPropagation();zone.classList.remove('drag-over');
+      var files=e.dataTransfer.files;if(!files.length)return;
+      var p=archivedProjects.find(function(x){return x.id===pid});if(!p)return;
+      var added=0;
+      for(var i=0;i<files.length;i++){
+        if(/\.(pdf|xlsx|xls)$/i.test(files[i].name)){p.bulkFiles.push(files[i].name);added++}
+      }
+      if(added>0){renderArchive();var card=document.getElementById('archive-'+pid);if(card)card.classList.add('open');showToast(added+' file'+(added!==1?'s':'')+' uploaded')}
+      else{showToast('Only PDF and Excel files accepted')}
+    });
+  });
+}
+
+var _origRender=renderArchive;
+renderArchive=function(){_origRender();initDropZones()};
+
+renderArchive();
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){closeEditModal();closeDeleteModal();closeRestoreModal()}
+});
+document.querySelectorAll('.modal-overlay').forEach(function(el){
+  el.addEventListener('click',function(e){if(e.target===el){closeEditModal();closeDeleteModal();closeRestoreModal()}});
+});
+</script>
+</body>
+</html>
