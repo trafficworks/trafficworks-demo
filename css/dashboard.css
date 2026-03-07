@@ -7,7 +7,7 @@
 
 /* Project table cells */
 .project-name-link { text-decoration: none; cursor: pointer; display: block }
-.project-name-link:hover { color: var(--text-primary) }
+
 .project-info { min-height: 40px; display: flex; align-items: center; gap: 9px }
 .project-name-wrap { display: flex; flex-direction: column; justify-content: center }
 .project-created { font-size: var(--text-sm); color: var(--text-muted); font-weight: 400; margin-top: 1px }
