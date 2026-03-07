@@ -6,7 +6,7 @@
 .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-lg) }
 
 /* Project table cells */
-.project-name-link { text-decoration: none; cursor: none; display: block }
+.project-name-link { text-decoration: none; cursor: pointer; display: block }
 .project-name-link:hover { color: var(--text-primary) }
 .project-info { min-height: 40px; display: flex; align-items: center; gap: 9px }
 .project-name-wrap { display: flex; flex-direction: column; justify-content: center }
