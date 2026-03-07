@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrafficWorks — Billing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
+<style>
+.section-wrap{max-width:1120px;margin:0 auto;padding:32px 24px}
+.placeholder-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:28px}
+.placeholder-title{font-size:22px;font-weight:700;color:var(--charcoal);margin-bottom:8px}
+.placeholder-sub{font-size:14px;color:var(--text-secondary);margin-bottom:20px;max-width:720px}
+.stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+.stat-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:18px}
+.stat-card .label{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted)}
+.stat-card .value{margin-top:4px;font-size:22px;font-weight:700;color:var(--charcoal)}
+@media(max-width:768px){.section-wrap{padding:20px 16px}.stat-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-left">
+    <a class="logo" href="index.html"><div class="logo-mark"></div><span class="logo-text">TrafficWorks</span></a>
+    <div class="nav-divider"></div>
+    <div class="nav-links">
+      <a class="nav-link" href="dashboard.html">Projects</a>
+      <a class="nav-link " href="team.html">Team</a>
+      <a class="nav-link" href="archive.html">Archive</a>
+      <a class="nav-link active" href="billing.html">Billing</a>
+    </div>
+  </div>
+  <div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div></div>
+</nav>
+<div class="section-wrap">
+  <div class="page-header"><h1 class="page-title">Billing</h1></div>
+  <div class="placeholder-card">
+    <div class="placeholder-title">Light billing placeholder included for complete demo navigation.</div>
+    <div class="placeholder-sub">Use this page while testing your hosted demo so visitors do not hit dead links in the header.</div>
+    <div class="stat-row">
+      
+<div class="stat-card"><div class="label">Plan</div><div class="value">Pro Demo</div></div>
+<div class="stat-card"><div class="label">Active Projects</div><div class="value">5 / 8</div></div>
+<div class="stat-card"><div class="label">Next Renewal</div><div class="value">Apr 1</div></div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

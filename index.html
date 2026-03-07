@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrafficWorks Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
+<style>
+.hero-wrap{max-width:1120px;margin:0 auto;padding:48px 24px 56px}
+.hero-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:40px;box-shadow:0 8px 30px rgba(0,0,0,0.04)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--off-white);border:1px solid var(--border);font-size:var(--text-sm);font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.3px}
+.hero-title{margin-top:18px;font-size:40px;line-height:1.05;letter-spacing:-1.2px;color:var(--charcoal);max-width:760px}
+.hero-sub{margin-top:14px;font-size:16px;color:var(--text-secondary);max-width:700px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.demo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:30px}
+.demo-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:18px}
+.demo-card h3{font-size:15px;color:var(--charcoal);margin-bottom:6px}
+.demo-card p{font-size:13px;color:var(--text-secondary)}
+.demo-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.link-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:var(--white);border:1px solid var(--border);text-decoration:none;color:var(--text-primary);font-size:13px;font-weight:500}
+.link-chip:hover{background:var(--off-white)}
+@media(max-width:768px){.hero-wrap{padding:28px 16px 36px}.hero-card{padding:24px}.hero-title{font-size:30px}.demo-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-left">
+    <a class="logo" href="index.html"><div class="logo-mark"></div><span class="logo-text">TrafficWorks</span></a>
+    <div class="nav-divider"></div>
+    <div class="nav-links">
+      <a class="nav-link active" href="index.html">Home</a>
+      <a class="nav-link" href="dashboard.html">Projects</a>
+      <a class="nav-link" href="team.html">Team</a>
+      <a class="nav-link" href="archive.html">Archive</a>
+      <a class="nav-link" href="billing.html">Billing</a>
+    </div>
+  </div>
+  <div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div></div>
+</nav>
+<div class="hero-wrap">
+  <div class="hero-card">
+    <span class="hero-eyebrow">GitHub Pages Demo</span>
+    <h1 class="hero-title">Modern traffic count operations demo, ready to upload and test.</h1>
+    <p class="hero-sub">This package includes a landing page, dashboard, project detail, archive, and lightweight placeholder pages for team and billing. The data is static demo data, so it should work cleanly on GitHub Pages.</p>
+    <div class="cta-row">
+      <a class="btn btn-solid" href="dashboard.html">Open Dashboard</a>
+      <a class="btn btn-primary" href="project-detail.html">Open Project Detail Demo</a>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Dashboard</h3>
+        <p>Active projects, statuses, progress, search, filters, and action menus.</p>
+        <div class="demo-links"><a class="link-chip" href="dashboard.html">View page</a></div>
+      </div>
+      <div class="demo-card">
+        <h3>Project Detail</h3>
+        <p>Task table, tech assignments, bulk actions, and modal interactions using sample data.</p>
+        <div class="demo-links"><a class="link-chip" href="project-detail.html">View page</a></div>
+      </div>
+      <div class="demo-card">
+        <h3>Extra pages</h3>
+        <p>Archive is included, and Team / Billing are added so your nav works during testing.</p>
+        <div class="demo-links">
+          <a class="link-chip" href="archive.html">Archive</a>
+          <a class="link-chip" href="team.html">Team</a>
+          <a class="link-chip" href="billing.html">Billing</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
