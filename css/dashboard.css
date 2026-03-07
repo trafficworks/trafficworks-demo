@@ -25,7 +25,11 @@
 
 /* Mobile cards */
 .mobile-cards { display: none }
-.mobile-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px var(--space-md); cursor: pointer; -webkit-tap-highlight-color: transparent }
+.mobile-card { background: .page-title, .back-link { display:inline-flex; align-items:center; gap:var(--space-xs); font-size:var(--text-md); font-weight:500; color:var(--charcoal); padding:var(--space-sm) var(--space-md); border:1px solid var(--border); border-radius:6px; text-decoration:none; transition:all .15s }
+.page-title { cursor:default }
+.back-link { cursor:pointer }
+.back-link:hover { background:var(--off-white); border-color:var(--gray-light) }
+.back-link svg { width:14px; height:14px }; border: 1px solid var(--border); border-radius: 10px; padding: 14px var(--space-md); cursor: pointer; -webkit-tap-highlight-color: transparent }
 .mobile-card:active { background: #FAFAF8 }
 .mobile-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px }
 .mobile-card-name { font-size: var(--text-lg); font-weight: 600; color: var(--text-primary); line-height: 1.3 }
