@@ -84,6 +84,7 @@ tbody tr:hover .check-visual.pending-vis { display: block }
 .search-box { max-width:100%; flex:1 1 100% }
 .toolbar-spacer { display:none }
 table { display:none }
+.table-wrap { border:none; box-shadow:none; background:none }   
 .mobile-task-cards { display:flex; flex-direction:column; gap:var(--space-sm) }
 .mobile-task-card { border-radius:12px }
 }
