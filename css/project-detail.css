@@ -73,7 +73,7 @@ tbody tr:hover .check-visual.pending-vis { display: block }
 .stats-row { gap: 16px; flex-wrap: wrap }
 .stat-item { display: flex; align-items: baseline; gap: 6px }
 .stat-value { font-weight: 700 }
-.stat-label { margin-top: 0 }
+.stat-label { margin-top:0; line-height:1; text-transform:none; letter-spacing:.02em }
 .stat-item:nth-child(4) { display: none }
 .stat-progress { min-width: 100%; order: 10 }
 .toolbar-row { flex-wrap: wrap; border-bottom: none; box-shadow: none }
