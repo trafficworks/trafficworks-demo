@@ -65,21 +65,23 @@ tbody tr:hover .check-visual.pending-vis { display: block }
 .mobile-task-badge { flex-shrink: 0; text-align: center }
 .mobile-task-clock { font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); margin-top: var(--space-xs); text-align: center }
 
+.stats-row { display:flex; align-items:center; gap:0; flex-wrap:wrap }
+.stat-item { display:flex; align-items:center; gap:6px; padding-right:16px; margin-right:16px; position:relative }
+.stat-value { font-weight:700; margin-bottom:0 }
+.stat-label { margin-top:0; line-height:1; text-transform:none; letter-spacing:.02em }
+.stat-item::after { content:""; position:absolute; right:0; top:4px; bottom:4px; width:1px; background:var(--border) }
+.stat-divider { display:none }
+.stat-progress { min-width:100%; order:10; margin-top:10px }
+
 /* PD mobile overrides */
 @media (max-width: 768px) {
-.mobile-hide { display: none }
-#projectStatusPill { display: none }
-.stat-item { display:flex; align-items:center; gap:6px; padding-right:16px; margin-right:16px; position:relative }
-.stats-row { gap: 16px; flex-wrap: wrap }
-.stat-item { display: flex; align-items: baseline; gap: 6px }
-.stat-value { font-weight: 700 }
-.stat-label { margin-top:0; line-height:1; text-transform:none; letter-spacing:.02em }
-.stat-item:nth-child(4) { display: none }
-.stat-progress { min-width: 100%; order: 10 }
-.toolbar-row { flex-wrap: wrap; border-bottom: none; box-shadow: none }
-.search-box { max-width: 100%; flex: 1 1 100% }
-.toolbar-spacer { display: none }
- table { display: none }
-.mobile-task-cards { display: flex; flex-direction: column; gap: var(--space-sm) }
-.mobile-task-card { border-radius: 12px }
+.mobile-hide { display:none }
+#projectStatusPill { display:none }
+.stat-item:last-child::after { display:none }
+.toolbar-row { flex-wrap:wrap; border-bottom:none; box-shadow:none }
+.search-box { max-width:100%; flex:1 1 100% }
+.toolbar-spacer { display:none }
+table { display:none }
+.mobile-task-cards { display:flex; flex-direction:column; gap:var(--space-sm) }
+.mobile-task-card { border-radius:12px }
 }
