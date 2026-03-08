@@ -19,7 +19,7 @@
 /* Status pill (inline with project name) */
 .project-status-pill { display: inline-flex; align-items: center; gap: 5px; font-size: var(--text-sm); font-weight: 500; color: var(--text-secondary); letter-spacing: 0.2px }
 .project-status-pill svg { width: 14px; height: 14px }
-.psp-in-progress svg { color: var(--green) }
+.psp-in-progress svg { color: var(--amber) }
 .psp-pending svg { color: var(--text-muted) }
 .psp-complete svg { color: var(--green) }
 .psp-on-hold svg { color: var(--red) }
@@ -91,4 +91,4 @@ tbody tr:hover .check-visual.pending-vis { display: block }
   .table-wrap { border:none; box-shadow:none; background:none }
   .mobile-task-cards { display:flex; flex-direction:column; gap:var(--space-sm) }
   .mobile-task-card { border-radius:12px }
-}
+   }
