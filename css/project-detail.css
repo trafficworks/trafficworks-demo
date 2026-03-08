@@ -73,6 +73,6 @@ tbody tr:hover .check-visual.pending-vis { display: block }
   .toolbar-row { flex-wrap: wrap }
   .search-box { max-width: 100%; flex: 1 1 100% }
   .toolbar-spacer { display: none }
-  table { display: none }
+  .table-wrap { display: none }
   .mobile-task-cards { display: flex; flex-direction: column; gap: var(--space-sm) }
 }
