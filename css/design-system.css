@@ -8,22 +8,22 @@
 /* ============================================================
    COLORS & VARIABLES
    ============================================================ */
-:root{
---charcoal:#3C4248;
---bg:#F5F4F0;
---white:#FFFFFF;
---off-white:#ECEAE4;
---border:#E0DED8;
---gray-light:#C8C8C8;
---blue:#4A7FA1;
---blue-light:rgba(74,127,161,0.10);
---green:#3AA66A;
---green-light:rgba(58,166,106,0.08);
---amber:#D4920A;
---amber-light:rgba(212,146,10,0.08);
---red:#FB6267;
---red-light:rgba(251,98,103,0.08);
---purple:#615DB1;
+:root {
+  --charcoal: #3C4248;
+  --bg: #F5F4F0;
+  --white: #FFFFFF;
+  --off-white: #ECEAE4;
+  --border: #E0DED8;
+  --gray-light: #C8C8C8;
+  --steel: #7A9BA8;
+  --steel-light: rgba(122, 155, 168, 0.1);
+  --green: #3AA66A;
+  --green-light: rgba(58, 166, 106, 0.08);
+  --amber: #D4920A;
+  --amber-light: rgba(212, 146, 10, 0.08);
+  --red: #FB6267;
+  --red-light: rgba(251, 98, 103, 0.08);
+  --purple: #615DB1;
   --text-primary: #2C3034;
   --text-secondary: #6B7178;
   --text-muted: #9CA0A6;
