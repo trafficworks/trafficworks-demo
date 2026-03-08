@@ -81,8 +81,9 @@ tbody tr:hover .check-visual.pending-vis { display: block }
   .stats-row { flex-wrap:wrap; align-items:flex-start }
   .stat-item::after { display:none }
   .stat-item { padding-right:12px; margin-right:12px }
-  .stat-progress { display:flex; align-items:center; gap:10px; flex:1 1 100%; min-width:100%; margin-left:0; margin-top:14px; order:10 }
-  .progress-bar-lg { height:7px }
+  .stat-progress { display:flex; align-items:center; gap:12px; flex:1; min-width:0; margin-left:24px }
+  .progress-bar-lg { flex:1; min-width:0 }
+  .progress-pct-lg { flex-shrink:0 }
   .toolbar-row { flex-wrap:wrap; border-bottom:none; box-shadow:none }
   .search-box { max-width:100%; flex:1 1 100% }
   .toolbar-spacer { display:none }
