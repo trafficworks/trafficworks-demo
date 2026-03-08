@@ -158,7 +158,7 @@ tbody tr:last-child td { border-bottom: none }
    ============================================================ */
 .project-indicator, .site-indicator { width: 5px; height: 16px; border-radius: 1.5px; flex-shrink: 0 }
 .pi-pending, .si-pending { background: #D0D0D0 }
-.pi-in-progress, .si-infield { background: var(--amber) }
+.pi-in-progress, .si-infield { background: var(--amber-light) }
 .pi-on-hold { background: var(--red) }
 .pi-complete, .si-complete { background: #2AB57E }
 
