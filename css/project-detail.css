@@ -67,7 +67,7 @@ tbody tr:hover .check-visual.pending-vis { display: block }
 
 /* PD mobile overrides */
 @media (max-width: 768px) {
-   .mobile-hide { display:none }
+  .mobile-hide { display:none }
   .stats-row { gap: var(--space-lg); flex-wrap: wrap }
   .stat-progress { min-width: 100%; order: 10 }
   .toolbar-row { flex-wrap: wrap }
