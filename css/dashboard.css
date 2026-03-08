@@ -44,6 +44,7 @@
 .stat-value { font-weight:700; margin-bottom:0 }
 .stat-label { margin-top:0; line-height:1; text-transform:none; letter-spacing:.02em }
 .stat-item::after { content:""; position:absolute; right:0; top:4px; bottom:4px; width:1px; background:var(--border) }
+.stat-item:last-child::after { display:none }
 .stat-divider { display:none }
 .stat-progress { display:flex; align-items:center; gap:12px; flex:1; margin-left:24px }
 
