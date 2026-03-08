@@ -70,6 +70,7 @@ tbody tr:hover .check-visual.pending-vis { display: block }
 .stat-value { font-weight:700; margin-bottom:0 }
 .stat-label { margin-top:0; line-height:1; text-transform:none; letter-spacing:.02em }
 .stat-item::after { content:""; position:absolute; right:0; top:4px; bottom:4px; width:1px; background:var(--border) }
+.stat-item:nth-child(3)::after { display:none }
 .stat-divider { display:none }
 
 
