@@ -34,7 +34,7 @@
 
   <div class="toolbar-row" style="margin-bottom:16px">
     <div id="normalItems" style="display:flex;align-items:center;gap:10px;flex:1">
-      <div class="search-box"><svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search tasks…" id="searchInput" oninput="render()"></div>
+      <div class="search-box mobile-hide"><svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search tasks…" id="searchInput" oninput="render()"></div>
       <select class="filter-select" id="statusFilter" onchange="render()"><option value="all">All Statuses</option><option value="Pending">Pending</option><option value="In Field">In Field</option><option value="Complete">Complete</option></select>
       <div class="toolbar-spacer"></div>
       <button class="btn btn-add" onclick="openAddTaskModal()"><span class="btn-icon">+</span> Add Task</button>
