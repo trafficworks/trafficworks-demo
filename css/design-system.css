@@ -149,7 +149,7 @@ tbody tr:last-child td { border-bottom: none }
    ============================================================ */
 .status-badge { display: inline-block; padding: 3px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; user-select: none }
 .status-pending { background: #E8E8E8; color: var(--text-secondary) }
-.status-in-progress, .status-infield { background: #EDB872; color: #2F3130 }
+.status-in-progress, .status-infield { background: var(--amber-light); color: var(--amber) }
 .status-on-hold { background: var(--red); color: var(--white) }
 .status-complete { background: #2AB57E; color: var(--white) }
 
@@ -158,7 +158,7 @@ tbody tr:last-child td { border-bottom: none }
    ============================================================ */
 .project-indicator, .site-indicator { width: 5px; height: 16px; border-radius: 1.5px; flex-shrink: 0 }
 .pi-pending, .si-pending { background: #D0D0D0 }
-.pi-in-progress, .si-infield { background: #EDB872 }
+.pi-in-progress, .si-infield { background: var(--amber) }
 .pi-on-hold { background: var(--red) }
 .pi-complete, .si-complete { background: #2AB57E }
 
@@ -171,7 +171,7 @@ tbody tr:last-child td { border-bottom: none }
 .status-dropdown-item:hover { background: var(--bg) }
 .status-dropdown-item .sd-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0 }
 .sd-pending { background: #C8C8C8 }
-.sd-in-progress { background: #EDB872 }
+.sd-in-progress { background: var(--amber) }
 .sd-on-hold { background: var(--red) }
 .sd-complete { background: #2AB57E }
 
@@ -291,4 +291,6 @@ tbody tr:last-child td { border-bottom: none }
   .page-title, .back-link { background: var(--charcoal); color: var(--white); border-color: var(--charcoal) }
   .back-link:hover { color: var(--white) }
 }
+
+
 
