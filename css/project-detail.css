@@ -75,4 +75,5 @@ tbody tr:hover .check-visual.pending-vis { display: block }
   .toolbar-spacer { display: none }
   .table-wrap { display: none }
   .mobile-task-cards { display: flex; flex-direction: column; gap: var(--space-sm) }
+   #projectStatusPill { display:none; }
 }
