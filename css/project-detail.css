@@ -78,6 +78,7 @@ tbody tr:hover .check-visual.pending-vis { display: block }
 .mobile-hide { display:none }
 #projectStatusPill { display:none }
 .stat-item:last-child::after { display:none }
+.stat-progress { margin-top:14px }
 .toolbar-row { flex-wrap:wrap; border-bottom:none; box-shadow:none }
 .search-box { max-width:100%; flex:1 1 100% }
 .toolbar-spacer { display:none }
