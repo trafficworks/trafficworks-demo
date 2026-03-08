@@ -39,10 +39,20 @@
 .mobile-card-fill.fill-high { background:var(--green) }
 .mobile-card-pct { font-size:var(--text-sm); font-weight:600; color:var(--text-muted); min-width:48px; text-align:right }
 
+.stats-row { display:flex; align-items:center; gap:0; flex-wrap:wrap }
+.stat-item { display:flex; align-items:center; gap:6px; padding-right:16px; margin-right:16px; position:relative }
+.stat-value { font-weight:700; margin-bottom:0 }
+.stat-label { margin-top:0; line-height:1; text-transform:none; letter-spacing:.02em }
+.stat-item::after { content:""; position:absolute; right:0; top:4px; bottom:4px; width:1px; background:var(--border) }
+.stat-divider { display:none }
+.stat-progress { display:flex; align-items:center; gap:12px; flex:1; margin-left:24px }
+
 /* Dashboard mobile overrides */
 @media (max-width:768px) {
-  .stats-row { display:none }
-  .mobile-stats { display:flex }
+  .mobile-stats { display:none }
+  .stat-item:last-child::after { display:none }
+  .stat-progress { display:flex; align-items:center; gap:10px; flex:1 1 100%; min-width:100%; margin-left:0; margin-top:14px }
+  .progress-bar-lg { height:7px }
   .filter-bar { display:none }
   .table-wrap { display:none }
   .mobile-cards { display:flex; flex-direction:column; gap:10px }
