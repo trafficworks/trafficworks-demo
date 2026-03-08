@@ -25,7 +25,7 @@
 
 /* Mobile cards */
 .mobile-cards { display: none }
-.mobile-card { background: var(--white).page-title, .back-link { display:inline-flex; align-items:center; gap:var(--space-xs); font-size:var(--text-md); font-weight:500; color:var(--charcoal); padding:var(--space-sm) var(--space-md); border:1px solid var(--border); border-radius:6px; text-decoration:none; transition:all .15s }
+.mobile-card { background: var(--white); } .page-title, .back-link { display:inline-flex; align-items:center; gap:var(--space-xs); font-size:var(--text-md); font-weight:500; color:var(--charcoal); padding:var(--space-sm) var(--space-md); border:1px solid var(--border); border-radius:6px; text-decoration:none; transition:all .15s }
 .page-title { cursor:default }
 .back-link { cursor:pointer }
 .back-link:hover { background: var(--off-white); border-color: var(--gray-light) }
