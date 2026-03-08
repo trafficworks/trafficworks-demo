@@ -25,7 +25,7 @@
 .psp-on-hold svg { color: var(--red) }
 
 /* Stat progress (PD-specific inline variant) */
-.stat-progress { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 120px }
+.stat-progress { display:flex; align-items:center; gap:10px; flex:1; min-width:100%; order:10; margin-top:10px }
 
 /* Notes input */
 .project-notes-input { width: 100%; padding: var(--space-sm) 12px; border: 1px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: var(--text-md); color: var(--text-primary); background: var(--white); outline: none; resize: vertical; min-height: 36px; max-height: 70px; transition: border-color .15s; line-height: 1.5 }
@@ -71,7 +71,7 @@ tbody tr:hover .check-visual.pending-vis { display: block }
 .stat-label { margin-top:0; line-height:1; text-transform:none; letter-spacing:.02em }
 .stat-item::after { content:""; position:absolute; right:0; top:4px; bottom:4px; width:1px; background:var(--border) }
 .stat-divider { display:none }
-.stat-progress { min-width:100%; order:10; margin-top:10px }
+
 
 /* PD mobile overrides */
 @media (max-width: 768px) {
