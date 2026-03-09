@@ -18,6 +18,20 @@
 .status-badge { cursor:pointer; position:relative; transition:opacity .15s }
 .status-badge:hover { opacity:.85 }
 
+.empty-state{display:none;align-items:center;justify-content:center;text-align:center;padding:64px 24px;background:transparent;border:none;border-radius:0}
+.empty-state.show{display:flex}
+.empty-state-graphic{width:140px;height:auto;margin-bottom:18px;display:block}
+.empty-state-title{font-size:28px;font-weight:700;line-height:1.15;color:var(--text-primary);margin:0 0 10px}
+.empty-state-subtitle{font-size:14px;line-height:1.4;color:var(--text-secondary);margin:0;white-space:nowrap}
+.empty-state-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 20px}
+@media (max-width:768px){
+  .empty-state{padding:40px 16px}
+  .empty-state-graphic{width:110px;margin-bottom:16px}
+  .empty-state-title{font-size:24px}
+  .empty-state-subtitle{font-size:13px;white-space:normal;max-width:320px}
+  .empty-state-inner{padding:40px 16px}
+}
+
 /* Mobile stat pills */
 .mobile-stats { display:none; gap:6px; margin-bottom:14px; flex-wrap:wrap }
 .mobile-stat-pill { display:inline-flex; align-items:center; gap:5px; padding:var(--space-sm) 14px; background:var(--white); border:1px solid var(--border); border-radius:20px; font-size:13px; font-weight:500; color:var(--text-secondary) }
