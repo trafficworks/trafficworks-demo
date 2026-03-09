@@ -31,7 +31,6 @@
   <div class="tv-filter-pill active" id="filterAll" onclick="toggleFilter('all')"><span class="tv-filter-value" id="filterAllVal">0</span><span class="tv-filter-label">Total</span></div>
   <div class="tv-filter-pill" id="filterPending" onclick="toggleFilter('Pending')"><span class="tv-filter-value" id="filterPendingVal">0</span><span class="tv-filter-label">Pending</span></div>
   <div class="tv-filter-pill" id="filterInfield" onclick="toggleFilter('In Field')"><span class="tv-filter-value" id="filterInfieldVal">0</span><span class="tv-filter-label">In Field</span></div>
-  <div class="tv-filter-pill" id="filterComplete" onclick="toggleFilter('Complete')"><span class="tv-filter-value" id="filterCompleteVal">0</span><span class="tv-filter-label">Complete</span></div>
 </div>
 <div id="taskProgressWrap" style="display:none">
   <div class="tv-task-progress">
@@ -42,6 +41,17 @@
 <div class="tv-print-overlay" id="printOverlay">
   <button class="tv-print-close" onclick="closePrintView()">&times;</button>
   <div id="printContent"></div>
+</div>
+<div class="tv-reopen-overlay" id="reopenOverlay">
+  <div class="tv-reopen-modal">
+    <div class="tv-reopen-title">Reopen Task</div>
+    <div class="tv-reopen-sub" id="reopenTaskName"></div>
+    <textarea class="tv-reopen-input" id="reopenReason" placeholder="Why are you reopening this task?"></textarea>
+    <div class="tv-reopen-actions">
+      <button class="tv-reopen-cancel" onclick="closeReopenModal()">Cancel</button>
+      <button class="tv-reopen-confirm" onclick="confirmReopen()">Reopen</button>
+    </div>
+  </div>
 </div>
 <div class="tv-content">
   <div class="tv-view active" id="projectView"><div id="projectCards"></div></div>
@@ -62,25 +72,25 @@ var STATUS={PENDING:'Pending',INFIELD:'In Field',COMPLETE:'Complete'};
 var MAX_NOTE=100,durationInterval=null;
 var projects=[
   {id:'p1',name:'Main St Intersection Study',location:'City of Monrovia',status:'In Progress',notes:'',tasks:[
-    {id:1,site:1,desc:'TMC Myrtle & Greystone',status:STATUS.COMPLETE,note:'Client confirmed 48hr count',cycles:[{deployedAt:new Date('2026-02-25T06:42:00'),completedAt:new Date('2026-02-26T07:15:00'),tech:'Carlos M.'}],currentCycle:{deployedAt:null,completedAt:null}},
-    {id:2,site:2,desc:'TMC Foothill & Shamrock',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-25T06:55:00'),completedAt:new Date('2026-02-26T07:22:00')}},
-    {id:3,site:3,desc:'TMC Huntington & 5th',status:STATUS.INFIELD,note:'Battery at 80%',cycles:[],currentCycle:{deployedAt:new Date('2026-02-26T06:30:00'),completedAt:null}},
-    {id:4,site:4,desc:'TMC Duarte & Mountain',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-26T06:38:00'),completedAt:null}},
-    {id:5,site:5,desc:'TMC Colorado & Royal Oaks',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}},
-    {id:6,site:6,desc:'Speed Survey Greystone NB',status:STATUS.PENDING,note:'Homeowner on NE corner said OK to mount',cycles:[{deployedAt:new Date('2026-02-24T07:00:00'),completedAt:new Date('2026-02-24T09:30:00'),tech:'Carlos M.',reopenReason:'Equipment damaged',reopenedBy:'manager'}],currentCycle:{deployedAt:null,completedAt:null}},
-    {id:7,site:7,desc:'Speed Survey Greystone SB',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-26T05:50:00'),completedAt:null}},
-    {id:8,site:8,desc:'ADT Tube Shamrock Ave',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}}
+    {id:1,site:1,desc:'Myrtle & Greystone',type:'TMC',status:STATUS.COMPLETE,note:'Client confirmed 48hr count',cycles:[{deployedAt:new Date('2026-02-25T06:42:00'),completedAt:new Date('2026-02-26T07:15:00'),tech:'Carlos M.'}],currentCycle:{deployedAt:null,completedAt:null}},
+    {id:2,site:2,desc:'Foothill & Shamrock',type:'TMC',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-25T06:55:00'),completedAt:new Date('2026-02-26T07:22:00')}},
+    {id:3,site:3,desc:'Huntington & 5th',type:'TMC',status:STATUS.INFIELD,note:'Battery at 80%',cycles:[],currentCycle:{deployedAt:new Date('2026-02-26T06:30:00'),completedAt:null}},
+    {id:4,site:4,desc:'Duarte & Mountain',type:'TMC',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-26T06:38:00'),completedAt:null}},
+    {id:5,site:5,desc:'Colorado & Royal Oaks',type:'TMC',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}},
+    {id:6,site:6,desc:'Greystone NB',type:'SPD',status:STATUS.PENDING,note:'Homeowner on NE corner said OK to mount',cycles:[{deployedAt:new Date('2026-02-24T07:00:00'),completedAt:new Date('2026-02-24T09:30:00'),tech:'Carlos M.',reopenReason:'Equipment damaged',reopenedBy:'manager'}],currentCycle:{deployedAt:null,completedAt:null}},
+    {id:7,site:7,desc:'Greystone SB',type:'SPD',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-26T05:50:00'),completedAt:null}},
+    {id:8,site:8,desc:'Shamrock Ave',type:'ADT',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}}
   ]},
   {id:'p2',name:'Hwy 101 NB/SB Tube Count',location:'City of Calabasas',status:'In Progress',notes:'Caltrans encroachment permit #EP-2026-0441. Work hours 9PM-6AM only. CHP escort required.',tasks:[
-    {id:9,site:1,desc:'Tube Set A NB Lane 1-2',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-24T05:30:00'),completedAt:new Date('2026-02-25T06:00:00')}},
-    {id:10,site:2,desc:'Tube Set B NB Lane 3-4',status:STATUS.COMPLETE,note:'Shifted 5ft east due to pothole',cycles:[],currentCycle:{deployedAt:new Date('2026-02-24T05:45:00'),completedAt:new Date('2026-02-25T06:10:00')}},
-    {id:11,site:3,desc:'Tube Set C SB Lane 1-2',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-26T05:15:00'),completedAt:null}},
-    {id:12,site:4,desc:'Tube Set D SB Lane 3-4',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}}
+    {id:9,site:1,desc:'NB Lane 1-2',type:'ADT',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-24T05:30:00'),completedAt:new Date('2026-02-25T06:00:00')}},
+    {id:10,site:2,desc:'NB Lane 3-4',type:'ADT',status:STATUS.COMPLETE,note:'Shifted 5ft east due to pothole',cycles:[],currentCycle:{deployedAt:new Date('2026-02-24T05:45:00'),completedAt:new Date('2026-02-25T06:10:00')}},
+    {id:11,site:3,desc:'SB Lane 1-2',type:'ADT',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-26T05:15:00'),completedAt:null}},
+    {id:12,site:4,desc:'SB Lane 3-4',type:'ADT',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}}
   ]},
   {id:'p3',name:'Rosemead Blvd Speed Survey',location:'City of Temple City',status:'Complete',notes:'',tasks:[
-    {id:13,site:1,desc:'Radar Unit NB Rosemead',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-20T07:00:00'),completedAt:new Date('2026-02-21T07:30:00')}},
-    {id:14,site:2,desc:'Radar Unit SB Rosemead',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-20T07:15:00'),completedAt:new Date('2026-02-21T07:45:00')}},
-    {id:15,site:3,desc:'Tube Backup NB',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-20T07:30:00'),completedAt:new Date('2026-02-21T08:00:00')}}
+    {id:13,site:1,desc:'Rosemead NB',type:'SPD',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-20T07:00:00'),completedAt:new Date('2026-02-21T07:30:00')}},
+    {id:14,site:2,desc:'Rosemead SB',type:'SPD',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-20T07:15:00'),completedAt:new Date('2026-02-21T07:45:00')}},
+    {id:15,site:3,desc:'Tube Backup NB',type:'ADT',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-20T07:30:00'),completedAt:new Date('2026-02-21T08:00:00')}}
   ]}
 ];
 var currentProject=null,activeFilter='all',completedCollapsed=false,hintDismissed=false,openNoteId=null;
@@ -155,11 +165,9 @@ function renderTaskSummary(){
   document.getElementById('filterAllVal').textContent=c.total;
   document.getElementById('filterPendingVal').textContent=c.pending;
   document.getElementById('filterInfieldVal').textContent=c.infield;
-  document.getElementById('filterCompleteVal').textContent=c.complete;
   document.getElementById('filterAll').className='tv-filter-pill'+(activeFilter==='all'?' active':'');
   document.getElementById('filterPending').className='tv-filter-pill'+(activeFilter===STATUS.PENDING?' active':'');
   document.getElementById('filterInfield').className='tv-filter-pill'+(activeFilter===STATUS.INFIELD?' active':'');
-  document.getElementById('filterComplete').className='tv-filter-pill'+(activeFilter===STATUS.COMPLETE?' active':'');
   document.getElementById('taskProgressFill').style.width=percentage+'%';
   document.getElementById('taskProgressPct').textContent=percentage+'%';
 }
@@ -178,21 +186,29 @@ function renderTaskCards(){
   if(openTasks.length===0&&completedTasks.length===0)html='<div class="tv-empty-state">No tasks match this filter</div>';
   html+='<div class="tv-download-link" onclick="downloadPDF(\''+currentProject.id+'\')">Download task list</div>';
   container.innerHTML=html;
-  container.querySelectorAll('.toggle-btn').forEach(function(btn){if(btn.dataset.action==='reopen')setupHoldButton(btn,600,reopenTask);else setupHoldButton(btn,400,cycleTaskStatus)});
+  container.querySelectorAll('.toggle-btn').forEach(function(btn){if(btn.dataset.action==='reopen')setupHoldButton(btn,800,promptReopen);else setupHoldButton(btn,600,cycleTaskStatus)});
 }
 function taskCardHTML(t,isComplete){
   var cc=isComplete?'complete-card':'';
   var noteClass=t.note?'tv-note-indicator has-note':'tv-note-indicator empty';
   var noteIconSvg=t.note?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+  // Detail row items
+  var details=[];
+  details.push('<span class="tv-task-site">#'+t.site+'</span>');
+  if(t.type)details.push('<span class="tv-task-type">'+t.type+'</span>');
+  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)details.push('<span class="tv-task-duration live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>');
+  details.push('<button class="'+noteClass+'" onclick="toggleNote('+t.id+',event)">'+noteIconSvg+'</button>');
+  var detailHTML=details.join('<span class="tv-detail-dot"></span>');
+  // Reopen reason row
   var reopenHTML='';
-  if(t.cycles.length>0&&t.status===STATUS.PENDING){var lc=t.cycles[t.cycles.length-1];if(lc.reopenReason)reopenHTML='<span class="tv-task-reopen-reason">Reopened: '+lc.reopenReason+'</span>'}
-  var durHTML='';
-  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)durHTML='<span class="tv-task-duration live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
+  if(t.cycles.length>0&&t.status===STATUS.PENDING){var lc=t.cycles[t.cycles.length-1];if(lc.reopenReason)reopenHTML='<div class="tv-task-reopen-row"><span class="tv-task-reopen-reason">Reopened: '+lc.reopenReason+'</span></div>'}
+  // Action button
   var actionHTML='';
   if(isComplete){actionHTML='<button class="toggle-btn toggle-complete" data-task-id="'+t.id+'" data-action="reopen"><div class="toggle-fill"></div><span class="toggle-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg> Reopen</span></button>'}
   else{actionHTML='<button class="toggle-btn '+toggleBtnClass(t.status)+'" data-task-id="'+t.id+'"><div class="toggle-fill"></div><span class="toggle-label">'+actionLabel(t.status)+'</span></button>'}
+  // Note panel
   var notePanel='<div class="tv-note-panel'+(openNoteId===t.id?' open':'')+'" id="note-panel-'+t.id+'"><div class="tv-note-panel-inner"><input class="tv-note-input" maxlength="'+MAX_NOTE+'" placeholder="Add a quick note…" value="'+(t.note||'').replace(/"/g,'&quot;')+'" oninput="updateCharCount('+t.id+',this)" onkeydown="if(event.key===\'Enter\')saveNote('+t.id+')"><span class="tv-note-char-count" id="char-count-'+t.id+'">'+(MAX_NOTE-(t.note||'').length)+'</span><button class="tv-note-save-btn" onclick="saveNote('+t.id+')">Save</button></div></div>';
-  return '<div class="tv-task-card '+cc+'"><div class="tv-task-inner"><span class="tv-site-num">'+t.site+'</span><div class="tv-task-info"><div class="tv-task-desc">'+t.desc+'</div><div class="tv-task-status-row">'+durHTML+reopenHTML+'<button class="'+noteClass+'" onclick="toggleNote('+t.id+',event)">'+noteIconSvg+'</button></div></div>'+actionHTML+'</div>'+notePanel+'</div>';
+  return '<div class="tv-task-card '+cc+'"><div class="tv-task-inner"><div class="tv-task-content"><div class="tv-task-desc">'+t.desc+'</div><div class="tv-task-divider"></div><div class="tv-task-detail-row">'+detailHTML+'</div>'+reopenHTML+'</div><div class="tv-task-action">'+actionHTML+'</div></div>'+notePanel+'</div>';
 }
 function toggleCompleted(){completedCollapsed=!completedCollapsed;renderTaskCards()}
 function toggleNote(id,e){e.stopPropagation();openNoteId=openNoteId===id?null:id;renderTaskCards();if(openNoteId===id){var input=document.querySelector('#note-panel-'+id+' .tv-note-input');if(input)setTimeout(function(){input.focus()},250)}}
@@ -200,7 +216,28 @@ function updateCharCount(id,input){var r=MAX_NOTE-input.value.length;var el=docu
 function saveNote(id){var input=document.querySelector('#note-panel-'+id+' .tv-note-input');if(!input)return;var task=currentProject.tasks.find(function(t){return t.id===id});if(task)task.note=input.value.trim();openNoteId=null;renderTaskCards()}
 function setupHoldButton(btn,duration,callback){var timer=null;function start(e){e.preventDefault();btn.classList.add('holding');timer=setTimeout(function(){btn.classList.remove('holding');if(navigator.vibrate)navigator.vibrate(30);callback(parseInt(btn.dataset.taskId))},duration)}function end(){clearTimeout(timer);btn.classList.remove('holding')}btn.addEventListener('pointerdown',start,{passive:false});btn.addEventListener('pointerup',end);btn.addEventListener('pointerleave',end);btn.addEventListener('pointercancel',end)}
 function cycleTaskStatus(taskId){var task=currentProject.tasks.find(function(t){return t.id===taskId});if(!task)return;if(task.status===STATUS.PENDING){task.status=STATUS.INFIELD;task.currentCycle.deployedAt=new Date()}else if(task.status===STATUS.INFIELD){task.status=STATUS.COMPLETE;task.currentCycle.completedAt=new Date()}renderTaskView();renderProjectStats()}
-function reopenTask(taskId){var task=currentProject.tasks.find(function(t){return t.id===taskId});if(!task)return;if(task.currentCycle.deployedAt){task.cycles.push({deployedAt:task.currentCycle.deployedAt,completedAt:task.currentCycle.completedAt,tech:techName,reopenReason:'Reopened by tech',reopenedBy:'tech'})}task.status=STATUS.PENDING;task.currentCycle={deployedAt:null,completedAt:null};renderTaskView();renderProjectStats()}
+var reopenTargetId=null;
+function promptReopen(taskId){
+  var task=currentProject.tasks.find(function(t){return t.id===taskId});if(!task)return;
+  reopenTargetId=taskId;
+  document.getElementById('reopenTaskName').textContent='"'+task.desc+'"';
+  document.getElementById('reopenReason').value='';
+  document.getElementById('reopenOverlay').classList.add('visible');
+  setTimeout(function(){document.getElementById('reopenReason').focus()},200);
+}
+function closeReopenModal(){document.getElementById('reopenOverlay').classList.remove('visible');reopenTargetId=null}
+function confirmReopen(){
+  if(reopenTargetId===null)return;
+  var task=currentProject.tasks.find(function(t){return t.id===reopenTargetId});if(!task)return;
+  var reason=document.getElementById('reopenReason').value.trim()||'Reopened by tech';
+  if(task.currentCycle.deployedAt){
+    task.cycles.push({deployedAt:task.currentCycle.deployedAt,completedAt:task.currentCycle.completedAt,tech:techName,reopenReason:reason,reopenedBy:'tech'});
+  }
+  task.status=STATUS.PENDING;
+  task.currentCycle={deployedAt:null,completedAt:null};
+  closeReopenModal();renderTaskView();renderProjectStats();
+}
+document.getElementById('reopenOverlay').addEventListener('click',function(e){if(e.target===this)closeReopenModal()});
 function downloadPDF(projectId){var p=projects.find(function(x){return x.id===projectId});if(!p)return;var tasks=p.tasks||[];var pending=tasks.filter(function(t){return t.status===STATUS.PENDING});var infield=tasks.filter(function(t){return t.status===STATUS.INFIELD});var html='<div class="print-title">'+p.name+'</div><div class="print-location">'+p.location+'</div>';if(p.notes){html+='<div class="print-notes"><div class="print-notes-label">Tech Instructions</div><div class="print-notes-text">'+p.notes+'</div></div>'}function renderSection(title,cls,list){if(list.length===0)return'';var s='<div class="print-section print-section-'+cls+'"><div class="print-section-title">'+title+' ('+list.length+')</div><table class="print-table"><tbody>';list.forEach(function(t){s+='<tr><td class="site-num">'+t.site+'</td><td class="task-desc">'+t.desc+'</td></tr>'});return s+'</tbody></table></div>'}html+=renderSection('Pending','pending',pending);html+=renderSection('In Field','infield',infield);var now=new Date();html+='<div class="print-footer"><span>Generated '+(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear()+' '+now.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'</span><span>TrafficWorks</span></div>';document.getElementById('printContent').innerHTML=html;document.getElementById('printOverlay').classList.add('visible')}
 function closePrintView(){document.getElementById('printOverlay').classList.remove('visible')}
 showProjects();
