@@ -58,7 +58,7 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 .mobile-task-card-inner{padding:14px 16px 14px 20px}
 .mobile-task-card::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:5px;background:var(--gray-light);border-radius:0 4px 4px 0}
 .mobile-task-card.status-complete::before{background:var(--green)}
-.mobile-task-card.status-infield::before{background:#BFD7EA}
+.mobile-task-card.status-infield::before{background:#8DB7DB}
 .mobile-task-card.status-pending::before{background:var(--gray-light)}
 .mobile-task-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .mobile-task-title{font-size:var(--text-md);font-weight:600;color:var(--text-primary);line-height:1.25;flex:1;min-width:0}
