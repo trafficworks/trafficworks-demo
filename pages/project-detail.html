@@ -7,111 +7,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/design-system.css">
 <link rel="stylesheet" href="../css/project-detail.css">
-<style>
-/* Mobile card override */
-.mobile-task-cards{display:none}
-.mobile-task-card{
-position:relative;
-background:var(--white);
-border:1px solid var(--border);
-border-radius:22px;
-box-shadow:0 6px 18px rgba(0,0,0,0.06);
-overflow:hidden;
-}
-.mobile-task-card-inner{
-padding:18px 18px 16px 28px;
-}
-.mobile-task-card::before{
-content:"";
-position:absolute;
-left:0;
-top:14px;
-bottom:14px;
-width:8px;
-background:var(--gray-light);
-}
-.mobile-task-card.status-complete::before{background:var(--green)}
-.mobile-task-card.status-infield::before{background:var(--amber)}
-.mobile-task-card.status-pending::before{background:var(--gray-light)}
-.mobile-task-top{
-display:flex;
-align-items:flex-start;
-justify-content:space-between;
-gap:12px;
-}
-.mobile-task-title{
-font-size:22px;
-line-height:1.15;
-font-weight:700;
-color:var(--charcoal);
-letter-spacing:-0.02em;
-flex:1;
-min-width:0;
-}
-.mobile-status-pill{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-min-height:44px;
-padding:0 18px;
-border-radius:14px;
-font-size:14px;
-font-weight:600;
-white-space:nowrap;
-flex-shrink:0;
-}
-.mobile-task-card.status-complete .mobile-status-pill{background:var(--green);color:#fff}
-.mobile-task-card.status-infield .mobile-status-pill{background:var(--amber);color:#fff}
-.mobile-task-card.status-pending .mobile-status-pill{background:var(--off-white);color:var(--text-secondary)}
-.mobile-task-divider{
-height:1px;
-background:var(--border);
-margin:18px 0 18px;
-}
-.mobile-task-bottom{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:12px;
-}
-.mobile-task-meta{
-font-size:18px;
-font-weight:500;
-color:var(--text-secondary);
-letter-spacing:-0.01em;
-}
-.mobile-task-duration{
-font-size:18px;
-font-weight:500;
-color:var(--text-secondary);
-white-space:nowrap;
-}
-@media (max-width:768px){
-.table-wrap{display:none}
-.mobile-task-cards{display:flex;flex-direction:column;gap:14px}
-}
-</style>
 </head>
 <body>
 <nav class="topnav"><div class="topnav-left"><a class="logo" href="dashboard.html"><div class="logo-mark"></div><span class="logo-text">TrafficWorks</span></a><div class="nav-divider"></div><div class="nav-links"><a class="nav-link active" href="dashboard.html">Projects</a><a class="nav-link" href="team.html">Team</a><a class="nav-link" href="archive.html">Archive</a><a class="nav-link" href="billing.html">Billing</a></div></div><div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div></div></nav>
 
 <div class="main">
   <div class="project-top-row">
-  <a class="back-link" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Projects</a>
+    <a class="back-link" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Projects</a>
 
-  <div class="project-header">
-    <div class="project-name-row">
-      <div class="project-name">
-        <span class="project-name-toggle" onclick="toggleProjectDetails()">Old Town Mobility Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+    <div class="project-header">
+      <div class="project-name-row">
+        <div class="project-name">
+          <span class="project-name-toggle" onclick="toggleProjectDetails()">Old Town Mobility Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <span class="project-status-pill psp-in-progress" id="projectStatusPill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>In Progress</span>
       </div>
-      <span class="project-status-pill psp-in-progress" id="projectStatusPill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>In Progress</span>
+      <div class="project-details-dropdown" id="projectDropdown">
+        <div class="pdd-row"><span class="pdd-label">Client:</span> City of Pasadena</div>
+        <div class="pdd-row"><span class="pdd-label">City:</span> Pasadena, CA</div>
+        <div class="pdd-row"><span class="pdd-label">Project #:</span> DEMO-2026-101</div>
+      </div>
     </div>
-    <div class="project-details-dropdown" id="projectDropdown">
-      <div class="pdd-row"><span class="pdd-label">Client:</span> City of Pasadena</div>
-      <div class="pdd-row"><span class="pdd-label">City:</span> Pasadena, CA</div>
-      <div class="pdd-row"><span class="pdd-label">Project #:</span> DEMO-2026-101</div>
-    </div>
-  </div>
   </div>
 
   <div class="stats-row" id="statsRow"></div>
@@ -133,19 +49,19 @@ white-space:nowrap;
   </div>
 
   <div class="table-wrap">
-  <table><thead><tr>
-    <th style="width:5%;text-align:center">Site</th>
-    <th style="width:39%">Task</th>
-    <th style="width:15%;cursor:pointer" onclick="sortBy('tech')">Tech <span style="font-size:9px;opacity:0.5">▼</span></th>
-    <th style="width:15%;padding-left:20px;cursor:pointer" onclick="sortBy('status')">Status <span style="font-size:9px;opacity:0.5">▼</span></th>
-    <th style="width:15%;text-align:center">Duration</th>
-    <th style="width:4%"></th>
-  </tr></thead><tbody id="taskTableBody"></tbody></table>
+    <table><thead><tr>
+      <th style="width:5%;text-align:center">Site</th>
+      <th style="width:39%">Task</th>
+      <th style="width:15%;cursor:pointer" onclick="sortBy('tech')">Tech <span style="font-size:9px;opacity:0.5">▼</span></th>
+      <th style="width:15%;padding-left:20px;cursor:pointer" onclick="sortBy('status')">Status <span style="font-size:9px;opacity:0.5">▼</span></th>
+      <th style="width:15%;text-align:center">Duration</th>
+      <th style="width:4%"></th>
+    </tr></thead><tbody id="taskTableBody"></tbody></table>
   </div>
+
   <div class="mobile-task-cards" id="mobileTaskCards"></div>
 </div>
 
-<!-- ADD TASK MODAL -->
 <div class="modal-overlay" id="addTaskModal"><div class="modal" style="max-width:440px">
   <div class="modal-title">Add Task</div>
   <div style="display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border)">
@@ -169,14 +85,12 @@ white-space:nowrap;
   </div>
 </div></div>
 
-<!-- DELETE MODAL -->
 <div class="modal-overlay" id="deleteModal"><div class="modal">
   <div class="modal-title">Delete Task</div>
   <div class="modal-body" id="deleteModalBody">Remove this task?</div>
   <div class="modal-actions"><button class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button><button class="btn btn-danger" id="confirmDeleteBtn">Delete</button></div>
 </div></div>
 
-<!-- REOPEN MODAL -->
 <div class="modal-overlay" id="reopenModal"><div class="modal">
   <div class="modal-title">Reopen Task</div>
   <div class="modal-body" id="reopenModalBody">Send back to Pending?</div>
@@ -184,7 +98,6 @@ white-space:nowrap;
   <div class="modal-actions"><button class="btn btn-ghost" onclick="closeReopenModal()">Cancel</button><button class="btn btn-reopen" id="confirmReopenBtn">Reopen</button></div>
 </div></div>
 
-<!-- BULK DELETE CONFIRM MODAL -->
 <div class="modal-overlay" id="bulkDeleteModal"><div class="modal">
   <div class="modal-title">Delete Tasks</div>
   <div class="modal-body" id="bulkDeleteBody">Remove these tasks? This cannot be undone.</div>
@@ -330,25 +243,25 @@ function renderTable(){
   }).join('');
 
   document.getElementById('mobileTaskCards').innerHTML=filtered.map(function(t){
-  var dur=getDuration(t)||'';
-  var statusClass=t.status===STATUS.COMPLETE?'status-complete':t.status===STATUS.INFIELD?'status-infield':'status-pending';
-  var initials=t.tech?t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase():'';
-  var techLabel=t.tech?initials:'Unassigned';
+    var dur=getDuration(t)||'';
+    var statusClass=t.status===STATUS.COMPLETE?'status-complete':t.status===STATUS.INFIELD?'status-infield':'status-pending';
+    var initials=t.tech?t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase():'';
+    var techLabel=t.tech?initials:'Unassigned';
 
-  return '<div class="mobile-task-card '+statusClass+'">'+
-    '<div class="mobile-task-card-inner">'+
-      '<div class="mobile-task-top">'+
-        '<div class="mobile-task-title">'+t.desc+'</div>'+
-        '<span class="mobile-status-pill">'+t.status+'</span>'+
+    return '<div class="mobile-task-card '+statusClass+'">'+
+      '<div class="mobile-task-card-inner">'+
+        '<div class="mobile-task-top">'+
+          '<div class="mobile-task-title">'+t.desc+'</div>'+
+          '<span class="mobile-status-pill">'+t.status+'</span>'+
+        '</div>'+
+        '<div class="mobile-task-divider"></div>'+
+        '<div class="mobile-task-bottom">'+
+          '<div class="mobile-task-meta">#'+t.site+' • '+t.type+' • '+techLabel+'</div>'+
+          '<div class="mobile-task-duration">'+dur+'</div>'+
+        '</div>'+
       '</div>'+
-      '<div class="mobile-task-divider"></div>'+
-      '<div class="mobile-task-bottom">'+
-        '<div class="mobile-task-meta">#'+t.site+' • '+t.type+' • '+techLabel+'</div>'+
-        '<div class="mobile-task-duration">'+dur+'</div>'+
-      '</div>'+
-    '</div>'+
-  '</div>';
-}).join('');
+    '</div>';
+  }).join('');
 }
 
 function openAddTaskModal(){
@@ -372,8 +285,6 @@ function addTask(){
   tasks.push({id:nextId++,site:nextSite++,desc:d,type:document.getElementById('newTaskType').value,tech:document.getElementById('newTaskTech').value,status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}});
   closeAddTaskModal();render();showToast('Task added');
 }
-function openBulkModal(){}
-function closeBulkModal(){}
 function handleUpload(input){
   var file=input.files[0];if(!file)return;
   var reader=new FileReader();
@@ -494,9 +405,6 @@ document.getElementById('confirmReopenBtn').addEventListener('click',function(){
   }
 });
 function closeReopenModal(){document.getElementById('reopenModal').classList.remove('visible')}
-function toggleNotes(){}
-function closeNotesModal(){}
-function saveNotes(){showToast('Instructions saved')}
 
 function toggleProjectDetails(){
   document.getElementById('projectDropdown').classList.toggle('open');
@@ -530,14 +438,6 @@ function executeDeleteSelected(){
   closeBulkDeleteModal();cancelSelect();render();showToast(ids.length+' task'+(ids.length!==1?'s':'')+' deleted');
 }
 
-function deleteSelected(){
-  var checks=document.querySelectorAll('.row-check:checked');
-  var ids=[];checks.forEach(function(c){ids.push(parseInt(c.dataset.id))});
-  if(ids.length===0)return;
-  tasks=tasks.filter(function(t){return ids.indexOf(t.id)===-1});
-  cancelSelect();render();showToast(ids.length+' task'+(ids.length!==1?'s':'')+' deleted');
-}
-
 function cancelSelect(){
   document.querySelectorAll('.row-check:checked').forEach(function(c){c.checked=false});
   document.getElementById('normalItems').style.display='flex';
@@ -558,4 +458,3 @@ render();
 </script>
 </body>
 </html>
-
