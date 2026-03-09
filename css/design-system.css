@@ -19,8 +19,8 @@
   --steel-light: rgba(122, 155, 168, 0.1);
   --green: #3AA66A;
   --green-light: rgba(58, 166, 106, 0.08);
---amber: #FFFFFF;
---amber-light: #6A8EAE;
+  --amber: #D4920A;
+  --amber-light: rgba(212, 146, 10, 0.08);
   --red: #FB6267;
   --red-light: rgba(251, 98, 103, 0.08);
   --purple: #615DB1;
@@ -112,11 +112,14 @@ body {
 /* ============================================================
    STAT METRICS
    ============================================================ */
-.stats-row { display: flex; align-items: center; gap: 48px; margin-bottom: 20px; padding-left: 6px }
-.stat-item { display: flex; flex-direction: column; align-items: flex-start; gap: 0 }
-.stat-value { font-size: 17px; font-weight: 600; color: var(--charcoal); line-height: 1.2 }
-.stat-label { font-size: var(--text-sm); font-weight: 400; color: #A8ACB3; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1; margin-top: -1px }
-.stat-divider { width: 1px; height: 28px; background: var(--border); align-self: center }
+.stats-row { display: flex; align-items: center; gap: 0; margin-bottom: 20px; flex-wrap: wrap }
+.stat-item { display: flex; align-items: center; gap: 6px; padding-right: 16px; margin-right: 16px; position: relative }
+.stat-item::after { content: ""; position: absolute; right: 0; top: 4px; bottom: 4px; width: 1px; background: var(--border) }
+.stat-item:last-child::after { display: none }
+.stat-value { font-size: 17px; font-weight: 700; color: var(--charcoal); line-height: 1.2 }
+.stat-label { font-size: var(--text-sm); font-weight: 400; color: #A8ACB3; line-height: 1; letter-spacing: .02em }
+.stat-divider { display: none }
+.stat-progress { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; margin-left: 24px }
 
 /* ============================================================
    SEARCH & FILTER BAR
