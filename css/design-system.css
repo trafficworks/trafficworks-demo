@@ -152,7 +152,7 @@ tbody tr:last-child td { border-bottom: none }
    ============================================================ */
 .status-badge { display: inline-block; padding: 3px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; user-select: none }
 .status-pending { background: #E8E8E8; color: var(--text-secondary) }
-.status-in-progress, .status-infield { background: var(--amber-light); color: var(--amber) }
+.status-in-progress, .status-infield { background: var(--amber); color: var(--amber-light) }
 .status-on-hold { background: var(--red); color: var(--white) }
 .status-complete { background: #2AB57E; color: var(--white) }
 
