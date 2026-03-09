@@ -330,25 +330,25 @@ function renderTable(){
   }).join('');
 
   document.getElementById('mobileTaskCards').innerHTML=filtered.map(function(t){
-    var dur=getDuration(t)||'';
-    var statusClass=t.status===STATUS.COMPLETE?'status-complete':t.status===STATUS.INFIELD?'status-infield':'status-pending';
-    var initials=t.tech?t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase():'';
-    var techLabel=t.tech?initials:'Unassigned';
+  var dur=getDuration(t)||'';
+  var statusClass=t.status===STATUS.COMPLETE?'status-complete':t.status===STATUS.INFIELD?'status-infield':'status-pending';
+  var initials=t.tech?t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase():'';
+  var techLabel=t.tech?initials:'Unassigned';
 
-    return '<div class="mobile-task-card '+statusClass+'">'+
-      '<div class="mobile-task-card-inner">'+
-        '<div class="mobile-task-top">'+
-          '<div class="mobile-task-title">'+t.desc+'</div>'+
-          '<span class="mobile-status-pill">'+t.status+'</span>'+
-        '</div>'+
-        '<div class="mobile-task-divider"></div>'+
-        '<div class="mobile-task-bottom">'+
-          '<div class="mobile-task-meta">#'+t.site+' • '+t.type+' • '+techLabel+'</div>'+
-          '<div class="mobile-task-duration">'+dur+'</div>'+
-        '</div>'+
+  return '<div class="mobile-task-card '+statusClass+'">'+
+    '<div class="mobile-task-card-inner">'+
+      '<div class="mobile-task-top">'+
+        '<div class="mobile-task-title">'+t.desc+'</div>'+
+        '<span class="mobile-status-pill">'+t.status+'</span>'+
       '</div>'+
-    '</div>';
-  }).join('');
+      '<div class="mobile-task-divider"></div>'+
+      '<div class="mobile-task-bottom">'+
+        '<div class="mobile-task-meta">#'+t.site+' • '+t.type+' • '+techLabel+'</div>'+
+        '<div class="mobile-task-duration">'+dur+'</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}).join('');
 }
 
 function openAddTaskModal(){
