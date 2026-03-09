@@ -553,9 +553,9 @@ html.tv-dark .tv-note-save-btn {
 .toggle-btn.holding { animation: holdPulse .4s ease }
 
 .toggle-pending { background: #D0D2D6; color: #5A5F66 }
-.toggle-pending .toggle-fill { background: #B0B3B8 }
+.toggle-pending .toggle-fill { background: #BFD7EA }
 .toggle-infield { background: #BFD7EA; color: #2C3034 }
-.toggle-infield .toggle-fill { background: #D9A35A }
+.toggle-infield .toggle-fill { background: #2AB57E }
 .toggle-complete { background: #2AB57E; color: var(--white) }
 .toggle-complete .toggle-fill { background: #22996A }
 
