@@ -23,8 +23,7 @@
 .psp-complete svg{color:var(--green)}
 .psp-on-hold svg{color:var(--red)}
 
-/* Stat progress */
-.stat-progress{display:flex;align-items:center;gap:12px;flex:1;min-width:0;margin-left:24px}
+/* Stat progress — PD uses same as design system */
 
 /* Notes input */
 .project-notes-input{width:100%;padding:var(--space-sm) 12px;border:1px solid var(--border);border-radius:6px;font-family:'Inter',sans-serif;font-size:var(--text-md);color:var(--text-primary);background:var(--white);outline:none;resize:vertical;min-height:36px;max-height:70px;transition:border-color .15s;line-height:1.5}
@@ -69,17 +68,11 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 .mobile-task-card.status-pending .mobile-status-pill{background:var(--off-white);color:var(--text-secondary)}
 .mobile-task-divider{height:1px;background:var(--border);margin:10px 0}
 .mobile-task-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.mobile-task-meta{font-size:11px!important;font-weight:500;color:#6B7178!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.mobile-task-meta{font-size:11px;font-weight:500;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
 .mobile-task-duration{font-size:10px;font-weight:600;color:var(--text-secondary);white-space:nowrap;flex-shrink:0}
 
-/* Stats */
-.stats-row{display:flex;align-items:center;gap:0}
-.stat-item{display:flex;align-items:center;gap:6px;padding-right:16px;margin-right:16px;position:relative}
-.stat-value{font-weight:700;margin-bottom:0}
-.stat-label{margin-top:0;line-height:1;text-transform:none;letter-spacing:.02em}
-.stat-item::after{content:"";position:absolute;right:0;top:4px;bottom:4px;width:1px;background:var(--border)}
-.stat-item:nth-child(3)::after{display:none}
-.stat-divider{display:none}
+/* Stats — PD-specific: hide divider before progress bar */
+.stat-item:nth-child(3)::after { display: none }
 
 /* Mobile overrides */
 @media (max-width:768px){
