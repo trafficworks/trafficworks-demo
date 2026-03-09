@@ -59,13 +59,13 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 .mobile-task-card-inner{padding:14px 16px 14px 20px}
 .mobile-task-card::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:5px;background:var(--gray-light);border-radius:0 4px 4px 0}
 .mobile-task-card.status-complete::before{background:var(--green)}
-.mobile-task-card.status-infield::before{background:var(--amber)}
+.mobile-task-card.status-infield::before{background:#BFD7EA}
 .mobile-task-card.status-pending::before{background:var(--gray-light)}
 .mobile-task-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .mobile-task-title{font-size:var(--text-md);font-weight:600;color:var(--text-primary);line-height:1.25;flex:1;min-width:0}
 .mobile-status-pill{display:inline-flex;align-items:center;justify-content:center;min-height:26px;padding:0 10px;border-radius:8px;font-size:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
 .mobile-task-card.status-complete .mobile-status-pill{background:var(--green);color:#fff}
-.mobile-task-card.status-infield .mobile-status-pill{background:var(--amber);color:var(--text-primary)}
+.mobile-task-card.status-infield .mobile-status-pill{background:#BFD7EA;color:#2C3034}
 .mobile-task-card.status-pending .mobile-status-pill{background:var(--off-white);color:var(--text-secondary)}
 .mobile-task-divider{height:1px;background:var(--border);margin:10px 0}
 .mobile-task-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
