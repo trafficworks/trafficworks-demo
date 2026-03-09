@@ -206,61 +206,114 @@ var tasks=[
   {id:5,site:5,desc:'Walnut & Marengo',type:'ADT',tech:'Maya T.',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}},
   {id:6,site:6,desc:'Pasadena Ave NB',type:'SPD',tech:'',status:STATUS.PENDING,note:'Resident requested equipment set after 8 AM',cycles:[{deployedAt:new Date('2026-03-01T07:00:00'),completedAt:new Date('2026-03-01T09:30:00'),tech:'Ava R.',reopenReason:'Data incomplete',reopenedBy:'manager'}],currentCycle:{deployedAt:null,completedAt:null}},
   {id:7,site:7,desc:'Pasadena Ave SB',type:'SPD',tech:'Sofia P.',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-04T05:50:00'),completedAt:null}},
-  {id:8,site:8,desc:'Green St Midblock',type:'CLS',tech:'Leo S.',status:STATUS.PENDING,note:'Bike lane activity focus area',cycles:[],currentCycle:{deployedAt:null,completedAt:null}},
+  {id:8,site:8,desc:'Green St Midblock',type:'CLS',tech:'Leo S.',status:STATUS.PENDING,note:'Bike lane activity focus area',cycles:[],currentCycle:{deployedAt:null,completedAt:null}}
 ];
+
 var nextId=9,nextSite=9,deleteTarget=null,reopenTarget=null;
 
 var techSel=document.getElementById('newTaskTech');
-techsList.forEach(function(t){var o=document.createElement('option');o.value=t;o.textContent=t;techSel.appendChild(o)});
+techsList.forEach(function(t){
+  var o=document.createElement('option');
+  o.value=t;
+  o.textContent=t;
+  techSel.appendChild(o);
+});
 
 var currentSort='site';
+
 function sortTasks(){
   if(currentSort==='tech'){
-    tasks.sort(function(a,b){var at=a.tech||'zzz',bt=b.tech||'zzz';return at.localeCompare(bt)});
-  } else if(currentSort==='status'){
+    tasks.sort(function(a,b){
+      var at=a.tech||'zzz',bt=b.tech||'zzz';
+      return at.localeCompare(bt);
+    });
+  }else if(currentSort==='status'){
     var order={Pending:0,'In Field':1,Complete:2};
     tasks.sort(function(a,b){return order[a.status]-order[b.status]});
-  } else {
+  }else{
     tasks.sort(function(a,b){return a.site-b.site});
   }
 }
-function sortBy(col){currentSort=currentSort===col?'site':col;render()}
-function formatElapsed(ms){var m=Math.floor(ms/60000),h=Math.floor(m/60),mn=m%60;if(h>=24){return Math.floor(h/24)+'d '+(h%24)+'h'}return h+'h '+mn+'m'}
-function getDuration(t){if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)return formatElapsed(Date.now()-t.currentCycle.deployedAt.getTime());if(t.status===STATUS.COMPLETE&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)return formatElapsed(t.currentCycle.completedAt.getTime()-t.currentCycle.deployedAt.getTime());return ''}
-function getStatusClass(s){return s===STATUS.PENDING?'status-pending':s===STATUS.INFIELD?'status-infield':'status-complete'}
-function getSiteIndicator(s){return s===STATUS.PENDING?'si-pending':s===STATUS.INFIELD?'si-infield':'si-complete'}
 
-function render(){sortTasks();renderStats();renderTable()}
+function sortBy(col){
+  currentSort=currentSort===col?'site':col;
+  render();
+}
+
+function formatElapsed(ms){
+  var m=Math.floor(ms/60000),h=Math.floor(m/60),mn=m%60;
+  if(h>=24){return Math.floor(h/24)+'d '+(h%24)+'h'}
+  return h+'h '+mn+'m';
+}
+
+function getDuration(t){
+  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt){
+    return formatElapsed(Date.now()-t.currentCycle.deployedAt.getTime());
+  }
+  if(t.status===STATUS.COMPLETE&&t.currentCycle.deployedAt&&t.currentCycle.completedAt){
+    return formatElapsed(t.currentCycle.completedAt.getTime()-t.currentCycle.deployedAt.getTime());
+  }
+  return '';
+}
+
+function getStatusClass(s){
+  return s===STATUS.PENDING?'status-pending':s===STATUS.INFIELD?'status-infield':'status-complete';
+}
+
+function getSiteIndicator(s){
+  return s===STATUS.PENDING?'si-pending':s===STATUS.INFIELD?'si-infield':'si-complete';
+}
+
+function render(){
+  sortTasks();
+  renderStats();
+  renderTable();
+}
 
 function renderStats(){
-  var total=tasks.length,pend=tasks.filter(function(t){return t.status===STATUS.PENDING}).length,
-      inf=tasks.filter(function(t){return t.status===STATUS.INFIELD}).length,
-      comp=tasks.filter(function(t){return t.status===STATUS.COMPLETE}).length,
-      pct=total>0?Math.round((comp/total)*100):0;
+  var total=tasks.length;
+  var pend=tasks.filter(function(t){return t.status===STATUS.PENDING}).length;
+  var inf=tasks.filter(function(t){return t.status===STATUS.INFIELD}).length;
+  var comp=tasks.filter(function(t){return t.status===STATUS.COMPLETE}).length;
+  var pct=total>0?Math.round((comp/total)*100):0;
+
   document.getElementById('statsRow').innerHTML=
-  '<div class="stat-item"><span class="stat-value">'+total+'</span><span class="stat-label">Total</span></div>'+
-  '<div class="stat-item"><span class="stat-value">'+pend+'</span><span class="stat-label">Pending</span></div>'+
-  '<div class="stat-item"><span class="stat-value">'+inf+'</span><span class="stat-label">In Field</span></div>'+
-  '<div class="stat-divider"></div>'+
-  '<div class="stat-progress"><div class="progress-bar-lg"><div class="progress-fill-lg" style="width:'+pct+'%"></div></div><span class="progress-pct-lg">'+pct+'%</span></div>';
+    '<div class="stat-item"><span class="stat-value">'+total+'</span><span class="stat-label">Total</span></div>'+
+    '<div class="stat-item"><span class="stat-value">'+pend+'</span><span class="stat-label">Pending</span></div>'+
+    '<div class="stat-item"><span class="stat-value">'+inf+'</span><span class="stat-label">In Field</span></div>'+
+    '<div class="stat-divider"></div>'+
+    '<div class="stat-progress"><div class="progress-bar-lg"><div class="progress-fill-lg" style="width:'+pct+'%"></div></div><span class="progress-pct-lg">'+pct+'%</span></div>';
 }
 
 function getFiltered(){
-  var s=(document.getElementById('searchInput').value||'').toLowerCase(),st=document.getElementById('statusFilter').value;
-  return tasks.filter(function(t){return(!s||t.desc.toLowerCase().indexOf(s)>-1||(t.type||'').toLowerCase().indexOf(s)>-1||(t.tech||'').toLowerCase().indexOf(s)>-1)&&(st==='all'||t.status===st)});
+  var s=(document.getElementById('searchInput').value||'').toLowerCase();
+  var st=document.getElementById('statusFilter').value;
+  return tasks.filter(function(t){
+    return (!s||t.desc.toLowerCase().indexOf(s)>-1||(t.type||'').toLowerCase().indexOf(s)>-1||(t.tech||'').toLowerCase().indexOf(s)>-1) && (st==='all'||t.status===st);
+  });
 }
 
 function renderTable(){
   var filtered=getFiltered();
+
   document.getElementById('taskTableBody').innerHTML=filtered.map(function(t){
-    var dp=[];if(t.note)dp.push(t.note);
-    if(t.cycles.length>0){var lc=t.cycles[t.cycles.length-1];dp.push('Reopened by '+(lc.reopenedBy||'tech')+(lc.reopenReason?' — '+lc.reopenReason:''))}
+    var dp=[];
+    if(t.note)dp.push(t.note);
+    if(t.cycles.length>0){
+      var lc=t.cycles[t.cycles.length-1];
+      dp.push('Reopened by '+(lc.reopenedBy||'tech')+(lc.reopenReason?' — '+lc.reopenReason:''));
+    }
     var dot=dp.length>0?'<span class="info-dot"><span class="dot-tip">'+dp.join(' · ')+'</span></span>':'';
     var dur=getDuration(t);
     var ti='',tc='tech-avatar unassigned',tt='Unassigned';
-    if(t.tech){ti=t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase();tc='tech-avatar assigned';tt=t.tech}
+    if(t.tech){
+      ti=t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase();
+      tc='tech-avatar assigned';
+      tt=t.tech;
+    }
     var tag=t.type?'<span class="count-type">'+t.type+'</span>':'';
     var isPending=t.status===STATUS.PENDING;
+
     return '<tr id="row-'+t.id+'">'+
       '<td class="site-cell"><span class="site-indicator '+getSiteIndicator(t.status)+'"></span>'+(isPending?'<input type="checkbox" class="row-check pending-row" data-id="'+t.id+'" onchange="updateSelectCount()"><span class="check-visual pending-vis"></span>':'')+
       '<span class="site-num'+(isPending?' has-check':'')+'" style="color:var(--text-muted);font-size:var(--text-sm);font-weight:600">'+t.site+'</span></td>'+
@@ -277,26 +330,33 @@ function renderTable(){
   }).join('');
 
   document.getElementById('mobileTaskCards').innerHTML=filtered.map(function(t){
-var dur=getDuration(t)||'';
-var statusClass=t.status===STATUS.COMPLETE?'status-complete':t.status===STATUS.INFIELD?'status-infield':'status-pending';
-var initials=t.tech?t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase():'';
-var techLabel=t.tech?initials:'Unassigned';
-return '<div class="mobile-task-card '+statusClass+'">'+
-'<div class="mobile-task-card-inner">'+
-'<div class="mobile-task-top">'+
-'<div class="mobile-task-title">'+t.desc+'</div>'+
-'<span class="mobile-status-pill">'+t.status+'</span>'+
-'</div>'+
-'<div class="mobile-task-divider"></div>'+
-'<div class="mobile-task-bottom">'+
-'<div class="mobile-task-meta">#'+t.site+' • '+t.type+' • '+techLabel+'</div>'+
-'<div class="mobile-task-duration">'+dur+'</div>'+
-'</div>'+
-'</div>'+
-'</div>';
-}).join('');
+    var dur=getDuration(t)||'';
+    var statusClass=t.status===STATUS.COMPLETE?'status-complete':t.status===STATUS.INFIELD?'status-infield':'status-pending';
+    var initials=t.tech?t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase():'';
+    var techLabel=t.tech?initials:'Unassigned';
 
-function openAddTaskModal(){document.getElementById('addTaskModal').classList.add('visible');switchTab('manual');document.getElementById('newTaskDesc').value='';setTimeout(function(){document.getElementById('newTaskDesc').focus()},100)}
+    return '<div class="mobile-task-card '+statusClass+'">'+
+      '<div class="mobile-task-card-inner">'+
+        '<div class="mobile-task-top">'+
+          '<div class="mobile-task-title">'+t.desc+'</div>'+
+          '<span class="mobile-status-pill">'+t.status+'</span>'+
+        '</div>'+
+        '<div class="mobile-task-divider"></div>'+
+        '<div class="mobile-task-bottom">'+
+          '<div class="mobile-task-meta">#'+t.site+' • '+t.type+' • '+techLabel+'</div>'+
+          '<div class="mobile-task-duration">'+dur+'</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function openAddTaskModal(){
+  document.getElementById('addTaskModal').classList.add('visible');
+  switchTab('manual');
+  document.getElementById('newTaskDesc').value='';
+  setTimeout(function(){document.getElementById('newTaskDesc').focus()},100);
+}
 function closeAddTaskModal(){document.getElementById('addTaskModal').classList.remove('visible')}
 function switchTab(tab){
   document.getElementById('manualTab').style.display=tab==='manual'?'block':'none';
@@ -306,10 +366,39 @@ function switchTab(tab){
   document.getElementById('tabBulk').style.borderBottomColor=tab==='bulk'?'var(--charcoal)':'transparent';
   document.getElementById('tabBulk').style.color=tab==='bulk'?'var(--charcoal)':'var(--text-muted)';
 }
-function addTask(){var d=document.getElementById('newTaskDesc').value.trim();if(!d){document.getElementById('newTaskDesc').focus();return}tasks.push({id:nextId++,site:nextSite++,desc:d,type:document.getElementById('newTaskType').value,tech:document.getElementById('newTaskTech').value,status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}});closeAddTaskModal();render();showToast('Task added')}
-function openBulkModal(){document.getElementById('bulkModal').classList.add('visible')}
-function closeBulkModal(){document.getElementById('bulkModal').classList.remove('visible')}
-function handleUpload(input){var file=input.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){var lines=e.target.result.split('\n'),added=0;lines.forEach(function(line){if(!line.trim())return;var cols=line.split(',');var desc=(cols[0]||'').trim().replace(/^"|"$/g,'');var type=(cols[1]||'TMC').trim().replace(/^"|"$/g,'').toUpperCase();var tech=(cols[2]||'').trim().replace(/^"|"$/g,'');if(countTypes.indexOf(type)===-1)type='OTH';if(tech&&techsList.indexOf(tech)===-1)tech='';if(desc){tasks.push({id:nextId++,site:nextSite++,desc:desc,type:type,tech:tech,status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}});added++}});render();showToast(added+' task'+(added!==1?'s':'')+' imported');closeAddTaskModal()};reader.readAsText(file);input.value=''}
+function addTask(){
+  var d=document.getElementById('newTaskDesc').value.trim();
+  if(!d){document.getElementById('newTaskDesc').focus();return}
+  tasks.push({id:nextId++,site:nextSite++,desc:d,type:document.getElementById('newTaskType').value,tech:document.getElementById('newTaskTech').value,status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}});
+  closeAddTaskModal();render();showToast('Task added');
+}
+function openBulkModal(){}
+function closeBulkModal(){}
+function handleUpload(input){
+  var file=input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var lines=e.target.result.split('\n'),added=0;
+    lines.forEach(function(line){
+      if(!line.trim())return;
+      var cols=line.split(',');
+      var desc=(cols[0]||'').trim().replace(/^"|"$/g,'');
+      var type=(cols[1]||'TMC').trim().replace(/^"|"$/g,'').toUpperCase();
+      var tech=(cols[2]||'').trim().replace(/^"|"$/g,'');
+      if(countTypes.indexOf(type)===-1)type='OTH';
+      if(tech&&techsList.indexOf(tech)===-1)tech='';
+      if(desc){
+        tasks.push({id:nextId++,site:nextSite++,desc:desc,type:type,tech:tech,status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}});
+        added++;
+      }
+    });
+    render();
+    showToast(added+' task'+(added!==1?'s':'')+' imported');
+    closeAddTaskModal();
+  };
+  reader.readAsText(file);
+  input.value='';
+}
 
 function showTechSelect(id,el){
   var existing=document.querySelector('.tech-dd');if(existing)existing.remove();
@@ -335,28 +424,84 @@ function showTechSelect(id,el){
 }
 
 var openKebab=null;
-function toggleKebab(id,e){e.stopPropagation();if(openKebab&&openKebab!==id){var old=document.getElementById('kebab-'+openKebab);if(old)old.classList.remove('open','drop-up','drop-down')}var menu=document.getElementById('kebab-'+id);var isOpen=menu.classList.contains('open');menu.classList.remove('open','drop-up','drop-down');if(!isOpen){var rect=e.currentTarget.getBoundingClientRect();menu.classList.add('open',(window.innerHeight-rect.bottom)<160?'drop-up':'drop-down');openKebab=id}else{openKebab=null}}
-document.addEventListener('click',function(){if(openKebab){document.getElementById('kebab-'+openKebab).classList.remove('open');openKebab=null}});
+function toggleKebab(id,e){
+  e.stopPropagation();
+  if(openKebab&&openKebab!==id){
+    var old=document.getElementById('kebab-'+openKebab);
+    if(old)old.classList.remove('open','drop-up','drop-down');
+  }
+  var menu=document.getElementById('kebab-'+id);
+  var isOpen=menu.classList.contains('open');
+  menu.classList.remove('open','drop-up','drop-down');
+  if(!isOpen){
+    var rect=e.currentTarget.getBoundingClientRect();
+    menu.classList.add('open',(window.innerHeight-rect.bottom)<160?'drop-up':'drop-down');
+    openKebab=id;
+  }else{
+    openKebab=null;
+  }
+}
+document.addEventListener('click',function(){
+  if(openKebab){
+    document.getElementById('kebab-'+openKebab).classList.remove('open');
+    openKebab=null;
+  }
+});
 
 function assignTech(id,tech){var t=tasks.find(function(t){return t.id===id});if(t){t.tech=tech;render();showToast(tech?'Assigned to '+tech:'Unassigned')}}
 function startEdit(id){var row=document.getElementById('row-'+id);if(row){row.classList.add('editing');var input=row.querySelector('.edit-input');if(input){input.focus();input.select()}}}
 function saveEdit(id,input){var t=tasks.find(function(x){return x.id===id});var v=input.value.trim();if(t&&v)t.desc=v;render()}
 
-function promptDelete(id){deleteTarget=id;var t=tasks.find(function(x){return x.id===id});document.getElementById('deleteModalBody').textContent='Remove "'+(t?t.desc:'this task')+'"?';document.getElementById('deleteModal').classList.add('visible')}
-document.getElementById('confirmDeleteBtn').addEventListener('click',function(){if(deleteTarget!==null){tasks=tasks.filter(function(t){return t.id!==deleteTarget});deleteTarget=null;closeDeleteModal();render();showToast('Task deleted')}});
+function promptDelete(id){
+  deleteTarget=id;
+  var t=tasks.find(function(x){return x.id===id});
+  document.getElementById('deleteModalBody').textContent='Remove "'+(t?t.desc:'this task')+'"?';
+  document.getElementById('deleteModal').classList.add('visible');
+}
+document.getElementById('confirmDeleteBtn').addEventListener('click',function(){
+  if(deleteTarget!==null){
+    tasks=tasks.filter(function(t){return t.id!==deleteTarget});
+    deleteTarget=null;
+    closeDeleteModal();
+    render();
+    showToast('Task deleted');
+  }
+});
 function closeDeleteModal(){document.getElementById('deleteModal').classList.remove('visible')}
 
-function promptReopen(id){reopenTarget=id;var t=tasks.find(function(x){return x.id===id});document.getElementById('reopenModalBody').textContent='Send "'+(t?t.desc:'this task')+'" back to Pending?';document.getElementById('reopenReason').value='';document.getElementById('reopenModal').classList.add('visible')}
-document.getElementById('confirmReopenBtn').addEventListener('click',function(){if(reopenTarget!==null){var t=tasks.find(function(x){return x.id===reopenTarget});var r=document.getElementById('reopenReason').value;if(t){if(t.currentCycle.deployedAt){t.cycles.push({deployedAt:t.currentCycle.deployedAt,completedAt:t.currentCycle.completedAt,tech:t.tech,reopenReason:r||'No reason given',reopenedBy:'manager'})}t.status=STATUS.PENDING;t.currentCycle={deployedAt:null,completedAt:null}}reopenTarget=null;closeReopenModal();render();showToast('Reopened'+(r?' — '+r:''))}});
+function promptReopen(id){
+  reopenTarget=id;
+  var t=tasks.find(function(x){return x.id===id});
+  document.getElementById('reopenModalBody').textContent='Send "'+(t?t.desc:'this task')+'" back to Pending?';
+  document.getElementById('reopenReason').value='';
+  document.getElementById('reopenModal').classList.add('visible');
+}
+document.getElementById('confirmReopenBtn').addEventListener('click',function(){
+  if(reopenTarget!==null){
+    var t=tasks.find(function(x){return x.id===reopenTarget});
+    var r=document.getElementById('reopenReason').value;
+    if(t){
+      if(t.currentCycle.deployedAt){
+        t.cycles.push({deployedAt:t.currentCycle.deployedAt,completedAt:t.currentCycle.completedAt,tech:t.tech,reopenReason:r||'No reason given',reopenedBy:'manager'});
+      }
+      t.status=STATUS.PENDING;
+      t.currentCycle={deployedAt:null,completedAt:null};
+    }
+    reopenTarget=null;
+    closeReopenModal();
+    render();
+    showToast('Reopened'+(r?' — '+r:''));
+  }
+});
 function closeReopenModal(){document.getElementById('reopenModal').classList.remove('visible')}
-function toggleNotes(){document.getElementById('notesModal').classList.add('visible');document.getElementById('managerNotes').focus()}
+function toggleNotes(){}
+function closeNotesModal(){}
+function saveNotes(){showToast('Instructions saved')}
 
 function toggleProjectDetails(){
   document.getElementById('projectDropdown').classList.toggle('open');
   document.querySelector('.project-name-toggle').classList.toggle('open');
 }
-function closeNotesModal(){document.getElementById('notesModal').classList.remove('visible')}
-function saveNotes(){closeNotesModal();showToast('Instructions saved')}
 
 function updateSelectCount(){
   var checks=document.querySelectorAll('.row-check:checked');
@@ -399,11 +544,18 @@ function cancelSelect(){
   document.getElementById('selectItems').style.display='none';
 }
 
-function showToast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('visible');clearTimeout(el._timer);el._timer=setTimeout(function(){el.classList.remove('visible')},2000)}
+function showToast(msg){
+  var el=document.getElementById('toast');
+  el.textContent=msg;
+  el.classList.add('visible');
+  clearTimeout(el._timer);
+  el._timer=setTimeout(function(){el.classList.remove('visible')},2000);
+}
 document.querySelectorAll('.modal-overlay').forEach(function(el){el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('visible')})});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDeleteModal();closeReopenModal();closeAddTaskModal();closeBulkModal();closeNotesModal();closeBulkDeleteModal()}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDeleteModal();closeReopenModal();closeAddTaskModal();closeBulkDeleteModal()}});
 
 render();
 </script>
 </body>
 </html>
+
