@@ -7,6 +7,90 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/design-system.css">
 <link rel="stylesheet" href="../css/project-detail.css">
+<style>
+/* Mobile card override */
+.mobile-task-cards{display:none}
+.mobile-task-card{
+position:relative;
+background:var(--white);
+border:1px solid var(--border);
+border-radius:22px;
+box-shadow:0 6px 18px rgba(0,0,0,0.06);
+overflow:hidden;
+}
+.mobile-task-card-inner{
+padding:18px 18px 16px 28px;
+}
+.mobile-task-card::before{
+content:"";
+position:absolute;
+left:0;
+top:14px;
+bottom:14px;
+width:8px;
+background:var(--gray-light);
+}
+.mobile-task-card.status-complete::before{background:var(--green)}
+.mobile-task-card.status-infield::before{background:var(--amber)}
+.mobile-task-card.status-pending::before{background:var(--gray-light)}
+.mobile-task-top{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:12px;
+}
+.mobile-task-title{
+font-size:22px;
+line-height:1.15;
+font-weight:700;
+color:var(--charcoal);
+letter-spacing:-0.02em;
+flex:1;
+min-width:0;
+}
+.mobile-status-pill{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-height:44px;
+padding:0 18px;
+border-radius:14px;
+font-size:14px;
+font-weight:600;
+white-space:nowrap;
+flex-shrink:0;
+}
+.mobile-task-card.status-complete .mobile-status-pill{background:var(--green);color:#fff}
+.mobile-task-card.status-infield .mobile-status-pill{background:var(--amber);color:#fff}
+.mobile-task-card.status-pending .mobile-status-pill{background:var(--off-white);color:var(--text-secondary)}
+.mobile-task-divider{
+height:1px;
+background:var(--border);
+margin:18px 0 18px;
+}
+.mobile-task-bottom{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+}
+.mobile-task-meta{
+font-size:18px;
+font-weight:500;
+color:var(--text-secondary);
+letter-spacing:-0.01em;
+}
+.mobile-task-duration{
+font-size:18px;
+font-weight:500;
+color:var(--text-secondary);
+white-space:nowrap;
+}
+@media (max-width:768px){
+.table-wrap{display:none}
+.mobile-task-cards{display:flex;flex-direction:column;gap:14px}
+}
+</style>
 </head>
 <body>
 <nav class="topnav"><div class="topnav-left"><a class="logo" href="dashboard.html"><div class="logo-mark"></div><span class="logo-text">TrafficWorks</span></a><div class="nav-divider"></div><div class="nav-links"><a class="nav-link active" href="dashboard.html">Projects</a><a class="nav-link" href="team.html">Team</a><a class="nav-link" href="archive.html">Archive</a><a class="nav-link" href="billing.html">Billing</a></div></div><div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div></div></nav>
@@ -193,10 +277,23 @@ function renderTable(){
   }).join('');
 
   document.getElementById('mobileTaskCards').innerHTML=filtered.map(function(t){
-    var dur=getDuration(t),clock=dur?'<div class="mobile-task-clock">'+dur+'</div>':'';
-    var mi='',mc='tech-avatar unassigned',mt='Unassigned';
-    if(t.tech){mi=t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase();mc='tech-avatar assigned';mt=t.tech}
-    return '<div class="mobile-task-card"><div class="mobile-task-top"><div class="mobile-task-site">'+t.site+'</div><div class="mobile-task-info"><div class="mobile-task-desc">'+(t.type?'<span class="count-type">'+t.type+'</span>':'')+t.desc+'</div><div class="mobile-task-meta"><span class="'+mc+'" style="width:22px;height:22px;font-size:9px">'+mi+'<span class="tech-tooltip">'+mt+'</span></span></div></div><div class="mobile-task-badge"><span class="status-badge '+getStatusClass(t.status)+'">'+t.status+'</span>'+clock+'</div></div></div>';
+    var dur=getDuration(t)||'';
+    var statusClass=t.status===STATUS.COMPLETE?'status-complete':t.status===STATUS.INFIELD?'status-infield':'status-pending';
+    var initials=t.tech?t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase():'Unassigned';
+    var meta='#'+t.site+' • '+(t.type||'')+' • '+(t.tech?initials:'Unassigned');
+    return '<div class="mobile-task-card '+statusClass+'">'+
+      '<div class="mobile-task-card-inner">'+
+        '<div class="mobile-task-top">'+
+          '<div class="mobile-task-title">'+t.desc+'</div>'+
+          '<span class="mobile-status-pill">'+t.status+'</span>'+
+        '</div>'+
+        '<div class="mobile-task-divider"></div>'+
+        '<div class="mobile-task-bottom">'+
+          '<div class="mobile-task-meta">'+meta+'</div>'+
+          '<div class="mobile-task-duration">'+dur+'</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
   }).join('');
 }
 
@@ -216,7 +313,6 @@ function closeBulkModal(){document.getElementById('bulkModal').classList.remove(
 function handleUpload(input){var file=input.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){var lines=e.target.result.split('\n'),added=0;lines.forEach(function(line){if(!line.trim())return;var cols=line.split(',');var desc=(cols[0]||'').trim().replace(/^"|"$/g,'');var type=(cols[1]||'TMC').trim().replace(/^"|"$/g,'').toUpperCase();var tech=(cols[2]||'').trim().replace(/^"|"$/g,'');if(countTypes.indexOf(type)===-1)type='OTH';if(tech&&techsList.indexOf(tech)===-1)tech='';if(desc){tasks.push({id:nextId++,site:nextSite++,desc:desc,type:type,tech:tech,status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}});added++}});render();showToast(added+' task'+(added!==1?'s':'')+' imported');closeAddTaskModal()};reader.readAsText(file);input.value=''}
 
 function showTechSelect(id,el){
-  // close any existing
   var existing=document.querySelector('.tech-dd');if(existing)existing.remove();
   var w=el.parentElement,task=tasks.find(function(t){return t.id===id});
   var dd=document.createElement('div');dd.className='tech-dd';
@@ -232,7 +328,6 @@ function showTechSelect(id,el){
     dd.appendChild(item);
   });
   w.appendChild(dd);
-  // close on outside click
   setTimeout(function(){
     document.addEventListener('click',function closeTech(e){
       if(!dd.contains(e.target)){dd.remove();document.removeEventListener('click',closeTech)}
@@ -268,12 +363,12 @@ function updateSelectCount(){
   var checks=document.querySelectorAll('.row-check:checked');
   var count=checks.length;
   if(count>0){
-    document.getElementById('normalItems').style.display='none';document.getElementById('selectItems').style.display='flex';
-    ;
+    document.getElementById('normalItems').style.display='none';
+    document.getElementById('selectItems').style.display='flex';
     document.getElementById('selectCount').textContent=count+' selected';
   } else {
-    document.getElementById('normalItems').style.display='flex';document.getElementById('selectItems').style.display='none';
-    ;
+    document.getElementById('normalItems').style.display='flex';
+    document.getElementById('selectItems').style.display='none';
   }
 }
 
@@ -301,7 +396,8 @@ function deleteSelected(){
 
 function cancelSelect(){
   document.querySelectorAll('.row-check:checked').forEach(function(c){c.checked=false});
-  document.getElementById('normalItems').style.display='flex';document.getElementById('selectItems').style.display='none';
+  document.getElementById('normalItems').style.display='flex';
+  document.getElementById('selectItems').style.display='none';
 }
 
 function showToast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('visible');clearTimeout(el._timer);el._timer=setTimeout(function(){el.classList.remove('visible')},2000)}
@@ -312,3 +408,4 @@ render();
 </script>
 </body>
 </html>
+
