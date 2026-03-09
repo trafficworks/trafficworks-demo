@@ -10,13 +10,12 @@
 .project-name-toggle{display:inline-flex;align-items:center;gap:6px;cursor:pointer;position:relative}
 .project-name-toggle svg{width:12px;height:12px;color:var(--text-muted);transition:transform .2s}
 .project-name-toggle.open svg{transform:rotate(180deg)}
-.project-detail-line{font-size:var(--text-sm);color:var(--text-muted);line-height:1.2;margin-top:1px}
 .project-details-dropdown{max-height:0;overflow:hidden;transition:max-height .2s ease}
 .project-details-dropdown.open{max-height:80px}
 .pdd-row{font-size:var(--text-sm);color:var(--text-muted);line-height:1.6}
 .pdd-label{color:var(--text-secondary);font-weight:500}
 
-/* Status pill (inline with project name) */
+/* Status pill */
 .project-status-pill{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-sm);font-weight:500;color:var(--text-secondary);letter-spacing:.2px}
 .project-status-pill svg{width:14px;height:14px}
 .psp-in-progress svg{color:var(--amber)}
@@ -24,7 +23,7 @@
 .psp-complete svg{color:var(--green)}
 .psp-on-hold svg{color:var(--red)}
 
-/* Stat progress (PD-specific inline variant) */
+/* Stat progress */
 .stat-progress{display:flex;align-items:center;gap:12px;flex:1;min-width:0;margin-left:24px}
 
 /* Notes input */
@@ -33,7 +32,7 @@
 .project-notes-input::placeholder{color:var(--text-muted)}
 .notes-hint{font-size:var(--text-sm);color:var(--text-muted);margin-top:3px;font-style:italic}
 
-/* Site cell with indicator */
+/* Site cell */
 .site-cell{position:relative;text-align:center}
 .site-indicator{position:absolute;left:10px;top:50%;transform:translateY(-50%)}
 
@@ -56,22 +55,22 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 
 /* Mobile task cards */
 .mobile-task-cards{display:none}
-.mobile-task-card{position:relative;background:var(--white);border:1px solid var(--border);border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,.04);overflow:hidden}
-.mobile-task-card-inner{padding:14px 16px 14px 22px}
-.mobile-task-card::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:6px;background:var(--gray-light);border-radius:0 4px 4px 0}
+.mobile-task-card{position:relative;background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.mobile-task-card-inner{padding:14px 16px 14px 20px}
+.mobile-task-card::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:5px;background:var(--gray-light);border-radius:0 4px 4px 0}
 .mobile-task-card.status-complete::before{background:var(--green)}
 .mobile-task-card.status-infield::before{background:var(--amber)}
 .mobile-task-card.status-pending::before{background:var(--gray-light)}
-.mobile-task-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.mobile-task-title{font-size:18px;font-weight:700;color:var(--charcoal);line-height:1.2;letter-spacing:-.02em;flex:1;min-width:0;white-space:normal;overflow:visible;text-overflow:unset}
-.mobile-status-pill{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 14px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.mobile-task-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.mobile-task-title{font-size:var(--text-md);font-weight:600;color:var(--text-primary);line-height:1.25;flex:1;min-width:0}
+.mobile-status-pill{display:inline-flex;align-items:center;justify-content:center;min-height:26px;padding:0 10px;border-radius:8px;font-size:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
 .mobile-task-card.status-complete .mobile-status-pill{background:var(--green);color:#fff}
 .mobile-task-card.status-infield .mobile-status-pill{background:var(--amber);color:var(--text-primary)}
 .mobile-task-card.status-pending .mobile-status-pill{background:var(--off-white);color:var(--text-secondary)}
-.mobile-task-divider{height:1px;background:var(--border);margin:14px 0;opacity:.75}
-.mobile-task-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.mobile-task-meta{font-size:15px;font-weight:500;color:var(--text-secondary);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
-.mobile-task-duration{font-size:15px;font-weight:500;color:var(--text-secondary);white-space:nowrap;flex-shrink:0}
+.mobile-task-divider{height:1px;background:var(--border);margin:10px 0}
+.mobile-task-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mobile-task-meta{font-size:10px;font-weight:500;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.mobile-task-duration{font-size:10px;font-weight:600;color:var(--text-secondary);white-space:nowrap;flex-shrink:0}
 
 /* Stats */
 .stats-row{display:flex;align-items:center;gap:0}
@@ -82,7 +81,7 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 .stat-item:nth-child(3)::after{display:none}
 .stat-divider{display:none}
 
-/* PD mobile overrides */
+/* Mobile overrides */
 @media (max-width:768px){
 .mobile-hide{display:none}
 #projectStatusPill{display:none}
@@ -97,5 +96,5 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 .toolbar-spacer{display:none}
 table{display:none}
 .table-wrap{border:none;box-shadow:none;background:none}
-.mobile-task-cards{display:flex;flex-direction:column;gap:14px}
+.mobile-task-cards{display:flex;flex-direction:column;gap:10px}
 }
