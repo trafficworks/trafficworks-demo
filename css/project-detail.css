@@ -101,7 +101,7 @@ white-space:nowrap;
 flex-shrink:0;
 }
 .mobile-task-card.status-complete .mobile-status-pill{background:var(--green);color:#fff}
-.mobile-task-card.status-infield .mobile-status-pill{background:var(--amber);color:#fff}
+.mobile-task-card.status-infield .mobile-status-pill{background:var(--amber-light);color:#fff}
 .mobile-task-card.status-pending .mobile-status-pill{background:var(--off-white);color:var(--text-secondary)}
 .mobile-task-divider{height:1px;background:var(--border);margin:18px 0}
 .mobile-task-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px}
