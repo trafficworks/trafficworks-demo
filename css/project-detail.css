@@ -18,7 +18,7 @@
 /* Status pill */
 .project-status-pill{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-sm);font-weight:500;color:var(--text-secondary);letter-spacing:.2px}
 .project-status-pill svg{width:14px;height:14px}
-.psp-in-progress svg{color:var(--amber)}
+.psp-in-progress svg{background:#BFD7EA;color:#2C3034}
 .psp-pending svg{color:var(--text-muted)}
 .psp-complete svg{color:var(--green)}
 .psp-on-hold svg{color:var(--red)}
