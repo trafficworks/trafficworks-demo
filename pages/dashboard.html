@@ -15,7 +15,9 @@
     <div class="nav-divider"></div>
     <div class="nav-links">
       <a class="nav-link active" href="dashboard.html">Projects</a>
-      <a class="nav-link" href="team.html">Team</a><a class="nav-link" href="archive.html">Archive</a><a class="nav-link" href="billing.html">Billing</a>
+      <a class="nav-link" href="team.html">Team</a>
+      <a class="nav-link" href="archive.html">Archive</a>
+      <a class="nav-link" href="billing.html">Billing</a>
     </div>
   </div>
   <div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div></div>
@@ -28,19 +30,44 @@
   <div class="mobile-stats" id="mobileStats"></div>
 
   <div class="filter-bar" id="filterBar">
-    <div class="search-box"><svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search projects…" id="searchInput" oninput="filterProjects()"></div>
-    <select class="filter-select" id="statusFilter" onchange="filterProjects()"><option value="all">All Statuses</option><option value="Pending">Pending</option><option value="In Progress">In Progress</option><option value="On Hold">On Hold</option><option value="Complete">Complete</option></select>
+    <div class="search-box">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search projects…" id="searchInput" oninput="filterProjects()">
+    </div>
+    <select class="filter-select" id="statusFilter" onchange="filterProjects()">
+      <option value="all">All Statuses</option>
+      <option value="Pending">Pending</option>
+      <option value="In Progress">In Progress</option>
+      <option value="On Hold">On Hold</option>
+      <option value="Complete">Complete</option>
+    </select>
     <div style="flex:1"></div>
     <button class="btn btn-primary" onclick="openCreateModal()"><span class="btn-icon">+</span> Create Project</button>
   </div>
 
-  <div class="empty-state" id="dashboardEmptyState" style="display:none">
-    <img class="empty-state-graphic" src="../images/cone.png" alt="Traffic cone">
-    <h2 class="empty-state-title">Let’s get started!</h2>
-    <p class="empty-state-subtitle">Projects organize your traffic counts, tasks, and field progress in real time.</p>
+  <div class="table-wrap" id="dashboardTableWrap">
+    <div class="empty-state" id="dashboardEmptyState">
+      <div class="empty-state-inner">
+        <img class="empty-state-graphic" src="../images/cone.png" alt="Traffic cone">
+        <h2 class="empty-state-title">Let’s get started!</h2>
+        <p class="empty-state-subtitle">Projects organize your traffic counts, tasks, and field progress in real time.</p>
+      </div>
+    </div>
+
+    <table id="dashboardTable">
+      <thead>
+        <tr>
+          <th style="width:35%">Project</th>
+          <th style="width:15%">Status</th>
+          <th style="width:20%">Progress</th>
+          <th style="width:12%;text-align:center">Open Tasks</th>
+          <th style="width:4%"></th>
+        </tr>
+      </thead>
+      <tbody id="projectTableBody"></tbody>
+    </table>
   </div>
 
-  <div class="table-wrap" id="dashboardTableWrap"><table><thead><tr><th style="width:35%">Project</th><th style="width:15%">Status</th><th style="width:20%">Progress</th><th style="width:12%;text-align:center">Open Tasks</th><th style="width:4%"></th></tr></thead><tbody id="projectTableBody"></tbody></table></div>
   <div class="mobile-cards" id="mobileCards"></div>
 </div>
 
@@ -63,7 +90,7 @@ var projects=[
   {id:3,name:'Downtown Safety Corridor Review',projectNum:'DEMO-2026-103',location:'Long Beach, CA',client:'City of Long Beach',status:'In Progress',pct:89,openTasks:2,totalTasks:19,updated:'45 min ago',created:'Feb 26'},
   {id:4,name:'School Zone Speed Survey Set',projectNum:'DEMO-2026-104',location:'Glendale, CA',client:'Glendale Public Works',status:'Pending',pct:0,openTasks:14,totalTasks:14,updated:'3 hours ago',created:'Mar 4'},
   {id:5,name:'Foothill Signal Timing Counts',projectNum:'DEMO-2026-105',location:'Arcadia, CA',client:'City of Arcadia',status:'On Hold',pct:18,openTasks:17,totalTasks:21,updated:'1 day ago',created:'Feb 25'},
-  {id:6,name:'Regional Bikeway Before/After Study',projectNum:'DEMO-2026-106',location:'Santa Monica, CA',client:'Metro Consultant Team',status:'Complete',pct:100,openTasks:0,totalTasks:16,updated:'2 days ago',created:'Feb 18'},
+  {id:6,name:'Regional Bikeway Before/After Study',projectNum:'DEMO-2026-106',location:'Santa Monica, CA',client:'Metro Consultant Team',status:'Complete',pct:100,openTasks:0,totalTasks:16,updated:'2 days ago',created:'Feb 18'}
 ];
 var nextId=7,editTarget=null,deleteTarget=null,archiveTarget=null;
 
@@ -71,50 +98,51 @@ function getStatusClass(s){return s==='Pending'?'status-pending':s==='In Progres
 function getFillClass(p){return p>=75?'fill-high':p>=30?'fill-mid':'fill-low'}
 function getIndicatorClass(s){return s==='Pending'?'pi-pending':s==='In Progress'?'pi-in-progress':s==='On Hold'?'pi-on-hold':s==='Complete'?'pi-complete':'pi-pending'}
 
-function toggleDashboardEmptyState(){
-  var isEmpty=projects.length===0;
-  var empty=document.getElementById('dashboardEmptyState');
-  var statsRow=document.getElementById('statsRow');
-  var mobileStats=document.getElementById('mobileStats');
-  var filterBar=document.getElementById('filterBar');
-  var tableWrap=document.getElementById('dashboardTableWrap');
-  var mobileCards=document.getElementById('mobileCards');
-
-  if(isEmpty){
-    empty.style.display='flex';
-    statsRow.style.display='none';
-    mobileStats.style.display='none';
-    filterBar.style.display='none';
-    tableWrap.style.display='none';
-    mobileCards.style.display='none';
-  }else{
-    empty.style.display='none';
-    statsRow.style.display='';
-    mobileStats.style.display='';
-    filterBar.style.display='';
-    tableWrap.style.display='';
-    mobileCards.style.display='';
-  }
-}
-
 function renderStats(){
   var active=projects.filter(function(p){return p.status!=='Complete'});
   var inProgress=active.filter(function(p){return p.status==='In Progress'}).length;
   var pending=active.filter(function(p){return p.status==='Pending'}).length;
   var openTasks=active.reduce(function(s,p){return s+p.openTasks},0);
+
   document.getElementById('statsRow').innerHTML=
     '<div class="stat-item"><span class="stat-value">'+inProgress+'</span><span class="stat-label">In Progress</span></div>'+
     '<div class="stat-item"><span class="stat-value">'+pending+'</span><span class="stat-label">Pending</span></div>'+
     '<div class="stat-item"><span class="stat-value">'+openTasks+'</span><span class="stat-label">Open Tasks</span></div>';
+
   document.getElementById('mobileStats').innerHTML=
     '<div class="mobile-stat-pill"><span class="pill-val">'+inProgress+'</span> Active</div>'+
     '<div class="mobile-stat-pill"><span class="pill-val">'+pending+'</span> Pending</div>'+
     '<div class="mobile-stat-pill"><span class="pill-val">'+openTasks+'</span> Open Tasks</div>';
 }
 
+function toggleDashboardEmptyState(isEmpty){
+  var empty=document.getElementById('dashboardEmptyState');
+  var table=document.getElementById('dashboardTable');
+  var mobileCards=document.getElementById('mobileCards');
+
+  if(isEmpty){
+    empty.classList.add('show');
+    table.style.display='none';
+    mobileCards.style.display='none';
+  }else{
+    empty.classList.remove('show');
+    table.style.display='table';
+    mobileCards.style.display='';
+  }
+}
+
 function renderProjects(list){
   var tbody=document.getElementById('projectTableBody');
   var mc=document.getElementById('mobileCards');
+
+  if(projects.length===0){
+    toggleDashboardEmptyState(true);
+    tbody.innerHTML='';
+    mc.innerHTML='';
+    return;
+  }
+
+  toggleDashboardEmptyState(false);
 
   if(list.length===0){
     tbody.innerHTML='<tr><td colspan="5"><div style="text-align:center;padding:60px 20px;color:var(--text-muted)">No projects match your filters</div></td></tr>';
@@ -126,44 +154,26 @@ function renderProjects(list){
     var archiveItem=p.status==='Complete'?'<button class="kebab-menu-item" onclick="event.stopPropagation();promptArchive('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Archive</button>':'';
     return '<tr onclick="window.location.href=\'project-detail.html\'" style="cursor:pointer">'+
       '<td><div class="project-info"><span class="project-indicator '+getIndicatorClass(p.status)+'"></span><div class="project-name-wrap"><a class="project-name-link table-name" href="project-detail.html" onclick="event.stopPropagation()">'+p.name+'</a><span class="project-created">'+p.created+'</span></div></div></td>'+
-      '<td style="position:relative">'+(p.status==='Complete'?'<span class="status-badge '+getStatusClass(p.status)+'">'+p.status+'</span>':'<span class="status-badge '+getStatusClass(p.status)+'" onclick="event.stopPropagation();toggleStatusDrop('+p.id+')">'+p.status+'</span>'+
-        '<div class="status-dropdown" id="sd-'+p.id+'">'+getStatusOptions(p)+'</div>')+'</td>'+
+      '<td style="position:relative">'+(p.status==='Complete'?'<span class="status-badge '+getStatusClass(p.status)+'">'+p.status+'</span>':'<span class="status-badge '+getStatusClass(p.status)+'" onclick="event.stopPropagation();toggleStatusDrop('+p.id+')">'+p.status+'</span><div class="status-dropdown" id="sd-'+p.id+'">'+getStatusOptions(p)+'</div>')+'</td>'+
       '<td>'+(p.status==='Complete'?'<span style="display:inline-flex;gap:6px"><button class="archive-inline-btn" onclick="event.stopPropagation();promptArchive('+p.id+')"><span class="arc-sq"></span>Archive</button><button class="archive-inline-btn" onclick="event.stopPropagation();reopenProject('+p.id+')"><span class="arc-sq" style="background:var(--steel)"></span>Reopen</button></span>':'<div class="progress-cell"><div class="progress-bar"><div class="progress-fill '+getFillClass(p.pct)+'" style="width:'+p.pct+'%"></div></div><span class="progress-pct">'+p.pct+'%</span></div>')+'</td>'+
       '<td style="text-align:center"><span class="open-count '+(p.openTasks===0?'zero':'')+'">'+p.openTasks+'</span></td>'+
-      '<td class="kebab-cell">'+
-        '<button class="kebab-btn" onclick="event.stopPropagation();toggleKebab('+p.id+',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>'+
-        '<div class="kebab-menu" id="kebab-'+p.id+'">'+
-          '<button class="kebab-menu-item" onclick="event.stopPropagation();openEditModal('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'+
-          '<button class="kebab-menu-item" onclick="event.stopPropagation();openNotesModal('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Add Tech Notes</button>'+
-          archiveItem+
-          '<button class="kebab-menu-item danger" onclick="event.stopPropagation();promptDelete('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>'+
-        '</div></td></tr>';
+      '<td class="kebab-cell"><button class="kebab-btn" onclick="event.stopPropagation();toggleKebab('+p.id+',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button><div class="kebab-menu" id="kebab-'+p.id+'"><button class="kebab-menu-item" onclick="event.stopPropagation();openEditModal('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button><button class="kebab-menu-item" onclick="event.stopPropagation();openNotesModal('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Add Tech Notes</button>'+archiveItem+'<button class="kebab-menu-item danger" onclick="event.stopPropagation();promptDelete('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button></div></td></tr>';
   }).join('');
 
   mc.innerHTML=list.map(function(p){
     var completeTasks=p.totalTasks-p.openTasks;
     var taskText=completeTasks+' of '+p.totalTasks+' complete';
-    return '<div class="mobile-card" onclick="window.location.href=\'project-detail.html\'">'+
-      '<div class="mobile-card-top">'+
-        '<div><div class="mobile-card-name">'+p.name+'</div><div class="mobile-card-sub">'+p.client+' • '+p.location+'</div></div>'+
-        '<div class="mobile-card-status"><span class="status-badge '+getStatusClass(p.status)+'">'+p.status+'</span></div>'+
-      '</div>'+
-      '<div class="mobile-card-progress">'+
-        '<div class="mobile-card-bar"><div class="mobile-card-fill '+getFillClass(p.pct)+'" style="width:'+p.pct+'%"></div></div>'+
-        '<span class="mobile-card-pct">'+taskText+'</span>'+
-      '</div></div>';
+    return '<div class="mobile-card" onclick="window.location.href=\'project-detail.html\'"><div class="mobile-card-top"><div><div class="mobile-card-name">'+p.name+'</div><div class="mobile-card-sub">'+p.client+' • '+p.location+'</div></div><div class="mobile-card-status"><span class="status-badge '+getStatusClass(p.status)+'">'+p.status+'</span></div></div><div class="mobile-card-progress"><div class="mobile-card-bar"><div class="mobile-card-fill '+getFillClass(p.pct)+'" style="width:'+p.pct+'%"></div></div><span class="mobile-card-pct">'+taskText+'</span></div></div>';
   }).join('');
 }
 
 function filterProjects(){
-  toggleDashboardEmptyState();
-  if(projects.length===0)return;
-
   var search=document.getElementById('searchInput').value.toLowerCase();
   var status=document.getElementById('statusFilter').value;
   var filtered=projects.filter(function(p){
     var ms=!search||p.name.toLowerCase().indexOf(search)>-1||p.location.toLowerCase().indexOf(search)>-1||p.client.toLowerCase().indexOf(search)>-1;
-    var ss=status==='all'||p.status===status;return ms&&ss;
+    var ss=status==='all'||p.status===status;
+    return ms&&ss;
   });
   renderStats();
   renderProjects(filtered);
@@ -176,8 +186,13 @@ function createProject(){
   if(!n){document.getElementById('newProjectName').focus();return}
   var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];var now=new Date();var createdStr=months[now.getMonth()]+' '+now.getDate();
   projects.unshift({id:nextId++,name:n,projectNum:pn,location:l,client:c,status:'Pending',pct:0,openTasks:0,totalTasks:0,updated:'Just now',created:createdStr});
-  closeCreateModal();document.getElementById('newProjectName').value='';document.getElementById('newProjectLocation').value='';document.getElementById('newProjectClient').value='';document.getElementById('newProjectNum').value='';
-  filterProjects();showToast('Project created');
+  closeCreateModal();
+  document.getElementById('newProjectName').value='';
+  document.getElementById('newProjectLocation').value='';
+  document.getElementById('newProjectClient').value='';
+  document.getElementById('newProjectNum').value='';
+  filterProjects();
+  showToast('Project created');
 }
 
 var openKebab=null;
@@ -214,12 +229,6 @@ function setProjectStatus(id,status){
   closeStatusDrops();filterProjects();showToast('Status changed to '+status);
 }
 
-var transitions={
-  'Pending':['In Progress','On Hold'],
-  'In Progress':['On Hold','Complete'],
-  'On Hold':['In Progress'],
-  'Complete':[]
-};
 var dotClasses={'Pending':'sd-pending','In Progress':'sd-in-progress','On Hold':'sd-on-hold','Complete':'sd-complete'};
 
 function getStatusOptions(p){
@@ -245,20 +254,28 @@ function reopenProject(id){
 function openEditModal(id){
   closeKebabs();
   editTarget=id;var p=projects.find(function(x){return x.id===id});if(!p)return;
-  document.getElementById('editProjectName').value=p.name;document.getElementById('editProjectNum').value=p.projectNum||'';document.getElementById('editProjectLocation').value=p.location;document.getElementById('editProjectClient').value=p.client;
-  document.getElementById('editModal').classList.add('visible');document.getElementById('editProjectName').focus();
+  document.getElementById('editProjectName').value=p.name;
+  document.getElementById('editProjectNum').value=p.projectNum||'';
+  document.getElementById('editProjectLocation').value=p.location;
+  document.getElementById('editProjectClient').value=p.client;
+  document.getElementById('editModal').classList.add('visible');
+  document.getElementById('editProjectName').focus();
 }
 function closeEditModal(){document.getElementById('editModal').classList.remove('visible');editTarget=null}
 function saveEditProject(){
   if(!editTarget)return;var p=projects.find(function(x){return x.id===editTarget});if(!p)return;
   var n=document.getElementById('editProjectName').value.trim();if(!n){document.getElementById('editProjectName').focus();return}
-  p.name=n;p.projectNum=document.getElementById('editProjectNum').value.trim();p.location=document.getElementById('editProjectLocation').value.trim();p.client=document.getElementById('editProjectClient').value.trim();p.updated='Just now';
+  p.name=n;
+  p.projectNum=document.getElementById('editProjectNum').value.trim();
+  p.location=document.getElementById('editProjectLocation').value.trim();
+  p.client=document.getElementById('editProjectClient').value.trim();
+  p.updated='Just now';
   closeEditModal();filterProjects();showToast('Project updated');
 }
 function promptDelete(id){
   closeKebabs();
   deleteTarget=id;var p=projects.find(function(x){return x.id===id});
-  document.getElementById('deleteModalBody').textContent='Delete "'+((p?p.name:'this project'))+ '"? This permanently removes the project and all its tasks.';
+  document.getElementById('deleteModalBody').textContent='Delete "'+((p?p.name:'this project'))+'"? This permanently removes the project and all its tasks.';
   document.getElementById('deleteModal').classList.add('visible');
 }
 function closeDeleteModal(){document.getElementById('deleteModal').classList.remove('visible');deleteTarget=null}
@@ -269,7 +286,7 @@ function confirmDelete(){
 function promptArchive(id){
   closeKebabs();
   archiveTarget=id;var p=projects.find(function(x){return x.id===id});
-  document.getElementById('archiveModalBody').textContent='Archive "'+((p?p.name:'this project'))+ '"? You can access it later from the Archive page.';
+  document.getElementById('archiveModalBody').textContent='Archive "'+((p?p.name:'this project'))+'"? You can access it later from the Archive page.';
   document.getElementById('archiveModal').classList.add('visible');
 }
 function closeArchiveModal(){document.getElementById('archiveModal').classList.remove('visible');archiveTarget=null}
