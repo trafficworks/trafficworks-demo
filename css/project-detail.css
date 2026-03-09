@@ -76,7 +76,7 @@ width:8px;
 background:var(--gray-light);
 }
 .mobile-task-card.status-complete::before{background:var(--green)}
-.mobile-task-card.status-infield::before{background:var(--amber)}
+.mobile-task-card.status-infield::before{background:var(--amber-light)}
 .mobile-task-card.status-pending::before{background:var(--gray-light)}
 .mobile-task-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .mobile-task-title{
