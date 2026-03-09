@@ -381,53 +381,168 @@ body {
 
 .tv-task-inner {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
+  align-items: stretch;
+  gap: 0;
 }
 
-.tv-site-num {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--tv-text-secondary);
-  min-width: 30px;
-  width: 30px;
-  height: 30px;
-  background: var(--tv-note-bg);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+/* Left: task info column */
+.tv-task-content {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 0 14px 16px;
 }
 
-.tv-task-info { flex: 1; min-width: 0 }
 .tv-task-desc {
   font-size: 14px;
   font-weight: 500;
   color: var(--tv-text);
   line-height: 1.4;
 }
-.tv-task-status-row {
+
+/* Divider between name and details */
+.tv-task-divider {
+  height: 1px;
+  background: var(--tv-border);
+  margin: 8px 0;
+}
+
+/* Detail row: site # · type · duration · note icon */
+.tv-task-detail-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 2px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
-.tv-task-status-text {
+
+.tv-task-site {
   font-size: var(--text-sm);
-  color: var(--tv-text-muted);
+  font-weight: 600;
+  color: var(--tv-text-secondary);
+}
+
+.tv-task-type {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border: 1px solid var(--tv-border);
+  color: var(--tv-text-secondary);
+  background: none;
+}
+
+.tv-task-duration {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--tv-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.tv-detail-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--tv-text-muted);
+  flex-shrink: 0;
+}
+
+/* Row 3: reopen reason */
+.tv-task-reopen-row {
+  margin-top: 6px;
 }
 .tv-task-reopen-reason {
   font-size: var(--text-sm);
   color: #B87A00;
   font-weight: 500;
 }
-.tv-task-duration {
-  font-size: var(--text-sm);
+
+/* Right: action button column */
+.tv-task-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 14px 14px 12px;
+  flex-shrink: 0;
+}
+
+/* Reopen modal */
+.tv-reopen-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 20px;
+}
+.tv-reopen-overlay.visible { display: flex }
+.tv-reopen-modal {
+  background: var(--tv-surface);
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+}
+.tv-reopen-title {
+  font-size: 16px;
   font-weight: 600;
   color: var(--tv-text);
-  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+.tv-reopen-sub {
+  font-size: var(--text-sm);
+  color: var(--tv-text-muted);
+  margin-bottom: 16px;
+}
+.tv-reopen-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--tv-border);
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--tv-text);
+  background: var(--tv-note-bg);
+  outline: none;
+  resize: none;
+  min-height: 60px;
+  line-height: 1.5;
+  transition: border-color .15s;
+}
+.tv-reopen-input:focus { border-color: var(--steel) }
+.tv-reopen-input::placeholder { color: var(--tv-text-muted) }
+.tv-reopen-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.tv-reopen-cancel {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--tv-border);
+  background: none;
+  color: var(--tv-text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.tv-reopen-confirm {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background: #2AB57E;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 /* ============================================================
@@ -540,7 +655,7 @@ html.tv-dark .tv-note-save-btn {
   pointer-events: none;
   border-radius: 8px;
 }
-.toggle-btn.holding .toggle-fill { transition: width 0.4s linear; width: 100% }
+.toggle-btn.holding .toggle-fill { transition: width 0.6s linear; width: 100% }
 .toggle-label {
   position: relative;
   z-index: 1;
@@ -550,7 +665,7 @@ html.tv-dark .tv-note-save-btn {
 }
 .toggle-label svg { width: 13px; height: 13px }
 @keyframes holdPulse { 0%,100% { opacity: 1 } 50% { opacity: 0.7 } }
-.toggle-btn.holding { animation: holdPulse .4s ease }
+.toggle-btn.holding { animation: holdPulse .6s ease }
 
 .toggle-pending { background: #D0D2D6; color: #5A5F66 }
 .toggle-pending .toggle-fill { background: #BFD7EA }
