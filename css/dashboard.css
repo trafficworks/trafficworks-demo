@@ -56,8 +56,9 @@
 
 .empty-state-inner h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.2;
+  font-weight: 700;
 }
 
 .empty-state-inner p {
