@@ -112,6 +112,10 @@
 .site-cell{position:relative;text-align:center}
 .site-indicator{position:absolute;left:10px;top:50%;transform:translateY(-50%)}
 
+.site-num{
+color: var(--text-secondary);
+}
+
 /* Bulk select checkboxes */
 .row-check{display:none;width:32px;height:32px;cursor:pointer;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0;z-index:2}
 .row-check.pending-row{display:none}
