@@ -92,6 +92,11 @@
   color:var(--text-muted);
 }
 
+.mark{
+ background: #c0ffc8;
+}
+
+
 /* Status pill */
 .project-status-pill{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-sm);font-weight:500;color:var(--text-primary);letter-spacing:.2px}
 .project-status-pill svg{width:14px;height:14px}
