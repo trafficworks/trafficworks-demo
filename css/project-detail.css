@@ -91,7 +91,7 @@
 }
 
 /* Status pill */
-.project-status-pill{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-sm);font-weight:500;color:var(--text-secondary);letter-spacing:.2px}
+.project-status-pill{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-sm);font-weight:500;color:var(--text-primary);letter-spacing:.2px}
 .project-status-pill svg{width:14px;height:14px}
 .psp-in-progress svg{color:#BFD7EA}
 .psp-pending svg{color:var(--text-muted)}
