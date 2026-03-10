@@ -38,9 +38,10 @@ align-items:center;
 gap:12px;
 }
 
-.empty-cone{
-width:80px;
-opacity:.9;
+..empty-cone{
+width:260px;
+height:auto;
+margin-bottom:20px;
 }
 
 .empty-state h2{
