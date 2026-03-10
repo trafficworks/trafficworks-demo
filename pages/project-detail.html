@@ -13,22 +13,41 @@
 
 <div class="main">
   <div class="project-top-row">
-    <a class="back-link" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Projects</a>
 
     <div class="project-header">
       <div class="project-name-row">
+
         <div class="project-name">
-          <span class="project-name-toggle" onclick="toggleProjectDetails()">Old Town Mobility Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          <a class="project-breadcrumb-link" href="dashboard.html">Projects</a>
+          <span class="breadcrumb-slash">/</span>
+
+          <span class="project-name-toggle" onclick="toggleProjectDetails()">
+            Old Town Mobility Study
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </span>
         </div>
-        <span class="project-status-pill psp-in-progress" id="projectStatusPill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>In Progress</span>
+
+        <span class="project-status-pill psp-in-progress" id="projectStatusPill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          In Progress
+        </span>
+
       </div>
+
       <div class="project-details-dropdown" id="projectDropdown">
         <div class="pdd-row"><span class="pdd-label">Client:</span> City of Pasadena</div>
         <div class="pdd-row"><span class="pdd-label">City:</span> Pasadena, CA</div>
         <div class="pdd-row"><span class="pdd-label">Project #:</span> DEMO-2026-101</div>
       </div>
+
     </div>
+
   </div>
+</div>
 
   <div class="stats-row" id="statsRow"></div>
 
