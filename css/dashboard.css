@@ -18,44 +18,47 @@
 .status-badge { cursor:pointer; position:relative; transition:opacity .15s }
 .status-badge:hover { opacity:.85 }
 
-.empty-state{
-display:none;
-align-items:center;
-justify-content:center;
-height:320px;
-width:100%;
-text-align:center;
+.table-wrap {
+  position: relative;
 }
 
-.empty-state.show{
-display:flex;
+.empty-state {
+  display: none;
+  min-height: 340px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.empty-state-inner{
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:12px;
+.empty-state.show {
+  display: flex;
 }
 
-..empty-cone{
-width:260px;
-height:auto;
-margin-bottom:20px;
+.empty-state-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 40px 20px;
 }
 
-.empty-state h2{
-font-size:26px;
-font-weight:700;
-margin:0;
-color:var(--text-primary);
+.empty-state-inner h2 {
+  margin: 0;
 }
 
-.empty-state p{
-font-size:14px;
-color:var(--text-secondary);
-margin:0;
-white-space:nowrap;
+.empty-state-inner p {
+  margin: 0;
+  max-width: 520px;
+  color: var(--text-muted);
+}
+
+.empty-cone {
+  width: 170px;
+  height: auto;
+  display: block;
 }
 
 /* Mobile stat pills */
