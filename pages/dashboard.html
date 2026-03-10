@@ -45,14 +45,30 @@
     <button class="btn btn-primary" onclick="openCreateModal()"><span class="btn-icon">+</span> Create Project</button>
   </div>
 
-  <div class="table-wrap" id="dashboardTableWrap">
-    <div class="empty-state" id="dashboardEmptyState">
-      <div class="empty-state-inner">
-        <img class="empty-state-graphic" src="../images/cone.png" alt="Traffic cone">
-        <h2 class="empty-state-title">Let’s get started!</h2>
-        <p class="empty-state-subtitle">Projects organize your traffic counts, tasks, and field progress in real time.</p>
-      </div>
+  <div class="table-wrap">
+
+  <div id="dashboardEmptyState" class="empty-state">
+    <div class="empty-state-inner">
+      <img src="../images/cone.png" class="empty-cone">
+      <h2>Let's get started!</h2>
+      <p>Projects organize your traffic counts, tasks, and field progress in real time.</p>
     </div>
+  </div>
+
+  <table id="dashboardTable">
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>Status</th>
+        <th>Progress</th>
+        <th>Open Tasks</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="projectTableBody"></tbody>
+  </table>
+
+</div>
 
     <table id="dashboardTable">
       <thead>
