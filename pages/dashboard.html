@@ -132,19 +132,18 @@ function renderStats(){
 }
 
 function toggleDashboardEmptyState(isEmpty){
-  var empty=document.getElementById('dashboardEmptyState');
-  var table=document.getElementById('dashboardTable');
-  var mobileCards=document.getElementById('mobileCards');
+
+  const empty = document.getElementById("dashboardEmptyState")
+  const table = document.getElementById("dashboardTable")
 
   if(isEmpty){
-    empty.classList.add('show');
-    table.style.display='none';
-    mobileCards.style.display='none';
+    empty.classList.add("show")
+    table.style.display="none"
   }else{
-    empty.classList.remove('show');
-    table.style.display='table';
-    mobileCards.style.display='';
+    empty.classList.remove("show")
+    table.style.display="table"
   }
+
 }
 
 function renderProjects(list){
