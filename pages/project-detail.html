@@ -16,7 +16,6 @@
 
     <div class="project-header">
       <div class="project-name-row">
-
         <div class="project-name">
           <a class="project-breadcrumb-link" href="dashboard.html">Projects</a>
           <span class="breadcrumb-slash">/</span>
@@ -35,7 +34,6 @@
           </svg>
           In Progress
         </span>
-
       </div>
 
       <div class="project-details-dropdown" id="projectDropdown">
@@ -43,21 +41,31 @@
         <div class="pdd-row"><span class="pdd-label">City:</span> Pasadena, CA</div>
         <div class="pdd-row"><span class="pdd-label">Project #:</span> DEMO-2026-101</div>
       </div>
-
     </div>
-
-  </div>
-</div>
 
   <div class="stats-row" id="statsRow"></div>
 
   <div class="toolbar-row" style="margin-bottom:16px">
     <div id="normalItems" style="display:flex;align-items:center;gap:10px;flex:1">
-      <div class="search-box mobile-hide"><svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search tasks…" id="searchInput" oninput="render()"></div>
-      <select class="filter-select" id="statusFilter" onchange="render()"><option value="all">All Statuses</option><option value="Pending">Pending</option><option value="In Field">In Field</option><option value="Complete">Complete</option></select>
+      <div class="search-box mobile-hide">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" placeholder="Search tasks…" id="searchInput" oninput="render()">
+      </div>
+
+      <select class="filter-select" id="statusFilter" onchange="render()">
+        <option value="all">All Statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="In Field">In Field</option>
+        <option value="Complete">Complete</option>
+      </select>
+
       <div class="toolbar-spacer"></div>
       <button class="btn btn-add" onclick="openAddTaskModal()"><span class="btn-icon">+</span> Add Task</button>
     </div>
+
     <div id="selectItems" style="display:none;align-items:center;gap:8px;flex:1">
       <div class="select-bg">
         <span class="select-count" id="selectCount">0 selected</span>
@@ -68,14 +76,19 @@
   </div>
 
   <div class="table-wrap">
-    <table><thead><tr>
-      <th style="width:5%;text-align:center">Site</th>
-      <th style="width:39%">Task</th>
-      <th style="width:15%;cursor:pointer" onclick="sortBy('tech')">Tech <span style="font-size:9px;opacity:0.5">▼</span></th>
-      <th style="width:15%;padding-left:20px;cursor:pointer" onclick="sortBy('status')">Status <span style="font-size:9px;opacity:0.5">▼</span></th>
-      <th style="width:15%;text-align:center">Duration</th>
-      <th style="width:4%"></th>
-    </tr></thead><tbody id="taskTableBody"></tbody></table>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:5%;text-align:center">Site</th>
+          <th style="width:39%">Task</th>
+          <th style="width:15%;cursor:pointer" onclick="sortBy('tech')">Tech <span style="font-size:9px;opacity:0.5">▼</span></th>
+          <th style="width:15%;padding-left:20px;cursor:pointer" onclick="sortBy('status')">Status <span style="font-size:9px;opacity:0.5">▼</span></th>
+          <th style="width:15%;text-align:center">Duration</th>
+          <th style="width:4%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskTableBody"></tbody>
+    </table>
   </div>
 
   <div class="mobile-task-cards" id="mobileTaskCards"></div>
