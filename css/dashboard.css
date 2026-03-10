@@ -5,6 +5,18 @@
 /* Page header */
 .page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--space-lg) }
 
+.page-title {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--charcoal);
+}
+
 /* Project table cells */
 .project-name-link { text-decoration:none; cursor:pointer; display:block }
 .project-name-link:hover { color:var(--text-primary) }
