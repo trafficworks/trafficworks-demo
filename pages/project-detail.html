@@ -263,7 +263,7 @@ function renderTable(){
 
     return '<tr id="row-'+t.id+'">'+
       '<td class="site-cell"><span class="site-indicator '+getSiteIndicator(t.status)+'"></span>'+(isPending?'<input type="checkbox" class="row-check pending-row" data-id="'+t.id+'" onchange="updateSelectCount()"><span class="check-visual pending-vis"></span>':'')+
-      '<span class="site-num'+(isPending?' has-check':'')+'" style="color:var(--text-muted);font-size:var(--text-sm);font-weight:600">'+t.site+'</span></td>'+
+      '<span class="site-num'+(isPending?' has-check':'')+'" style="font-size:var(--text-sm);font-weight:600">'+t.site+'</span></td>'+
       '<td>'+tag+'<span class="task-dot-wrap"><span class="task-desc table-name">'+t.desc+'</span>'+dot+'</span><input class="edit-input" value="'+t.desc+'" onkeydown="if(event.key===\'Enter\')saveEdit('+t.id+',this)" onblur="saveEdit('+t.id+',this)"></td>'+
       '<td><div class="tech-select-wrapper"><span class="'+tc+'" onclick="showTechSelect('+t.id+',this)">'+ti+'<span class="tech-tooltip">'+tt+'</span></span></div></td>'+
       '<td style="padding-left:20px"><span class="status-badge '+getStatusClass(t.status)+'">'+t.status+'</span></td>'+
