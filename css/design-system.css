@@ -13,7 +13,7 @@
   --bg: #F5F4F0;
   --white: #FFFFFF;
   --off-white: #ECEAE4;
-  --border: #E6E3DA;
+  --border: #E0DED8;
   --gray-light: #C8C8C8;
   --steel: #7A9BA8;
   --steel-light: rgba(122, 155, 168, 0.1);
@@ -35,10 +35,10 @@
   --space-md: 16px;
   --space-lg: 24px;
   --space-xl: 32px;
-  --table-border: #E6E3DA;
+  --table-border: #E0DED8;
   --table-row-border: #ECEAE4;
-  --table-header-bg: #FAFAF7;
-  --table-header-color: #F0EEE8;
+  --table-header-bg: #F7F6F3;
+  --table-header-color: #374151;
 }
 
 /* ============================================================
@@ -136,13 +136,13 @@ body {
 /* ============================================================
    TABLES
    ============================================================ */
-.table-wrap { background: #FAFAF7; border: 1px solid var(--table-border); border-radius: 8px; overflow: visible }
+.table-wrap { background: transparent; border: 1px solid var(--table-border); border-radius: 8px; overflow: visible }
 table { width: 100%; border-collapse: collapse }
 thead th { font-size: var(--text-sm); font-weight: 600; color: var(--table-header-color); text-transform: uppercase; letter-spacing: 0.4px; text-align: left; padding: 12px var(--space-md); border-bottom: 1px solid var(--table-border); background: var(--table-header-bg); user-select: none }
 thead th:first-child { border-radius: 8px 0 0 0 }
 thead th:last-child { border-radius: 0 8px 0 0 }
 tbody tr { transition: background .1s }
-tbody tr:hover { background: #F0EFEA }
+tbody tr:hover { background: rgba(122, 155, 168, 0.04) }
 tbody td { padding: 14px var(--space-md); font-size: var(--text-md); border-bottom: 0.5px solid var(--table-row-border); vertical-align: middle }
 tbody tr:last-child td { border-bottom: none }
 .table-name { font-weight: 400; font-size: 14px; font-family: 'Inter', sans-serif; color: var(--text-primary); line-height: 1.4; -webkit-font-smoothing: antialiased }
@@ -294,5 +294,3 @@ tbody tr:last-child td { border-bottom: none }
   .page-title, .back-link { background: var(--charcoal); color: var(--white); border-color: var(--charcoal) }
   .back-link:hover { color: var(--white) }
 }
-
-
