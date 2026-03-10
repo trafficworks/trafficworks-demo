@@ -15,6 +15,22 @@
 .pdd-row{font-size:var(--text-sm);color:var(--text-muted);line-height:1.6}
 .pdd-label{color:var(--text-secondary);font-weight:500}
 
+
+.project-breadcrumb-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.project-breadcrumb-link:hover {
+  color: var(--text-primary);
+}
+
+.breadcrumb-slash {
+  margin: 0 6px;
+  color: var(--text-muted);
+}
+
 /* Status pill */
 .project-status-pill{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-sm);font-weight:500;color:var(--text-secondary);letter-spacing:.2px}
 .project-status-pill svg{width:14px;height:14px}
