@@ -220,8 +220,8 @@ function renderStats() {
   var openTasks = active.reduce(function(sum, p) { return sum + p.openTasks; }, 0);
 
   document.getElementById('statsRow').innerHTML =
-    '<div class="stat-item"><span class="stat-value">' + inProgress + '</span><span class="stat-label">In Progress</span></div>' +
-    '<div class="stat-item"><span class="stat-value">' + pending + '</span><span class="stat-label">Pending</span></div>' +
+    '<div class="stat-item"><span class="stat-value">' + inProgress + '</span><span class="stat-label"><mark>In Progress</mark></span></div>' +
+    '<div class="stat-item"><span class="stat-value">' + pending + '</span><span class="stat-label"><mark>Pending</span></mark></div>' +
     '<div class="stat-item"><span class="stat-value">' + openTasks + '</span><span class="stat-label">Open Tasks</span></div>';
 
   document.getElementById('mobileStats').innerHTML =
