@@ -91,7 +91,7 @@ body {
 /* ============================================================
    BUTTONS
    ============================================================ */
-.btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; height: 36px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: var(--text-md); font-weight: 500; border: none; cursor: pointer; transition: all .15s; white-space: nowrap }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 0px 12px; height: 32px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: var(--text-md); font-weight: 500; border: none; cursor: pointer; transition: all .15s; white-space: nowrap }
 .btn-icon { font-size: var(--text-lg); line-height: 1 }
 .btn-primary, .btn-add { background: #4F8F6B; color: var(--white); border: none) }
 .btn-primary:hover, .btn-add:hover { background: #437C5E; border-color: var(--white) }
@@ -128,18 +128,19 @@ body {
   display: flex; 
   align-items: center; 
   gap: 10px; 
-  margin-bottom: var(--space-md) 
+  margin-bottom: var(--space-md);
 }
 
 .search-box { 
   flex: 1; 
   max-width: 280px; 
-  position: relative 
+  position: relative;
 }
 
 .search-box input { 
   width: 100%; 
-  padding: 6px 12px 6px 34px; 
+  height: 32px;
+  padding: 0 12px 0 34px;
   border: 1px solid var(--border); 
   border-radius: 6px; 
   font-family: 'Inter', sans-serif; 
@@ -147,15 +148,16 @@ body {
   color: var(--text-primary); 
   background: var(--white); 
   outline: none; 
-  transition: border-color .15s 
+  transition: border-color .15s;
+  box-sizing: border-box;
 }
 
 .search-box input::placeholder { 
-  color: var(--text-muted) 
+  color: var(--text-muted);
 }
 
 .search-box input:focus { 
-  border-color: var(--steel) 
+  border-color: var(--steel);
 }
 
 .search-icon { 
@@ -164,11 +166,12 @@ body {
   top: 50%; 
   transform: translateY(-50%); 
   color: var(--text-muted); 
-  pointer-events: none 
+  pointer-events: none;
 }
 
 .filter-select { 
-  padding: 6px 32px 6px 12px; 
+  height: 32px;
+  padding: 0 32px 0 12px;
   border: 1px solid var(--border); 
   border-radius: 6px; 
   font-family: 'Inter', sans-serif; 
@@ -180,13 +183,13 @@ body {
   background-repeat: no-repeat; 
   background-position: right 10px center; 
   cursor: pointer; 
-  outline: none 
+  outline: none;
+  box-sizing: border-box;
 }
 
 .toolbar-spacer { 
-  flex: 1 
+  flex: 1;
 }
-
 /* ============================================================
    TABLES
    ============================================================ */
