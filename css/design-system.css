@@ -91,24 +91,116 @@ body {
 /* ============================================================
    BUTTONS
    ============================================================ */
-.btn { display: inline-flex; align-items: center; gap: 6px; padding: 0px 12px; height: 32px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: var(--text-md); font-weight: 500; border: none; cursor: pointer; transition: all .15s; white-space: nowrap }
-.btn-icon { font-size: var(--text-lg); line-height: 1 }
-.btn-primary, .btn-add { background: #4F8F6B; color: var(--white); border: none) }
-.btn-primary:hover, .btn-add:hover { background: #437C5E; border-color: var(--white) }
-.btn-solid { background: var(--charcoal); color: var(--white); border: 1px solid var(--charcoal) }
-.btn-solid:hover { background: #2C3034 }
-.btn-ghost { background: none; color: var(--text-secondary); padding: 6px 12px; font-size: var(--text-sm) }
-.btn-ghost:hover { background: var(--off-white); color: var(--text-primary) }
-.btn-danger { background: var(--red); color: var(--white) }
-.btn-danger:hover { background: #e5585d }
-.btn-reopen { background: var(--green-light); color: var(--green); border: 1px solid rgba(58, 166, 106, 0.2) }
-.btn-reopen:hover { background: rgba(58, 166, 106, 0.15) }
-.btn-archive { background: var(--steel-light); color: var(--steel) }
-.btn-archive:hover { background: rgba(122, 155, 168, 0.2) }
-.archive-inline-btn { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; background: none; color: var(--text-secondary); border: 1px solid var(--border); cursor: pointer; transition: all .15s }
-.archive-inline-btn:hover { background: var(--off-white); border-color: var(--gray-light) }
-.archive-inline-btn .arc-sq { width: 7px; height: 7px; border-radius: 2px; background: var(--purple); flex-shrink: 0 }
+.btn { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 6px; 
+  padding: 0 12px; 
+  height: 32px; 
+  border-radius: 6px; 
+  font-family: 'Inter', sans-serif; 
+  font-size: 13px; 
+  font-weight: 500; 
+  border: none; 
+  cursor: pointer; 
+  transition: all .15s; 
+  white-space: nowrap;
+  line-height: 1;
+}
 
+.btn-icon { 
+  font-size: var(--text-lg); 
+  line-height: 1;
+}
+
+.btn-primary, .btn-add { 
+  background: #4F8F6B; 
+  color: var(--white); 
+  border: none;
+}
+
+.btn-primary:hover, .btn-add:hover { 
+  background: #437C5E;
+}
+
+.btn-solid { 
+  background: var(--charcoal); 
+  color: var(--white); 
+  border: 1px solid var(--charcoal);
+}
+
+.btn-solid:hover { 
+  background: #2C3034;
+}
+
+.btn-ghost { 
+  background: none; 
+  color: var(--text-secondary); 
+  padding: 6px 12px; 
+  font-size: var(--text-sm);
+}
+
+.btn-ghost:hover { 
+  background: var(--off-white); 
+  color: var(--text-primary);
+}
+
+.btn-danger { 
+  background: var(--red); 
+  color: var(--white);
+}
+
+.btn-danger:hover { 
+  background: #e5585d;
+}
+
+.btn-reopen { 
+  background: var(--green-light); 
+  color: var(--green); 
+  border: 1px solid rgba(58, 166, 106, 0.2);
+}
+
+.btn-reopen:hover { 
+  background: rgba(58, 166, 106, 0.15);
+}
+
+.btn-archive { 
+  background: var(--steel-light); 
+  color: var(--steel);
+}
+
+.btn-archive:hover { 
+  background: rgba(122, 155, 168, 0.2);
+}
+
+.archive-inline-btn { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 5px; 
+  padding: 3px 10px; 
+  border-radius: 5px; 
+  font-size: 10px; 
+  font-weight: 600; 
+  letter-spacing: 0.3px; 
+  background: none; 
+  color: var(--text-secondary); 
+  border: 1px solid var(--border); 
+  cursor: pointer; 
+  transition: all .15s;
+}
+
+.archive-inline-btn:hover { 
+  background: var(--off-white); 
+  border-color: var(--gray-light);
+}
+
+.archive-inline-btn .arc-sq { 
+  width: 7px; 
+  height: 7px; 
+  border-radius: 2px; 
+  background: var(--purple); 
+  flex-shrink: 0;
+}
 /* ============================================================
    STAT METRICS
    ============================================================ */
