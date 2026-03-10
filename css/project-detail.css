@@ -93,7 +93,10 @@
 }
 
 mark{
- background: #f0e9bb;
+  background: #F3E8B6;
+  color: var(--charcoal);
+  padding: 0 4px;
+  border-radius: 4px;
 }
 
 
