@@ -308,7 +308,7 @@ tbody tr:last-child td { border-bottom: none }
 /* ============================================================
    STATUS INDICATOR BARS
    ============================================================ */
-.project-indicator, .site-indicator { width: 5px; height: 16px; border-radius: 1.5px; flex-shrink: 0 }
+.project-indicator, .site-indicator { width: 4px; height: 16px; border-radius: 1.5px; flex-shrink: 0 }
 .pi-pending, .si-pending { background: #D0D0D0 }
 .pi-in-progress, .si-infield { background: #8DB7DB }
 .pi-on-hold { background: var(--red) }
