@@ -114,13 +114,13 @@ body {
 }
 
 .btn-primary, .btn-add { 
-  background: #4A4F55; 
+  background: #5B6167; 
   color: var(--white); 
   border: none;
 }
 
 .btn-primary:hover, .btn-add:hover { 
-  background: #3E4349;
+  background: #4C5258;
 }
 
 .btn-solid { 
