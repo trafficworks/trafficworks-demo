@@ -78,13 +78,13 @@
 .project-breadcrumb-link{
   font-size: 20px;
   line-height: 1.25;
-  color:var(--text-secondary);
+  color:var(--text-muted);
   text-decoration:none;
   font-weight:500;
 }
 
 .project-breadcrumb-link:hover{
-  color:var(--text-primary);
+  color:var(--charcoal);
 }
 
 .breadcrumb-slash{
