@@ -27,6 +27,7 @@
   align-items:center;
   flex-wrap:wrap;
   font-size: 20px;
+  line-height: 1.25; 
   font-weight:700;
   color:var(--charcoal);
   min-width:0;
@@ -76,6 +77,7 @@
 
 .project-breadcrumb-link{
   font-size: 20px;
+  line-height: 1.25;
   color:var(--text-secondary);
   text-decoration:none;
   font-weight:500;
