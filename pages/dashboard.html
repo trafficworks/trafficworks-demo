@@ -66,21 +66,7 @@
     </thead>
     <tbody id="projectTableBody"></tbody>
   </table>
-</div>
-
-    <table id="dashboardTable">
-      <thead>
-        <tr>
-          <th style="width:35%">Project</th>
-          <th style="width:15%">Status</th>
-          <th style="width:20%">Progress</th>
-          <th style="width:12%;text-align:center">Open Tasks</th>
-          <th style="width:4%"></th>
-        </tr>
-      </thead>
-      <tbody id="projectTableBody"></tbody>
-    </table>
-  </div>
+</div>    
 
   <div class="mobile-cards" id="mobileCards"></div>
 </div>
@@ -129,23 +115,18 @@ function renderStats(){
     '<div class="mobile-stat-pill"><span class="pill-val">'+openTasks+'</span> Open Tasks</div>';
 }
 
-function toggleDashboardEmptyState(isEmpty){
+function toggleDashboardEmptyState(isEmpty) {
+  const empty = document.getElementById('dashboardEmptyState');
+  const table = document.getElementById('dashboardTable');
 
-  const empty = document.getElementById("dashboardEmptyState")
-  const table = document.getElementById("dashboardTable")
-
-  if(isEmpty){
-
-    empty.classList.add("show")
-    table.style.display = "none"
-
+  if (isEmpty) {
+    empty.classList.add('show');
+    table.style.display = 'none';
   } else {
-
-    empty.classList.remove("show")
-    table.style.display = "table"
-
+    empty.classList.remove('show');
+    table.style.display = 'table';
   }
-
+}
 }
 
 function renderProjects(list){
