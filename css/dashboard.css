@@ -48,10 +48,10 @@
   align-items: center;
   justify-content: center;
   gap: 14px;
-  padding: 40px 20px;
+  padding: 24px 20px 40px;
   width: 100%;
   max-width: 520px;
-  margin: 0 auto;
+  margin: -18px auto 0;
 }
 
 .empty-state-inner h2 {
