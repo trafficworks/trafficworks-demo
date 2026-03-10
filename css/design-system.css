@@ -35,7 +35,7 @@
   --space-md: 16px;
   --space-lg: 24px;
   --space-xl: 32px;
-  --table-border: #E0DED8;
+  --table-border: #E6E3DA;
   --table-row-border: #ECEAE4;
   --table-header-bg: #F7F6F3;
   --table-header-color: #374151;
@@ -142,7 +142,7 @@ thead th { font-size: var(--text-sm); font-weight: 600; color: var(--table-heade
 thead th:first-child { border-radius: 8px 0 0 0 }
 thead th:last-child { border-radius: 0 8px 0 0 }
 tbody tr { transition: background .1s }
-tbody tr:hover { background: rgba(122, 155, 168, 0.04) }
+tbody tr:hover { background: #F0EFEA }
 tbody td { padding: 14px var(--space-md); font-size: var(--text-md); border-bottom: 0.5px solid var(--table-row-border); vertical-align: middle }
 tbody tr:last-child td { border-bottom: none }
 .table-name { font-weight: 400; font-size: 14px; font-family: 'Inter', sans-serif; color: var(--text-primary); line-height: 1.4; -webkit-font-smoothing: antialiased }
