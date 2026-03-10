@@ -18,18 +18,43 @@
 .status-badge { cursor:pointer; position:relative; transition:opacity .15s }
 .status-badge:hover { opacity:.85 }
 
-.empty-state{display:none;align-items:center;justify-content:center;text-align:center;padding:64px 24px;background:transparent;border:none;border-radius:0}
-.empty-state.show{display:flex}
-.empty-state-graphic{width:140px;height:auto;margin-bottom:18px;display:block}
-.empty-state-title{font-size:28px;font-weight:700;line-height:1.15;color:var(--text-primary);margin:0 0 10px}
-.empty-state-subtitle{font-size:14px;line-height:1.4;color:var(--text-secondary);margin:0;white-space:nowrap}
-.empty-state-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 20px}
-@media (max-width:768px){
-  .empty-state{padding:40px 16px}
-  .empty-state-graphic{width:110px;margin-bottom:16px}
-  .empty-state-title{font-size:24px}
-  .empty-state-subtitle{font-size:13px;white-space:normal;max-width:320px}
-  .empty-state-inner{padding:40px 16px}
+.empty-state{
+display:none;
+align-items:center;
+justify-content:center;
+height:320px;
+width:100%;
+text-align:center;
+}
+
+.empty-state.show{
+display:flex;
+}
+
+.empty-state-inner{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:12px;
+}
+
+.empty-cone{
+width:80px;
+opacity:.9;
+}
+
+.empty-state h2{
+font-size:26px;
+font-weight:700;
+margin:0;
+color:var(--text-primary);
+}
+
+.empty-state p{
+font-size:14px;
+color:var(--text-secondary);
+margin:0;
+white-space:nowrap;
 }
 
 /* Mobile stat pills */
