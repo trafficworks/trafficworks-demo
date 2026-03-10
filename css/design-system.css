@@ -136,7 +136,7 @@ body {
 /* ============================================================
    TABLES
    ============================================================ */
-.table-wrap { background: transparent; border: 1px solid var(--table-border); border-radius: 8px; overflow: visible }
+.table-wrap { background: #FAFAF7; border: 1px solid var(--table-border); border-radius: 8px; overflow: visible }
 table { width: 100%; border-collapse: collapse }
 thead th { font-size: var(--text-sm); font-weight: 600; color: var(--table-header-color); text-transform: uppercase; letter-spacing: 0.4px; text-align: left; padding: 12px var(--space-md); border-bottom: 1px solid var(--table-border); background: var(--table-header-bg); user-select: none }
 thead th:first-child { border-radius: 8px 0 0 0 }
