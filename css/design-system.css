@@ -93,8 +93,8 @@ body {
    ============================================================ */
 .btn { display: inline-flex; align-items: center; gap: 6px; padding: var(--space-sm) var(--space-md); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: var(--text-md); font-weight: 500; border: none; cursor: pointer; transition: all .15s; white-space: nowrap }
 .btn-icon { font-size: var(--text-lg); line-height: 1 }
-.btn-primary, .btn-add { background: #2F8F5B; color: var(--white); border: none) }
-.btn-primary:hover, .btn-add:hover { background: var(--gray-light); border-color: var(--gray-light) }
+.btn-primary, .btn-add { background: #3A8F6A; color: var(--white); border: none) }
+.btn-primary:hover, .btn-add:hover { background: #327D5C; border-color: var(--white) }
 .btn-solid { background: var(--charcoal); color: var(--white); border: 1px solid var(--charcoal) }
 .btn-solid:hover { background: #2C3034 }
 .btn-ghost { background: none; color: var(--text-secondary); padding: 6px 12px; font-size: var(--text-sm) }
