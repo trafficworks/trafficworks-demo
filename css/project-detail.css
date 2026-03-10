@@ -3,32 +3,90 @@
    ============================================================ */
 
 /* Project header */
-.project-top-row{display:flex;align-items:center;gap:20px;margin-bottom:var(--space-lg)}
-.project-header{flex:1;min-width:0}
-.project-name-row{display:flex;align-items:center;gap:12px}
-.project-name{font-size:var(--text-lg);font-weight:700;color:var(--charcoal);flex:1}
-.project-name-toggle{display:inline-flex;align-items:center;gap:6px;cursor:pointer;position:relative}
-.project-name-toggle svg{width:12px;height:12px;color:var(--text-muted);transition:transform .2s}
-.project-name-toggle.open svg{transform:rotate(180deg)}
-.project-details-dropdown{max-height:0;overflow:hidden;transition:max-height .2s ease}
-.project-details-dropdown.open{max-height:80px}
-.pdd-row{font-size:var(--text-sm);color:var(--text-muted);line-height:1.6}
-.pdd-label{color:var(--text-secondary);font-weight:500}
-
-
-.project-breadcrumb-link {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 500;
+.project-top-row{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:var(--space-md);
 }
 
-.project-breadcrumb-link:hover {
-  color: var(--text-primary);
+.project-header{
+  flex:1;
+  min-width:0;
 }
 
-.breadcrumb-slash {
-  margin: 0 6px;
-  color: var(--text-muted);
+.project-name-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.project-name{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  font-size:var(--text-lg);
+  font-weight:700;
+  color:var(--charcoal);
+  min-width:0;
+  flex:1;
+}
+
+.project-name-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  position:relative;
+}
+
+.project-name-toggle svg{
+  width:12px;
+  height:12px;
+  color:var(--text-muted);
+  transition:transform .2s;
+}
+
+.project-name-toggle.open svg{
+  transform:rotate(180deg);
+}
+
+.project-details-dropdown{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .2s ease;
+  margin-top:4px;
+}
+
+.project-details-dropdown.open{
+  max-height:80px;
+}
+
+.pdd-row{
+  font-size:var(--text-sm);
+  color:var(--text-muted);
+  line-height:1.6;
+}
+
+.pdd-label{
+  color:var(--text-secondary);
+  font-weight:500;
+}
+
+.project-breadcrumb-link{
+  color:var(--text-secondary);
+  text-decoration:none;
+  font-weight:500;
+}
+
+.project-breadcrumb-link:hover{
+  color:var(--text-primary);
+}
+
+.breadcrumb-slash{
+  margin:0 6px;
+  color:var(--text-muted);
 }
 
 /* Status pill */
