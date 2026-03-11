@@ -78,8 +78,11 @@ mark {
 }
 
 .project-created {
-  line-height: 1.15;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
   margin-top: 2px;
+  line-height: 1.15;
 }
 .open-count { font-weight:500; color:var(--text-secondary); text-align:center; display:block; font-size:var(--text-sm) }
 .open-count.zero { color:var(--text-muted) }
