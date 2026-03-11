@@ -1132,6 +1132,22 @@ tbody tr:last-child td {
   background-position: right 10px center;
 }
 
+.modal-input.error {
+  border-color: var(--red);
+  background: var(--red-light);
+}
+
+.modal-error {
+  font-size: var(--text-sm);
+  color: var(--red);
+  margin-top: 3px;
+  display: none;
+}
+
+.modal-error.show {
+  display: block;
+}
+
 /* ============================================================
    BULK SELECT
    ============================================================ */
