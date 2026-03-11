@@ -188,7 +188,7 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 .mobile-status-pill{display:inline-flex;align-items:center;justify-content:center;min-height:26px;padding:0 10px;border-radius:8px;font-size:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
 .mobile-task-card.status-complete .mobile-status-pill{background:var(--green);color:#fff}
 .mobile-task-card.status-infield .mobile-status-pill{background:#BFD7EA;color:#2C3034}
-.mobile-task-card.status-pending .mobile-status-pill{background:var(--off-white);color:var(--text-secondary)}
+.mobile-task-card.status-pending .mobile-status-pill{background:#F5C27A;color:var(--amber-light)}
 .mobile-task-divider{height:1px;background:var(--border);margin:10px 0}
 .mobile-task-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .mobile-task-meta{font-size:11px;font-weight:500;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
