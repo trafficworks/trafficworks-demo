@@ -268,7 +268,7 @@ function renderProjects(list) {
       : '';
 
     return '<tr onclick="window.location.href=\'project-detail.html\'" style="cursor:pointer">' +
-      '<td><div class="project-info"><span class="project-indicator ' + getIndicatorClass(p.status) + '"></span><div class="project-name-wrap"><a class="project-name-link table-name" href="project-detail.html" onclick="event.stopPropagation()">' + p.name + '</a><span class="project-created">' + p.created + '</span></div></div></td>' +
+      '<td><div class="project-info"><span class="project-indicator ' + getIndicatorClass(p.status) + '"></span><div class="project-name-wrap"><a class="project-name-link table-name" href="project-detail.html" onclick="event.stopPropagation()">' + p.name + '</a><span class="project-created">Created ' + p.created + '</span></div></div></td>' +
       '<td style="position:relative">' +
         (p.status === 'Complete'
           ? '<span class="status-badge ' + getStatusClass(p.status) + '">' + p.status + '</span>'
