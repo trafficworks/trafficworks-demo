@@ -17,6 +17,12 @@
   color: var(--charcoal);
 }
 
+.progress-fill {
+  transition: width .35s ease;
+}
+
+
+
 /* Mark */
 
 mark {
