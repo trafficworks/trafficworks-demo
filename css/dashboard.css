@@ -79,7 +79,7 @@ mark {
 
 .project-created {
   font-size: 11px;
-  color: var(--text-secondary);
+  color:var(--text-muted);
   font-weight: 400;
   margin-top: 2px;
   line-height: 1;
