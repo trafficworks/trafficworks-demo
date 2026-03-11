@@ -305,14 +305,14 @@ body {
 }
 
 .tv-card-location {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--tv-text-muted);
   margin-top: 6px;
   line-height: 1.35;
 }
 
 .tv-card-tasks {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--tv-text-secondary);
   margin-top: 10px;
@@ -417,9 +417,9 @@ tv-task-desc {
 }
 
 .tv-task-site {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--tv-text-secondary);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--tv-text);
 }
 
 ..tv-task-type {
@@ -427,18 +427,18 @@ tv-task-desc {
   align-items: center;
   padding: 2px 8px;
   border-radius: 5px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.4px;
   border: 1px solid var(--tv-border);
-  color: var(--tv-text-secondary);
+  color: var(--tv-text);
   background: none;
 }
 
 .tv-task-duration {
   font-size: 13px;
   font-weight: 600;
-  color: var(--tv-text);
+  color: var(--tv-text-secondary);
   font-variant-numeric: tabular-nums;
 }
 
