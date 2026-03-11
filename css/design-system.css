@@ -574,7 +574,7 @@ tbody tr:last-child td {
 
 .status-pending {
   background: #F5C27A;
-  color: #FFFFFF;
+  color: var(--amber-light);
 }
 
 .status-in-progress,
