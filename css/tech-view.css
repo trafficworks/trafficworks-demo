@@ -396,7 +396,7 @@ body {
 
 tv-task-desc {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--tv-text);
   line-height: 1.45;
 }
@@ -418,7 +418,7 @@ tv-task-desc {
 
 .tv-task-site {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--tv-text);
 }
 
@@ -428,7 +428,7 @@ tv-task-desc {
   padding: 2px 8px;
   border-radius: 5px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.4px;
   border: 1px solid var(--tv-border);
   color: var(--tv-text);
@@ -437,7 +437,7 @@ tv-task-desc {
 
 .tv-task-duration {
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--tv-text-secondary);
   font-variant-numeric: tabular-nums;
 }
