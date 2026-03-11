@@ -92,6 +92,17 @@
   color:var(--text-muted);
 }
 
+.task-desc{
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+
+
+
+
+
 /* Mark */
 
 mark {
