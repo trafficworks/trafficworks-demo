@@ -46,13 +46,19 @@
       <input type="text" placeholder="Search projects…" id="searchInput" oninput="filterProjects()">
     </div>
 
-    <select class="filter-select" id="statusFilter" onchange="filterProjects()">
-      <option value="all">All Statuses</option>
-      <option value="Pending">Pending</option>
-      <option value="In Progress">In Progress</option>
-      <option value="On Hold">On Hold</option>
-      <option value="Complete">Complete</option>
-    </select>
+   <div class="status-filter">
+  <button class="filter-select" onclick="toggleStatusMenu()">
+    <span id="statusFilterLabel">All Statuses</span>
+  </button>
+
+  <div class="kebab-menu drop-down" id="statusFilterMenu">
+    <button class="kebab-menu-item" onclick="setStatusFilter('all','All Statuses')">All Statuses</button>
+    <button class="kebab-menu-item" onclick="setStatusFilter('Pending','Pending')">Pending</button>
+    <button class="kebab-menu-item" onclick="setStatusFilter('In Progress','In Progress')">In Progress</button>
+    <button class="kebab-menu-item" onclick="setStatusFilter('On Hold','On Hold')">On Hold</button>
+    <button class="kebab-menu-item" onclick="setStatusFilter('Complete','Complete')">Complete</button>
+  </div>
+</div>
 
     <div style="flex:1"></div>
 
