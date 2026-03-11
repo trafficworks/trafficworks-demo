@@ -636,12 +636,17 @@ tbody tr:last-child td {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   z-index: 50;
   padding: var(--space-xs) 0;
-  display: none;
   min-width: 120px;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity .15s ease, transform .15s ease;
 }
 
 .status-dropdown.open {
-  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .status-dropdown-item {
