@@ -95,7 +95,7 @@
 /* Mark */
 
 mark {
-	--mark-color: rgba(229,224,117,0.3);
+	--mark-color: #F0ECB0;
 	--mark-skew: 0.25em;
 	--mark-height: 1em;
 	--mark-overlap: 0.3em;
