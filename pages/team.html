@@ -1,51 +1,642 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TrafficWorks — Team</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/design-system.css">
-<link rel="stylesheet" href="../css/dashboard.css">
-<style>
-.section-wrap{max-width:1120px;margin:0 auto;padding:32px 24px}
-.placeholder-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:28px}
-.placeholder-title{font-size:22px;font-weight:700;color:var(--charcoal);margin-bottom:8px}
-.placeholder-sub{font-size:14px;color:var(--text-secondary);margin-bottom:20px;max-width:720px}
-.stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
-.stat-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:18px}
-.stat-card .label{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted)}
-.stat-card .value{margin-top:4px;font-size:22px;font-weight:700;color:var(--charcoal)}
-@media(max-width:768px){.section-wrap{padding:20px 16px}.stat-row{grid-template-columns:1fr}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrafficWorks — Team</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/design-system.css">
+  <link rel="stylesheet" href="../css/team.css">
 </head>
 <body>
+
 <nav class="topnav">
   <div class="topnav-left">
-    <a class="logo" href="../index.html"><div class="logo-mark"></div><span class="logo-text">TrafficWorks</span></a>
+    <a class="logo" href="dashboard.html">
+      <div class="logo-mark"></div>
+      <span class="logo-text">TrafficWorks</span>
+    </a>
     <div class="nav-divider"></div>
     <div class="nav-links">
       <a class="nav-link" href="dashboard.html">Projects</a>
       <a class="nav-link active" href="team.html">Team</a>
       <a class="nav-link" href="archive.html">Archive</a>
-      <a class="nav-link " href="billing.html">Billing</a>
+      <a class="nav-link" href="billing.html">Billing</a>
     </div>
   </div>
-  <div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div></div>
+  <div class="topnav-right">
+    <span class="company-badge">Acme Traffic Co</span>
+    <div class="user-avatar">WJ</div>
+  </div>
 </nav>
-<div class="section-wrap">
-  <div class="page-header"><h1 class="page-title">Team</h1></div>
-  <div class="placeholder-card">
-    <div class="placeholder-title">Simple placeholder team page for GitHub Pages testing.</div>
-    <div class="placeholder-sub">This is a lightweight stand-in so your navigation works during demo testing. You can replace it later with the real manager and tech UI.</div>
-    <div class="stat-row">
-      
-<div class="stat-card"><div class="label">Managers</div><div class="value">3</div></div>
-<div class="stat-card"><div class="label">Field Techs</div><div class="value">8</div></div>
-<div class="stat-card"><div class="label">Assigned Tonight</div><div class="value">5</div></div>
 
+<div class="main">
+
+  <!-- MANAGERS -->
+  <section class="team-section">
+    <div class="team-section-header">
+      <div class="team-section-title-group">
+        <span class="team-section-title">Managers</span>
+        <span class="team-section-subtitle">Admin &amp; project managers</span>
+      </div>
+
+      <button class="btn btn-primary" onclick="openAddModal('manager')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add Manager
+      </button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:24%">Name</th>
+            <th style="width:24%">Email</th>
+            <th style="width:17%">Phone</th>
+            <th style="width:12%">Role</th>
+            <th style="width:12%">Status</th>
+            <th style="width:4%"></th>
+          </tr>
+        </thead>
+        <tbody id="managerTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="team-mobile-cards" id="managerCards"></div>
+  </section>
+
+  <!-- TECHS -->
+  <section class="team-section">
+    <div class="team-section-header">
+      <div class="team-section-title-group">
+        <span class="team-section-title">Field Technicians</span>
+        <span class="team-section-subtitle">Unlimited</span>
+      </div>
+
+      <button class="btn btn-primary" onclick="openAddModal('tech')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add Tech
+      </button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:22%">Name</th>
+            <th style="width:22%">Email</th>
+            <th style="width:15%">Phone</th>
+            <th style="width:12%">PIN</th>
+            <th style="width:10%">Status</th>
+            <th style="width:4%"></th>
+          </tr>
+        </thead>
+        <tbody id="techTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="team-mobile-cards" id="techCards"></div>
+
+    <div class="team-pin-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+      <span>PINs are auto-generated 6-digit codes unique to each tech. Techs use their PIN to access the mobile field view. PINs are permanent and auto-lock after 5 failed attempts for 15 minutes.</span>
+    </div>
+  </section>
+
+</div>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-title" id="addModalTitle">Add Team Member</div>
+
+    <div class="form-group">
+      <label class="form-label" for="addFirst">First Name</label>
+      <input class="modal-input" id="addFirst" placeholder="First name">
+      <div class="modal-error" id="errFirst">First name is required</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="addLast">Last Name</label>
+      <input class="modal-input" id="addLast" placeholder="Last name">
+      <div class="modal-error" id="errLast">Last name is required</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="addEmail">Email</label>
+      <input class="modal-input" id="addEmail" type="email" placeholder="email@example.com">
+      <div class="modal-error" id="errEmail">Enter a valid email address</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="addPhone">Phone</label>
+      <input class="modal-input" id="addPhone" type="tel" placeholder="(555) 123-4567" maxlength="14">
+      <div class="modal-error" id="errPhone">Enter a complete 10-digit phone number</div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeAddModal()">Cancel</button>
+      <button class="btn btn-solid" id="addSubmitBtn" onclick="addMember()">Add Member</button>
     </div>
   </div>
 </div>
+
+<!-- DELETE MODAL -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <div class="modal-title">Remove Team Member</div>
+    <div class="team-modal-body" id="deleteModalBody">Are you sure?</div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn btn-danger" id="confirmDeleteBtn">Remove</button>
+    </div>
+  </div>
+</div>
+
+<!-- PIN MODAL -->
+<div class="modal-overlay" id="pinModal">
+  <div class="modal team-pin-modal">
+    <div class="team-modal-icon-circle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#3AA66A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+
+    <div class="modal-title" id="pinModalTitle">Tech Added</div>
+    <div class="team-pin-modal-subtitle" id="pinModalName">Field Technician</div>
+
+    <div class="team-pin-modal-label">Their PIN</div>
+    <div class="team-pin-confirm-display" id="pinModalPin">318472</div>
+
+    <div class="team-pin-modal-copy-row">
+      <button class="btn btn-ghost" onclick="copyPin()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px" aria-hidden="true">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        Copy PIN
+      </button>
+    </div>
+
+    <div class="modal-actions team-pin-modal-actions">
+      <button class="btn btn-solid" onclick="closePinModal()">Done</button>
+    </div>
+
+    <div class="team-pin-modal-footnote">
+      Share this PIN with the tech — they'll use it to log into the mobile field view.
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function generatePin() {
+  var pin = '';
+  for (var i = 0; i < 6; i++) pin += Math.floor(Math.random() * 10);
+  return pin;
+}
+
+function formatPhone(val) {
+  var digits = val.replace(/\D/g, '');
+  if (digits.length > 10) digits = digits.slice(0, 10);
+  if (digits.length === 0) return '';
+  if (digits.length <= 3) return '(' + digits;
+  if (digits.length <= 6) return '(' + digits.slice(0, 3) + ') ' + digits.slice(3);
+  return '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6);
+}
+
+document.addEventListener('input', function(e) {
+  if (e.target.id === 'addPhone') {
+    var pos = e.target.selectionStart;
+    var before = e.target.value.length;
+    e.target.value = formatPhone(e.target.value);
+    var after = e.target.value.length;
+    e.target.selectionStart = e.target.selectionEnd = pos + (after - before);
+  }
+
+  if (e.target.classList.contains('modal-input') && e.target.classList.contains('error')) {
+    e.target.classList.remove('error');
+    var errId = 'err' + e.target.id.replace('add', '');
+    var errEl = document.getElementById(errId);
+    if (errEl) errEl.classList.remove('show');
+  }
+});
+
+var managers = [
+  { id: 1, first: 'Wesley', last: 'Johnson', email: 'wesley@acmetraffic.com', phone: '(626) 555-0101', role: 'admin', status: 'active' },
+  { id: 2, first: 'Sarah', last: 'Chen', email: 'sarah@acmetraffic.com', phone: '(626) 555-0102', role: 'manager', status: 'active' },
+  { id: 3, first: 'Mike', last: 'Torres', email: 'mike@acmetraffic.com', phone: '(626) 555-0103', role: 'manager', status: 'invited' }
+];
+
+var techs = [
+  { id: 4, first: 'Carlos', last: 'M.', email: 'carlos@acmetraffic.com', phone: '(626) 555-0201', pin: '318472', status: 'active' },
+  { id: 5, first: 'Diana', last: 'R.', email: 'diana@acmetraffic.com', phone: '(626) 555-0202', pin: '825139', status: 'active' },
+  { id: 6, first: 'James', last: 'T.', email: 'james@acmetraffic.com', phone: '(626) 555-0203', pin: '467201', status: 'active' },
+  { id: 7, first: 'Maria', last: 'S.', email: 'maria@acmetraffic.com', phone: '(626) 555-0204', pin: '952847', status: 'active' },
+  { id: 8, first: 'Ray', last: 'P.', email: 'ray@acmetraffic.com', phone: '(626) 555-0205', pin: '130596', status: 'active' }
+];
+
+var nextId = 9;
+var addType = 'tech';
+var editingId = null;
+var deleteTarget = null;
+var deleteType = null;
+var openKebab = null;
+
+function render() {
+  renderManagers();
+  renderTechs();
+}
+
+function getManagerRoleBadge(role) {
+  return role === 'admin'
+    ? '<span class="team-role-badge team-role-admin">Admin</span>'
+    : '<span class="team-role-badge team-role-manager">Manager</span>';
+}
+
+function getStatusClass(status) {
+  return status === 'active'
+    ? 'team-status-active'
+    : status === 'invited'
+    ? 'team-status-invited'
+    : 'team-status-inactive';
+}
+
+function getStatusText(status) {
+  return status === 'active'
+    ? 'Active'
+    : status === 'invited'
+    ? 'Invited'
+    : 'Inactive';
+}
+
+function renderManagers() {
+  var tbody = document.getElementById('managerTableBody');
+  var cards = document.getElementById('managerCards');
+
+  tbody.innerHTML = managers.map(function(m) {
+    var kebab = m.role === 'admin'
+      ? '<span class="team-member-locked">Account owner</span>'
+      : '<button class="kebab-btn" onclick="toggleKebab(\\'m\\',' + m.id + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>' +
+        '<div class="kebab-menu" id="kebab-m-' + m.id + '">' +
+          '<button class="kebab-menu-item" onclick="editMember(\\'manager\\',' + m.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
+          (m.status === 'invited'
+            ? '<button class="kebab-menu-item" onclick="resendInvite(' + m.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Resend Invite</button>'
+            : '') +
+          '<button class="kebab-menu-item danger" onclick="promptDelete(\\'manager\\',' + m.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+        '</div>';
+
+    return '<tr>' +
+      '<td><div class="team-member-name">' + m.first + ' ' + m.last + '</div></td>' +
+      '<td class="team-table-secondary">' + m.email + '</td>' +
+      '<td class="team-table-secondary">' + m.phone + '</td>' +
+      '<td>' + getManagerRoleBadge(m.role) + '</td>' +
+      '<td><span class="team-status ' + getStatusClass(m.status) + '">' + getStatusText(m.status) + '</span></td>' +
+      '<td class="team-kebab-cell">' + kebab + '</td>' +
+      '</tr>';
+  }).join('');
+
+  cards.innerHTML = managers.map(function(m) {
+    return '<div class="team-mobile-card">' +
+      '<div class="team-mobile-card-top">' +
+        '<div>' +
+          '<div class="team-mobile-card-name">' + m.first + ' ' + m.last + '</div>' +
+          '<div class="team-mobile-card-contact">' + m.email + ' • ' + m.phone + '</div>' +
+        '</div>' +
+        getManagerRoleBadge(m.role) +
+      '</div>' +
+      '<div class="team-mobile-card-bottom">' +
+        '<span class="team-status ' + getStatusClass(m.status) + '">' + getStatusText(m.status) + '</span>' +
+        (m.role !== 'admin'
+          ? '<button class="kebab-btn" onclick="toggleKebab(\\'mm\\',' + m.id + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>' +
+            '<div class="kebab-menu" id="kebab-mm-' + m.id + '">' +
+              '<button class="kebab-menu-item" onclick="editMember(\\'manager\\',' + m.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
+              (m.status === 'invited'
+                ? '<button class="kebab-menu-item" onclick="resendInvite(' + m.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Resend Invite</button>'
+                : '') +
+              '<button class="kebab-menu-item danger" onclick="promptDelete(\\'manager\\',' + m.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+            '</div>'
+          : '<span class="team-member-locked">Account owner</span>') +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderTechs() {
+  var tbody = document.getElementById('techTableBody');
+  var cards = document.getElementById('techCards');
+
+  tbody.innerHTML = techs.map(function(t) {
+    return '<tr>' +
+      '<td><div class="team-member-name">' + t.first + ' ' + t.last + '</div></td>' +
+      '<td class="team-table-secondary">' + t.email + '</td>' +
+      '<td class="team-table-secondary">' + t.phone + '</td>' +
+      '<td><span class="team-pin-display">' + t.pin + '</span></td>' +
+      '<td><span class="team-status ' + getStatusClass(t.status) + '">' + getStatusText(t.status) + '</span></td>' +
+      '<td class="team-kebab-cell">' +
+        '<button class="kebab-btn" onclick="toggleKebab(\\'t\\',' + t.id + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>' +
+        '<div class="kebab-menu" id="kebab-t-' + t.id + '">' +
+          '<button class="kebab-menu-item" onclick="editMember(\\'tech\\',' + t.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
+          '<button class="kebab-menu-item" onclick="toggleStatus(' + t.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>' + (t.status === 'active' ? 'Deactivate' : 'Activate') + '</button>' +
+          '<button class="kebab-menu-item danger" onclick="promptDelete(\\'tech\\',' + t.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+        '</div>' +
+      '</td>' +
+      '</tr>';
+  }).join('');
+
+  cards.innerHTML = techs.map(function(t) {
+    return '<div class="team-mobile-card">' +
+      '<div class="team-mobile-card-top">' +
+        '<div>' +
+          '<div class="team-mobile-card-name">' + t.first + ' ' + t.last + '</div>' +
+          '<div class="team-mobile-card-contact">' + t.email + ' • ' + t.phone + '</div>' +
+        '</div>' +
+        '<span class="team-status ' + getStatusClass(t.status) + '">' + getStatusText(t.status) + '</span>' +
+      '</div>' +
+      '<div class="team-mobile-card-bottom">' +
+        '<span class="team-mobile-card-pin">' + t.pin + '</span>' +
+        '<button class="kebab-btn" onclick="toggleKebab(\\'tm\\',' + t.id + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>' +
+        '<div class="kebab-menu" id="kebab-tm-' + t.id + '">' +
+          '<button class="kebab-menu-item" onclick="editMember(\\'tech\\',' + t.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
+          '<button class="kebab-menu-item" onclick="toggleStatus(' + t.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>' + (t.status === 'active' ? 'Deactivate' : 'Activate') + '</button>' +
+          '<button class="kebab-menu-item danger" onclick="promptDelete(\\'tech\\',' + t.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function openAddModal(type) {
+  addType = type;
+  editingId = null;
+  clearErrors();
+  document.getElementById('addModalTitle').textContent = type === 'manager' ? 'Add Manager' : 'Add Technician';
+  document.getElementById('addFirst').value = '';
+  document.getElementById('addLast').value = '';
+  document.getElementById('addEmail').value = '';
+  document.getElementById('addPhone').value = '';
+  document.getElementById('addSubmitBtn').textContent = 'Add Member';
+  document.getElementById('addModal').classList.add('visible');
+  document.getElementById('addFirst').focus();
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('visible');
+}
+
+function clearErrors() {
+  ['First', 'Last', 'Email', 'Phone'].forEach(function(f) {
+    document.getElementById('add' + f).classList.remove('error');
+    document.getElementById('err' + f).classList.remove('show');
+  });
+}
+
+function validateForm() {
+  clearErrors();
+
+  var valid = true;
+  var first = document.getElementById('addFirst').value.trim();
+  var last = document.getElementById('addLast').value.trim();
+  var email = document.getElementById('addEmail').value.trim();
+  var phone = document.getElementById('addPhone').value.trim();
+  var phoneDigits = phone.replace(/\D/g, '');
+
+  if (!first) {
+    document.getElementById('addFirst').classList.add('error');
+    document.getElementById('errFirst').classList.add('show');
+    valid = false;
+  }
+
+  if (!last) {
+    document.getElementById('addLast').classList.add('error');
+    document.getElementById('errLast').classList.add('show');
+    valid = false;
+  }
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('addEmail').classList.add('error');
+    document.getElementById('errEmail').classList.add('show');
+    valid = false;
+  }
+
+  if (phoneDigits.length !== 10) {
+    document.getElementById('addPhone').classList.add('error');
+    document.getElementById('errPhone').classList.add('show');
+    valid = false;
+  }
+
+  return valid;
+}
+
+function addMember() {
+  if (!validateForm()) return;
+
+  var first = document.getElementById('addFirst').value.trim();
+  var last = document.getElementById('addLast').value.trim();
+  var email = document.getElementById('addEmail').value.trim();
+  var phone = document.getElementById('addPhone').value.trim();
+
+  if (editingId !== null) {
+    var editList = addType === 'manager' ? managers : techs;
+    var existing = editList.find(function(x) { return x.id === editingId; });
+
+    if (existing) {
+      existing.first = first;
+      existing.last = last;
+      existing.email = email;
+      existing.phone = phone;
+    }
+
+    editingId = null;
+    closeAddModal();
+    render();
+    showToast('Changes saved');
+    return;
+  }
+
+  var member = {
+    id: nextId++,
+    first: first,
+    last: last,
+    email: email,
+    phone: phone,
+    pin: generatePin(),
+    status: 'active'
+  };
+
+  if (addType === 'manager') {
+    member.role = 'manager';
+    member.status = 'invited';
+    delete member.pin;
+    managers.push(member);
+    closeAddModal();
+    render();
+    showToast('Invite sent to ' + email);
+  } else {
+    techs.push(member);
+    closeAddModal();
+    render();
+    showPinModal(member);
+  }
+}
+
+function editMember(type, id) {
+  closeKebabs();
+
+  var list = type === 'manager' ? managers : techs;
+  var member = list.find(function(x) { return x.id === id; });
+  if (!member) return;
+
+  addType = type;
+  editingId = id;
+  clearErrors();
+  document.getElementById('addModalTitle').textContent = 'Edit ' + (type === 'manager' ? 'Manager' : 'Technician');
+  document.getElementById('addFirst').value = member.first;
+  document.getElementById('addLast').value = member.last;
+  document.getElementById('addEmail').value = member.email === '—' ? '' : member.email;
+  document.getElementById('addPhone').value = member.phone === '—' ? '' : member.phone;
+  document.getElementById('addSubmitBtn').textContent = 'Save Changes';
+  document.getElementById('addModal').classList.add('visible');
+  document.getElementById('addFirst').focus();
+}
+
+function toggleStatus(id) {
+  closeKebabs();
+  var tech = techs.find(function(x) { return x.id === id; });
+  if (!tech) return;
+
+  tech.status = tech.status === 'active' ? 'inactive' : 'active';
+  render();
+  showToast(tech.first + ' ' + (tech.status === 'active' ? 'activated' : 'deactivated'));
+}
+
+function promptDelete(type, id) {
+  closeKebabs();
+
+  deleteTarget = id;
+  deleteType = type;
+
+  var list = type === 'manager' ? managers : techs;
+  var member = list.find(function(x) { return x.id === id; });
+
+  document.getElementById('deleteModalBody').textContent =
+    'Remove ' + (member ? member.first + ' ' + member.last : 'this member') + '? This cannot be undone.';
+
+  document.getElementById('deleteModal').classList.add('visible');
+}
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+  if (deleteTarget === null) return;
+
+  if (deleteType === 'manager') {
+    managers = managers.filter(function(x) { return x.id !== deleteTarget; });
+  } else {
+    techs = techs.filter(function(x) { return x.id !== deleteTarget; });
+  }
+
+  deleteTarget = null;
+  deleteType = null;
+  closeDeleteModal();
+  render();
+  showToast('Member removed');
+});
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.remove('visible');
+}
+
+function toggleKebab(prefix, id, e) {
+  e.stopPropagation();
+
+  var key = prefix + '-' + id;
+
+  if (openKebab && openKebab !== key) {
+    var old = document.getElementById('kebab-' + openKebab);
+    if (old) old.classList.remove('open', 'drop-up', 'drop-down');
+  }
+
+  var menu = document.getElementById('kebab-' + key);
+  var isOpen = menu.classList.contains('open');
+  menu.classList.remove('open', 'drop-up', 'drop-down');
+
+  if (!isOpen) {
+    var rect = e.currentTarget.getBoundingClientRect();
+    var spaceBelow = window.innerHeight - rect.bottom;
+    menu.classList.add('open', spaceBelow < 160 ? 'drop-up' : 'drop-down');
+    openKebab = key;
+  } else {
+    openKebab = null;
+  }
+}
+
+function closeKebabs() {
+  if (openKebab) {
+    var el = document.getElementById('kebab-' + openKebab);
+    if (el) el.classList.remove('open', 'drop-up', 'drop-down');
+    openKebab = null;
+  }
+}
+
+document.addEventListener('click', closeKebabs);
+
+function showPinModal(member) {
+  document.getElementById('pinModalTitle').textContent = member.first + ' ' + member.last + ' Added';
+  document.getElementById('pinModalName').textContent = 'Field Technician';
+  document.getElementById('pinModalPin').textContent = member.pin;
+  document.getElementById('pinModal').classList.add('visible');
+}
+
+function closePinModal() {
+  document.getElementById('pinModal').classList.remove('visible');
+}
+
+function copyPin() {
+  var pin = document.getElementById('pinModalPin').textContent;
+  navigator.clipboard.writeText(pin)
+    .then(function() { showToast('PIN copied to clipboard'); })
+    .catch(function() { showToast('PIN: ' + pin); });
+}
+
+function resendInvite(id) {
+  closeKebabs();
+  var manager = managers.find(function(x) { return x.id === id; });
+  if (manager) showToast('Invite resent to ' + manager.email);
+}
+
+function showToast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('visible');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(function() {
+    el.classList.remove('visible');
+  }, 2500);
+}
+
+document.querySelectorAll('.modal-overlay').forEach(function(el) {
+  el.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeAddModal();
+    closeDeleteModal();
+    closePinModal();
+  }
+});
+
+render();
+</script>
 </body>
 </html>
