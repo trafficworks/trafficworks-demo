@@ -300,7 +300,7 @@ function renderProjects(list) {
 
 function filterProjects() {
   var search = document.getElementById('searchInput').value.toLowerCase();
-  var status = document.getElementById('statusFilter').value;
+  var status = currentStatusFilter;
 
   var filtered = projects.filter(function(p) {
     var matchesSearch = !search ||
@@ -625,6 +625,22 @@ filterProjects();
 window.addEventListener('pageshow', function(e) {
   if (e.persisted) filterProjects();
 });
+
+var currentStatusFilter = "all";
+
+function toggleStatusMenu() {
+  document.getElementById("statusFilterMenu").classList.toggle("open");
+}
+
+function setStatusFilter(value,label) {
+  currentStatusFilter = value;
+
+  document.getElementById("statusFilterLabel").textContent = label;
+
+  document.getElementById("statusFilterMenu").classList.remove("open");
+
+  filterProjects();
+}  
 </script>
 </body>
 </html>
