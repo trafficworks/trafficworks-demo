@@ -84,7 +84,7 @@ mark {
   margin-top: 2px;
   line-height: 1;
 }
-.open-count { font-weight:500; color:var(--text-secondary); text-align:center; display:block; font-size:var(--text-sm) }
+.open-count { font-weight:600; color:var(--text-secondary); text-align:center; display:block; font-size:var(--text-sm) }
 .open-count.zero { color:var(--text-muted) }
 
 /* Status badge clickable behavior (dashboard-only) */
