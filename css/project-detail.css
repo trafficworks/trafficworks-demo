@@ -157,7 +157,7 @@ mark {
 
 /* Notes input */
 .project-notes-input{width:100%;padding:var(--space-sm) 12px;border:1px solid var(--border);border-radius:6px;font-family:'Inter',sans-serif;font-size:var(--text-md);color:var(--text-primary);background:var(--white);outline:none;resize:vertical;min-height:36px;max-height:70px;transition:border-color .15s;line-height:1.5}
-.project-notes-input:focus{border-color:var(--steel)}
+.project-notes-input:focus{background:#6b8fa8}
 .project-notes-input::placeholder{background:#6b8fa8}
 .notes-hint{font-size:var(--text-sm);color:var(--text-muted);margin-top:3px;font-style:italic}
 
