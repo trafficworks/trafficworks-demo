@@ -41,6 +41,19 @@
   --table-header-color: #374151;
 }
 
+/* Status colors (semantic naming for clarity) */
+--status-pending-bg: #fff7e8;
+--status-pending-text: #b66b00;
+
+--status-in-progress-bg: #e8f1ff;
+--status-in-progress-bar: #3b82f6;
+
+--status-complete-bg: #e8f7ee;
+--status-complete-text: #1b7f4c;
+
+--status-on-hold-bg: #f3f4f6;
+--status-on-hold-text: #6b7280;
+
 /* ============================================================
    RESET & BASE TYPOGRAPHY
    ============================================================ */
