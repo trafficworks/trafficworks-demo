@@ -224,7 +224,42 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 table{display:none}
 .table-wrap{border:none;box-shadow:none;background:none}
 .mobile-task-cards{display:flex;flex-direction:column;gap:10px}
+
+.project-top-row{
+  display:block;
+  margin-bottom:20px;
 }
+
+.project-header{
+  min-width:0;
+}
+
+.project-name-row{
+  display:block;
+}
+
+.project-breadcrumb-link,
+.breadcrumb-slash{
+  display:inline;
+  font-size:14px;
+  line-height:1.2;
+}
+
+.project-name{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:6px;
+  font-size:18px;
+  line-height:1.2;
+  flex-wrap:nowrap;
+  min-width:0;
+}
+
+.project-name-toggle{
+  flex-shrink:0;
+}
+
 
 /* ============================================================
    PROJECT DETAIL — Row Height Alignment Fix
