@@ -235,7 +235,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 16px 10px;
+  padding: 7px 16px 7px;
   background: var(--tv-header-bg);
 }
 
