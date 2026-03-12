@@ -997,12 +997,12 @@ tbody tr:last-child td {
   min-height: 20px;
 }
 
-.info-dot {
+..info-dot {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 1.5px solid #6b8fa8;
-  color: #6b8fa8;
+  border: 1.5px solid var(--text-muted);
+  color: var(--text-muted);
   background: transparent;
   cursor: pointer;
   position: relative;
@@ -1013,14 +1013,11 @@ tbody tr:last-child td {
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
-  font-style: normal;
   transition: border-color .15s, color .15s, background .15s;
 }
 
 .info-dot::before {
   content: "i";
-  display: block;
-  transform: translateY(-0.25px);
 }
 
 .info-dot:hover {
