@@ -1287,11 +1287,34 @@ tbody tr:last-child td {
    ============================================================ */
 @media (max-width: 768px) {
   .topnav {
-    padding: 0 var(--space-md);
+    padding: 10px var(--space-md);
+  }
+
+  .topnav-left{
+    gap:10px;
+    min-width:0;
+  }
+
+  .topnav-right{
+    flex-shrink:0;
   }
 
   .nav-links {
     display: none;
+  }
+
+  .company-badge{
+    display:none;
+  }
+
+  .logo-text{
+    font-size:16px;
+  }
+
+  .user-avatar{
+    width:36px;
+    height:36px;
+    font-size:14px;
   }
 
   .main {
