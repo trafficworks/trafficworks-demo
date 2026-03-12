@@ -285,11 +285,28 @@ function renderProjects(list) {
   }).join('');
 
   mc.innerHTML = list.map(function(p) {
-    var completeTasks = p.totalTasks - p.openTasks;
-    var taskText = completeTasks + ' of ' + p.totalTasks + ' complete';
+  var completeTasks = p.totalTasks - p.openTasks;
+  var taskText = completeTasks + ' of ' + p.totalTasks + ' complete';
 
-    return '<div class="mobile-card" onclick="window.location.href=\'project-detail.html\'"><div class="mobile-card-top"><div><div class="mobile-card-name">' + p.name + '</div><div class="mobile-card-sub">' + p.client + ' • ' + p.location + '</div></div><div class="mobile-card-status"><span class="status-badge ' + getStatusClass(p.status) + '">' + p.status + '</span></div></div><div class="mobile-card-progress"><div class="mobile-card-bar"><div class="mobile-card-fill ' + getFillClass(p.pct) + '" style="width:' + p.pct + '%"></div></div><span class="mobile-card-pct">' + taskText + '</span></div></div>';
-  }).join('');
+  return '<div class="mobile-card" onclick="window.location.href=\'project-detail.html\'">' +
+    '<div class="mobile-card-top">' +
+      '<div class="mobile-card-text">' +
+        '<div class="mobile-card-name">' + p.name + '</div>' +
+        '<div class="mobile-card-location">' + p.location + '</div>' +
+        '<div class="mobile-card-client">' + p.client + '</div>' +
+      '</div>' +
+      '<div class="mobile-card-status">' +
+        '<span class="status-badge ' + getStatusClass(p.status) + '">' + p.status + '</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="mobile-card-progress">' +
+      '<div class="mobile-card-bar">' +
+        '<div class="mobile-card-fill ' + getFillClass(p.pct) + '" style="width:' + p.pct + '%"></div>' +
+      '</div>' +
+      '<span class="mobile-card-pct">' + taskText + '</span>' +
+    '</div>' +
+  '</div>';
+}).join('');
 }
 
 function filterProjects() {
