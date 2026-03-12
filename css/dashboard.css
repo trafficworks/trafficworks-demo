@@ -150,13 +150,11 @@ mark {
 .mobile-stat-pill .pill-val { font-weight:700; font-size:15px; color:var(--text-primary) }
 
 /* Mobile cards */
+/* Mobile cards */
 .mobile-cards { display:none }
 
-.mobile-card{
-  position:relative;
-}
-
 .mobile-card {
+  position:relative;
   background:var(--white);
   border:1px solid var(--border);
   border-radius:10px;
@@ -170,10 +168,7 @@ mark {
 }
 
 .mobile-card-top{
-  display:flex;
-  flex-direction:column;
-  align-items:stretch;
-  gap:10px;
+  display:block;
 }
 
 .mobile-card-text{
@@ -181,6 +176,7 @@ mark {
   grid-template-rows:auto auto auto;
   row-gap:6px;
   min-width:0;
+  padding-right:118px; /* room for badge */
 }
 
 .mobile-card-name,
@@ -195,6 +191,7 @@ mark {
   font-weight:600;
   color:var(--text-primary);
   line-height:1.2;
+  word-break:break-word;
 }
 
 .mobile-card-location,
@@ -207,19 +204,11 @@ mark {
 .mobile-card-status{
   position:absolute;
   top:14px;
-  right:14px;
-}
-
-.mobile-card-text{
-  padding-right:110px;
-}
-
-.mobile-card-name{
-  word-break:break-word;
+  right:16px;
 }
 
 .mobile-card-progress{
-  margin-top:10px;
+  margin-top:12px;
   display:flex;
   align-items:center;
   gap:var(--space-sm);
@@ -249,47 +238,6 @@ mark {
   color:var(--text-muted);
   min-width:48px;
   text-align:right;
-}
-
-.mobile-card-top{
-  display:flex;
-  flex-direction:column;
-  align-items:stretch;
-  gap:10px;
-}
-
-.mobile-card-text{
-  display:grid;
-  grid-template-rows:auto auto auto;
-  row-gap:6px;
-  min-width:0;
-}
-
-.mobile-card-name,
-.mobile-card-location,
-.mobile-card-client{
-  display:block;
-  margin:0;
-}
-
-
-.mobile-card-name{
-  font-size:var(--text-lg);
-  font-weight:600;
-  color:var(--text-primary);
-  line-height:1.2;
-}
-
-.mobile-card-location,
-.mobile-card-client{
-  font-size:var(--text-sm);
-  color:var(--text-secondary);
-  line-height:1.2;
-}
-
-.mobile-card-status{
-  align-self:flex-start;
-  padding-top:0;
 }
 
 /* Dashboard mobile overrides */
