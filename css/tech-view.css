@@ -238,25 +238,32 @@ body {
   padding: 6px 16px 10px;
   background: var(--tv-header-bg);
 }
+
 .tv-task-progress-bar {
   flex: 1;
   height: 4px;
   background: var(--tv-divider);
   border-radius: 2px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 }
+
 .tv-task-progress-fill {
   height: 100%;
   background: var(--green);
   border-radius: 2px;
   transition: width .4s ease;
 }
+
 .tv-task-progress-pct {
+  display: flex;
+  align-items: center;
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--tv-header-text);
-  min-width: 30px;
-  text-align: right;
+  min-width: 32px;
+  justify-content: flex-end;
 }
 
 /* ============================================================
