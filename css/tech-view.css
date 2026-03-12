@@ -397,28 +397,29 @@ body {
 
 /* Task title row with note icon */
 /* Title row */
+/* Task title row with note icon */
 .tv-task-desc-row{
   display:flex;
   align-items:flex-start;
   gap:6px;
+  min-width:0;
 }
 
-/* Task name */
 .tv-task-desc{
   flex:1;
   min-width:0;
+  font-size:15px;
+  font-weight:700;
+  color:var(--tv-text);
   line-height:1.35;
+  white-space:normal;
+  overflow-wrap:anywhere;
   word-break:break-word;
 }
 
-/* Note icon stays attached */
-.tv-note-indicator{
-  flex-shrink:0;
+.tv-task-desc-row .tv-note-indicator{
+  flex:0 0 auto;
   margin-top:2px;
-}
-
-.tv-task-desc-row .tv-note-indicator {
-  flex-shrink: 0;
 }
 
 /* Left: task info column */
@@ -586,6 +587,7 @@ body {
    ============================================================ */
 .tv-note-indicator {
   display: inline-flex;
+  flex-shrink: 0; 
   align-items: center;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
