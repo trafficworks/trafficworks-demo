@@ -433,6 +433,7 @@ body {
 
 /* Divider between name and details */
 .tv-task-divider {
+  width: 100%;
   height: 1px;
   background: var(--tv-border);
   margin: 8px 0;
