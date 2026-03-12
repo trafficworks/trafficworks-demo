@@ -418,7 +418,7 @@ body {
 
 .tv-task-site {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--tv-text);
 }
 
@@ -428,7 +428,7 @@ body {
   padding: 2px 8px;
   border-radius: 5px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.4px;
   border: 1px solid var(--tv-border);
   color: var(--tv-text);
