@@ -395,6 +395,23 @@ body {
   gap: 0;
 }
 
+/* Task title row with note icon */
+.tv-task-desc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tv-task-desc {
+  flex: 1;
+  min-width: 0;
+}
+
+.tv-task-desc-row .tv-note-indicator {
+  flex-shrink: 0;
+}
+
 /* Left: task info column */
 .tv-task-content {
   flex: 1;
