@@ -95,10 +95,6 @@ mark {
   position: relative;
 }
 
-.table-wrap {
-  position: relative;
-}
-
 .empty-state {
   display: none;
   min-height: 340px;
