@@ -130,15 +130,15 @@ body {
 }
 .tv-project-info.visible { display: flex }
 .tv-project-name-bar {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   color: var(--tv-header-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .tv-project-loc-bar {
-  font-size: var(--text-sm);
+  font-size: 14px;
   color: var(--tv-text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -217,13 +217,13 @@ body {
   background: var(--tv-surface-hover);
 }
 .tv-filter-value {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--tv-header-text);
   line-height: 1.2;
 }
 .tv-filter-label {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--tv-text-muted);
   text-transform: uppercase;
@@ -312,7 +312,7 @@ body {
 }
 
 .tv-card-tasks {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--tv-text-secondary);
   margin-top: 10px;
