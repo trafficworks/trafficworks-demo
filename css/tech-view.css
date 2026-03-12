@@ -416,8 +416,9 @@ body {
 }
 
 .tv-task-desc-row .tv-note-indicator{
-  flex:0 0 auto;
-  margin-top:2px;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  align-self: center;
 }
 
 /* Left: task info column */
