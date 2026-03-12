@@ -399,15 +399,13 @@ body {
 /* Title row */
 /* Task title row with note icon */
 .tv-task-desc-row{
-  display:flex;
+  display:inline-flex;
   align-items:flex-start;
   gap:6px;
-  min-width:0;
+  max-width:100%;
 }
 
 .tv-task-desc{
-  flex:1;
-  min-width:0;
   font-size:15px;
   font-weight:700;
   color:var(--tv-text);
@@ -427,6 +425,9 @@ body {
   flex: 1;
   min-width: 0;
   padding: 16px 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* Divider between name and details */
