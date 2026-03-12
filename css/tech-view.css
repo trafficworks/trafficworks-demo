@@ -305,7 +305,7 @@ body {
 }
 
 .tv-card-location {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--tv-text-muted);
   margin-top: 6px;
   line-height: 1.35;
