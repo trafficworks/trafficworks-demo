@@ -165,6 +165,49 @@ mark {
 .mobile-card-fill.fill-high { background:var(--green) }
 .mobile-card-pct { font-size:var(--text-sm); font-weight:600; color:var(--text-muted); min-width:48px; text-align:right }
 
+mobile-card-top{
+  display:flex;
+  align-items:stretch;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.mobile-card-text{
+  display:grid;
+  grid-template-rows:repeat(3,1fr);
+  min-height:72px;
+  flex:1;
+  min-width:0;
+}
+
+.mobile-card-name,
+.mobile-card-location,
+.mobile-card-client{
+  display:flex;
+  align-items:center;
+  min-width:0;
+}
+
+.mobile-card-name{
+  font-size:var(--text-lg);
+  font-weight:600;
+  color:var(--text-primary);
+  line-height:1.2;
+}
+
+.mobile-card-location,
+.mobile-card-client{
+  font-size:var(--text-sm);
+  color:var(--text-secondary);
+  line-height:1.2;
+}
+
+.mobile-card-status{
+  flex-shrink:0;
+  align-self:flex-start;
+  padding-top:2px;
+}
+
 /* Dashboard mobile overrides */
 @media (max-width:768px) {
   .mobile-stats { display:none }
