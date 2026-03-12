@@ -395,7 +395,7 @@ body {
   gap: 0;
 }
 
-/* Task title row with note icon */
+
 /* Title row */
 /* Task title row with note icon */
 .tv-task-desc-row{
@@ -416,9 +416,12 @@ body {
 }
 
 .tv-task-desc-row .tv-note-indicator{
-  flex: 0 0 auto;
-  margin-top: 1px;
-  align-self: center;
+  flex:0 0 auto;
+  align-self:center;
+}
+
+.tv-note-indicator svg{
+  display:block;
 }
 
 /* Left: task info column */
