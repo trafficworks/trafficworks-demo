@@ -437,7 +437,7 @@ tv-task-desc {
 
 .tv-task-duration {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--tv-text-secondary);
   font-variant-numeric: tabular-nums;
 }
