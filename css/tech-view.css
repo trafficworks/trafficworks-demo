@@ -298,7 +298,7 @@ body {
 
 .tv-card-name {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--tv-text);
   line-height: 1.35;
   padding-right: 24px;
@@ -306,14 +306,15 @@ body {
 
 .tv-card-location {
   font-size: 16px;
+  font-weight: 500; 
   color: var(--tv-text-muted);
-  margin-top: 6px;
+  margin-top: 10px;
   line-height: 1.35;
 }
 
 .tv-card-tasks {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--tv-text-secondary);
   margin-top: 10px;
   display: flex;
@@ -418,7 +419,7 @@ body {
 
 .tv-task-site {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--tv-text);
 }
 
