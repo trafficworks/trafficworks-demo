@@ -427,8 +427,8 @@ body {
   align-items: center;
   padding: 2px 8px;
   border-radius: 5px;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   letter-spacing: 0.4px;
   border: 1px solid var(--tv-border);
   color: var(--tv-text);
@@ -436,7 +436,7 @@ body {
 }
 
 .tv-task-duration {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   color: var(--tv-text-secondary);
   font-variant-numeric: tabular-nums;
