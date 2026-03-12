@@ -152,6 +152,10 @@ mark {
 /* Mobile cards */
 .mobile-cards { display:none }
 
+.mobile-card{
+  position:relative;
+}
+
 .mobile-card {
   background:var(--white);
   border:1px solid var(--border);
@@ -201,8 +205,17 @@ mark {
 }
 
 .mobile-card-status{
-  align-self:flex-start;
-  padding-top:0;
+  position:absolute;
+  top:14px;
+  right:14px;
+}
+
+.mobile-card-text{
+  padding-right:110px;
+}
+
+.mobile-card-name{
+  word-break:break-word;
 }
 
 .mobile-card-progress{
