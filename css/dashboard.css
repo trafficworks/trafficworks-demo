@@ -59,11 +59,6 @@ mark {
 	color: inherit;
 }
 
-/* Status dropdown */
-.status-filter {
-  position: relative;
-}
-
 /* Project table cells */
 .project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: 13px; font-weight: 500; }
 .project-name-link:hover { color:var(--text-primary) }
