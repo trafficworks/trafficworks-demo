@@ -396,16 +396,25 @@ body {
 }
 
 /* Task title row with note icon */
-.tv-task-desc-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+/* Title row */
+.tv-task-desc-row{
+  display:flex;
+  align-items:flex-start;
+  gap:6px;
 }
 
-.tv-task-desc {
-  flex: 1;
-  min-width: 0;
+/* Task name */
+.tv-task-desc{
+  flex:1;
+  min-width:0;
+  line-height:1.35;
+  word-break:break-word;
+}
+
+/* Note icon stays attached */
+.tv-note-indicator{
+  flex-shrink:0;
+  margin-top:2px;
 }
 
 .tv-task-desc-row .tv-note-indicator {
