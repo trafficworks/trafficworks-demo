@@ -1000,6 +1000,7 @@ tbody tr:last-child td {
 .info-dot {
   width: 14px;
   height: 14px;
+  margin-left: 6px;
   border-radius: 50%;
   border: 1.5px solid var(--text-muted);
   color: var(--text-muted);
