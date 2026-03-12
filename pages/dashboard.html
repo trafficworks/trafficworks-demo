@@ -46,19 +46,13 @@
       <input type="text" placeholder="Search projects…" id="searchInput" oninput="filterProjects()">
     </div>
 
-   <div class="status-filter">
-  <button class="filter-select" onclick="toggleStatusMenu()">
-    <span id="statusFilterLabel">All Statuses</span>
-  </button>
-
-  <div class="kebab-menu drop-down" id="statusFilterMenu">
-    <button class="kebab-menu-item" onclick="setStatusFilter('all','All Statuses')">All Statuses</button>
-    <button class="kebab-menu-item" onclick="setStatusFilter('Pending','Pending')">Pending</button>
-    <button class="kebab-menu-item" onclick="setStatusFilter('In Progress','In Progress')">In Progress</button>
-    <button class="kebab-menu-item" onclick="setStatusFilter('On Hold','On Hold')">On Hold</button>
-    <button class="kebab-menu-item" onclick="setStatusFilter('Complete','Complete')">Complete</button>
-  </div>
-</div>
+    <select class="filter-select" id="statusFilter" onchange="filterProjects()">
+      <option value="all">All Statuses</option>
+      <option value="Pending">Pending</option>
+      <option value="In Progress">In Progress</option>
+      <option value="On Hold">On Hold</option>
+      <option value="Complete">Complete</option>
+    </select>
 
     <div style="flex:1"></div>
 
@@ -300,7 +294,7 @@ function renderProjects(list) {
 
 function filterProjects() {
   var search = document.getElementById('searchInput').value.toLowerCase();
-  var status = currentStatusFilter;
+  var status = document.getElementById('statusFilter').value;
 
   var filtered = projects.filter(function(p) {
     var matchesSearch = !search ||
@@ -625,22 +619,6 @@ filterProjects();
 window.addEventListener('pageshow', function(e) {
   if (e.persisted) filterProjects();
 });
-
-var currentStatusFilter = "all";
-
-function toggleStatusMenu() {
-  document.getElementById("statusFilterMenu").classList.toggle("open");
-}
-
-function setStatusFilter(value,label) {
-  currentStatusFilter = value;
-
-  document.getElementById("statusFilterLabel").textContent = label;
-
-  document.getElementById("statusFilterMenu").classList.remove("open");
-
-  filterProjects();
-}  
 </script>
 </body>
 </html>
