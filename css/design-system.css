@@ -988,7 +988,7 @@ tbody tr:last-child td {
 }
 
 /* ============================================================
-   INFO DOT
+   INFO INDICATOR
    ============================================================ */
 .task-dot-wrap {
   display: inline-flex;
@@ -998,18 +998,35 @@ tbody tr:last-child td {
 }
 
 .info-dot {
-  width: 8px;
-  height: 8px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #6b8fa8;
+  border: 1.5px solid #6b8fa8;
+  color: #6b8fa8;
+  background: transparent;
   cursor: pointer;
   position: relative;
   flex-shrink: 0;
-  transition: background .15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  font-style: normal;
+  transition: border-color .15s, color .15s, background .15s;
+}
+
+.info-dot::before {
+  content: "i";
+  display: block;
+  transform: translateY(-0.25px);
 }
 
 .info-dot:hover {
-  background: #6b7280;
+  border-color: #6b7280;
+  color: #6b7280;
+  background: rgba(107, 114, 128, 0.06);
 }
 
 .info-dot .dot-tip {
@@ -1043,7 +1060,6 @@ tbody tr:last-child td {
 .info-dot:hover .dot-tip {
   display: block;
 }
-
 /* ============================================================
    MODALS
    ============================================================ */
