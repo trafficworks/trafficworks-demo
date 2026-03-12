@@ -191,24 +191,36 @@ function renderTaskCards(){
 function taskCardHTML(t,isComplete){
   var cc=isComplete?'complete-card':'';
   var noteClass=t.note?'tv-note-indicator has-note':'tv-note-indicator empty';
-  var noteIconSvg=t.note?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
-  // Detail row items
+  var noteIconSvg=t.note
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+
+  // Detail row items (note icon removed from here)
   var details=[];
   details.push('<span class="tv-task-site">#'+t.site+'</span>');
   if(t.type)details.push('<span class="tv-task-type">'+t.type+'</span>');
   if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)details.push('<span class="tv-task-duration live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>');
-  details.push('<button class="'+noteClass+'" onclick="toggleNote('+t.id+',event)">'+noteIconSvg+'</button>');
   var detailHTML=details.join('<span class="tv-detail-dot"></span>');
+
   // Reopen reason row
   var reopenHTML='';
-  if(t.cycles.length>0&&t.status===STATUS.PENDING){var lc=t.cycles[t.cycles.length-1];if(lc.reopenReason)reopenHTML='<div class="tv-task-reopen-row"><span class="tv-task-reopen-reason">Reopened: '+lc.reopenReason+'</span></div>'}
+  if(t.cycles.length>0&&t.status===STATUS.PENDING){
+    var lc=t.cycles[t.cycles.length-1];
+    if(lc.reopenReason) reopenHTML='<div class="tv-task-reopen-row"><span class="tv-task-reopen-reason">Reopened: '+lc.reopenReason+'</span></div>';
+  }
+
   // Action button
   var actionHTML='';
-  if(isComplete){actionHTML='<button class="toggle-btn toggle-complete" data-task-id="'+t.id+'" data-action="reopen"><div class="toggle-fill"></div><span class="toggle-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg> Reopen</span></button>'}
-  else{actionHTML='<button class="toggle-btn '+toggleBtnClass(t.status)+'" data-task-id="'+t.id+'"><div class="toggle-fill"></div><span class="toggle-label">'+actionLabel(t.status)+'</span></button>'}
+  if(isComplete){
+    actionHTML='<button class="toggle-btn toggle-complete" data-task-id="'+t.id+'" data-action="reopen"><div class="toggle-fill"></div><span class="toggle-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg> Reopen</span></button>';
+  } else {
+    actionHTML='<button class="toggle-btn '+toggleBtnClass(t.status)+'" data-task-id="'+t.id+'"><div class="toggle-fill"></div><span class="toggle-label">'+actionLabel(t.status)+'</span></button>';
+  }
+
   // Note panel
   var notePanel='<div class="tv-note-panel'+(openNoteId===t.id?' open':'')+'" id="note-panel-'+t.id+'"><div class="tv-note-panel-inner"><input class="tv-note-input" maxlength="'+MAX_NOTE+'" placeholder="Add a quick note…" value="'+(t.note||'').replace(/"/g,'&quot;')+'" oninput="updateCharCount('+t.id+',this)" onkeydown="if(event.key===\'Enter\')saveNote('+t.id+')"><span class="tv-note-char-count" id="char-count-'+t.id+'">'+(MAX_NOTE-(t.note||'').length)+'</span><button class="tv-note-save-btn" onclick="saveNote('+t.id+')">Save</button></div></div>';
-  return '<div class="tv-task-card '+cc+'"><div class="tv-task-inner"><div class="tv-task-content"><div class="tv-task-desc">'+t.desc+'</div><div class="tv-task-divider"></div><div class="tv-task-detail-row">'+detailHTML+'</div>'+reopenHTML+'</div><div class="tv-task-action">'+actionHTML+'</div></div>'+notePanel+'</div>';
+
+  return '<div class="tv-task-card '+cc+'"><div class="tv-task-inner"><div class="tv-task-content"><div class="tv-task-desc-row"><div class="tv-task-desc">'+t.desc+'</div><button class="'+noteClass+'" onclick="toggleNote('+t.id+',event)">'+noteIconSvg+'</button></div><div class="tv-task-divider"></div><div class="tv-task-detail-row">'+detailHTML+'</div>'+reopenHTML+'</div><div class="tv-task-action">'+actionHTML+'</div></div>'+notePanel+'</div>';
 }
 function toggleCompleted(){completedCollapsed=!completedCollapsed;renderTaskCards()}
 function toggleNote(id,e){e.stopPropagation();openNoteId=openNoteId===id?null:id;renderTaskCards();if(openNoteId===id){var input=document.querySelector('#note-panel-'+id+' .tv-note-input');if(input)setTimeout(function(){input.focus()},250)}}
