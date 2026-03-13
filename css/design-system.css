@@ -58,11 +58,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 
 .logo { display: flex; align-items: center; gap: var(--space-sm); text-decoration: none; }
 
-.logo-mark { width: 28px; height: 28px; background: var(--charcoal); border-radius: 6px; position: relative; overflow: hidden; }
-
-.logo-mark::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 8px; background: var(--red); }
-
-.logo-mark::after { content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 12px; height: 2px; background: var(--white); border-radius: 1px; }
+.logo-img{ width:28px; height:28px; object-fit:contain; }
 
 .logo-text { font-size: var(--text-lg); font-weight: 600; color: var(--charcoal); letter-spacing: -0.3px; }
 
