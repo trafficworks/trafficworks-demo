@@ -1,1 +1,96 @@
+/* ============================================================
+   ARCHIVE — Page-Specific Styles
+   ============================================================ */
+
+/* Search */
+.search-input { width: 100%; max-width: 280px; padding: 8px 12px 8px 32px; border: 1px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: var(--text-md); color: var(--text-primary); background: var(--white); outline: none; transition: border-color .15s; }
+.search-input::placeholder { color: var(--text-muted) }
+.search-input:focus { border-color: var(--steel) }
+
+/* Archive cards */
+.archive-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; overflow: hidden; transition: border-color .15s; }
+.archive-card:hover { border-color: var(--gray-light) }
+
+.archive-header { padding: 14px 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; -webkit-tap-highlight-color: transparent; position: relative; }
+
+.archive-indicator { width: 5px; height: 16px; border-radius: 1.5px; flex-shrink: 0; }
+
+.archive-name { font-weight: 500; color: var(--text-primary); flex: 1; min-width: 0; }
+
+.archive-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
+.archive-files-count { font-size: var(--text-sm); color: var(--text-muted); }
+.archive-files-count.has-files { color: var(--green) }
+
+.archive-date { font-size: var(--text-sm); color: var(--text-muted); min-width: 80px; text-align: right; }
+
+/* Expanded content */
+.archive-body { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+.archive-card.open .archive-body { max-height: 2000px }
+.archive-body-inner { padding: 0 20px 16px; border-top: 1px solid var(--border); }
+
+.archive-summary { display: flex; gap: 20px; padding: 12px 0; flex-wrap: wrap; }
+.archive-summary-item { font-size: var(--text-sm); color: var(--text-secondary); }
+.archive-summary-item strong { font-weight: 600; color: var(--text-primary); }
+
+/* Task list (read only) */
+.task-list-section { margin-top: 12px }
+.task-list-label { font-size: var(--text-sm); font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 6px; }
+.task-row-simple { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--bg); font-size: var(--text-md); }
+.task-row-simple:last-child { border-bottom: none }
+.task-row-site { font-size: var(--text-sm); font-weight: 600; color: var(--text-muted); min-width: 28px; }
+.task-row-desc { color: var(--text-primary) }
+
+/* File columns */
+.file-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px; }
+.file-col { min-width: 0 }
+.file-col-header { display: flex; align-items: center; gap: 5px; font-size: var(--text-sm); font-weight: 600; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+.file-col-header.is-pdf { color: #C53030 }
+.file-col-header.is-xlsx { color: #1B7A3D }
+.file-col-header svg { width: 13px; height: 13px }
+.file-col-item { display: flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 4px; font-size: var(--text-sm); cursor: pointer; transition: background .1s; color: var(--text-primary); }
+.file-col-item:hover { background: var(--off-white) }
+.file-col-item svg { width: 11px; height: 11px; flex-shrink: 0 }
+.file-col-item.is-pdf svg { color: #C53030 }
+.file-col-item.is-xlsx svg { color: #1B7A3D }
+.file-col-item .file-delete { margin-left: auto; opacity: 0; pointer-events: none; cursor: pointer; color: var(--text-muted); font-size: 14px; line-height: 1; transition: opacity .15s; }
+.file-col-item .file-delete:hover { color: var(--red) }
+.manage-mode .file-col-item .file-delete { opacity: 0.6; pointer-events: auto }
+.manage-mode .file-col-item { cursor: default }
+.file-col-empty { font-size: var(--text-sm); color: var(--text-muted); padding: 4px 8px; font-style: italic; }
+
+/* Bulk upload */
+.bulk-drop { border: 1.5px dashed var(--gray-light); border-radius: 6px; text-align: center; cursor: pointer; transition: all .2s; background: var(--bg); max-height: 0; overflow: hidden; padding: 0 14px; margin-bottom: 0; opacity: 0; }
+.bulk-drop.show { max-height: 120px; padding: 14px; margin-bottom: 12px; opacity: 1; }
+.bulk-drop:hover, .bulk-drop.drag-over { border-color: var(--steel); background: var(--steel-light); }
+.bulk-drop.drag-over { border-width: 2px }
+.bulk-drop svg { width: 20px; height: 20px; color: var(--text-muted); margin-bottom: 4px }
+.bulk-drop-text { font-size: var(--text-sm); color: var(--text-secondary) }
+.bulk-drop-hint { font-size: var(--text-sm); color: var(--text-muted); margin-top: 2px }
+.bulk-file-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px }
+
+/* Upload toggle */
+.upload-toggle { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; font-size: var(--text-sm); color: var(--text-secondary); padding: 3px 8px; border-radius: 4px; transition: all .15s; border: none; background: none; font-family: 'Inter', sans-serif; font-weight: 500; }
+.upload-toggle:hover { color: var(--steel); background: var(--steel-light) }
+.upload-toggle svg { width: 13px; height: 13px }
+.upload-toggle.active { color: var(--steel); background: var(--steel-light) }
+
+/* Manage toggle */
+.files-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.manage-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: var(--text-sm); color: var(--text-muted); user-select: none; padding: 3px 8px; border-radius: 4px; transition: all .15s; border: none; background: none; font-family: 'Inter', sans-serif; }
+.manage-toggle:hover { color: var(--text-secondary); background: var(--off-white) }
+.manage-toggle.active { color: var(--red); background: var(--red-light) }
+.manage-toggle svg { width: 13px; height: 13px }
+
+/* Restore button */
+.btn-restore { background: #615DB1; color: var(--white) }
+.btn-restore:hover { background: #524EA0 }
+
+/* Archive empty state */
+.archive-empty { text-align: center; padding: 60px 20px; color: var(--text-muted) }
+
+/* Archive mobile overrides */
+@media (max-width: 768px) {
+  .archive-header { padding: 14px 16px; flex-wrap: wrap; gap: 10px } .archive-right { width: 100%; justify-content: space-between } .archive-body-inner { padding: 0 16px 14px } .archive-summary { gap: 12px } .search-input { max-width: 100% } .file-columns { grid-template-columns: 1fr } .bulk-file-list { gap: 6px }
+}
 
