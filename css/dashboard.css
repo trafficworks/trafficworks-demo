@@ -8,7 +8,7 @@
 .page-title { margin: 0; padding: 0; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 24px; font-weight: 700; color: var(--charcoal); }
 
 /* Project table cells */
-.project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: 13px; font-weight: 500; }
+.project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: var(--text-sm); font-weight: 500; }
 .project-name-link:hover { color:var(--text-primary) }
 .project-info { min-height: 56px; display: flex; align-items: center; gap: 10px; }
 
