@@ -3,147 +3,35 @@
    ============================================================ */
 
 /* Project header */
-.project-top-row{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  margin-bottom:24px;
-}
+.project-top-row{ display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
 
-.project-header{
-  flex:1;
-  min-width:0;
-}
+.project-header{ flex:1; min-width:0; }
 
-.project-name-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
+.project-name-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 
-.project-name{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  font-size: 20px;
-  line-height: 1.25; 
-  font-weight:700;
-  color:var(--charcoal);
-  min-width:0;
-  flex:1;
-}
+.project-name{ display:flex; align-items:center; flex-wrap:wrap; font-size: 20px; line-height: 1.25; font-weight:700; color:var(--charcoal); min-width:0; flex:1; }
 
-.project-name-toggle{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  cursor:pointer;
-  position:relative;
-}
+.project-name-toggle{ display:inline-flex; align-items:center; gap:6px; cursor:pointer; position:relative; }
 
-.project-name-toggle svg{
-  width:12px;
-  height:12px;
-  color:var(--text-muted);
-  transition:transform .2s;
-}
+.project-name-toggle svg{ width:12px; height:12px; color:var(--text-muted); transition:transform .2s; }
 
-.project-name-toggle.open svg{
-  transform:rotate(180deg);
-}
+.project-name-toggle.open svg{ transform:rotate(180deg); }
 
-.project-details-dropdown{
-  max-height:0;
-  overflow:hidden;
-  transition:max-height .2s ease;
-  margin-top:4px;
-}
+.project-details-dropdown{ max-height:0; overflow:hidden; transition:max-height .2s ease; margin-top:4px; }
 
-.project-details-dropdown.open{
-  max-height:80px;
-}
+.project-details-dropdown.open{ max-height:80px; }
 
-.pdd-row{
-  font-size:var(--text-sm);
-  color:var(--text-muted);
-  line-height:1.6;
-}
+.pdd-row{ font-size:var(--text-sm); color:var(--text-muted); line-height:1.6; }
 
-.pdd-label{
-  color:var(--text-secondary);
-  font-weight:500;
-}
+.pdd-label{ color:var(--text-secondary); font-weight:500; }
 
-.project-breadcrumb-link{
-  font-size: 20px;
-  line-height: 1.25;
-  color:var(--text-muted);
-  text-decoration:none;
-  font-weight:500;
-}
+.project-breadcrumb-link{ font-size: 20px; line-height: 1.25; color:var(--text-muted); text-decoration:none; font-weight:500; }
 
-.project-breadcrumb-link:hover{
-  color:var(--charcoal);
-}
+.project-breadcrumb-link:hover{ color:var(--charcoal); }
 
-.breadcrumb-slash{
-  margin:0 6px;
-  color:var(--text-muted);
-}
+.breadcrumb-slash{ margin:0 6px; color:var(--text-muted); }
 
-.task-desc{
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.3;
-}
-
-
-
-
-
-
-/* Mark */
-
-mark {
-	--mark-color: #FFFACD;
-	--mark-skew: 0.25em;
-	--mark-height: 1em;
-	--mark-overlap: 0.3em;
-
-	margin-inline: calc(var(--mark-overlap) * -1);
-	padding-inline: var(--mark-overlap);
-
-	background-color: transparent;
-	background-image:
-		linear-gradient(
-			to bottom right,
-			transparent 50%,
-			var(--mark-color) 50%
-		),
-		linear-gradient(
-			var(--mark-color),
-			var(--mark-color)
-		),
-		linear-gradient(
-			to top left,
-			transparent 50%,
-			var(--mark-color) 50%
-		)
-	;
-	background-size:
-		var(--mark-skew) var(--mark-height),
-		calc(100% - var(--mark-skew) * 2 + 1px) var(--mark-height),
-		var(--mark-skew) var(--mark-height)
-	;
-	background-position:
-		left center,
-		center,
-		right center
-	;
-	background-repeat: no-repeat;
-	color: inherit;
-}
+.task-desc{ font-size: 13px; font-weight: 500; line-height: 1.3; }
 
 /* Status pill */
 .project-status-pill{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-sm);font-weight:500;color:var(--text-primary);letter-spacing:.2px}
@@ -157,17 +45,11 @@ mark {
 
 /* Notes input */
 .project-notes-input{width:100%;padding:var(--space-sm) 12px;border:1px solid var(--border);border-radius:6px;font-family:'Inter',sans-serif;font-size:var(--text-md);color:var(--text-primary);background:var(--white);outline:none;resize:vertical;min-height:36px;max-height:70px;transition:border-color .15s;line-height:1.5}
-.project-notes-input:focus{background:#6b8fa8}
-.project-notes-input::placeholder{background:#6b8fa8}
+.project-notes-input:focus{border-color:var(--steel)}
+.project-notes-input::placeholder{color:var(--text-muted)}
 .notes-hint{font-size:var(--text-sm);color:var(--text-muted);margin-top:3px;font-style:italic}
 
-/* Site cell */
-.site-cell{position:relative;text-align:center}
-.site-indicator{position:absolute;left:10px;top:50%;transform:translateY(-50%)}
-
-.site-num{
-color: var(--text-secondary);
-}
+/* Site cell — see Row Height Alignment section below */
 
 /* Bulk select checkboxes */
 .row-check{display:none;width:32px;height:32px;cursor:pointer;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0;z-index:2}
@@ -210,104 +92,21 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 
 /* Mobile overrides */
 @media (max-width:768px){
-.mobile-hide{display:none}
-#projectStatusPill{display:none}
-.stats-row{flex-wrap:wrap;align-items:flex-start}
-.stat-item::after{display:none}
-.stat-item{padding-right:12px;margin-right:12px}
-.stat-progress{display:flex;align-items:center;gap:10px;flex:1 1 100%;width:100%;min-width:0;margin-left:0;margin-top:14px;order:10}
-.progress-bar-lg{flex:1;min-width:0;height:4px}
-.progress-pct-lg{flex-shrink:0}
-.toolbar-row{flex-wrap:wrap;border-bottom:none;box-shadow:none}
-.search-box{max-width:100%;flex:1 1 100%}
-.toolbar-spacer{display:none}
-table{display:none}
-.table-wrap{border:none;box-shadow:none;background:none}
-.mobile-task-cards{display:flex;flex-direction:column;gap:10px}
-
-.project-top-row{
-  display:block;
-  margin-bottom:20px;
-}
-
-.project-header{
-  min-width:0;
-}
-
-.project-name-row{
-  display:block;
-}
-
-.project-breadcrumb-link,
-.breadcrumb-slash{
-  display:inline;
-  font-size:14px;
-  line-height:1.2;
-}
-
-.project-name{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  margin-top:6px;
-  font-size:18px;
-  line-height:1.2;
-  flex-wrap:nowrap;
-  min-width:0;
-}
-
-.project-name-toggle{
-  flex-shrink:0;
-}
-
-
-/* ============================================================
-   PROJECT DETAIL — Row Height Alignment Fix
-   ============================================================ */
-
-/* Keep site/task row content centered inside shared 56px table rows */
-.site-cell {
-  position: relative;
-  text-align: center;
-  height: 56px;
-  vertical-align: middle;
-}
-
-.site-indicator {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.task-dot-wrap {
-  min-height: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.count-type {
-  line-height: 1;
-  min-height: 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.site-num {
-  color: var(--text-secondary);
-  line-height: 1;
-}
-
-/* Keep inline edit fields from making rows taller */
-.edit-input {
-  min-height: 32px;
-  line-height: 1.2;
-}
-
-/* Keep duration from wrapping and stretching row height */
-.mobile-task-duration,
-.duration-cell {
-  white-space: nowrap;
-}
+  .project-top-row{ display:block; margin-bottom:20px; }
+  .project-header{ min-width:0; }
+  .project-name-row{ display:block; }
+  .breadcrumb-slash{ display:inline; font-size:14px; line-height:1.2; }
+  .project-name{ display:flex; align-items:center; gap:6px; margin-top:6px; font-size:18px; line-height:1.2; flex-wrap:nowrap; min-width:0; }
+  .project-name-toggle{ flex-shrink:0; }
+  /* ============================================================
+  PROJECT DETAIL — Row Height Alignment Fix ============================================================ */
+  /* Keep site/task row content centered inside shared 56px table rows */
+  .site-cell { position: relative; text-align: center; height: 56px; vertical-align: middle; }
+  .site-indicator { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); }
+  .task-dot-wrap { min-height: 20px; display: inline-flex; align-items: center; gap: 10px; }
+  .count-type { line-height: 1; min-height: 18px; display: inline-flex; align-items: center; justify-content: center; }
+  .site-num { color: var(--text-secondary); line-height: 1; }
+  /* Keep inline edit fields from making rows taller */
+  .edit-input { min-height: 32px; line-height: 1.2; }
+  /* Keep duration from wrapping and stretching row height */
+  .duration-cell { white-space: nowrap; }
