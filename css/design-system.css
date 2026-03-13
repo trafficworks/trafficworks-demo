@@ -60,7 +60,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 
 .logo-text { font-size: var(--text-lg); font-weight: 600; color: var(--charcoal); letter-spacing: -0.3px; }
 
-.logo-img{ width:28px; height:28px; object-fit:contain; display:block; }
+.logo-img{ width:32px; height:32px; object-fit:contain; display:block; }
 
 .nav-divider { width: 1px; height: var(--space-lg); background: var(--border); }
 
