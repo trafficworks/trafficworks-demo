@@ -43,7 +43,10 @@
 .project-notes-input::placeholder{color:var(--text-muted)}
 .notes-hint{font-size:var(--text-sm);color:var(--text-muted);margin-top:3px;font-style:italic}
 
-/* Site cell — see Row Height Alignment section below */
+/* Site cell */
+.site-cell { position: relative; text-align: center; height: 56px; vertical-align: middle; }
+.site-indicator { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); }
+.site-num { color: var(--text-secondary); line-height: 1; }
 
 /* Bulk select checkboxes */
 .row-check{display:none;width:32px;height:32px;cursor:pointer;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0;z-index:2}
@@ -135,4 +138,3 @@ table{display:none}
 .project-name-toggle{
   flex-shrink:0;
 }
-
