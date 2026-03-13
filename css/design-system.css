@@ -265,9 +265,9 @@ tbody tr:last-child td { border-bottom: none; }
 
 .progress-fill-lg { background: var(--green); }
 
-.fill-low { background: var(--gray-light); }
+.fill-low { background: var(--green); }
 
-.fill-mid { background: var(--steel); }
+.fill-mid { background: var(--green); }
 
 .fill-high { background: var(--green); }
 
