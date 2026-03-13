@@ -58,6 +58,8 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 
 .logo { display: flex; align-items: center; gap: var(--space-sm); text-decoration: none; }
 
+.logo-text { font-size: var(--text-lg); font-weight: 600; color: var(--charcoal); letter-spacing: -0.3px; }
+
 .logo-img{ width:28px; height:28px; object-fit:contain; }
 
 .nav-divider { width: 1px; height: var(--space-lg); background: var(--border); }
