@@ -1286,49 +1286,60 @@ tbody tr:last-child td {
    MOBILE — shared responsive
    ============================================================ */
 @media (max-width: 768px) {
-  .topnav {
-    padding: 10px var(--space-md);
+  .topnav{
+    padding:10px var(--space-md) !important;
+    min-height:56px;
   }
 
   .topnav-left{
+    display:flex;
+    align-items:center;
     gap:10px;
     min-width:0;
+    flex:1 1 auto;
   }
 
   .topnav-right{
+    display:flex;
+    align-items:center;
+    gap:8px;
     flex-shrink:0;
   }
 
-  .nav-links {
-    display: none;
+  .nav-divider,
+  .nav-links,
+  .company-badge{
+    display:none !important;
   }
 
-  .company-badge{
-    display:none;
+  .logo{
+    min-width:0;
   }
 
   .logo-text{
     font-size:16px;
+    white-space:nowrap;
   }
 
   .user-avatar{
     width:36px;
     height:36px;
     font-size:14px;
+    flex-shrink:0;
   }
 
-  .main {
-    padding: 20px var(--space-md);
+  .main{
+    padding:20px var(--space-md);
   }
 
   .page-title,
-  .back-link {
-    background: var(--charcoal);
-    color: var(--white);
-    border-color: var(--charcoal);
+  .back-link{
+    background:var(--charcoal);
+    color:var(--white);
+    border-color:var(--charcoal);
   }
 
-  .back-link:hover {
-    color: var(--white);
+  .back-link:hover{
+    color:var(--white);
   }
 }
