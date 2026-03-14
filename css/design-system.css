@@ -9,10 +9,10 @@
    ============================================================ */
 :root {
   --charcoal: #3C4248;
-  --bg: #F3F2EF;
+  --bg: #ECE9E1;
   --white: #FFFFFF;
   --off-white: #ECEAE4;
-  --border: #E3DFD7;
+  --border: #E0DED8;
   --gray-light: #C8C8C8;
   --steel: #7A9BA8;
   --steel-light: rgba(122, 155, 168, 0.1);
@@ -36,7 +36,7 @@
   --space-xl: 32px;
   --table-border: #E0DED8;
   --table-row-border: #ECEAE4;
-  --table-header-bg: #F4F2ED;
+  --table-header-bg: #F7F6F3;
   --table-header-color: #374151;
 }
 
@@ -178,7 +178,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 /* ============================================================
    TABLES
    ============================================================ */
-.table-wrap { background: #F8F7F4; border: 1px solid var(--table-border); border-radius: 8px; overflow: visible; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.table-wrap { background: #F5F4F0; border: 1px solid var(--table-border); border-radius: 8px; overflow: visible; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 
 table { width: 100%; border-collapse: collapse; }
 
@@ -201,7 +201,7 @@ tbody tr:last-child td { border-bottom: none; }
 /* ============================================================
    STATUS BADGES
    ============================================================ */
-.status-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 18px; padding: 3px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; user-select: none; }
+.status-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 20px; padding: 4px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; user-select: none; vertical-align: middle; }
 
 .status-pending { background: #F5C27A; color: var(--amber-light); }
 
@@ -279,7 +279,7 @@ tbody tr:last-child td { border-bottom: none; }
 /* ============================================================
    COUNT TYPE BADGES
    ============================================================ */
-.count-type { display: inline-flex; align-items: center; justify-content: center; min-height: 18px; padding: 3px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; border: 1px solid var(--border); color: var(--text-secondary); background: none; margin-right: var(--space-sm); }
+.count-type { display: inline-flex; align-items: center; justify-content: center; min-height: 18px; padding: 3px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; border: 1px solid var(--border); color: var(--text-secondary); background: none; margin-right: var(--space-sm); vertical-align: middle; }
 
 /* ============================================================
    KEBAB MENU
@@ -313,7 +313,7 @@ tbody tr:last-child td { border-bottom: none; }
 /* ============================================================
    TECH AVATARS
    ============================================================ */
-.tech-avatar { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; cursor: pointer; transition: all .15s; position: relative; flex-shrink: 0; }
+.tech-avatar { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; cursor: pointer; transition: all .15s; position: relative; flex-shrink: 0; vertical-align: middle; }
 
 .tech-avatar.assigned { background: var(--steel); color: var(--white); }
 
@@ -344,9 +344,9 @@ tbody tr:last-child td { border-bottom: none; }
 /* ============================================================
    INFO INDICATOR
    ============================================================ */
-.task-dot-wrap { display: inline-flex; align-items: center; gap: 10px; min-height: 20px; }
+.task-dot-wrap { display: inline-flex; align-items: center; gap: 6px; min-height: 20px; vertical-align: middle; }
 
-.info-dot { width: 14px; height: 14px; margin-left: 6px; border-radius: 50%; border: 1.5px solid var(--text-muted); color: var(--text-muted); background: transparent; cursor: pointer; position: relative; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; line-height: 1; transition: border-color .15s, color .15s, background .15s; }
+.info-dot { width: 14px; height: 14px; margin-left: 6px; border-radius: 50%; border: 1.5px solid var(--text-muted); color: var(--text-muted); background: transparent; cursor: pointer; position: relative; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; line-height: 1; transition: border-color .15s, color .15s, background .15s; vertical-align: middle; }
 
 .info-dot::before { content: "i"; }
 
@@ -431,14 +431,25 @@ tbody tr:last-child td { border-bottom: none; }
   .topnav{ padding:10px var(--space-md) !important; min-height:56px; }
   .topnav-left{ display:flex; align-items:center; gap:10px; min-width:0; flex:1 1 auto; }
   .topnav-right{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
-  .company-badge{ display:none !important; }
+  .nav-divider, .nav-links, .company-badge{ display:none !important; }
   .logo{ min-width:0; }
   .logo-text{ font-size:16px; white-space:nowrap; }
-  .user-avatar{ width:36px; height:36px; font-size:14px; flex-shrink:0; }
+  .user-avatar{ display:none !important; }
   .main{ padding:20px var(--space-md); }
   .back-link{ background:var(--charcoal); color:var(--white); border-color:var(--charcoal); }
   .back-link:hover{ color:var(--white); }
+  .mobile-nav-kebab{ display:flex; }
 }
+
+/* Mobile nav kebab */
+.mobile-nav-kebab { display: none; width: 36px; height: 36px; border: none; background: none; cursor: pointer; align-items: center; justify-content: center; color: var(--text-secondary); border-radius: 6px; transition: background .15s; flex-shrink: 0; }
+.mobile-nav-kebab:hover { background: var(--off-white); }
+.mobile-nav-kebab svg { width: 20px; height: 20px; }
+.mobile-nav-menu { position: fixed; top: 56px; right: 0; width: 200px; background: var(--white); border: 1px solid var(--border); border-radius: 0 0 0 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); z-index: 200; padding: 6px 0; display: none; }
+.mobile-nav-menu.open { display: block; }
+.mobile-nav-menu a { display: flex; align-items: center; gap: 8px; padding: 10px 16px; font-size: var(--text-md); font-weight: 500; color: var(--text-primary); text-decoration: none; transition: background .1s; }
+.mobile-nav-menu a:hover { background: var(--bg); }
+.mobile-nav-menu a.active { color: var(--steel); }
 
 /* ============================================================
    MARK HIGHLIGHT
