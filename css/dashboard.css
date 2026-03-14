@@ -2,10 +2,20 @@
    DASHBOARD — Page-Specific Styles
    ============================================================ */
 
-/* Page header */
-.page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--space-lg) }
+/* Dashboard header — two-row layout */
+.dashboard-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.dashboard-header-left { flex: 1; min-width: 0; }
+.dashboard-header-right { flex-shrink: 0; padding-top: 4px; }
 
 .page-title { margin: 0; padding: 0; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 24px; font-weight: 700; color: var(--charcoal); }
+
+.stats-row { margin-top: 8px; margin-bottom: 0; }
+
+/* Dashboard toolbar */
+.dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+
+/* Table spacing */
+.dashboard-table-wrap { margin-top: 20px; }
 
 /* Project table cells */
 .project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: 13px; font-weight: 400; }
@@ -21,8 +31,6 @@
 /* Status badge clickable behavior (dashboard-only) */
 .status-badge { cursor:pointer; position:relative; transition:opacity .15s }
 .status-badge:hover { opacity:.85 }
-
-.table-wrap { position: relative; }
 
 .empty-state { display: none; min-height: 340px; border: 1px solid var(--border); border-radius: 12px; background: transparent; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
 
@@ -77,5 +85,13 @@
 
 /* Dashboard mobile overrides */
 @media (max-width:768px) {
-  .mobile-stats { display:none } .stat-item:last-child::after { display:none } .stat-progress { display:flex; align-items:center; gap:10px; flex:1 1 100%; min-width:100%; margin-left:0; margin-top:14px } .progress-bar-lg { height:7px } .filter-bar { display:none } .table-wrap { display:none } .mobile-cards { display:flex; flex-direction:column; gap:10px } .btn-primary { display:none }
+  .dashboard-header { flex-direction: column; gap: 12px; }
+  .dashboard-header-right { display: none; }
+  .dashboard-toolbar { display: none; }
+  .dashboard-table-wrap { display: none; }
+  .mobile-stats { display: none; }
+  .stat-item:last-child::after { display: none; }
+  .stat-progress { display: flex; align-items: center; gap: 10px; flex: 1 1 100%; min-width: 100%; margin-left: 0; margin-top: 14px; }
+  .progress-bar-lg { height: 7px; }
+  .mobile-cards { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
 }
