@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <body>
+<div class="layout-container nav-container">
 <nav class="topnav">
   <div class="topnav-left">
     <a class="logo" href="dashboard.html">
@@ -28,6 +29,7 @@
     <button class="mobile-nav-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
 </nav>
+</div>
 <div class="mobile-nav-menu" id="mobileNavMenu">
   <a class="active" href="dashboard.html">Projects</a>
   <a href="team.html">Team</a>
@@ -35,14 +37,22 @@
 </div>
 
 <div class="main">
-  <div class="page-header">
-    <h1 class="page-title" id="pageGreeting"></h1>
+  <!-- Row 1: Greeting + Stats | Create Button -->
+  <div class="dashboard-header">
+    <div class="dashboard-header-left">
+      <h1 class="page-title" id="pageGreeting"></h1>
+      <div class="stats-row" id="statsRow"></div>
+      <div class="mobile-stats" id="mobileStats"></div>
+    </div>
+    <div class="dashboard-header-right">
+      <button class="btn btn-primary" onclick="openCreateModal()">
+        <span class="btn-icon">+</span> Create Project
+      </button>
+    </div>
   </div>
 
-  <div class="stats-row" id="statsRow"></div>
-  <div class="mobile-stats" id="mobileStats"></div>
-
-  <div class="filter-bar" id="filterBar">
+  <!-- Row 2: Search + Filter -->
+  <div class="dashboard-toolbar">
     <div class="search-box">
       <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"></circle>
@@ -50,7 +60,6 @@
       </svg>
       <input type="text" placeholder="Search projects…" id="searchInput" oninput="filterProjects()">
     </div>
-
     <select class="filter-select" id="statusFilter" onchange="filterProjects()">
       <option value="all">All Statuses</option>
       <option value="Pending">Pending</option>
@@ -58,35 +67,31 @@
       <option value="On Hold">On Hold</option>
       <option value="Complete">Complete</option>
     </select>
-
-   <div class="toolbar-spacer"></div>
-
-    <button class="btn btn-primary" onclick="openCreateModal()">
-      <span class="btn-icon">+</span> Create Project
-    </button>
   </div>
 
-  <div class="table-wrap">
-    <div id="dashboardEmptyState" class="empty-state">
-      <div class="empty-state-inner">
-        <img src="../images/cone.png" class="empty-cone" alt="Traffic cone">
-        <h2>Let's get started!</h2>
-        <p>Projects organize your traffic counts, tasks, and field progress in real time.</p>
+  <!-- Table -->
+  <div class="dashboard-table-wrap">
+    <div class="table-wrap">
+      <div id="dashboardEmptyState" class="empty-state">
+        <div class="empty-state-inner">
+          <img src="../images/cone.png" class="empty-cone" alt="Traffic cone">
+          <h2>Let's get started!</h2>
+          <p>Projects organize your traffic counts, tasks, and field progress in real time.</p>
+        </div>
       </div>
+      <table id="dashboardTable">
+        <thead>
+          <tr>
+            <th style="width:35%">Project</th>
+            <th style="width:15%">Status</th>
+            <th style="width:20%">Progress</th>
+            <th style="width:12%; text-align:center">Open Tasks</th>
+            <th style="width:4%"></th>
+          </tr>
+        </thead>
+        <tbody id="projectTableBody"></tbody>
+      </table>
     </div>
-
-    <table id="dashboardTable">
-      <thead>
-        <tr>
-          <th style="width:35%">Project</th>
-          <th style="width:15%">Status</th>
-          <th style="width:20%">Progress</th>
-          <th style="width:12%; text-align:center">Open Tasks</th>
-          <th style="width:4%"></th>
-        </tr>
-      </thead>
-      <tbody id="projectTableBody"></tbody>
-    </table>
   </div>
 
   <div class="mobile-cards" id="mobileCards"></div>
