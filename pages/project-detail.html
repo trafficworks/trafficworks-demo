@@ -9,7 +9,12 @@
 <link rel="stylesheet" href="../css/project-detail.css">
 </head>
 <body>
-<nav class="topnav"><div class="topnav-left"><a class="logo" href="dashboard.html"><img src="../images/logo.png" class="logo-img" alt="TrafficWorks"><span class="logo-text">The Count Company</span></a><div class="nav-divider"></div><div class="nav-links"><a class="nav-link active" href="dashboard.html">Projects</a><a class="nav-link" href="team.html">Team</a><a class="nav-link" href="archive.html">Archive</a></div></div><div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div></div></nav>
+<nav class="topnav"><div class="topnav-left"><a class="logo" href="dashboard.html"><img src="../images/logo.png" class="logo-img" alt="TrafficWorks"><span class="logo-text">The Count Company</span></a><div class="nav-divider"></div><div class="nav-links"><a class="nav-link active" href="dashboard.html">Projects</a><a class="nav-link" href="team.html">Team</a><a class="nav-link" href="archive.html">Archive</a></div></div><div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div><button class="mobile-nav-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></nav>
+<div class="mobile-nav-menu" id="mobileNavMenu">
+  <a href="dashboard.html">Projects</a>
+  <a href="team.html">Team</a>
+  <a href="archive.html">Archive</a>
+</div>
 
 <div class="main">
   <div class="project-top-row">
@@ -259,8 +264,8 @@ function renderTable(){
     var isPending=t.status===STATUS.PENDING;
 
     return '<tr id="row-'+t.id+'">'+
-      '<td class="site-cell"><span class="site-indicator '+getSiteIndicator(t.status)+'"></span>'+(isPending?'<input type="checkbox" class="row-check pending-row" data-id="'+t.id+'" onchange="updateSelectCount()"><span class="check-visual pending-vis"></span>':'')+
-      '<span class="site-num'+(isPending?' has-check':'')+'" style="font-size:var(--text-sm);font-weight:600">'+t.site+'</span></td>'+
+      '<td class="site-cell"><div class="site-cell-inner"><span class="site-indicator '+getSiteIndicator(t.status)+'"></span>'+(isPending?'<input type="checkbox" class="row-check pending-row" data-id="'+t.id+'" onchange="updateSelectCount()"><span class="check-visual pending-vis"></span>':'')+
+      '<span class="site-num'+(isPending?' has-check':'')+'" style="font-size:var(--text-sm);font-weight:600">'+t.site+'</span></div></td>'+
       '<td>'+tag+'<span class="task-dot-wrap"><span class="task-desc table-name">'+t.desc+'</span>'+dot+'</span><input class="edit-input" value="'+t.desc+'" onkeydown="if(event.key===\'Enter\')saveEdit('+t.id+',this)" onblur="saveEdit('+t.id+',this)"></td>'+
       '<td><div class="tech-select-wrapper"><span class="'+tc+'" onclick="showTechSelect('+t.id+',this)">'+ti+'<span class="tech-tooltip">'+tt+'</span></span></div></td>'+
       '<td style="padding-left:20px"><span class="status-badge '+getStatusClass(t.status)+'">'+t.status+'</span></td>'+
@@ -484,6 +489,10 @@ function showToast(msg){
 }
 document.querySelectorAll('.modal-overlay').forEach(function(el){el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('visible')})});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDeleteModal();closeReopenModal();closeAddTaskModal();closeBulkDeleteModal()}});
+
+function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
+document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
+document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').classList.remove('open')});
 
 render();
 </script>
