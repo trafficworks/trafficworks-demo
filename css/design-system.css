@@ -427,14 +427,11 @@ tbody tr:last-child td { border-bottom: none; }
 /* ============================================================
    MOBILE — shared responsive
    ============================================================ */
-/* Mobile nav kebab */
+/* Mobile nav kebab — hidden on desktop */
 .mobile-nav-kebab { display: none; width: 36px; height: 36px; border: none; background: none; cursor: pointer; align-items: center; justify-content: center; color: var(--text-secondary); border-radius: 6px; transition: background .15s; flex-shrink: 0; }
 .mobile-nav-kebab:hover { background: var(--off-white); }
 .mobile-nav-kebab svg { width: 20px; height: 20px; }
-.mobile-nav-menu { position: fixed; top: 56px; right: 0; width: 200px; background: var(--white); border: 1px solid var(--border); border-radius: 0 0 0 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); z-index: 200; padding: 6px 0; }
-.mobile-nav-menu a { display: flex; align-items: center; gap: 8px; padding: 10px 16px; font-size: var(--text-md); font-weight: 500; color: var(--text-primary); text-decoration: none; transition: background .1s; }
-.mobile-nav-menu a:hover { background: var(--bg); }
-.mobile-nav-menu a.active { color: var(--steel); }
+.mobile-nav-menu { display: none !important; }
 
 @media (max-width: 768px) {
   .topnav{ padding:10px var(--space-md) !important; min-height:56px; }
@@ -448,6 +445,11 @@ tbody tr:last-child td { border-bottom: none; }
   .back-link{ background:var(--charcoal); color:var(--white); border-color:var(--charcoal); }
   .back-link:hover{ color:var(--white); }
   .mobile-nav-kebab{ display:flex !important; }
+  .mobile-nav-menu{ display:none !important; position:fixed; top:56px; right:0; width:200px; background:var(--white); border:1px solid var(--border); border-radius:0 0 0 10px; box-shadow:0 8px 24px rgba(0,0,0,0.1); z-index:200; padding:6px 0; }
+  .mobile-nav-menu.open{ display:block !important; }
+  .mobile-nav-menu a{ display:flex; align-items:center; gap:8px; padding:10px 16px; font-size:var(--text-md); font-weight:500; color:var(--text-primary); text-decoration:none; transition:background .1s; }
+  .mobile-nav-menu a:hover{ background:var(--bg); }
+  .mobile-nav-menu a.active{ color:var(--steel); }
 }
 
 /* ============================================================
