@@ -9,7 +9,9 @@
 <link rel="stylesheet" href="../css/project-detail.css">
 </head>
 <body>
+<div class="layout-container nav-container">
 <nav class="topnav"><div class="topnav-left"><a class="logo" href="dashboard.html"><img src="../images/logo.png" class="logo-img" alt="TrafficWorks"><span class="logo-text">The Count Company</span></a><div class="nav-divider"></div><div class="nav-links"><a class="nav-link active" href="dashboard.html">Projects</a><a class="nav-link" href="team.html">Team</a><a class="nav-link" href="archive.html">Archive</a></div></div><div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div><button class="mobile-nav-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></nav>
+</div>
 <div class="mobile-nav-menu" id="mobileNavMenu">
   <a href="dashboard.html">Projects</a>
   <a href="team.html">Team</a>
@@ -17,9 +19,9 @@
 </div>
 
 <div class="main">
-  <div class="project-top-row">
-
-    <div class="project-header">
+  <!-- Row 1: Project name + dropdown | Add Task button -->
+  <div class="pd-header">
+    <div class="pd-header-left">
       <div class="project-name-row">
         <div class="project-name">
           <span class="project-name-toggle" onclick="toggleProjectDetails()">
@@ -29,27 +31,23 @@
             </svg>
           </span>
         </div>
-
-        <span class="project-status-pill .psp-complete" id="projectStatusPill">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-          In Progress
-        </span>
       </div>
-
       <div class="project-details-dropdown" id="projectDropdown">
         <div class="pdd-row"><span class="pdd-label">Client:</span> City of Pasadena</div>
         <div class="pdd-row"><span class="pdd-label">City:</span> Pasadena, CA</div>
         <div class="pdd-row"><span class="pdd-label">Project #:</span> DEMO-2026-101</div>
       </div>
     </div>
-
+    <div class="pd-header-right">
+      <button class="btn btn-add" onclick="openAddTaskModal()"><span class="btn-icon">+</span> Add Task</button>
+    </div>
   </div>
 
+  <!-- Row 2: Stats -->
   <div class="stats-row" id="statsRow"></div>
 
-  <div class="toolbar-row" style="margin-bottom:16px">
+  <!-- Row 3: Search + Filter -->
+  <div class="pd-toolbar">
     <div id="normalItems" style="display:flex;align-items:center;gap:10px;flex:1">
       <div class="search-box mobile-hide">
         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -65,9 +63,6 @@
         <option value="In Field">In Field</option>
         <option value="Complete">Complete</option>
       </select>
-
-      <div class="toolbar-spacer"></div>
-      <button class="btn btn-add" onclick="openAddTaskModal()"><span class="btn-icon">+</span> Add Task</button>
     </div>
 
     <div id="selectItems" style="display:none;align-items:center;gap:8px;flex:1">
