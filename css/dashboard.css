@@ -3,9 +3,9 @@
    ============================================================ */
 
 /* Dashboard header — two-row layout */
-.dashboard-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
 .dashboard-header-left { flex: 1; min-width: 0; }
-.dashboard-header-right { flex-shrink: 0; padding-top: 4px; }
+.dashboard-header-right { flex-shrink: 0; }
 
 .page-title { margin: 0; padding: 0; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 24px; font-weight: 700; color: var(--charcoal); }
 
