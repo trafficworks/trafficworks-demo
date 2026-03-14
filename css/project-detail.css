@@ -9,7 +9,7 @@
 
 .project-name-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 
-.project-name{ display:flex; align-items:center; flex-wrap:wrap; font-size: 20px; line-height: 1.25; font-weight:700; color:var(--charcoal); min-width:0; flex:1; }
+.project-name{ display:flex; align-items:center; flex-wrap:wrap; font-size: 24px; line-height: 1.25; font-weight:700; color:var(--charcoal); min-width:0; flex:1; }
 
 .project-name-toggle{ display:inline-flex; align-items:center; gap:6px; cursor:pointer; position:relative; }
 
