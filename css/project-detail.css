@@ -44,9 +44,8 @@
 .notes-hint{font-size:var(--text-sm);color:var(--text-muted);margin-top:3px;font-style:italic}
 
 /* Site cell */
-.site-cell { position: relative; text-align: center; height: 56px; vertical-align: middle; }
-.site-cell-inner { position: relative; display: flex; align-items: center; justify-content: center; height: 100%; }
-.site-indicator { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); }
+.site-cell { position: relative; text-align: center; height: 56px; vertical-align: middle; padding-left: 24px !important; }
+.site-indicator { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
 .site-num { color: var(--text-secondary); line-height: 1; }
 
 /* Bulk select checkboxes */
