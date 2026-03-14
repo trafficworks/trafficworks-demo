@@ -648,8 +648,6 @@ function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.to
 document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').classList.remove('open')});
 
 filterProjects();
-function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
-document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
 
 window.addEventListener('pageshow', function(e) {
   if (e.persisted) filterProjects();
