@@ -3,9 +3,9 @@
    ============================================================ */
 
 /* PD header — matches dashboard two-row layout */
-.pd-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.pd-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
 .pd-header-left { flex: 1; min-width: 0; }
-.pd-header-right { flex-shrink: 0; padding-top: 4px; }
+.pd-header-right { flex-shrink: 0; }
 
 .project-name-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 
