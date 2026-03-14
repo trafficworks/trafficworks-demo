@@ -1,499 +1,140 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TrafficWorks - Project Detail</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/design-system.css">
-<link rel="stylesheet" href="../css/project-detail.css">
-</head>
-<body>
-<nav class="topnav"><div class="topnav-left"><a class="logo" href="dashboard.html"><img src="../images/logo.png" class="logo-img" alt="TrafficWorks"><span class="logo-text">The Count Company</span></a><div class="nav-divider"></div><div class="nav-links"><a class="nav-link active" href="dashboard.html">Projects</a><a class="nav-link" href="team.html">Team</a><a class="nav-link" href="archive.html">Archive</a></div></div><div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div><button class="mobile-nav-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></nav>
-<div class="mobile-nav-menu" id="mobileNavMenu">
-  <a href="dashboard.html">Projects</a>
-  <a href="team.html">Team</a>
-  <a href="archive.html">Archive</a>
-</div>
+/* ============================================================
+   PROJECT DETAIL — Page-Specific Styles
+   ============================================================ */
 
-<div class="main">
-  <div class="project-top-row">
+/* Project header */
+.project-top-row{ display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
 
-    <div class="project-header">
-      <div class="project-name-row">
-        <div class="project-name">
-          <span class="project-name-toggle" onclick="toggleProjectDetails()">
-            Old Town Mobility Study
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          </span>
-        </div>
+.project-header{ flex:1; min-width:0; }
 
-        <span class="project-status-pill .psp-complete" id="projectStatusPill">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-          In Progress
-        </span>
-      </div>
+.project-name-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 
-      <div class="project-details-dropdown" id="projectDropdown">
-        <div class="pdd-row"><span class="pdd-label">Client:</span> City of Pasadena</div>
-        <div class="pdd-row"><span class="pdd-label">City:</span> Pasadena, CA</div>
-        <div class="pdd-row"><span class="pdd-label">Project #:</span> DEMO-2026-101</div>
-      </div>
-    </div>
+.project-name{ display:flex; align-items:center; flex-wrap:wrap; font-size: 20px; line-height: 1.25; font-weight:700; color:var(--charcoal); min-width:0; flex:1; }
 
-  </div>
+.project-name-toggle{ display:inline-flex; align-items:center; gap:6px; cursor:pointer; position:relative; }
 
-  <div class="stats-row" id="statsRow"></div>
+.project-name-toggle svg{ width:12px; height:12px; color:var(--text-muted); transition:transform .2s; }
 
-  <div class="toolbar-row" style="margin-bottom:16px">
-    <div id="normalItems" style="display:flex;align-items:center;gap:10px;flex:1">
-      <div class="search-box mobile-hide">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.35-4.35"/>
-        </svg>
-        <input type="text" placeholder="Search tasks…" id="searchInput" oninput="render()">
-      </div>
+.project-name-toggle.open svg{ transform:rotate(180deg); }
 
-      <select class="filter-select" id="statusFilter" onchange="render()">
-        <option value="all">All Statuses</option>
-        <option value="Pending">Pending</option>
-        <option value="In Field">In Field</option>
-        <option value="Complete">Complete</option>
-      </select>
+.project-details-dropdown{ max-height:0; overflow:hidden; transition:max-height .2s ease; margin-top:4px; }
 
-      <div class="toolbar-spacer"></div>
-      <button class="btn btn-add" onclick="openAddTaskModal()"><span class="btn-icon">+</span> Add Task</button>
-    </div>
+.project-details-dropdown.open{ max-height:80px; }
 
-    <div id="selectItems" style="display:none;align-items:center;gap:8px;flex:1">
-      <div class="select-bg">
-        <span class="select-count" id="selectCount">0 selected</span>
-        <button class="btn-delete-sel" onclick="confirmDeleteSelected()">Delete Selected</button>
-        <button class="btn-cancel-sel" onclick="cancelSelect()">Cancel</button>
-      </div>
-    </div>
-  </div>
+.pdd-row{ font-size:var(--text-sm); color:var(--text-muted); line-height:1.6; }
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th style="width:5%;text-align:center">Site</th>
-          <th style="width:39%">Task</th>
-          <th style="width:15%;cursor:pointer" onclick="sortBy('tech')">Tech <span style="font-size:9px;opacity:0.5">▼</span></th>
-          <th style="width:15%;padding-left:20px;cursor:pointer" onclick="sortBy('status')">Status <span style="font-size:9px;opacity:0.5">▼</span></th>
-          <th style="width:15%;text-align:center">Duration</th>
-          <th style="width:4%"></th>
-        </tr>
-      </thead>
-      <tbody id="taskTableBody"></tbody>
-    </table>
-  </div>
+.pdd-label{ color:var(--text-secondary); font-weight:500; }
 
-  <div class="mobile-task-cards" id="mobileTaskCards"></div>
-</div>
+.task-desc{ font-size: 13px; font-weight: 400; line-height: 1.3; vertical-align: middle; }
 
-<div class="modal-overlay" id="addTaskModal"><div class="modal" style="max-width:440px">
-  <div class="modal-title">Add Task</div>
-  <div style="display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border)">
-    <div class="tab-btn active" id="tabManual" onclick="switchTab('manual')" style="flex:1;text-align:center;padding:8px;font-size:var(--text-sm);font-weight:600;cursor:pointer;border-bottom:2px solid var(--charcoal);margin-bottom:-2px;color:var(--charcoal)">Manual Entry</div>
-    <div class="tab-btn" id="tabBulk" onclick="switchTab('bulk')" style="flex:1;text-align:center;padding:8px;font-size:var(--text-sm);font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--text-muted)">Bulk Upload</div>
-  </div>
-  <div id="manualTab">
-    <div class="modal-row"><div class="modal-label">Task Description</div><input class="modal-input" type="text" id="newTaskDesc"></div>
-    <div class="modal-row"><div class="modal-label">Count Type</div><select class="modal-select" id="newTaskType"><option value="TMC">TMC</option><option value="ADT">ADT</option><option value="SPD">SPD</option><option value="CLS">CLS</option><option value="OTH">OTH</option></select></div>
-    <div class="modal-row"><div class="modal-label">Assign Tech <span style="font-weight:400;color:var(--text-muted)">(optional)</span></div><select class="modal-select" id="newTaskTech"><option value="">Unassigned</option></select></div>
-    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeAddTaskModal()">Cancel</button><button class="btn btn-solid" onclick="addTask()">Add Task</button></div>
-  </div>
-  <div id="bulkTab" style="display:none">
-    <div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:12px">Upload a CSV with columns:<br><strong>A</strong> — Task description &nbsp; <strong>B</strong> — Count type &nbsp; <strong>C</strong> — Tech (optional)</div>
-    <div style="border:1.5px dashed var(--gray-light);border-radius:6px;padding:20px;text-align:center;cursor:pointer;background:var(--bg);transition:all .15s" onclick="document.getElementById('fileInput').click()" onmouseover="this.style.borderColor='var(--steel)'" onmouseout="this.style.borderColor='var(--gray-light)'">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      <div style="font-size:var(--text-sm);color:var(--text-secondary);margin-top:4px">Drop CSV or click to browse</div>
-      <input type="file" id="fileInput" accept=".csv" style="display:none" onchange="handleUpload(this)">
-    </div>
-    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeAddTaskModal()">Cancel</button></div>
-  </div>
-</div></div>
+/* Status pill */
+.project-status-pill{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-sm);font-weight:500;color:var(--text-primary);letter-spacing:.2px}
+.project-status-pill svg{width:14px;height:14px}
+.psp-in-progress svg{color:#BFD7EA}
+.psp-pending svg{color:#F5C27A}
+.psp-complete svg{color:var(--green)}
+.psp-on-hold svg{color:var(--red)}
 
-<div class="modal-overlay" id="deleteModal"><div class="modal">
-  <div class="modal-title">Delete Task</div>
-  <div class="modal-body" id="deleteModalBody">Remove this task?</div>
-  <div class="modal-actions"><button class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button><button class="btn btn-danger" id="confirmDeleteBtn">Delete</button></div>
-</div></div>
+/* Stat progress — PD uses same as design system */
 
-<div class="modal-overlay" id="reopenModal"><div class="modal">
-  <div class="modal-title">Reopen Task</div>
-  <div class="modal-body" id="reopenModalBody">Send back to Pending?</div>
-  <div class="modal-row"><div class="modal-label">Reason (optional)</div><select class="modal-select" id="reopenReason"><option value="">Select reason…</option><option>Equipment damaged</option><option>Wrong location</option><option>Data incomplete</option><option>Client request</option><option>Other</option></select></div>
-  <div class="modal-actions"><button class="btn btn-ghost" onclick="closeReopenModal()">Cancel</button><button class="btn btn-reopen" id="confirmReopenBtn">Reopen</button></div>
-</div></div>
+/* Notes input */
+.project-notes-input{width:100%;padding:var(--space-sm) 12px;border:1px solid var(--border);border-radius:6px;font-family:'Inter',sans-serif;font-size:var(--text-md);color:var(--text-primary);background:var(--white);outline:none;resize:vertical;min-height:36px;max-height:70px;transition:border-color .15s;line-height:1.5}
+.project-notes-input:focus{border-color:var(--steel)}
+.project-notes-input::placeholder{color:var(--text-muted)}
+.notes-hint{font-size:var(--text-sm);color:var(--text-muted);margin-top:3px;font-style:italic}
 
-<div class="modal-overlay" id="bulkDeleteModal"><div class="modal">
-  <div class="modal-title">Delete Tasks</div>
-  <div class="modal-body" id="bulkDeleteBody">Remove these tasks? This cannot be undone.</div>
-  <div class="modal-actions"><button class="btn btn-ghost" onclick="closeBulkDeleteModal()">Cancel</button><button class="btn btn-danger" onclick="executeDeleteSelected()">Delete</button></div>
-</div></div>
+/* Site cell */
+.site-cell { position: relative; text-align: center; height: 56px; vertical-align: middle; padding-left: 24px !important; }
+.site-indicator { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
+.site-num { color: var(--text-secondary); line-height: 1; }
 
-<div class="toast" id="toast"></div>
+/* Bulk select checkboxes */
+.row-check{display:none;width:32px;height:32px;cursor:pointer;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0;z-index:2}
+.row-check.pending-row{display:none}
+tbody tr:hover .row-check.pending-row{display:block;opacity:0}
+tbody tr:hover .row-check.pending-row~.site-num.has-check{opacity:0}
+.check-visual{display:none;width:15px;height:15px;border:1.5px solid var(--gray-light);border-radius:3px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;transition:all .15s}
+tbody tr:hover .check-visual.pending-vis{display:block}
+.row-check:checked{display:block!important;opacity:0}
+.row-check:checked+.check-visual{display:block!important;border-color:var(--charcoal);background:none}
+.row-check:checked+.check-visual::after{content:'';position:absolute;left:4px;top:1px;width:4px;height:8px;border:solid var(--charcoal);border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+.row-check:checked~.site-num{opacity:0!important}
 
-<script>
-var techsList=['Ava R.','Noah K.','Maya T.','Leo S.','Sofia P.'];
-var STATUS={PENDING:'Pending',INFIELD:'In Field',COMPLETE:'Complete'};
-var countTypes=['TMC','ADT','SPD','CLS','OTH'];
+/* Inline edit */
+.editing .task-desc,.editing .count-type{display:none}
+.edit-input{display:none;width:100%;padding:var(--space-xs) var(--space-sm);border:1px solid var(--steel);border-radius:4px;font-family:'Inter',sans-serif;font-size:var(--text-md);color:var(--text-primary);outline:none;background:var(--white)}
+.editing .edit-input{display:block}
 
-var tasks=[
-  {id:1,site:1,desc:'Colorado & Fair Oaks',type:'TMC',tech:'Ava R.',status:STATUS.COMPLETE,note:'48-hour count confirmed by project manager',cycles:[],currentCycle:{deployedAt:new Date('2026-03-02T06:42:00'),completedAt:new Date('2026-03-03T07:15:00')}},
-  {id:2,site:2,desc:'Colorado & Arroyo',type:'TMC',tech:'Ava R.',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-02T06:55:00'),completedAt:new Date('2026-03-03T07:22:00')}},
-  {id:3,site:3,desc:'Union & Raymond',type:'TMC',tech:'Noah K.',status:STATUS.INFIELD,note:'Pole mount confirmed with city inspector',cycles:[],currentCycle:{deployedAt:new Date('2026-03-04T06:30:00'),completedAt:null}},
-  {id:4,site:4,desc:'Fair Oaks & Green',type:'TMC',tech:'Noah K.',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-04T06:38:00'),completedAt:null}},
-  {id:5,site:5,desc:'Walnut & Marengo',type:'ADT',tech:'Maya T.',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}},
-  {id:6,site:6,desc:'Pasadena Ave NB',type:'SPD',tech:'',status:STATUS.PENDING,note:'Resident requested equipment set after 8 AM',cycles:[{deployedAt:new Date('2026-03-01T07:00:00'),completedAt:new Date('2026-03-01T09:30:00'),tech:'Ava R.',reopenReason:'Data incomplete',reopenedBy:'manager'}],currentCycle:{deployedAt:null,completedAt:null}},
-  {id:7,site:7,desc:'Pasadena Ave SB',type:'SPD',tech:'Sofia P.',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-04T05:50:00'),completedAt:null}},
-  {id:8,site:8,desc:'Green St Midblock',type:'CLS',tech:'Leo S.',status:STATUS.PENDING,note:'Bike lane activity focus area',cycles:[],currentCycle:{deployedAt:null,completedAt:null}}
-];
+/* Mobile task cards */
+.mobile-task-cards{display:none}
+.mobile-task-card{position:relative;background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.mobile-task-card-inner{padding:14px 16px 14px 20px}
+.mobile-task-card::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:5px;background:var(--gray-light);border-radius:0 4px 4px 0}
+.mobile-task-card.status-complete::before{background:var(--green)}
+.mobile-task-card.status-infield::before{background:#8DB7DB}
+.mobile-task-card.status-pending::before{background:#F5C27A}
+.mobile-task-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.mobile-task-title{font-size:var(--text-md);font-weight:600;color:var(--text-primary);line-height:1.25;flex:1;min-width:0}
+.mobile-status-pill{display:inline-flex;align-items:center;justify-content:center;min-height:26px;padding:0 10px;border-radius:8px;font-size:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.mobile-task-card.status-complete .mobile-status-pill{background:var(--green);color:#fff}
+.mobile-task-card.status-infield .mobile-status-pill{background:#BFD7EA;color:#2C3034}
+.mobile-task-card.status-pending .mobile-status-pill{background:#F5C27A;color:var(--amber-light)}
+.mobile-task-divider{height:1px;background:var(--border);margin:10px 0}
+.mobile-task-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mobile-task-meta{font-size:11px;font-weight:500;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.mobile-task-duration{font-size:10px;font-weight:600;color:var(--text-secondary);white-space:nowrap;flex-shrink:0}
 
-var nextId=9,nextSite=9,deleteTarget=null,reopenTarget=null;
+/* Stats — PD-specific: hide divider before progress bar */
+.stat-item:nth-child(3)::after { display: none }
 
-var techSel=document.getElementById('newTaskTech');
-techsList.forEach(function(t){
-  var o=document.createElement('option');
-  o.value=t;
-  o.textContent=t;
-  techSel.appendChild(o);
-});
+/* Mobile overrides */
+@media (max-width:768px){
+.mobile-hide{display:none}
+#projectStatusPill{display:none}
+.stats-row{flex-wrap:wrap;align-items:flex-start}
+.stat-item::after{display:none}
+.stat-item{padding-right:12px;margin-right:12px}
+.stat-progress{display:flex;align-items:center;gap:10px;flex:1 1 100%;width:100%;min-width:0;margin-left:0;margin-top:14px;order:10}
+.progress-bar-lg{flex:1;min-width:0;height:4px}
+.progress-pct-lg{flex-shrink:0}
+.toolbar-row{flex-wrap:wrap;border-bottom:none;box-shadow:none}
+.search-box{max-width:100%;flex:1 1 100%}
+.toolbar-spacer{display:none}
+table{display:none}
+.table-wrap{border:none;box-shadow:none;background:none}
+.mobile-task-cards{display:flex;flex-direction:column;gap:10px}
 
-var currentSort='site';
-
-function sortTasks(){
-  if(currentSort==='tech'){
-    tasks.sort(function(a,b){
-      var at=a.tech||'zzz',bt=b.tech||'zzz';
-      return at.localeCompare(bt);
-    });
-  }else if(currentSort==='status'){
-    var order={Pending:0,'In Field':1,Complete:2};
-    tasks.sort(function(a,b){return order[a.status]-order[b.status]});
-  }else{
-    tasks.sort(function(a,b){return a.site-b.site});
-  }
+.project-top-row{
+  display:block;
+  margin-bottom:20px;
 }
 
-function sortBy(col){
-  currentSort=currentSort===col?'site':col;
-  render();
+.project-header{
+  min-width:0;
 }
 
-function formatElapsed(ms){
-  var m=Math.floor(ms/60000),h=Math.floor(m/60),mn=m%60;
-  if(h>=24){return Math.floor(h/24)+'d '+(h%24)+'h'}
-  return h+'h '+mn+'m';
+.project-name-row{
+  display:block;
 }
 
-function getDuration(t){
-  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt){
-    return formatElapsed(Date.now()-t.currentCycle.deployedAt.getTime());
-  }
-  if(t.status===STATUS.COMPLETE&&t.currentCycle.deployedAt&&t.currentCycle.completedAt){
-    return formatElapsed(t.currentCycle.completedAt.getTime()-t.currentCycle.deployedAt.getTime());
-  }
-  return '';
+.project-breadcrumb-link,
+.breadcrumb-slash{
+  display:inline;
+  font-size:14px;
+  line-height:1.2;
 }
 
-function getStatusClass(s){
-  return s===STATUS.PENDING?'status-pending':s===STATUS.INFIELD?'status-infield':'status-complete';
+.project-name{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:6px;
+  font-size:18px;
+  line-height:1.2;
+  flex-wrap:nowrap;
+  min-width:0;
 }
 
-function getSiteIndicator(s){
-  return s===STATUS.PENDING?'si-pending':s===STATUS.INFIELD?'si-infield':'si-complete';
+.project-name-toggle{
+  flex-shrink:0;
 }
-
-function render(){
-  sortTasks();
-  renderStats();
-  renderTable();
-}
-
-function renderStats(){
-  var total=tasks.length;
-  var pend=tasks.filter(function(t){return t.status===STATUS.PENDING}).length;
-  var inf=tasks.filter(function(t){return t.status===STATUS.INFIELD}).length;
-  var comp=tasks.filter(function(t){return t.status===STATUS.COMPLETE}).length;
-  var pct=total>0?Math.round((comp/total)*100):0;
-
-  document.getElementById('statsRow').innerHTML=
-    '<div class="stat-item"><span class="stat-value">'+total+'</span><span class="stat-label">Total</span></div>'+
-    '<div class="stat-item"><span class="stat-value">'+pend+'</span><span class="stat-label"><mark>Pending</mark></span></div>'+
-    '<div class="stat-item"><span class="stat-value">'+inf+'</span><span class="stat-label"><mark>In Field</mark></span></div>'+
-    '<div class="stat-divider"></div>'+
-    '<div class="stat-progress"><div class="progress-bar-lg"><div class="progress-fill-lg" style="width:'+pct+'%"></div></div><span class="progress-pct-lg">'+pct+'%</span></div>';
-}
-
-function getFiltered(){
-  var s=(document.getElementById('searchInput').value||'').toLowerCase();
-  var st=document.getElementById('statusFilter').value;
-  return tasks.filter(function(t){
-    return (!s||t.desc.toLowerCase().indexOf(s)>-1||(t.type||'').toLowerCase().indexOf(s)>-1||(t.tech||'').toLowerCase().indexOf(s)>-1) && (st==='all'||t.status===st);
-  });
-}
-
-function renderTable(){
-  var filtered=getFiltered();
-
-  document.getElementById('taskTableBody').innerHTML=filtered.map(function(t){
-    var dp=[];
-    if(t.note)dp.push(t.note);
-    if(t.cycles.length>0){
-      var lc=t.cycles[t.cycles.length-1];
-      dp.push('Reopened by '+(lc.reopenedBy||'tech')+(lc.reopenReason?' — '+lc.reopenReason:''));
-    }
-    var dot=dp.length>0?'<span class="info-dot"><span class="dot-tip">'+dp.join(' · ')+'</span></span>':'';
-    var dur=getDuration(t);
-    var ti='',tc='tech-avatar unassigned',tt='Unassigned';
-    if(t.tech){
-      ti=t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase();
-      tc='tech-avatar assigned';
-      tt=t.tech;
-    }
-    var tag=t.type?'<span class="count-type">'+t.type+'</span>':'';
-    var isPending=t.status===STATUS.PENDING;
-
-    return '<tr id="row-'+t.id+'">'+
-      '<td class="site-cell"><span class="site-indicator '+getSiteIndicator(t.status)+'"></span>'+(isPending?'<input type="checkbox" class="row-check pending-row" data-id="'+t.id+'" onchange="updateSelectCount()"><span class="check-visual pending-vis"></span>':'')+
-      '<span class="site-num'+(isPending?' has-check':'')+'" style="font-size:var(--text-sm);font-weight:600">'+t.site+'</span></td>'+
-      '<td>'+tag+'<span class="task-dot-wrap"><span class="task-desc table-name">'+t.desc+'</span>'+dot+'</span><input class="edit-input" value="'+t.desc+'" onkeydown="if(event.key===\'Enter\')saveEdit('+t.id+',this)" onblur="saveEdit('+t.id+',this)"></td>'+
-      '<td><div class="tech-select-wrapper"><span class="'+tc+'" onclick="showTechSelect('+t.id+',this)">'+ti+'<span class="tech-tooltip">'+tt+'</span></span></div></td>'+
-      '<td style="padding-left:20px"><span class="status-badge '+getStatusClass(t.status)+'">'+t.status+'</span></td>'+
-      '<td style="text-align:center"><span class="duration-cell">'+dur+'</span></td>'+
-      '<td style="position:relative"><button class="kebab-btn" onclick="toggleKebab('+t.id+',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>'+
-      '<div class="kebab-menu" id="kebab-'+t.id+'">'+
-        '<button class="kebab-menu-item" onclick="startEdit('+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'+
-        (t.status===STATUS.COMPLETE?'<button class="kebab-menu-item" onclick="promptReopen('+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg>Reopen</button>':'')+
-        '<button class="kebab-menu-item danger" onclick="promptDelete('+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>'+
-      '</div></td></tr>';
-  }).join('');
-
-  document.getElementById('mobileTaskCards').innerHTML=filtered.map(function(t){
-    var dur=getDuration(t)||'';
-    var statusClass=t.status===STATUS.COMPLETE?'status-complete':t.status===STATUS.INFIELD?'status-infield':'status-pending';
-    var initials=t.tech?t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase():'';
-    var techLabel=t.tech?initials:'Unassigned';
-
-    return '<div class="mobile-task-card '+statusClass+'">'+
-      '<div class="mobile-task-card-inner">'+
-        '<div class="mobile-task-top">'+
-          '<div class="mobile-task-title">'+t.desc+'</div>'+
-          '<span class="mobile-status-pill">'+t.status+'</span>'+
-        '</div>'+
-        '<div class="mobile-task-divider"></div>'+
-        '<div class="mobile-task-bottom">'+
-          '<div class="mobile-task-meta">#'+t.site+' • '+t.type+' • '+techLabel+'</div>'+
-          '<div class="mobile-task-duration">'+dur+'</div>'+
-        '</div>'+
-      '</div>'+
-    '</div>';
-  }).join('');
-}
-
-function openAddTaskModal(){
-  document.getElementById('addTaskModal').classList.add('visible');
-  switchTab('manual');
-  document.getElementById('newTaskDesc').value='';
-  setTimeout(function(){document.getElementById('newTaskDesc').focus()},100);
-}
-function closeAddTaskModal(){document.getElementById('addTaskModal').classList.remove('visible')}
-function switchTab(tab){
-  document.getElementById('manualTab').style.display=tab==='manual'?'block':'none';
-  document.getElementById('bulkTab').style.display=tab==='bulk'?'block':'none';
-  document.getElementById('tabManual').style.borderBottomColor=tab==='manual'?'var(--charcoal)':'transparent';
-  document.getElementById('tabManual').style.color=tab==='manual'?'var(--charcoal)':'var(--text-muted)';
-  document.getElementById('tabBulk').style.borderBottomColor=tab==='bulk'?'var(--charcoal)':'transparent';
-  document.getElementById('tabBulk').style.color=tab==='bulk'?'var(--charcoal)':'var(--text-muted)';
-}
-function addTask(){
-  var d=document.getElementById('newTaskDesc').value.trim();
-  if(!d){document.getElementById('newTaskDesc').focus();return}
-  tasks.push({id:nextId++,site:nextSite++,desc:d,type:document.getElementById('newTaskType').value,tech:document.getElementById('newTaskTech').value,status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}});
-  closeAddTaskModal();render();showToast('Task added');
-}
-function handleUpload(input){
-  var file=input.files[0];if(!file)return;
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var lines=e.target.result.split('\n'),added=0;
-    lines.forEach(function(line){
-      if(!line.trim())return;
-      var cols=line.split(',');
-      var desc=(cols[0]||'').trim().replace(/^"|"$/g,'');
-      var type=(cols[1]||'TMC').trim().replace(/^"|"$/g,'').toUpperCase();
-      var tech=(cols[2]||'').trim().replace(/^"|"$/g,'');
-      if(countTypes.indexOf(type)===-1)type='OTH';
-      if(tech&&techsList.indexOf(tech)===-1)tech='';
-      if(desc){
-        tasks.push({id:nextId++,site:nextSite++,desc:desc,type:type,tech:tech,status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}});
-        added++;
-      }
-    });
-    render();
-    showToast(added+' task'+(added!==1?'s':'')+' imported');
-    closeAddTaskModal();
-  };
-  reader.readAsText(file);
-  input.value='';
-}
-
-function showTechSelect(id,el){
-  var existing=document.querySelector('.tech-dd');if(existing)existing.remove();
-  var w=el.parentElement,task=tasks.find(function(t){return t.id===id});
-  var dd=document.createElement('div');dd.className='tech-dd';
-  var rect=el.getBoundingClientRect();var spaceBelow=window.innerHeight-rect.bottom;
-  dd.style.left='-8px';
-  if(spaceBelow<200){dd.style.bottom='calc(100% + 4px)'}else{dd.style.top='calc(100% + 4px)'}
-  var options=[''].concat(techsList);
-  options.forEach(function(n){
-    var item=document.createElement('div');
-    item.className='tech-dd-item'+(n===task.tech?' selected':'')+(n===''?' unassigned-opt':'');
-    item.textContent=n||'Unassigned';
-    item.addEventListener('click',function(e){e.stopPropagation();assignTech(id,n);dd.remove()});
-    dd.appendChild(item);
-  });
-  w.appendChild(dd);
-  setTimeout(function(){
-    document.addEventListener('click',function closeTech(e){
-      if(!dd.contains(e.target)){dd.remove();document.removeEventListener('click',closeTech)}
-    });
-  },0);
-}
-
-var openKebab=null;
-function toggleKebab(id,e){
-  e.stopPropagation();
-  if(openKebab&&openKebab!==id){
-    var old=document.getElementById('kebab-'+openKebab);
-    if(old)old.classList.remove('open','drop-up','drop-down');
-  }
-  var menu=document.getElementById('kebab-'+id);
-  var isOpen=menu.classList.contains('open');
-  menu.classList.remove('open','drop-up','drop-down');
-  if(!isOpen){
-    var rect=e.currentTarget.getBoundingClientRect();
-    menu.classList.add('open',(window.innerHeight-rect.bottom)<160?'drop-up':'drop-down');
-    openKebab=id;
-  }else{
-    openKebab=null;
-  }
-}
-document.addEventListener('click',function(){
-  if(openKebab){
-    document.getElementById('kebab-'+openKebab).classList.remove('open');
-    openKebab=null;
-  }
-});
-
-function assignTech(id,tech){var t=tasks.find(function(t){return t.id===id});if(t){t.tech=tech;render();showToast(tech?'Assigned to '+tech:'Unassigned')}}
-function startEdit(id){var row=document.getElementById('row-'+id);if(row){row.classList.add('editing');var input=row.querySelector('.edit-input');if(input){input.focus();input.select()}}}
-function saveEdit(id,input){var t=tasks.find(function(x){return x.id===id});var v=input.value.trim();if(t&&v)t.desc=v;render()}
-
-function promptDelete(id){
-  deleteTarget=id;
-  var t=tasks.find(function(x){return x.id===id});
-  document.getElementById('deleteModalBody').textContent='Remove "'+(t?t.desc:'this task')+'"?';
-  document.getElementById('deleteModal').classList.add('visible');
-}
-document.getElementById('confirmDeleteBtn').addEventListener('click',function(){
-  if(deleteTarget!==null){
-    tasks=tasks.filter(function(t){return t.id!==deleteTarget});
-    deleteTarget=null;
-    closeDeleteModal();
-    render();
-    showToast('Task deleted');
-  }
-});
-function closeDeleteModal(){document.getElementById('deleteModal').classList.remove('visible')}
-
-function promptReopen(id){
-  reopenTarget=id;
-  var t=tasks.find(function(x){return x.id===id});
-  document.getElementById('reopenModalBody').textContent='Send "'+(t?t.desc:'this task')+'" back to Pending?';
-  document.getElementById('reopenReason').value='';
-  document.getElementById('reopenModal').classList.add('visible');
-}
-document.getElementById('confirmReopenBtn').addEventListener('click',function(){
-  if(reopenTarget!==null){
-    var t=tasks.find(function(x){return x.id===reopenTarget});
-    var r=document.getElementById('reopenReason').value;
-    if(t){
-      if(t.currentCycle.deployedAt){
-        t.cycles.push({deployedAt:t.currentCycle.deployedAt,completedAt:t.currentCycle.completedAt,tech:t.tech,reopenReason:r||'No reason given',reopenedBy:'manager'});
-      }
-      t.status=STATUS.PENDING;
-      t.currentCycle={deployedAt:null,completedAt:null};
-    }
-    reopenTarget=null;
-    closeReopenModal();
-    render();
-    showToast('Reopened'+(r?' — '+r:''));
-  }
-});
-function closeReopenModal(){document.getElementById('reopenModal').classList.remove('visible')}
-
-function toggleProjectDetails(){
-  document.getElementById('projectDropdown').classList.toggle('open');
-  document.querySelector('.project-name-toggle').classList.toggle('open');
-}
-
-function updateSelectCount(){
-  var checks=document.querySelectorAll('.row-check:checked');
-  var count=checks.length;
-  if(count>0){
-    document.getElementById('normalItems').style.display='none';
-    document.getElementById('selectItems').style.display='flex';
-    document.getElementById('selectCount').textContent=count+' selected';
-  } else {
-    document.getElementById('normalItems').style.display='flex';
-    document.getElementById('selectItems').style.display='none';
-  }
-}
-
-function confirmDeleteSelected(){
-  var checks=document.querySelectorAll('.row-check:checked');
-  if(checks.length===0)return;
-  document.getElementById('bulkDeleteBody').textContent='Remove '+checks.length+' task'+(checks.length!==1?'s':'')+'? This cannot be undone.';
-  document.getElementById('bulkDeleteModal').classList.add('visible');
-}
-function closeBulkDeleteModal(){document.getElementById('bulkDeleteModal').classList.remove('visible')}
-function executeDeleteSelected(){
-  var checks=document.querySelectorAll('.row-check:checked');
-  var ids=[];checks.forEach(function(c){ids.push(parseInt(c.dataset.id))});
-  tasks=tasks.filter(function(t){return ids.indexOf(t.id)===-1});
-  closeBulkDeleteModal();cancelSelect();render();showToast(ids.length+' task'+(ids.length!==1?'s':'')+' deleted');
-}
-
-function cancelSelect(){
-  document.querySelectorAll('.row-check:checked').forEach(function(c){c.checked=false});
-  document.getElementById('normalItems').style.display='flex';
-  document.getElementById('selectItems').style.display='none';
-}
-
-function showToast(msg){
-  var el=document.getElementById('toast');
-  el.textContent=msg;
-  el.classList.add('visible');
-  clearTimeout(el._timer);
-  el._timer=setTimeout(function(){el.classList.remove('visible')},2000);
-}
-document.querySelectorAll('.modal-overlay').forEach(function(el){el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('visible')})});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDeleteModal();closeReopenModal();closeAddTaskModal();closeBulkDeleteModal()}});
-
-function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
-document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').classList.remove('open')});
-
-render();
-</script>
-</body>
-</html>
