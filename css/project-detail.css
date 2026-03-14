@@ -2,10 +2,10 @@
    PROJECT DETAIL — Page-Specific Styles
    ============================================================ */
 
-/* Project header */
-.project-top-row{ display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
-
-.project-header{ flex:1; min-width:0; }
+/* PD header — matches dashboard two-row layout */
+.pd-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.pd-header-left { flex: 1; min-width: 0; }
+.pd-header-right { flex-shrink: 0; padding-top: 4px; }
 
 .project-name-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 
@@ -24,6 +24,15 @@
 .pdd-row{ font-size:var(--text-sm); color:var(--text-muted); line-height:1.6; }
 
 .pdd-label{ color:var(--text-secondary); font-weight:500; }
+
+/* Stats spacing */
+.pd-header + .stats-row { margin-top: 8px; margin-bottom: 0; }
+
+/* PD toolbar */
+.pd-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+
+/* PD table spacing */
+.pd-table-wrap { margin-top: 20px; }
 
 .task-desc{ font-size: 13px; font-weight: 400; line-height: 1.3; vertical-align: middle; }
 
@@ -90,51 +99,26 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 /* Mobile overrides */
 @media (max-width:768px){
 .mobile-hide{display:none}
-#projectStatusPill{display:none}
 .stats-row{flex-wrap:wrap;align-items:flex-start}
 .stat-item::after{display:none}
 .stat-item{padding-right:12px;margin-right:12px}
 .stat-progress{display:flex;align-items:center;gap:10px;flex:1 1 100%;width:100%;min-width:0;margin-left:0;margin-top:14px;order:10}
 .progress-bar-lg{flex:1;min-width:0;height:4px}
 .progress-pct-lg{flex-shrink:0}
-.toolbar-row{flex-wrap:wrap;border-bottom:none;box-shadow:none}
+.pd-toolbar{flex-wrap:wrap}
 .search-box{max-width:100%;flex:1 1 100%}
-.toolbar-spacer{display:none}
 table{display:none}
 .table-wrap{border:none;box-shadow:none;background:none}
-.mobile-task-cards{display:flex;flex-direction:column;gap:10px}
+.mobile-task-cards{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 
-.project-top-row{
-  display:block;
-  margin-bottom:20px;
-}
+.pd-header{ flex-direction:column; gap:12px; }
+.pd-header-right{ display:none; }
 
-.project-header{
-  min-width:0;
-}
+.project-name-row{ display:block; }
 
-.project-name-row{
-  display:block;
-}
+.project-name{ display:flex; align-items:center; gap:6px; font-size:18px; line-height:1.2; flex-wrap:nowrap; min-width:0; }
 
-.project-breadcrumb-link,
-.breadcrumb-slash{
-  display:inline;
-  font-size:14px;
-  line-height:1.2;
-}
+.project-name-toggle{ flex-shrink:0; }
 
-.project-name{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  margin-top:6px;
-  font-size:18px;
-  line-height:1.2;
-  flex-wrap:nowrap;
-  min-width:0;
-}
-
-.project-name-toggle{
-  flex-shrink:0;
+.site-cell { height: auto; }
 }
