@@ -26,10 +26,10 @@
 .pdd-label{ color:var(--text-secondary); font-weight:500; }
 
 /* Stats spacing */
-.pd-header + .stats-row { margin-top: 8px; margin-bottom: 0; }
+.pd-header + .stats-row { margin-top: 24px; margin-bottom: 0; }
 
 /* PD toolbar */
-.pd-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.pd-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 15px; }
 
 /* PD table spacing */
 .pd-table-wrap { margin-top: 20px; }
