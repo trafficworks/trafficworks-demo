@@ -10,7 +10,7 @@
 </head>
 <body>
 <nav class="topnav"><div class="topnav-left"><a class="logo" href="dashboard.html"><img src="../images/logo.png" class="logo-img" alt="TrafficWorks"><span class="logo-text">The Count Company</span></a><div class="nav-divider"></div><div class="nav-links"><a class="nav-link active" href="dashboard.html">Projects</a><a class="nav-link" href="team.html">Team</a><a class="nav-link" href="archive.html">Archive</a></div></div><div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div><button class="mobile-nav-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></nav>
-<div class="mobile-nav-menu" id="mobileNavMenu" style="display:none">
+<div class="mobile-nav-menu" id="mobileNavMenu">
   <a href="dashboard.html">Projects</a>
   <a href="team.html">Team</a>
   <a href="archive.html">Archive</a>
@@ -490,8 +490,8 @@ function showToast(msg){
 document.querySelectorAll('.modal-overlay').forEach(function(el){el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('visible')})});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDeleteModal();closeReopenModal();closeAddTaskModal();closeBulkDeleteModal()}});
 
-function toggleMobileNav(){var m=document.getElementById('mobileNavMenu');m.style.display=m.style.display==='block'?'none':'block'}
-document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').style.display='none'});
+function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
+document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').classList.remove('open')});
 
 render();
 </script>
