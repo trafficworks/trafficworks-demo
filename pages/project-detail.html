@@ -26,6 +26,7 @@
       <div class="project-subtitle">City of Pasadena · Pasadena, CA · DEMO-2026-101</div>
     </div>
     <div class="pd-header-right">
+      <button class="btn btn-ghost jobsheet-btn" onclick="openJobSheet()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</button>
       <button class="btn btn-add" onclick="openAddTaskModal()"><span class="btn-icon">+</span> Add Task</button>
     </div>
   </div>
@@ -33,6 +34,7 @@
   <!-- Row 2: Stats -->
   <div class="stats-row" id="statsRow"></div>
   <div class="pd-mobile-stats" id="pdMobileStats"></div>
+  <div class="pd-mobile-jobsheet"><button class="btn btn-ghost jobsheet-btn" onclick="openJobSheet()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</button></div>
 
   <!-- Row 3: Search + Filter -->
   <div class="pd-toolbar">
@@ -127,10 +129,21 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- Job Sheet overlay -->
+<div class="jobsheet-overlay" id="jobsheetOverlay">
+  <div class="jobsheet-header">
+    <button class="jobsheet-close" onclick="closeJobSheet()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="jobsheet-title">Job Sheet</span>
+    <button class="jobsheet-download" onclick="printJobSheet()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
+  </div>
+  <div class="jobsheet-body" id="jobsheetBody"></div>
+</div>
+
 <script>
 var techsList=['Ava R.','Noah K.','Maya T.','Leo S.','Sofia P.'];
 var STATUS={PENDING:'Pending',INFIELD:'In Field',COMPLETE:'Complete'};
 var countTypes=['TMC','ADT','SPD','CLS','OTH'];
+var projectNotes='Gate code: #4521. Equipment staging in east parking lot. Client contact: Maria Chen (626) 555-0142. Do not block ADA access ramps.';
 
 var tasks=[
   {id:1,site:1,desc:'Colorado & Fair Oaks',type:'TMC',tech:'Ava R.',status:STATUS.COMPLETE,note:'48-hour count confirmed by project manager',cycles:[],currentCycle:{deployedAt:new Date('2026-03-02T06:42:00'),completedAt:new Date('2026-03-03T07:15:00')}},
@@ -273,7 +286,7 @@ function renderTable(){
     var statusClass=t.status===STATUS.COMPLETE?'status-complete':t.status===STATUS.INFIELD?'status-infield':'status-pending';
     var initials=t.tech?t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase():'';
     var techLabel=t.tech?initials:'—';
-    var noteIcon=t.note?'<span class="info-dot mobile-info-dot"><span class="dot-tip">'+t.note+'</span></span>':'';
+    var noteIcon='';
 
     return '<div class="mobile-task-card '+statusClass+'">'+
       '<div class="mobile-task-inner">'+
@@ -484,6 +497,57 @@ document.addEventListener('click',function(e){
   document.querySelectorAll('.mobile-info-dot.tapped').forEach(function(d){if(d!==dot)d.classList.remove('tapped')});
   if(dot){dot.classList.toggle('tapped');e.stopPropagation()}
 });
+
+// Job Sheet
+function openJobSheet(){
+  var pName='Old Town Mobility Study';
+  var pClient='City of Pasadena';
+  var pLocation='Pasadena, CA';
+  var pNum='DEMO-2026-101';
+  var pending=tasks.filter(function(t){return t.status===STATUS.PENDING});
+  var infield=tasks.filter(function(t){return t.status===STATUS.INFIELD});
+  var complete=tasks.filter(function(t){return t.status===STATUS.COMPLETE});
+  var now=new Date();
+  var dateStr=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
+
+  var html='<div class="js-project"><div class="js-project-name">'+pName+'</div><div class="js-project-meta">'+pClient+' · '+pLocation+' · '+pNum+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>';
+
+  if(projectNotes){
+    html+='<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+projectNotes+'</div></div>';
+  }
+
+  function renderGroup(title,list,showNotes){
+    if(list.length===0)return '';
+    var s='<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div>';
+    s+='<div class="js-site-list">';
+    list.forEach(function(t){
+      var tech=t.tech||'Unassigned';
+      var dur=getDuration(t)||'';
+      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+tech+'</span>'+(dur?'<span class="js-site-dur">'+dur+'</span>':'')+'</div>';
+      if(showNotes&&t.note){s+='<div class="js-site-note">'+t.note+'</div>';}
+      s+='</div>';
+    });
+    s+='</div></div>';
+    return s;
+  }
+
+  html+=renderGroup('Pending',pending,true);
+  html+=renderGroup('In Field',infield,true);
+  html+=renderGroup('Complete',complete,true);
+
+  document.getElementById('jobsheetBody').innerHTML=html;
+  document.getElementById('jobsheetOverlay').classList.add('visible');
+  document.body.style.overflow='hidden';
+}
+
+function closeJobSheet(){
+  document.getElementById('jobsheetOverlay').classList.remove('visible');
+  document.body.style.overflow='';
+}
+
+function printJobSheet(){
+  window.print();
+}
 
 render();
 </script>
