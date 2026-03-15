@@ -2,20 +2,16 @@
    PROJECT DETAIL — Page-Specific Styles
    ============================================================ */
 
-/* PD header — matches dashboard two-row layout */
-.pd-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
-.pd-header-left { flex: 1; min-width: 0; }
-.pd-header-right { flex-shrink: 0; }
-
+/* PD header */
 .project-name{ font-size: 20px; line-height: 1.25; font-weight:700; color:var(--charcoal); }
+.project-subtitle { font-size: var(--text-sm); color: var(--text-muted); margin-top: 2px; }
 
-.project-subtitle { font-size: var(--text-sm); color: var(--text-muted); margin-top: 4px; }
-
-/* Stats spacing */
-.pd-header + .stats-row { margin-top: 24px; margin-bottom: 0; }
+/* Stats hidden */
+.stats-row { display: none; }
 
 /* PD toolbar */
-.pd-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 15px; }
+.pd-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.jobsheet-btn { display:inline-flex; align-items:center; gap:4px; }
 
 /* PD table spacing */
 .pd-table-wrap { margin-top: 20px; }
@@ -98,19 +94,17 @@ table{display:none}
 .pd-table-wrap{display:none}
 .mobile-task-cards{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 
-.pd-header{ flex-direction:column; gap:4px; align-items:flex-start; }
-.pd-header-right{ display:none; }
-
 .project-name{ font-size:18px; line-height:1.2; }
 .project-subtitle{ font-size:11px; }
 
-.pd-mobile-jobsheet{ margin-top:12px; }
+.pd-mobile-jobsheet{ display:block; margin-top:12px; }
 }
 
 /* ============================================================
    JOB SHEET OVERLAY
    ============================================================ */
 .pd-mobile-jobsheet{ display:none; }
+.pd-mobile-jobsheet .jobsheet-btn{ color:#B87A00; }
 .jobsheet-btn{ gap:4px; }
 
 .jobsheet-overlay { position:fixed; inset:0; background:var(--white); z-index:300; display:none; flex-direction:column; overflow:hidden; }
