@@ -7,7 +7,7 @@
 .dashboard-header-left { flex: 1; min-width: 0; }
 .dashboard-header-right { flex-shrink: 0; }
 
-.page-title { margin: 0; padding: 0; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 24px; font-weight: 700; color: var(--charcoal); }
+.page-title { margin: 0; padding: 0; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 20px; font-weight: 700; color: var(--charcoal); }
 
 .stats-row { display: none; }
 
