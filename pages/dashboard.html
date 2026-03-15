@@ -37,23 +37,13 @@
 </div>
 
 <div class="main">
-  <!-- Row 1: Greeting | Create Button -->
-  <div class="dashboard-header">
-    <div class="dashboard-header-left">
-      <h1 class="page-title" id="pageGreeting"></h1>
-      <div class="stats-row" id="statsRow"></div>
-    </div>
-    <div class="dashboard-header-right">
-      <button class="btn btn-primary" onclick="openCreateModal()">
-        <span class="btn-icon">+</span> Create Project
-      </button>
-    </div>
-  </div>
+  <h1 class="page-title" id="pageGreeting"></h1>
+  <div class="stats-row" id="statsRow"></div>
 
-  <!-- Mobile stat pills (outside header for full-width span) -->
+  <!-- Mobile stat pills -->
   <div class="mobile-stats" id="mobileStats"></div>
 
-  <!-- Row 2: Search + Filter -->
+  <!-- Toolbar: Search + Filter + Create -->
   <div class="dashboard-toolbar">
     <div class="search-box">
       <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -69,6 +59,10 @@
       <option value="On Hold">On Hold</option>
       <option value="Complete">Complete</option>
     </select>
+    <div class="toolbar-spacer"></div>
+    <button class="btn btn-primary" onclick="openCreateModal()">
+      <span class="btn-icon">+</span> Create Project
+    </button>
   </div>
 
   <!-- Table -->
