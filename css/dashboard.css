@@ -88,6 +88,7 @@
   .dashboard-header {
     flex-direction: column;
     gap: 12px;
+    align-items: stretch;
   }
 
   .dashboard-header-right {
@@ -109,10 +110,20 @@
     margin-bottom: 0;
   }
 
+  .mobile-stat-pill {
+    padding: 4px 0;
+    font-size: 11px;
+    border-radius: 8px;
+  }
+
+  .mobile-stat-pill .pill-val {
+    font-size: 13px;
+  }
+
   .mobile-cards {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 16px;
   }
 }
