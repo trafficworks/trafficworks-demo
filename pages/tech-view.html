@@ -38,9 +38,13 @@
     <span class="tv-task-progress-pct" id="taskProgressPct">0%</span>
   </div>
 </div>
-<div class="tv-print-overlay" id="printOverlay">
-  <button class="tv-print-close" onclick="closePrintView()">&times;</button>
-  <div id="printContent"></div>
+<div class="jobsheet-overlay" id="printOverlay">
+  <div class="jobsheet-header" style="background:var(--tv-surface,var(--white));border-color:var(--tv-border,var(--border))">
+    <button class="jobsheet-close" onclick="closePrintView()" style="color:var(--tv-text-secondary,var(--text-secondary))"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="jobsheet-title" style="color:var(--tv-text,var(--charcoal))">Job Sheet</span>
+    <button class="jobsheet-download" onclick="window.print()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
+  </div>
+  <div class="jobsheet-body" id="printContent" style="background:var(--tv-bg,var(--white))"></div>
 </div>
 <div class="tv-reopen-overlay" id="reopenOverlay">
   <div class="tv-reopen-modal">
@@ -184,7 +188,7 @@ function renderTaskCards(){
     if(!completedCollapsed)completedTasks.forEach(function(t){html+=taskCardHTML(t,true)});
   }
   if(openTasks.length===0&&completedTasks.length===0)html='<div class="tv-empty-state">No tasks match this filter</div>';
-  html+='<div class="tv-download-link" onclick="downloadPDF(\''+currentProject.id+'\')">Download task list</div>';
+  html+='<div class="tv-download-link" onclick="openJobSheet(\''+currentProject.id+'\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</div>';
   container.innerHTML=html;
   container.querySelectorAll('.toggle-btn').forEach(function(btn){if(btn.dataset.action==='reopen')setupHoldButton(btn,800,promptReopen);else setupHoldButton(btn,600,cycleTaskStatus)});
 }
@@ -250,8 +254,8 @@ function confirmReopen(){
   closeReopenModal();renderTaskView();renderProjectStats();
 }
 document.getElementById('reopenOverlay').addEventListener('click',function(e){if(e.target===this)closeReopenModal()});
-function downloadPDF(projectId){var p=projects.find(function(x){return x.id===projectId});if(!p)return;var tasks=p.tasks||[];var pending=tasks.filter(function(t){return t.status===STATUS.PENDING});var infield=tasks.filter(function(t){return t.status===STATUS.INFIELD});var html='<div class="print-title">'+p.name+'</div><div class="print-location">'+p.location+'</div>';if(p.notes){html+='<div class="print-notes"><div class="print-notes-label">Tech Instructions</div><div class="print-notes-text">'+p.notes+'</div></div>'}function renderSection(title,cls,list){if(list.length===0)return'';var s='<div class="print-section print-section-'+cls+'"><div class="print-section-title">'+title+' ('+list.length+')</div><table class="print-table"><tbody>';list.forEach(function(t){s+='<tr><td class="site-num">'+t.site+'</td><td class="task-desc">'+t.desc+'</td></tr>'});return s+'</tbody></table></div>'}html+=renderSection('Pending','pending',pending);html+=renderSection('In Field','infield',infield);var now=new Date();html+='<div class="print-footer"><span>Generated '+(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear()+' '+now.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'</span><span>TrafficWorks</span></div>';document.getElementById('printContent').innerHTML=html;document.getElementById('printOverlay').classList.add('visible')}
-function closePrintView(){document.getElementById('printOverlay').classList.remove('visible')}
+function openJobSheet(projectId){var p=projects.find(function(x){return x.id===projectId});if(!p)return;var tasks=p.tasks||[];var pending=tasks.filter(function(t){return t.status===STATUS.PENDING});var infield=tasks.filter(function(t){return t.status===STATUS.INFIELD});var complete=tasks.filter(function(t){return t.status===STATUS.COMPLETE});var now=new Date();var dateStr=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();var html='<div class="js-project"><div class="js-project-name">'+p.name+'</div><div class="js-project-meta">'+p.location+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>';if(p.notes){html+='<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+p.notes+'</div></div>'}function renderGroup(title,list){if(list.length===0)return'';var s='<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">';list.forEach(function(t){s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+(t.type||'')+'</span></div>';if(t.note)s+='<div class="js-site-note">'+t.note+'</div>';s+='</div>'});return s+'</div></div>'}html+=renderGroup('Pending',pending);html+=renderGroup('In Field',infield);html+=renderGroup('Complete',complete);document.getElementById('printContent').innerHTML=html;document.getElementById('printOverlay').classList.add('visible');document.body.style.overflow='hidden'}
+function closePrintView(){document.getElementById('printOverlay').classList.remove('visible');document.body.style.overflow=''}
 showProjects();
 </script>
 </body>
