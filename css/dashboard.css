@@ -9,7 +9,7 @@
 
 .page-title { margin: 0; padding: 0; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 24px; font-weight: 700; color: var(--charcoal); }
 
-.stats-row { margin-top: 20px; margin-bottom: 0; }
+.stats-row { display: none; }
 
 /* Dashboard toolbar */
 .dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 0; }
@@ -45,8 +45,8 @@
 .empty-cone { width: 240px; height: auto; display: block; }
 
 /* Mobile stat pills */
-.mobile-stats { display:none; gap:6px; margin-bottom:14px; flex-wrap:wrap }
-.mobile-stat-pill { display:inline-flex; align-items:center; gap:5px; padding:var(--space-sm) 14px; background:var(--white); border:1px solid var(--border); border-radius:20px; font-size:13px; font-weight:500; color:var(--text-secondary) }
+.mobile-stats { display:none; flex-wrap:wrap }
+.mobile-stat-pill { display:inline-flex; align-items:center; justify-content:center; gap:5px; padding:8px 14px; background:var(--white); border:1px solid var(--border); border-radius:10px; font-size:13px; font-weight:500; color:var(--text-secondary); flex:1; min-width:0; }
 .mobile-stat-pill .pill-val { font-weight:700; font-size:15px; color:var(--text-primary) }
 
 /* Mobile cards */
@@ -102,32 +102,11 @@
     display: none;
   }
 
-  .stats-row {
-    display: none !important;
-  }
-
   .mobile-stats {
     display: flex;
-    gap: 12px;
-    margin-top: 8px;
-  }
-
-  .stat-item:last-child::after {
-    display: none;
-  }
-
-  .stat-progress {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 1 1 100%;
-    min-width: 100%;
-    margin-left: 0;
-    margin-top: 14px;
-  }
-
-  .progress-bar-lg {
-    height: 7px;
+    gap: 8px;
+    margin-top: 12px;
+    margin-bottom: 0;
   }
 
   .mobile-cards {
