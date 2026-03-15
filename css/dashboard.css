@@ -95,3 +95,6 @@
   .progress-bar-lg { height: 7px; }
   .mobile-cards { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
 }
+@media (min-width: 769px) {
+  .dashboard-stats { display: none; }
+}
