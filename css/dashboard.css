@@ -106,18 +106,18 @@
   .mobile-stats {
     display: flex;
     gap: 8px;
-    margin-top: 12px;
+    margin-top: 14px;
     margin-bottom: 0;
   }
 
   .mobile-stat-pill {
     padding: 4px 0;
-    font-size: 11px;
+    font-size: 14px;
     border-radius: 8px;
   }
 
   .mobile-stat-pill .pill-val {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .mobile-cards {
