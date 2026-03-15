@@ -92,7 +92,6 @@
   .dashboard-header-right { display: none; }
   .dashboard-toolbar { display: none; }
   .dashboard-table-wrap { display: none; }
-  .mobile-stats { display: none; }
   .stat-item:last-child::after { display: none; }
   .stat-progress { display: flex; align-items: center; gap: 10px; flex: 1 1 100%; min-width: 100%; margin-left: 0; margin-top: 14px; }
   .progress-bar-lg { height: 7px; }
