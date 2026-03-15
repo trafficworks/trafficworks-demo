@@ -46,8 +46,8 @@
 
 /* Mobile stat pills */
 .mobile-stats { display:none; }
-.mobile-stat-pill { display:inline-flex; align-items:center; gap:5px; padding:6px 0; background:var(--white); border:1px solid var(--border); border-radius:10px; font-size:12px; font-weight:500; color:var(--text-secondary); flex:1; min-width:0; justify-content:center; }
-.mobile-stat-pill .pill-val { font-weight:700; font-size:14px; color:var(--text-primary) }
+.mobile-stat-pill { display:inline-flex; align-items:center; gap:5px; padding:8px 0; background:var(--white); border:1px solid var(--border); border-radius:10px; font-size:14px; font-weight:600; color:var(--text-secondary); flex:1; min-width:0; justify-content:center; }
+.mobile-stat-pill .pill-val { font-weight:700; font-size:16px; color:var(--text-primary) }
 
 /* Mobile cards */
 .mobile-cards { display:none }
