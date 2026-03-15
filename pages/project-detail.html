@@ -499,6 +499,10 @@ document.addEventListener('click',function(e){
 });
 
 // Job Sheet
+function getInitials(name){if(!name)return'—';return name.split(' ').map(function(p){return p[0]}).join('').toUpperCase()}
+function fmtTime(d){if(!d)return'';var m=d.getMonth()+1;var day=d.getDate();var h=d.getHours();var min=d.getMinutes();var ampm=h>=12?'p':'a';h=h%12||12;return m+'/'+day+' '+h+':'+(min<10?'0':'')+min+ampm}
+function fmtDur(ms){if(!ms||ms<0)return'';var h=Math.floor(ms/3600000);var m=Math.floor((ms%3600000)/60000);return h+'h '+m+'m'}
+
 function openJobSheet(){
   var pName='Old Town Mobility Study';
   var pClient='City of Pasadena';
@@ -516,24 +520,27 @@ function openJobSheet(){
     html+='<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+projectNotes+'</div></div>';
   }
 
-  function renderGroup(title,list,showNotes){
+  function renderGroup(title,list){
     if(list.length===0)return '';
-    var s='<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div>';
-    s+='<div class="js-site-list">';
+    var s='<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">';
     list.forEach(function(t){
-      var tech=t.tech||'Unassigned';
-      var dur=getDuration(t)||'';
-      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+tech+'</span>'+(dur?'<span class="js-site-dur">'+dur+'</span>':'')+'</div>';
-      if(showNotes&&t.note){s+='<div class="js-site-note">'+t.note+'</div>';}
+      var ini=getInitials(t.tech);
+      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+ini+'</span></div>';
+      var times=[];
+      if(t.currentCycle&&t.currentCycle.deployedAt)times.push('Set: '+fmtTime(t.currentCycle.deployedAt));
+      if(t.currentCycle&&t.currentCycle.completedAt)times.push('Picked: '+fmtTime(t.currentCycle.completedAt));
+      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)times.push('Duration: '+fmtDur(t.currentCycle.completedAt-t.currentCycle.deployedAt));
+      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt)times.push('In field: '+fmtDur(Date.now()-t.currentCycle.deployedAt.getTime()));
+      if(times.length>0)s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
+      if(t.note)s+='<div class="js-site-note">'+t.note+'</div>';
       s+='</div>';
     });
-    s+='</div></div>';
-    return s;
+    return s+'</div></div>';
   }
 
-  html+=renderGroup('Pending',pending,true);
-  html+=renderGroup('In Field',infield,true);
-  html+=renderGroup('Complete',complete,true);
+  html+=renderGroup('Pending',pending);
+  html+=renderGroup('In Field',infield);
+  html+=renderGroup('Complete',complete);
 
   document.getElementById('jobsheetBody').innerHTML=html;
   document.getElementById('jobsheetOverlay').classList.add('visible');
