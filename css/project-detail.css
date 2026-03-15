@@ -7,23 +7,9 @@
 .pd-header-left { flex: 1; min-width: 0; }
 .pd-header-right { flex-shrink: 0; }
 
-.project-name-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.project-name{ font-size: 20px; line-height: 1.25; font-weight:700; color:var(--charcoal); }
 
-.project-name{ display:flex; align-items:center; flex-wrap:wrap; font-size: 20px; line-height: 1.25; font-weight:700; color:var(--charcoal); min-width:0; flex:1; }
-
-.project-name-toggle{ display:inline-flex; align-items:center; gap:6px; cursor:pointer; position:relative; }
-
-.project-name-toggle svg{ width:12px; height:12px; color:var(--text-muted); transition:transform .2s; }
-
-.project-name-toggle.open svg{ transform:rotate(180deg); }
-
-.project-details-dropdown{ max-height:0; overflow:hidden; transition:max-height .2s ease; margin-top:4px; }
-
-.project-details-dropdown.open{ max-height:80px; }
-
-.pdd-row{ font-size:var(--text-sm); color:var(--text-muted); line-height:1.6; }
-
-.pdd-label{ color:var(--text-secondary); font-weight:500; }
+.project-subtitle { font-size: var(--text-sm); color: var(--text-muted); margin-top: 4px; }
 
 /* Stats spacing */
 .pd-header + .stats-row { margin-top: 24px; margin-bottom: 0; }
@@ -104,18 +90,21 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 .mobile-hide{display:none}
 .stats-row{display:none}
 .pd-mobile-stats{display:flex;gap:8px;margin-top:12px}
+.pd-mobile-stats .mobile-stat-pill{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 0;background:var(--white);border:1px solid var(--border);border-radius:8px;font-size:11px;font-weight:500;color:var(--text-secondary);flex:1;min-width:0;white-space:nowrap}
+.pd-mobile-stats .mobile-stat-pill .pill-val{font-weight:700;font-size:13px;color:var(--text-primary)}
 .pd-toolbar{display:none}
 table{display:none}
 .table-wrap{border:none;box-shadow:none;background:none}
 .pd-table-wrap{display:none}
 .mobile-task-cards{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 
-.pd-header{ flex-direction:column; gap:12px; align-items:stretch; }
+.pd-header{ flex-direction:column; gap:4px; align-items:flex-start; }
 .pd-header-right{ display:none; }
 
-.project-name-row{ display:block; }
+.project-name{ font-size:18px; line-height:1.2; }
+.project-subtitle{ font-size:11px; }
 
-.project-name{ display:flex; align-items:center; gap:6px; font-size:18px; line-height:1.2; flex-wrap:nowrap; min-width:0; }
-
-.project-name-toggle{ flex-shrink:0; }
+/* Mobile info-dot tap to show */
+.mobile-info-dot{ margin-left:4px; }
+.mobile-info-dot.tapped .dot-tip{ display:block; }
 }
