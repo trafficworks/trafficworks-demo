@@ -14,9 +14,6 @@
 /* Dashboard toolbar */
 .dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 15px; }
 
-/* Dashboard stats */
-.mobile-stats { display: none; }
-
 /* Table spacing */
 .dashboard-table-wrap { margin-top: 20px; }
 
