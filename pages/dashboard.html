@@ -335,6 +335,7 @@ function renderProjects(list) {
       '</div>' +
       '<span class="mobile-card-pct">' + taskText + '</span>' +
     '</div>' +
+    (projectTasks[p.id] ? '<div class="mobile-card-jobsheet" onclick="event.stopPropagation();openJobSheet('+p.id+')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</div>' : '') +
   '</div>';
 }).join('');
 }
@@ -667,22 +668,24 @@ document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-
 // Job Sheet — demo task data per project
 var projectTasks = {
   1: {notes:'Gate code: #4521. Equipment staging in east parking lot. Client contact: Maria Chen (626) 555-0142.',tasks:[
-    {site:1,desc:'Colorado & Fair Oaks',type:'TMC',tech:'Ava R.',status:'Complete',note:'48-hour count confirmed'},
-    {site:2,desc:'Colorado & Arroyo',type:'TMC',tech:'Ava R.',status:'Complete',note:''},
-    {site:3,desc:'Union & Raymond',type:'TMC',tech:'Noah K.',status:'In Field',note:'Pole mount confirmed with city inspector'},
-    {site:4,desc:'Fair Oaks & Green',type:'TMC',tech:'Noah K.',status:'In Field',note:''},
-    {site:5,desc:'Walnut & Marengo',type:'ADT',tech:'Maya T.',status:'Pending',note:''}
+    {site:1,desc:'Colorado & Fair Oaks',type:'TMC',tech:'Ava R.',status:'Complete',note:'48-hour count confirmed',deployed:'3/2 6:42a',picked:'3/3 7:15a',dur:'24h 33m'},
+    {site:2,desc:'Colorado & Arroyo',type:'TMC',tech:'Ava R.',status:'Complete',note:'',deployed:'3/2 6:55a',picked:'3/3 7:22a',dur:'24h 27m'},
+    {site:3,desc:'Union & Raymond',type:'TMC',tech:'Noah K.',status:'In Field',note:'Pole mount confirmed with city inspector',deployed:'3/4 6:30a',picked:'',dur:''},
+    {site:4,desc:'Fair Oaks & Green',type:'TMC',tech:'Noah K.',status:'In Field',note:'',deployed:'3/4 6:38a',picked:'',dur:''},
+    {site:5,desc:'Walnut & Marengo',type:'ADT',tech:'Maya T.',status:'Pending',note:'',deployed:'',picked:'',dur:''}
   ]},
   2: {notes:'Tube counters only — no radar. Install during off-peak hours.',tasks:[
-    {site:1,desc:'Harbor Blvd NB',type:'ADT',tech:'Leo S.',status:'In Field',note:''},
-    {site:2,desc:'Harbor Blvd SB',type:'ADT',tech:'Leo S.',status:'In Field',note:''},
-    {site:3,desc:'Katella & Harbor',type:'TMC',tech:'',status:'Pending',note:''}
+    {site:1,desc:'Harbor Blvd NB',type:'ADT',tech:'Leo S.',status:'In Field',note:'',deployed:'3/5 7:10a',picked:'',dur:''},
+    {site:2,desc:'Harbor Blvd SB',type:'ADT',tech:'Leo S.',status:'In Field',note:'',deployed:'3/5 7:18a',picked:'',dur:''},
+    {site:3,desc:'Katella & Harbor',type:'TMC',tech:'',status:'Pending',note:'',deployed:'',picked:'',dur:''}
   ]},
-  3: {notes:'',tasks:[{site:1,desc:'Ocean & Pine',type:'TMC',tech:'Sofia P.',status:'Complete',note:''}]},
-  4: {notes:'Radar speed surveys near school zones. Deploy before 7 AM.',tasks:[{site:1,desc:'Glenoaks & Pacific',type:'SPD',tech:'',status:'Pending',note:''}]},
-  5: {notes:'',tasks:[{site:1,desc:'Foothill & Santa Anita',type:'TMC',tech:'Maya T.',status:'In Field',note:'Signal timing request from city'}]},
-  6: {notes:'Bikeway study complete. Final data submitted.',tasks:[{site:1,desc:'Ocean Park Blvd',type:'CLS',tech:'Ava R.',status:'Complete',note:''}]}
+  3: {notes:'',tasks:[{site:1,desc:'Ocean & Pine',type:'TMC',tech:'Sofia P.',status:'Complete',note:'',deployed:'2/26 6:00a',picked:'2/27 6:45a',dur:'24h 45m'}]},
+  4: {notes:'Radar speed surveys near school zones. Deploy before 7 AM.',tasks:[{site:1,desc:'Glenoaks & Pacific',type:'SPD',tech:'',status:'Pending',note:'',deployed:'',picked:'',dur:''}]},
+  5: {notes:'',tasks:[{site:1,desc:'Foothill & Santa Anita',type:'TMC',tech:'Maya T.',status:'In Field',note:'Signal timing request from city',deployed:'3/3 5:45a',picked:'',dur:''}]},
+  6: {notes:'Bikeway study complete. Final data submitted.',tasks:[{site:1,desc:'Ocean Park Blvd',type:'CLS',tech:'Ava R.',status:'Complete',note:'',deployed:'2/18 6:20a',picked:'2/19 7:00a',dur:'24h 40m'}]}
 };
+
+function getInitials(name){if(!name)return'—';return name.split(' ').map(function(p){return p[0]}).join('').toUpperCase()}
 
 function openJobSheet(id){
   closeKebabs();
@@ -706,7 +709,13 @@ function openJobSheet(id){
     if(list.length===0)return '';
     var s='<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">';
     list.forEach(function(t){
-      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+(t.tech||'Unassigned')+'</span></div>';
+      var ini=getInitials(t.tech);
+      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+ini+'</span></div>';
+      var times=[];
+      if(t.deployed)times.push('Set: '+t.deployed);
+      if(t.picked)times.push('Picked: '+t.picked);
+      if(t.dur)times.push('Duration: '+t.dur);
+      if(times.length>0)s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
       if(t.note)s+='<div class="js-site-note">'+t.note+'</div>';
       s+='</div>';
     });
