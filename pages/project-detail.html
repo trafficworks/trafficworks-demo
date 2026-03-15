@@ -19,24 +19,11 @@
 </div>
 
 <div class="main">
-  <!-- Row 1: Project name + dropdown | Add Task button -->
+  <!-- Row 1: Project name + details | Add Task button -->
   <div class="pd-header">
     <div class="pd-header-left">
-      <div class="project-name-row">
-        <div class="project-name">
-          <span class="project-name-toggle" onclick="toggleProjectDetails()">
-            Old Town Mobility Study
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          </span>
-        </div>
-      </div>
-      <div class="project-details-dropdown" id="projectDropdown">
-        <div class="pdd-row"><span class="pdd-label">Client:</span> City of Pasadena</div>
-        <div class="pdd-row"><span class="pdd-label">City:</span> Pasadena, CA</div>
-        <div class="pdd-row"><span class="pdd-label">Project #:</span> DEMO-2026-101</div>
-      </div>
+      <div class="project-name">Old Town Mobility Study</div>
+      <div class="project-subtitle">City of Pasadena · Pasadena, CA · DEMO-2026-101</div>
     </div>
     <div class="pd-header-right">
       <button class="btn btn-add" onclick="openAddTaskModal()"><span class="btn-icon">+</span> Add Task</button>
@@ -286,7 +273,7 @@ function renderTable(){
     var statusClass=t.status===STATUS.COMPLETE?'status-complete':t.status===STATUS.INFIELD?'status-infield':'status-pending';
     var initials=t.tech?t.tech.split(' ').map(function(p){return p[0]}).join('').toUpperCase():'';
     var techLabel=t.tech?initials:'—';
-    var noteIcon=t.note?'<span class="mobile-task-note-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>':'';
+    var noteIcon=t.note?'<span class="info-dot mobile-info-dot"><span class="dot-tip">'+t.note+'</span></span>':'';
 
     return '<div class="mobile-task-card '+statusClass+'">'+
       '<div class="mobile-task-inner">'+
@@ -445,11 +432,6 @@ document.getElementById('confirmReopenBtn').addEventListener('click',function(){
 });
 function closeReopenModal(){document.getElementById('reopenModal').classList.remove('visible')}
 
-function toggleProjectDetails(){
-  document.getElementById('projectDropdown').classList.toggle('open');
-  document.querySelector('.project-name-toggle').classList.toggle('open');
-}
-
 function updateSelectCount(){
   var checks=document.querySelectorAll('.row-check:checked');
   var count=checks.length;
@@ -495,6 +477,13 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDelete
 
 function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
 document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').classList.remove('open')});
+
+// Mobile info-dot tap to show/hide tooltip
+document.addEventListener('click',function(e){
+  var dot=e.target.closest('.mobile-info-dot');
+  document.querySelectorAll('.mobile-info-dot.tapped').forEach(function(d){if(d!==dot)d.classList.remove('tapped')});
+  if(dot){dot.classList.toggle('tapped');e.stopPropagation()}
+});
 
 render();
 </script>
