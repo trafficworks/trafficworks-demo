@@ -1,297 +1,289 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/design-system.css">
-<link rel="stylesheet" href="../css/tech-view.css">
-</head>
-<body>
-<div class="tv-header">
-  <div class="tv-header-left">
-    <button class="tv-back-btn" id="backBtn" onclick="showProjects()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-    <span class="tv-greeting" id="greeting"></span>
-    <div class="tv-project-info" id="barProjectInfo">
-      <span class="tv-project-name-bar" id="barProjectName"></span>
-      <span class="tv-project-loc-bar" id="barProjectLoc"></span>
-    </div>
-  </div>
-  <div class="tv-header-right">
-    <button class="tv-logout" onclick="handleLogout()">Log Out</button>
-  </div>
-</div>
-<div class="tv-stats" id="projectStatsBar">
-  <div class="tv-stat"><span class="tv-stat-value" id="statProjects">0</span><span class="tv-stat-label">jobs need attention</span></div>
-  <div class="tv-stat-divider"></div>
-  <div class="tv-stat"><span class="tv-stat-value" id="statOpenTasks">0</span><span class="tv-stat-label">open tasks</span></div>
-</div>
-<div class="tv-filter-bar" id="taskFilterBar">
-  <div class="tv-filter-pill active" id="filterAll" onclick="toggleFilter('all')"><span class="tv-filter-value" id="filterAllVal">0</span><span class="tv-filter-label">Total</span></div>
-  <div class="tv-filter-pill" id="filterPending" onclick="toggleFilter('Pending')"><span class="tv-filter-value" id="filterPendingVal">0</span><span class="tv-filter-label">Pending</span></div>
-  <div class="tv-filter-pill" id="filterInfield" onclick="toggleFilter('In Field')"><span class="tv-filter-value" id="filterInfieldVal">0</span><span class="tv-filter-label">In Field</span></div>
-</div>
-<div id="taskProgressWrap" style="display:none">
-  <div class="tv-task-progress">
-    <div class="tv-task-progress-bar"><div class="tv-task-progress-fill" id="taskProgressFill" style="width:0%"></div></div>
-    <span class="tv-task-progress-pct" id="taskProgressPct">0%</span>
-  </div>
-</div>
-<div class="jobsheet-overlay" id="printOverlay">
-  <div class="jobsheet-header" style="background:var(--tv-surface);border-color:var(--tv-border)">
-    <button class="jobsheet-close" onclick="closePrintView()" style="color:var(--tv-text-secondary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-    <span class="jobsheet-title" style="color:var(--tv-text)">Job Sheet</span>
-    <button class="jobsheet-download" onclick="window.print()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
-  </div>
-  <div class="jobsheet-body" id="printContent" style="background:var(--tv-bg)"></div>
-</div>
-<div class="tv-reopen-overlay" id="reopenOverlay">
-  <div class="tv-reopen-modal">
-    <div class="tv-reopen-title">Reopen Task</div>
-    <div class="tv-reopen-sub" id="reopenTaskName"></div>
-    <textarea class="tv-reopen-input" id="reopenReason" placeholder="Why are you reopening this task?"></textarea>
-    <div class="tv-reopen-actions">
-      <button class="tv-reopen-cancel" onclick="closeReopenModal()">Cancel</button>
-      <button class="tv-reopen-confirm" onclick="confirmReopen()">Reopen</button>
-    </div>
-  </div>
-</div>
-<div class="tv-content">
-  <div class="tv-view active" id="projectView"><div id="projectCards"></div></div>
-  <div class="tv-view" id="taskView">
-    <div class="tv-hold-hint" id="holdHint">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 16"/></svg>
-      Hold button to update status
-      <button class="tv-hold-hint-dismiss" onclick="dismissHint()">Got it</button>
-    </div>
-    <div id="taskCards"></div>
-  </div>
-</div>
-<script>
-(function(){var h=new Date().getHours();if(h<7||h>=19)document.documentElement.classList.add('tv-dark')})();
-var techName='Carlos';
-(function(){var h=new Date().getHours();var g=h<12?'Good morning':h<17?'Good afternoon':'Good evening';document.getElementById('greeting').textContent=g+', '+techName})();
-var STATUS={PENDING:'Pending',INFIELD:'In Field',COMPLETE:'Complete'};
-var MAX_NOTE=100,durationInterval=null;
-var projects=[
-  {id:'p1',name:'Main St Intersection Study',location:'City of Monrovia',status:'In Progress',notes:'',tasks:[
-    {id:1,site:1,desc:'Myrtle & Greystone',type:'TMC',status:STATUS.COMPLETE,note:'Client confirmed 48hr count',cycles:[{deployedAt:new Date('2026-02-25T06:42:00'),completedAt:new Date('2026-02-26T07:15:00'),tech:'Carlos M.'}],currentCycle:{deployedAt:null,completedAt:null}},
-    {id:2,site:2,desc:'Foothill & Shamrock',type:'TMC',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-25T06:55:00'),completedAt:new Date('2026-02-26T07:22:00')}},
-    {id:3,site:3,desc:'Huntington & 5th',type:'TMC',status:STATUS.INFIELD,note:'Battery at 80%',cycles:[],currentCycle:{deployedAt:new Date('2026-03-11T06:30:00'),completedAt:null}},
-    {id:4,site:4,desc:'Duarte & Mountain',type:'TMC',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-11T06:38:00'),completedAt:null}},
-    {id:5,site:5,desc:'Colorado & Royal Oaks',type:'TMC',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}},
-    {id:6,site:6,desc:'Greystone NB',type:'SPD',status:STATUS.PENDING,note:'Homeowner on NE corner said OK to mount',cycles:[{deployedAt:new Date('2026-02-24T07:00:00'),completedAt:new Date('2026-02-24T09:30:00'),tech:'Carlos M.',reopenReason:'Equipment damaged',reopenedBy:'manager'}],currentCycle:{deployedAt:null,completedAt:null}},
-    {id:7,site:7,desc:'Greystone SB',type:'SPD',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-26T05:50:00'),completedAt:null}},
-    {id:8,site:8,desc:'Shamrock Ave',type:'ADT',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}}
-  ]},
-  {id:'p2',name:'Hwy 101 NB/SB Tube Count',location:'City of Calabasas',status:'In Progress',notes:'Caltrans encroachment permit #EP-2026-0441. Work hours 9PM-6AM only. CHP escort required.',tasks:[
-    {id:9,site:1,desc:'NB Lane 1-2',type:'ADT',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-24T05:30:00'),completedAt:new Date('2026-02-25T06:00:00')}},
-    {id:10,site:2,desc:'NB Lane 3-4',type:'ADT',status:STATUS.COMPLETE,note:'Shifted 5ft east due to pothole',cycles:[],currentCycle:{deployedAt:new Date('2026-02-24T05:45:00'),completedAt:new Date('2026-02-25T06:10:00')}},
-    {id:11,site:3,desc:'SB Lane 1-2',type:'ADT',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-26T05:15:00'),completedAt:null}},
-    {id:12,site:4,desc:'SB Lane 3-4',type:'ADT',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}}
-  ]},
-  {id:'p3',name:'Rosemead Blvd Speed Survey',location:'City of Temple City',status:'Complete',notes:'',tasks:[
-    {id:13,site:1,desc:'Rosemead NB',type:'SPD',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-20T07:00:00'),completedAt:new Date('2026-02-21T07:30:00')}},
-    {id:14,site:2,desc:'Rosemead SB',type:'SPD',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-20T07:15:00'),completedAt:new Date('2026-02-21T07:45:00')}},
-    {id:15,site:3,desc:'Tube Backup NB',type:'ADT',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-02-20T07:30:00'),completedAt:new Date('2026-02-21T08:00:00')}}
-  ]}
-];
-var currentProject=null,activeFilter='all',completedCollapsed=false,hintDismissed=false,openNoteId=null;
-function taskCounts(t){return{total:t.length,pending:t.filter(function(x){return x.status===STATUS.PENDING}).length,infield:t.filter(function(x){return x.status===STATUS.INFIELD}).length,complete:t.filter(function(x){return x.status===STATUS.COMPLETE}).length}}
-function pct(c){return c.total>0?Math.round((c.complete/c.total)*100):0}
-function fmtDuration(ms){if(ms<0)ms=0;var h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000);return h+'h '+m+'m'}
-function getLiveDuration(t){if(t.status!==STATUS.INFIELD||!t.currentCycle.deployedAt)return'';return fmtDuration(Date.now()-t.currentCycle.deployedAt.getTime())}
-function startDurationTimer(){stopDurationTimer();durationInterval=setInterval(function(){document.querySelectorAll('.live-duration').forEach(function(el){var taskId=parseInt(el.dataset.taskId);var task=currentProject?currentProject.tasks.find(function(t){return t.id===taskId}):null;if(task&&task.status===STATUS.INFIELD&&task.currentCycle.deployedAt){el.textContent=fmtDuration(Date.now()-task.currentCycle.deployedAt.getTime())}})},60000)}
-function stopDurationTimer(){if(durationInterval){clearInterval(durationInterval);durationInterval=null}}
-function toggleBtnClass(s){return s===STATUS.PENDING?'toggle-pending':s===STATUS.INFIELD?'toggle-infield':'toggle-complete'}
-function actionLabel(s){return s===STATUS.PENDING?'Pending':s===STATUS.INFIELD?'In Field':'Reopen'}
-function isProjectComplete(p){return p.tasks.every(function(t){return t.status===STATUS.COMPLETE})}
-function handleLogout(){window.location.href='login.html'}
+/* ============================================================
+   TECH VIEW — Page-Specific Styles
+   Layers on design-system.css with dark/light auto-switch
+   ============================================================ */
 
-function showProjects(){
-  currentProject=null;activeFilter='all';completedCollapsed=false;openNoteId=null;stopDurationTimer();
-  document.getElementById('projectView').classList.add('active');
-  document.getElementById('taskView').classList.remove('active');
-  document.getElementById('projectStatsBar').style.display='';
-  document.getElementById('taskFilterBar').style.display='none';
-  document.getElementById('taskProgressWrap').style.display='none';
-  document.getElementById('backBtn').style.display='none';
-  document.getElementById('barProjectInfo').classList.remove('visible');
-  document.getElementById('greeting').style.display='';
-  renderProjectStats();renderProjectCards();
-}
-function renderProjectStats(){
-  var active=projects.filter(function(p){return!isProjectComplete(p)});
-  var allTasks=projects.flatMap(function(p){return p.tasks});
-  var open=allTasks.filter(function(t){return t.status!==STATUS.COMPLETE}).length;
-  document.getElementById('statProjects').textContent=active.length;
-  document.getElementById('statOpenTasks').textContent=open;
-}
-function renderProjectCards(){
-  var active=projects.filter(function(p){return!isProjectComplete(p)});
-  var complete=projects.filter(function(p){return isProjectComplete(p)});
-  var sorted=active.concat(complete);
-  document.getElementById('projectCards').innerHTML=sorted.map(function(p){
-    var c=taskCounts(p.tasks),done=isProjectComplete(p);
-    var parts=[];
-    if(c.pending>0)parts.push(c.pending+' pending');
-    if(c.infield>0)parts.push(c.infield+' in field');
-    if(done)parts.push('All complete');
-    var taskLine=parts.join('<span class="dot"></span>');
-    var jobSheetLink='<div class="tv-card-notes" onclick="event.stopPropagation();openJobSheet(\''+p.id+'\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Job Sheet</div>';
-    return '<div class="tv-project-card'+(done?' card-complete':'')+'" onclick="openProject(\''+p.id+'\')"><div class="tv-card-name">'+p.name+'</div><div class="tv-card-location">'+p.location+'</div><div class="tv-card-tasks">'+taskLine+'</div>'+jobSheetLink+'<div class="tv-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div></div>';
-  }).join('');
+/* ============================================================
+   THEME: LIGHT (default, 7am–7pm)
+   ============================================================ */
+:root {
+  --tv-bg: var(--bg);
+  --tv-surface: var(--white);
+  --tv-text: var(--text-primary);
+  --tv-text-secondary: var(--text-secondary);
+  --tv-text-muted: var(--text-muted);
+  --tv-border: var(--border);
+  --tv-header-bg: var(--white);
+  --tv-header-text: var(--text-primary);
+  --tv-card-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  --tv-divider: rgba(0,0,0,0.08);
+  --tv-surface-hover: #F0EFEB;
+  --tv-note-bg: #F5F6F8;
 }
 
-function openProject(id){
-  currentProject=projects.find(function(p){return p.id===id});if(!currentProject)return;
-  document.getElementById('projectView').classList.remove('active');
-  document.getElementById('taskView').classList.add('active');
-  document.getElementById('projectStatsBar').style.display='none';
-  document.getElementById('taskFilterBar').style.display='flex';
-  document.getElementById('taskProgressWrap').style.display='';
-  document.getElementById('backBtn').style.display='flex';
-  document.getElementById('barProjectInfo').classList.add('visible');
-  document.getElementById('barProjectName').textContent=currentProject.name;
-  document.getElementById('barProjectLoc').textContent=currentProject.location;
-  document.getElementById('greeting').style.display='none';
-  document.getElementById('holdHint').style.display=hintDismissed?'none':'flex';
-  activeFilter='all';completedCollapsed=false;openNoteId=null;
-  renderTaskView();startDurationTimer();
-}
-function dismissHint(){hintDismissed=true;document.getElementById('holdHint').style.display='none'}
-function toggleCardNotes(id){var el=document.getElementById('card-notes-'+id);if(el)el.classList.toggle('open')}
-function renderTaskView(){renderTaskSummary();renderTaskCards()}
-function renderTaskSummary(){
-  var c=taskCounts(currentProject.tasks),percentage=pct(c);
-  document.getElementById('filterAllVal').textContent=c.total;
-  document.getElementById('filterPendingVal').textContent=c.pending;
-  document.getElementById('filterInfieldVal').textContent=c.infield;
-  document.getElementById('filterAll').className='tv-filter-pill'+(activeFilter==='all'?' active':'');
-  document.getElementById('filterPending').className='tv-filter-pill'+(activeFilter===STATUS.PENDING?' active':'');
-  document.getElementById('filterInfield').className='tv-filter-pill'+(activeFilter===STATUS.INFIELD?' active':'');
-  document.getElementById('taskProgressFill').style.width=percentage+'%';
-  document.getElementById('taskProgressPct').textContent=percentage+'%';
-}
-function toggleFilter(key){activeFilter=activeFilter===key?'all':key;if(key==='all')activeFilter='all';renderTaskView()}
-function renderTaskCards(){
-  var container=document.getElementById('taskCards'),tasks=currentProject.tasks,openTasks,completedTasks;
-  if(activeFilter==='all'){openTasks=tasks.filter(function(t){return t.status!==STATUS.COMPLETE});completedTasks=tasks.filter(function(t){return t.status===STATUS.COMPLETE})}
-  else if(activeFilter===STATUS.COMPLETE){openTasks=[];completedTasks=tasks.filter(function(t){return t.status===STATUS.COMPLETE})}
-  else{openTasks=tasks.filter(function(t){return t.status===activeFilter});completedTasks=[]}
-  var html='';
-  openTasks.forEach(function(t){html+=taskCardHTML(t,false)});
-  if(completedTasks.length>0){
-    html+='<div class="tv-completed-divider '+(completedCollapsed?'collapsed':'')+'" onclick="toggleCompleted()"><div class="tv-completed-divider-line"></div><span class="tv-completed-divider-text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>Complete ('+completedTasks.length+')</span><div class="tv-completed-divider-line"></div></div>';
-    if(!completedCollapsed)completedTasks.forEach(function(t){html+=taskCardHTML(t,true)});
-  }
-  if(openTasks.length===0&&completedTasks.length===0)html='<div class="tv-empty-state">No tasks match this filter</div>';
-  html+='</div>';
-  container.innerHTML=html;
-  container.querySelectorAll('.toggle-btn').forEach(function(btn){if(btn.dataset.action==='reopen')setupHoldButton(btn,800,promptReopen);else setupHoldButton(btn,600,cycleTaskStatus)});
-}
-function taskCardHTML(t,isComplete){
-  var cc=isComplete?'complete-card':'';
-  var noteClass=t.note?'tv-note-indicator has-note':'tv-note-indicator empty';
-  var noteIconSvg=t.note
-    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
-    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+/* ============================================================
+   THEME: DARK (7pm–7am)
+   ============================================================ */
+html.tv-dark { --tv-bg: #1E2024; --tv-surface: #2A2D32; --tv-text: #EAEDF0; --tv-text-secondary: #9CA0A6; --tv-text-muted: rgba(255,255,255,0.4); --tv-border: rgba(255,255,255,0.08); --tv-header-bg: #181A1E; --tv-header-text: #EAEDF0; --tv-card-shadow: 0 1px 3px rgba(0,0,0,0.3); --tv-divider: rgba(255,255,255,0.08); --tv-surface-hover: #32353A; --tv-note-bg: #32353A; }
 
-  // Detail row items (note icon removed from here)
-  var details=[];
-  details.push('<span class="tv-task-site">#'+t.site+'</span>');
-  if(t.type)details.push('<span class="tv-task-type">'+t.type+'</span>');
-  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)details.push('<span class="tv-task-duration live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>');
-  var detailHTML=details.join('<span class="tv-detail-dot"></span>');
+/* ============================================================
+   BASE OVERRIDES
+   ============================================================ */
+html { height: 100% }
+body { background: var(--tv-bg); color: var(--tv-text); min-height: 100%; overflow-x: hidden; -webkit-text-size-adjust: 100%; }
 
-  // Reopen reason row
-  var reopenHTML='';
-  if(t.cycles.length>0&&t.status===STATUS.PENDING){
-    var lc=t.cycles[t.cycles.length-1];
-    if(lc.reopenReason) reopenHTML='<div class="tv-task-reopen-row"><span class="tv-task-reopen-reason">Reopened: '+lc.reopenReason+'</span></div>';
-  }
+/* ============================================================
+   HEADER
+   ============================================================ */
+.tv-header { background: var(--tv-header-bg); border-bottom: 1px solid var(--tv-border); padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
 
-  // Action button
-  var actionHTML='';
-  if(isComplete){
-    actionHTML='<button class="toggle-btn toggle-complete" data-task-id="'+t.id+'" data-action="reopen"><div class="toggle-fill"></div><span class="toggle-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg> Reopen</span></button>';
-  } else {
-    actionHTML='<button class="toggle-btn '+toggleBtnClass(t.status)+'" data-task-id="'+t.id+'"><div class="toggle-fill"></div><span class="toggle-label">'+actionLabel(t.status)+'</span></button>';
-  }
+.tv-greeting { font-size: 18px; font-weight: 600; color: var(--tv-header-text); line-height: 1.3; }
 
-  // Note panel
-  var notePanel='<div class="tv-note-panel'+(openNoteId===t.id?' open':'')+'" id="note-panel-'+t.id+'"><div class="tv-note-panel-inner"><input class="tv-note-input" maxlength="'+MAX_NOTE+'" placeholder="Add a quick note…" value="'+(t.note||'').replace(/"/g,'&quot;')+'" oninput="updateCharCount('+t.id+',this)" onkeydown="if(event.key===\'Enter\')saveNote('+t.id+')"><span class="tv-note-char-count" id="char-count-'+t.id+'">'+(MAX_NOTE-(t.note||'').length)+'</span><button class="tv-note-save-btn" onclick="saveNote('+t.id+')">Save</button></div></div>';
+.tv-header-right { display: flex; align-items: center; gap: 8px; }
 
-  return '<div class="tv-task-card '+cc+'"><div class="tv-task-inner"><div class="tv-task-content"><div class="tv-task-desc-row"><div class="tv-task-desc">'+t.desc+'</div><button class="'+noteClass+'" onclick="toggleNote('+t.id+',event)">'+noteIconSvg+'</button></div><div class="tv-task-divider"></div><div class="tv-task-detail-row">'+detailHTML+'</div>'+reopenHTML+'</div><div class="tv-task-action">'+actionHTML+'</div></div>'+notePanel+'</div>';
+.tv-logout { font-family: 'Inter', sans-serif; font-size: var(--text-sm); font-weight: 500; color: var(--tv-text-muted); background: none; border: 1px solid var(--tv-border); padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all .15s; }
+.tv-logout:hover { background: var(--tv-surface-hover) }
+
+/* Back button (task view) */
+.tv-back-btn { width: 32px; height: 32px; border: none; background: none; border-radius: 6px; cursor: pointer; display: none; align-items: center; justify-content: center; color: var(--tv-header-text); transition: background .15s; flex-shrink: 0; }
+.tv-back-btn:hover { background: var(--tv-surface-hover) }
+.tv-back-btn svg { width: 18px; height: 18px }
+
+.tv-header-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+
+/* Project info in header (task view) */
+.tv-project-info { display: none; flex-direction: column; line-height: 1.15; min-width: 0; flex: 1; }
+.tv-project-info.visible { display: flex }
+.tv-project-name-bar { font-size: 16px; font-weight: 700; color: var(--tv-header-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tv-project-loc-bar { font-size: 14px; color: var(--tv-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ============================================================
+   STATS BAR
+   ============================================================ */
+.tv-stats { background: var(--tv-header-bg); border-bottom: 1px solid var(--tv-border); padding: 10px 16px; display: flex; align-items: center; gap: 20px; position: sticky; top: 56px; z-index: 90; }
+
+.tv-stat { display: flex; align-items: center; gap: 6px; }
+
+.tv-stat-value { font-size: 20px; font-weight: 700; color: var(--tv-header-text); line-height: 1; }
+
+.tv-stat-label { font-size: 16px; font-weight: 500; color: var(--tv-text-muted); }
+
+.tv-stat-divider { width: 1px; height: 20px; background: var(--tv-border); }
+
+/* Task view stats — filter pills */
+.tv-filter-bar { background: var(--tv-header-bg); border-bottom: 1px solid var(--tv-border); padding: 8px 16px; display: none; align-items: center; justify-content: space-between; gap: 4px; position: sticky; top: 56px; z-index: 90; }
+
+.tv-filter-pill { display: flex; flex-direction: column; align-items: center; flex: 1; padding: 6px 4px; border-radius: 8px; border: 1.5px solid transparent; cursor: pointer; transition: all .15s; -webkit-tap-highlight-color: transparent; }
+.tv-filter-pill:active { transform: scale(0.96) }
+.tv-filter-pill.active { border-color: var(--tv-text-muted); background: var(--tv-surface-hover); }
+.tv-filter-value { font-size: 18px; font-weight: 700; color: var(--tv-header-text); line-height: 1.2; }
+.tv-filter-label { font-size: 12px; font-weight: 600; color: var(--tv-text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+
+/* Task view progress */
+.tv-task-progress { display: flex; align-items: center; gap: 8px; padding: 7px 16px 7px; background: var(--tv-header-bg); }
+
+.tv-task-progress-bar { flex: 1; height: 4px; background: var(--tv-divider); border-radius: 2px; overflow: hidden; display: flex; align-items: center; }
+
+.tv-task-progress-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width .4s ease; }
+
+.tv-task-progress-pct { display: flex; align-items: center; font-size: var(--text-sm); font-weight: 600; color: var(--tv-header-text); min-width: 32px; justify-content: flex-end; }
+
+/* ============================================================
+   CONTENT AREA
+   ============================================================ */
+.tv-content { padding: 12px 16px 100px; max-width: 480px; margin: 0 auto; }
+
+/* ============================================================
+   PROJECT CARDS
+   ============================================================ */
+.tv-project-card { background: var(--tv-surface); border: 1px solid var(--tv-border); border-radius: 12px; padding: 18px 18px; margin-bottom: 10px; cursor: pointer; transition: all .15s ease; -webkit-tap-highlight-color: transparent; position: relative; box-shadow: var(--tv-card-shadow); }
+.tv-project-card:active { transform: scale(0.985); background: var(--tv-surface-hover); }
+
+/* Completed card — grayed out */
+.tv-project-card.card-complete { opacity: 0.45; }
+.tv-project-card.card-complete:active { opacity: 0.55; }
+
+.tv-card-name { font-size: 16px; font-weight: 700; color: var(--tv-text); line-height: 1.35; padding-right: 24px; }
+
+.tv-card-location { font-size: 16px; font-weight: 500; color: var(--tv-text-muted); margin-top: 10px; line-height: 1.35; }
+
+.tv-card-tasks { font-size: 16px; font-weight: 600; color: var(--tv-text-secondary); margin-top: 10px; display: flex; align-items: center; gap: 6px; line-height: 1.35; }
+
+.tv-card-tasks .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--tv-text-muted); flex-shrink: 0; }
+
+.tv-card-arrow { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--tv-text-muted); }
+.tv-card-arrow svg { width: 16px; height: 16px }
+
+/* Tech instructions link on card */
+.tv-card-notes { font-size: var(--text-sm); color: #B87A00; font-weight: 600; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--tv-border); display: flex; align-items: center; gap: 5px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tv-card-notes svg { width: 13px; height: 13px }
+.tv-card-notes-body { font-size: var(--text-sm); color: var(--tv-text); line-height: 1.6; margin-top: 8px; padding: 10px 12px; background: var(--tv-note-bg); border-radius: 6px; display: none; }
+.tv-card-notes-body.open { display: block }
+
+/* ============================================================
+   TASK CARDS
+   ============================================================ */
+.tv-task-card { background: var(--tv-surface); border: none; border-radius: 12px; margin-bottom: 8px; overflow: hidden; transition: all .2s ease; -webkit-tap-highlight-color: transparent; box-shadow: var(--tv-card-shadow); }
+.tv-task-card.complete-card { opacity: 0.45 }
+
+.tv-task-inner { display: flex; align-items: stretch; gap: 0; }
+
+/* Title row */
+/* Task title row with note icon */
+.tv-task-desc-row{ display:inline-flex; align-items:flex-start; gap:6px; max-width:100%; }
+
+.tv-task-desc{ font-size:15px; font-weight:700; color:var(--tv-text); line-height:1.35; white-space:normal; overflow-wrap:anywhere; word-break:break-word; }
+
+.tv-task-desc-row .tv-note-indicator{ flex:0 0 auto; align-self:center; }
+
+.tv-note-indicator svg{ display:block; }
+
+/* Left: task info column */
+.tv-task-content { flex: 1; min-width: 0; padding: 16px 0 16px 16px; display: flex; flex-direction: column; align-items: flex-start; }
+
+/* Divider between name and details */
+.tv-task-divider { width: 100%; height: 1px; background: var(--tv-border); margin: 8px 0; }
+
+/* Detail row: site # · type · duration · note icon */
+.tv-task-detail-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.tv-task-site { font-size: 12px; font-weight: 400; color: var(--tv-text); }
+
+.tv-task-type { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 5px; font-size: 14px; font-weight: 600; letter-spacing: 0.4px; border: 1px solid var(--tv-border); color: var(--tv-text); background: none; }
+
+.tv-task-duration { font-size: 12px; font-weight: 400; color: var(--tv-text-secondary); font-variant-numeric: tabular-nums; }
+
+.tv-detail-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--tv-text-muted); flex-shrink: 0; }
+
+/* Row 3: reopen reason */
+.tv-task-reopen-row { margin-top: 6px; }
+.tv-task-reopen-reason { font-size: var(--text-sm); color: #B87A00; font-weight: 500; }
+
+/* Right: action button column */
+.tv-task-action { display: flex; align-items: center; justify-content: center; padding: 14px 14px 14px 12px; flex-shrink: 0; }
+
+/* Reopen modal */
+.tv-reopen-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 300; padding: 20px; }
+.tv-reopen-overlay.visible { display: flex }
+.tv-reopen-modal { background: var(--tv-surface); border-radius: 12px; padding: 24px; width: 100%; max-width: 340px; box-shadow: 0 16px 48px rgba(0,0,0,0.3); }
+.tv-reopen-title { font-size: 16px; font-weight: 600; color: var(--tv-text); margin-bottom: 4px; }
+.tv-reopen-sub { font-size: var(--text-sm); color: var(--tv-text-muted); margin-bottom: 16px; }
+.tv-reopen-input { width: 100%; padding: 10px 12px; border: 1px solid var(--tv-border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--tv-text); background: var(--tv-note-bg); outline: none; resize: none; min-height: 60px; line-height: 1.5; transition: border-color .15s; }
+.tv-reopen-input:focus { border-color: var(--steel) }
+.tv-reopen-input::placeholder { color: var(--tv-text-muted) }
+.tv-reopen-actions { display: flex; gap: 8px; margin-top: 16px; }
+.tv-reopen-cancel { flex: 1; padding: 10px; border-radius: 6px; border: 1px solid var(--tv-border); background: none; color: var(--tv-text-secondary); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; }
+.tv-reopen-confirm { flex: 1; padding: 10px; border-radius: 6px; border: none; background: #2AB57E; color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; }
+
+/* ============================================================
+   NOTE INDICATOR & PANEL
+   ============================================================ */
+.tv-note-indicator { display: inline-flex; flex-shrink: 0; align-items: center; cursor: pointer; -webkit-tap-highlight-color: transparent; background: none; border: none; font-family: 'Inter', sans-serif; padding: 2px; transition: color .15s; }
+.tv-note-indicator svg { width: 13px; height: 13px }
+.tv-note-indicator.has-note { color: var(--steel) }
+.tv-note-indicator.empty { color: var(--tv-text-muted); opacity: 0.4 }
+
+.tv-note-panel { max-height: 0; overflow: hidden; transition: max-height .2s ease; border-top: none; }
+.tv-note-panel.open { max-height: 80px; border-top: 1px solid var(--tv-border); }
+.tv-note-panel-inner { display: flex; align-items: center; gap: 8px; padding: 8px 16px; }
+.tv-note-input { flex: 1; border: 1px solid var(--tv-border); border-radius: 5px; padding: 7px 10px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--tv-text); outline: none; background: var(--tv-note-bg); transition: border-color .15s; }
+.tv-note-input:focus { border-color: var(--steel); background: var(--tv-surface) }
+.tv-note-input::placeholder { color: var(--tv-text-muted) }
+.tv-note-char-count { font-size: var(--text-sm); color: var(--tv-text-muted); min-width: 28px; text-align: right; }
+.tv-note-char-count.warn { color: var(--red) }
+.tv-note-save-btn { background: var(--charcoal); color: var(--white); border: none; cursor: pointer; font-size: var(--text-sm); font-weight: 600; font-family: 'Inter', sans-serif; padding: 7px 12px; border-radius: 5px; text-transform: uppercase; letter-spacing: 0.3px; }
+html.tv-dark .tv-note-save-btn { background: var(--steel); }
+
+/* ============================================================
+   TOGGLE BUTTONS (hold to change status)
+   ============================================================ */
+.toggle-btn, .toggle-btn * { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.toggle-btn { position: relative; min-width: 92px; height: 40px; border-radius: 8px; border: none; font-family: 'Inter', sans-serif; font-size: var(--text-sm); font-weight: 600; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; letter-spacing: 0.3px; flex-shrink: 0; text-transform: uppercase; transition: transform .1s ease; }
+.toggle-btn:active { transform: scale(0.96) }
+.toggle-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; opacity: 0.3; pointer-events: none; border-radius: 8px; }
+.toggle-btn.holding .toggle-fill { transition: width 0.6s linear; width: 100% }
+.toggle-label { position: relative; z-index: 1; display: flex; align-items: center; gap: 5px; }
+.toggle-label svg { width: 13px; height: 13px }
+@keyframes holdPulse { 0%,100% { opacity: 1 } 50% { opacity: 0.7 } } .toggle-btn.holding { animation: holdPulse .6s ease }  .toggle-pending { background: #F5C27A; color: var(--amber-light) } .toggle-pending .toggle-fill { background: #BFD7EA } .toggle-infield { background: #BFD7EA; color: #2C3034 } .toggle-infield .toggle-fill { background: #2AB57E } .toggle-complete { background: #2AB57E; color: var(--white) } .toggle-complete .toggle-fill { background: #22996A }  /* ============================================================ COMPLETED DIVIDER ============================================================ */ .tv-completed-divider { display: flex; align-items: center; gap: 8px; margin: 16px 0 8px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tv-completed-divider-line { flex: 1; height: 1px; background: var(--tv-divider); }
+.tv-completed-divider-text { font-size: var(--text-sm); font-weight: 500; color: var(--tv-text-muted); display: flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
+.tv-completed-divider-text svg { width: 12px; height: 12px; transition: transform .2s }
+.tv-completed-divider.collapsed .tv-completed-divider-text svg { transform: rotate(-90deg) }
+
+/* ============================================================
+   HOLD HINT
+   ============================================================ */
+.tv-hold-hint { text-align: center; font-size: var(--text-sm); color: var(--tv-text-muted); padding: 8px 10px; margin-bottom: 8px; background: var(--tv-surface-hover); border: 1px solid var(--tv-border); border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+.tv-hold-hint svg { width: 12px; height: 12px; opacity: 0.5; flex-shrink: 0 }
+.tv-hold-hint-dismiss { margin-left: 4px; background: none; border: none; color: var(--tv-text-muted); cursor: pointer; font-size: 10px; font-weight: 600; padding: 2px 4px; border-radius: 3px; }
+
+/* ============================================================
+   PRINT OVERLAY
+   ============================================================ */
+.tv-print-overlay { position: fixed; inset: 0; background: #fff; z-index: 500; overflow-y: auto; display: none; padding: 24px; }
+.tv-print-overlay.visible { display: block }
+.tv-print-close { position: fixed; top: 16px; right: 16px; z-index: 501; width: 40px; height: 40px; border-radius: 50%; background: #2C3034; color: #fff; border: none; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.print-title { font-size: 24px; font-weight: 700; color: #1A1D21; margin-bottom: 4px }
+.print-location { font-size: 16px; color: #5A5F66; margin-bottom: 16px }
+.print-notes { background: #F5F6F8; border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; border-left: 4px solid #E8A307 }
+.print-notes-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #B87A00; margin-bottom: 6px }
+.print-notes-text { font-size: 15px; color: #1A1D21; line-height: 1.6 }
+.print-section { margin-bottom: 20px }
+.print-section-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 6px; margin-bottom: 10px; border-bottom: 2px solid #1A1D21 }
+.print-section-pending .print-section-title { border-color: #9CA0A6; color: #5A5F66 }
+.print-section-infield .print-section-title { border-color: #E8A307; color: #E8A307 }
+.print-section-complete .print-section-title { border-color: #2EAE5E; color: #2EAE5E }
+.print-table { width: 100%; border-collapse: collapse }
+.print-table td { font-size: 17px; padding: 12px 10px; border-bottom: 1px solid #F0F1F3 }
+.print-table .site-num { font-size: 16px; font-weight: 700; color: #5A5F66; text-align: center; width: 44px }
+.print-table .task-desc { font-weight: 500; color: #1A1D21 }
+.print-footer { margin-top: 30px; padding-top: 10px; border-top: 1px solid #E0DED8; font-size: 11px; color: #9CA0A6; display: flex; justify-content: space-between }
+
+/* ============================================================
+   DOWNLOAD LINK
+   ============================================================ */
+.tv-download-link { text-align: center; padding: 16px 0 8px; font-size: var(--text-sm); color: var(--tv-text-muted); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tv-download-link:active { opacity: 0.7 }
+
+/* ============================================================
+   VIEW TRANSITIONS
+   ============================================================ */
+.tv-view { display: none; animation: tvViewIn .2s ease }
+.tv-view.active { display: block }
+@keyframes tvViewIn { from { opacity: 0; transform: translateX(8px) } to { opacity: 1; transform: translateX(0) } }  .tv-empty-state { text-align: center; padding: 40px 16px; color: var(--tv-text-muted); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (min-width: 480px) {
+  .tv-content { max-width: 480px; margin: 0 auto } .tv-stats, .tv-filter-bar { justify-content: center }
 }
-function toggleCompleted(){completedCollapsed=!completedCollapsed;renderTaskCards()}
-function toggleNote(id,e){e.stopPropagation();openNoteId=openNoteId===id?null:id;renderTaskCards();if(openNoteId===id){var input=document.querySelector('#note-panel-'+id+' .tv-note-input');if(input)setTimeout(function(){input.focus()},250)}}
-function updateCharCount(id,input){var r=MAX_NOTE-input.value.length;var el=document.getElementById('char-count-'+id);if(el){el.textContent=r;el.classList.toggle('warn',r<15)}}
-function saveNote(id){var input=document.querySelector('#note-panel-'+id+' .tv-note-input');if(!input)return;var task=currentProject.tasks.find(function(t){return t.id===id});if(task)task.note=input.value.trim();openNoteId=null;renderTaskCards()}
-function setupHoldButton(btn,duration,callback){var timer=null;function start(e){e.preventDefault();btn.classList.add('holding');timer=setTimeout(function(){btn.classList.remove('holding');if(navigator.vibrate)navigator.vibrate(30);callback(parseInt(btn.dataset.taskId))},duration)}function end(){clearTimeout(timer);btn.classList.remove('holding')}btn.addEventListener('pointerdown',start,{passive:false});btn.addEventListener('pointerup',end);btn.addEventListener('pointerleave',end);btn.addEventListener('pointercancel',end)}
-function cycleTaskStatus(taskId){var task=currentProject.tasks.find(function(t){return t.id===taskId});if(!task)return;if(task.status===STATUS.PENDING){task.status=STATUS.INFIELD;task.currentCycle.deployedAt=new Date()}else if(task.status===STATUS.INFIELD){task.status=STATUS.COMPLETE;task.currentCycle.completedAt=new Date()}renderTaskView();renderProjectStats()}
-var reopenTargetId=null;
-function promptReopen(taskId){
-  var task=currentProject.tasks.find(function(t){return t.id===taskId});if(!task)return;
-  reopenTargetId=taskId;
-  document.getElementById('reopenTaskName').textContent='"'+task.desc+'"';
-  document.getElementById('reopenReason').value='';
-  document.getElementById('reopenOverlay').classList.add('visible');
-  setTimeout(function(){document.getElementById('reopenReason').focus()},200);
-}
-function closeReopenModal(){document.getElementById('reopenOverlay').classList.remove('visible');reopenTargetId=null}
-function confirmReopen(){
-  if(reopenTargetId===null)return;
-  var task=currentProject.tasks.find(function(t){return t.id===reopenTargetId});if(!task)return;
-  var reason=document.getElementById('reopenReason').value.trim()||'Reopened by tech';
-  if(task.currentCycle.deployedAt){
-    task.cycles.push({deployedAt:task.currentCycle.deployedAt,completedAt:task.currentCycle.completedAt,tech:techName,reopenReason:reason,reopenedBy:'tech'});
-  }
-  task.status=STATUS.PENDING;
-  task.currentCycle={deployedAt:null,completedAt:null};
-  closeReopenModal();renderTaskView();renderProjectStats();
-}
-document.getElementById('reopenOverlay').addEventListener('click',function(e){if(e.target===this)closeReopenModal()});
-function getInitials(n){if(!n)return'\u2014';return n.split(' ').map(function(p){return p[0]}).join('').toUpperCase()}
-function fmtTimeTV(d){if(!d)return'';var m=d.getMonth()+1;var day=d.getDate();var h=d.getHours();var min=d.getMinutes();var ap=h>=12?'p':'a';h=h%12||12;return m+'/'+day+' '+h+':'+(min<10?'0':'')+min+ap}
-function fmtDurTV(ms){if(!ms||ms<0)return'';var h=Math.floor(ms/3600000);var m=Math.floor((ms%3600000)/60000);return h+'h '+m+'m'}
-function openJobSheet(projectId){
-  var p=projects.find(function(x){return x.id===projectId});if(!p)return;
-  var tks=p.tasks||[];
-  var pending=tks.filter(function(t){return t.status===STATUS.PENDING});
-  var infield=tks.filter(function(t){return t.status===STATUS.INFIELD});
-  var complete=tks.filter(function(t){return t.status===STATUS.COMPLETE});
-  var now=new Date();
-  var dateStr=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
-  var html='<div class="js-project"><div class="js-project-name">'+p.name+'</div><div class="js-project-meta">'+p.location+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>';
-  if(p.notes){html+='<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+p.notes+'</div></div>'}
-  function renderGroup(title,list){
-    if(list.length===0)return'';
-    var s='<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">';
-    list.forEach(function(t){
-      var ini=getInitials(t.tech||'');
-      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+(t.type||'')+'</span><span class="js-site-tech">'+ini+'</span></div>';
-      var times=[];
-      if(t.currentCycle&&t.currentCycle.deployedAt)times.push('Set: '+fmtTimeTV(t.currentCycle.deployedAt));
-      if(t.currentCycle&&t.currentCycle.completedAt)times.push('Picked: '+fmtTimeTV(t.currentCycle.completedAt));
-      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)times.push('Duration: '+fmtDurTV(t.currentCycle.completedAt-t.currentCycle.deployedAt));
-      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt)times.push('In field: '+fmtDurTV(Date.now()-t.currentCycle.deployedAt.getTime()));
-      if(times.length>0)s+='<div class="js-site-times">'+times.join(' \u00b7 ')+'</div>';
-      if(t.note)s+='<div class="js-site-note">'+t.note+'</div>';
-      s+='</div>';
-    });
-    return s+'</div></div>';
-  }
-  html+=renderGroup('Pending',pending);
-  html+=renderGroup('In Field',infield);
-  html+=renderGroup('Complete',complete);
-  document.getElementById('printContent').innerHTML=html;
-  document.getElementById('printOverlay').classList.add('visible');
-  document.body.style.overflow='hidden';
-}
-function closePrintView(){document.getElementById('printOverlay').classList.remove('visible');document.body.style.overflow=''}
-showProjects();
-</script>
-</body>
-</html>
+
+/* ============================================================
+   JOB SHEET OVERLAY (TV)
+   ============================================================ */
+.jobsheet-overlay { position:fixed; inset:0; background:var(--tv-bg); z-index:300; display:none; flex-direction:column; overflow:hidden; }
+.jobsheet-overlay.visible { display:flex; }
+.jobsheet-header { display:flex; align-items:center; gap:12px; padding:12px 20px; border-bottom:1px solid var(--tv-border); flex-shrink:0; }
+.jobsheet-close { background:none; border:none; cursor:pointer; padding:4px; display:flex; align-items:center; }
+.jobsheet-title { flex:1; font-size:16px; font-weight:600; }
+.jobsheet-download { display:inline-flex; align-items:center; gap:4px; padding:6px 12px; border-radius:6px; font-family:'Inter',sans-serif; font-size:12px; font-weight:500; background:#3C4248; color:#fff; border:none; cursor:pointer; }
+.jobsheet-body { flex:1; overflow-y:auto; padding:24px 20px 40px; max-width:700px; margin:0 auto; width:100%; }
+.js-project { margin-bottom:24px; }
+.js-project-name { font-size:20px; font-weight:700; color:var(--tv-text); }
+.js-project-meta { font-size:12px; color:var(--tv-text-muted); margin-top:4px; }
+.js-project-date { font-size:12px; color:var(--tv-text-muted); margin-top:2px; }
+.js-section { margin-bottom:24px; }
+.js-section-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.4px; color:var(--tv-text-secondary); margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid var(--tv-border); }
+.js-count { font-weight:500; color:var(--tv-text-muted); }
+.js-instructions { font-size:14px; color:var(--tv-text); line-height:1.6; background:var(--tv-surface); padding:12px 16px; border-radius:8px; border-left:3px solid #7A9BA8; }
+.js-site-list { display:flex; flex-direction:column; }
+.js-site { padding:10px 0; border-bottom:1px solid var(--tv-border); }
+.js-site:last-child { border-bottom:none; }
+.js-site-header { display:flex; align-items:center; gap:8px; font-size:14px; flex-wrap:wrap; }
+.js-site-num { font-size:12px; font-weight:600; color:var(--tv-text-muted); min-width:24px; }
+.js-site-desc { font-weight:500; color:var(--tv-text); flex:1; min-width:0; }
+.js-site-type { font-size:10px; font-weight:600; color:var(--tv-text-secondary); border:1px solid var(--tv-border); padding:2px 6px; border-radius:4px; }
+.js-site-tech { font-size:12px; color:var(--tv-text-secondary); }
+.js-site-note { font-size:12px; color:var(--tv-text-secondary); margin-top:4px; padding-left:32px; font-style:italic; }
+.js-site-times { font-size:11px; color:var(--tv-text-muted); margin-top:3px; padding-left:32px; font-variant-numeric:tabular-nums; }
