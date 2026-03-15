@@ -37,12 +37,11 @@
 </div>
 
 <div class="main">
-  <!-- Row 1: Greeting + Stats | Create Button -->
+  <!-- Row 1: Greeting | Create Button -->
   <div class="dashboard-header">
     <div class="dashboard-header-left">
       <h1 class="page-title" id="pageGreeting"></h1>
       <div class="stats-row" id="statsRow"></div>
-      <div class="mobile-stats" id="mobileStats"></div>
     </div>
     <div class="dashboard-header-right">
       <button class="btn btn-primary" onclick="openCreateModal()">
@@ -50,6 +49,9 @@
       </button>
     </div>
   </div>
+
+  <!-- Mobile stat pills (outside header for full-width span) -->
+  <div class="mobile-stats" id="mobileStats"></div>
 
   <!-- Row 2: Search + Filter -->
   <div class="dashboard-toolbar">
@@ -238,14 +240,14 @@ function renderStats() {
   var openTasks = active.reduce(function(sum, p) { return sum + p.openTasks; }, 0);
 
   document.getElementById('statsRow').innerHTML =
-    '<div class="stat-item"><span class="stat-value">' + inProgress + '</span><span class="stat-label">In Progress</span></div>' +
-    '<div class="stat-item"><span class="stat-value">' + pending + '</span><span class="stat-label">Pending</span></div>' +
+    '<div class="stat-item"><span class="stat-value">' + inProgress + '</span><span class="stat-label"><mark>In Progress</mark></span></div>' +
+    '<div class="stat-item"><span class="stat-value">' + pending + '</span><span class="stat-label"><mark>Pending</mark></span></div>' +
     '<div class="stat-item"><span class="stat-value">' + openTasks + '</span><span class="stat-label">Open Tasks</span></div>';
 
   document.getElementById('mobileStats').innerHTML =
-    '<div class="mobile-stat-pill"><span class="pill-val">' + inProgress + '</span> active jobs</div>' +
-    '<div class="mobile-stat-pill"><span class="pill-val">' + pending + '</span> pending</div>' +
-    '<div class="mobile-stat-pill"><span class="pill-val">' + openTasks + '</span> open tasks</div>';
+    '<div class="mobile-stat-pill"><span class="pill-val">' + inProgress + '</span> Active</div>' +
+    '<div class="mobile-stat-pill"><span class="pill-val">' + pending + '</span> Pending</div>' +
+    '<div class="mobile-stat-pill"><span class="pill-val">' + openTasks + '</span> Open Tasks</div>';
 }
 
 function toggleDashboardEmptyState(isEmpty) {
