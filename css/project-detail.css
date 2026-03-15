@@ -146,6 +146,7 @@ table{display:none}
 .js-site-tech { font-size:var(--text-sm); color:var(--text-secondary); }
 .js-site-dur { font-size:var(--text-sm); color:var(--text-muted); font-variant-numeric:tabular-nums; }
 .js-site-note { font-size:var(--text-sm); color:var(--text-secondary); margin-top:4px; padding-left:32px; font-style:italic; }
+.js-site-times { font-size:11px; color:var(--text-muted); margin-top:3px; padding-left:32px; font-variant-numeric:tabular-nums; }
 
 /* Print styles */
 @media print {
