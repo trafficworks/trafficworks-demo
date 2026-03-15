@@ -12,7 +12,7 @@
 .stats-row { display: none; }
 
 /* Dashboard toolbar */
-.dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 0; }
+.dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
 
 /* Table spacing */
 .dashboard-table-wrap { margin-top: 20px; }
@@ -45,9 +45,9 @@
 .empty-cone { width: 240px; height: auto; display: block; }
 
 /* Mobile stat pills */
-.mobile-stats { display:none; flex-wrap:wrap }
-.mobile-stat-pill { display:inline-flex; align-items:center; justify-content:center; gap:5px; padding:8px 14px; background:var(--white); border:1px solid var(--border); border-radius:10px; font-size:13px; font-weight:500; color:var(--text-secondary); flex:1; min-width:0; }
-.mobile-stat-pill .pill-val { font-weight:700; font-size:15px; color:var(--text-primary) }
+.mobile-stats { display:none; }
+.mobile-stat-pill { display:inline-flex; align-items:center; gap:5px; padding:6px 0; background:var(--white); border:1px solid var(--border); border-radius:10px; font-size:12px; font-weight:500; color:var(--text-secondary); flex:1; min-width:0; justify-content:center; }
+.mobile-stat-pill .pill-val { font-weight:700; font-size:14px; color:var(--text-primary) }
 
 /* Mobile cards */
 .mobile-cards { display:none }
