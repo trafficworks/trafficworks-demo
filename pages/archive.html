@@ -38,7 +38,10 @@
 </div>
 
 <div class="main">
-  <h1 class="page-title">Archive</h1>
+  <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:16px">
+    <h1 style="font-size:19px;font-weight:700;color:var(--charcoal);margin:0">Archive</h1>
+    <span id="archiveCount" style="font-size:var(--text-sm);color:var(--text-muted);font-weight:400"></span>
+  </div>
 
   <div class="search-bar">
     <input class="search-input" id="searchInput" placeholder="Search projects, clients…" oninput="renderArchive()">
