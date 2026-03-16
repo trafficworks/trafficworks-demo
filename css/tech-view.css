@@ -287,3 +287,24 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 .js-site-tech { font-size:12px; color:var(--tv-text-secondary); }
 .js-site-note { font-size:12px; color:var(--tv-text-secondary); margin-top:4px; padding-left:32px; font-style:italic; }
 .js-site-times { font-size:11px; color:var(--tv-text-muted); margin-top:3px; padding-left:32px; font-variant-numeric:tabular-nums; }
+
+/* ============================================================
+   STATUS CHANGE CONFIRMATION
+   ============================================================ */
+.tv-confirm-overlay { position: fixed; inset: 0; background: #2AB57E; z-index: 400; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+.tv-confirm-overlay.visible { opacity: 1; pointer-events: auto; animation: confirmFlash 1s ease forwards; }
+.tv-confirm-check { width: 80px; height: 80px; opacity: 0; transform: scale(0.5); }
+.tv-confirm-overlay.visible .tv-confirm-check { animation: checkPop 0.4s 0.1s ease forwards; }
+
+@keyframes confirmFlash {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes checkPop {
+  0% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
