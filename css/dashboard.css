@@ -31,7 +31,7 @@
 .empty-state{
   display:none;
   min-height:420px;
-  border:1px solid var(--border);
+  border:1px solid #ececec;;
   border-radius:12px;
   align-items:center;
   justify-content:center;
