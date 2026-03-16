@@ -241,10 +241,11 @@ function cycleTaskStatus(taskId){
 }
 function showStatusConfirm(){
   var el=document.getElementById('statusConfirm');
-  el.classList.remove('visible');
-  void el.offsetWidth;
-  el.classList.add('visible');
-  el.addEventListener('animationend',function(){el.classList.remove('visible')},{once:true});
+  el.className='tv-confirm-overlay fade-in';
+  setTimeout(function(){
+    el.className='tv-confirm-overlay fade-out';
+    setTimeout(function(){el.className='tv-confirm-overlay'},400);
+  },600);
 }
 var reopenTargetId=null;
 function promptReopen(taskId){
