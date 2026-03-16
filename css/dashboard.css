@@ -8,10 +8,10 @@
 .stats-row { display: none; }
 
 /* Dashboard toolbar */
-.dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 24px; }
+.dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
 
 /* Table spacing */
-.dashboard-table-wrap { margin-top: 14px; }
+.dashboard-table-wrap { margin-top: 10px; }
 
 /* Project table cells */
 .project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: 13px; font-weight: 400; }
