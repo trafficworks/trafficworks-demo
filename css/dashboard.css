@@ -28,34 +28,33 @@
 .status-badge { cursor:pointer; position:relative; transition:opacity .15s }
 .status-badge:hover { opacity:.85 }
 
-.empty-state {
-  display: none;
-  min-height: 340px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: transparent;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+.empty-state{
+  display:none;
+  min-height:420px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
 }
 
-.empty-state.show {
-  display: flex;
+.empty-state.show{
+  display:flex;
 }
 
-.empty-state-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+.empty-state-inner{
+  width:100%;
+  display:flex;
+  justify-content:center;
 }
 
-.empty-cone {
-  width: 100%;
-  max-width: 720px;
-  height: auto;
-  display: block;
+.empty-cone{
+  width:100%;
+  max-width:680px;
+  height:auto;
+  display:block;
 }
+
 
 /* Mobile stat pills */
 .mobile-stats { display:none; }
