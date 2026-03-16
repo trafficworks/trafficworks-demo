@@ -181,9 +181,11 @@ function renderTaskSummary(){
 function toggleFilter(key){activeFilter=activeFilter===key?'all':key;if(key==='all')activeFilter='all';renderTaskView()}
 function renderTaskCards(){
   var container=document.getElementById('taskCards'),tasks=currentProject.tasks,openTasks,completedTasks;
+  var statusOrder={};statusOrder[STATUS.PENDING]=0;statusOrder[STATUS.INFIELD]=1;statusOrder[STATUS.COMPLETE]=2;
   if(activeFilter==='all'){openTasks=tasks.filter(function(t){return t.status!==STATUS.COMPLETE});completedTasks=tasks.filter(function(t){return t.status===STATUS.COMPLETE})}
   else if(activeFilter===STATUS.COMPLETE){openTasks=[];completedTasks=tasks.filter(function(t){return t.status===STATUS.COMPLETE})}
   else{openTasks=tasks.filter(function(t){return t.status===activeFilter});completedTasks=[]}
+  openTasks.sort(function(a,b){return (statusOrder[a.status]||0)-(statusOrder[b.status]||0)});
   var html='';
   openTasks.forEach(function(t){html+=taskCardHTML(t,false)});
   if(completedTasks.length>0){
