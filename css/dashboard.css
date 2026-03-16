@@ -8,10 +8,10 @@
 .stats-row { display: none; }
 
 /* Dashboard toolbar */
-.dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
+.dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 24px; }
 
 /* Table spacing */
-.dashboard-table-wrap { margin-top: 16px; }
+.dashboard-table-wrap { margin-top: 14px; }
 
 /* Project table cells */
 .project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: 13px; font-weight: 400; }
@@ -73,8 +73,8 @@
 
 .mobile-card-fill{ height:100%; border-radius:2px; transition:width .3s ease; }
 
-.mobile-card-fill.fill-low{ background:var(--gray-light) }
-.mobile-card-fill.fill-mid{ background:var(--steel) }
+.mobile-card-fill.fill-low{ background:var(--green) }
+.mobile-card-fill.fill-mid{ background:var(--green) }
 .mobile-card-fill.fill-high{ background:var(--green) }
 
 .mobile-card-pct{ font-size:var(--text-sm); font-weight:600; color:var(--text-muted); min-width:48px; text-align:right; }
