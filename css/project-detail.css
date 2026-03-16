@@ -3,7 +3,8 @@
    ============================================================ */
 
 /* PD header */
-.project-name{ font-size: 20px; line-height: 1.25; font-weight:700; color:var(--charcoal); }
+.project-name{ font-size: 19px; line-height: 1.25; font-weight:700; color:var(--charcoal); display:flex; align-items:center; gap:6px; }
+.project-back-link{ display:none; color:var(--text-muted); text-decoration:none; flex-shrink:0; line-height:0; }
 .project-subtitle { font-size: var(--text-sm); color: var(--text-muted); margin-top: 0; }
 
 /* Stats hidden */
@@ -66,7 +67,7 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 .mobile-task-inner{display:flex;align-items:stretch;gap:0}
 .mobile-task-content{flex:1;min-width:0;padding:14px 0 14px 20px;display:flex;flex-direction:column;justify-content:center}
 .mobile-task-action{display:flex;align-items:center;justify-content:center;padding:14px 14px 14px 12px;flex-shrink:0}
-.mobile-task-title{font-size:17px;font-weight:600;color:var(--text-primary);line-height:1.25;display:flex;align-items:center;gap:6px}
+.mobile-task-title{font-size:16px;font-weight:600;color:var(--text-primary);line-height:1.25;display:flex;align-items:center;gap:6px}
 .mobile-task-note-icon{display:inline-flex;color:var(--text-muted);flex-shrink:0}
 .mobile-task-divider{width:100%;height:1px;background:var(--border);margin:8px 0}
 .mobile-task-meta{font-size:12px;font-weight:500;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -94,7 +95,8 @@ table{display:none}
 .pd-table-wrap{display:none}
 .mobile-task-cards{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 
-.project-name{ font-size:18px; line-height:1.2; }
+.project-name{ font-size:17px; line-height:1.2; }
+.project-back-link{ display:inline-flex; }
 .project-subtitle{ font-size:11px; }
 
 .pd-mobile-jobsheet{ display:block; margin-top:12px; }
