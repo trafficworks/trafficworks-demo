@@ -291,20 +291,26 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 /* ============================================================
    STATUS CHANGE CONFIRMATION
    ============================================================ */
-.tv-confirm-overlay { position: fixed; inset: 0; background: #2AB57E; z-index: 400; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
-.tv-confirm-overlay.visible { opacity: 1; pointer-events: auto; animation: confirmFlash 1s ease forwards; }
-.tv-confirm-check { width: 80px; height: 80px; opacity: 0; transform: scale(0.5); }
-.tv-confirm-overlay.visible .tv-confirm-check { animation: checkPop 0.4s 0.1s ease forwards; }
+.tv-confirm-overlay { position: fixed; inset: 0; background: rgba(42,181,126,0.6); z-index: 400; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; }
+.tv-confirm-overlay.visible { animation: confirmFade 1s ease forwards; pointer-events: none; }
+.tv-confirm-check { width: 64px; height: 64px; opacity: 0; }
+.tv-confirm-overlay.visible .tv-confirm-check { animation: checkDraw 0.5s 0.1s ease forwards; }
 
-@keyframes confirmFlash {
+@keyframes confirmFade {
   0% { opacity: 0; }
-  15% { opacity: 1; }
-  70% { opacity: 1; }
+  20% { opacity: 1; }
+  65% { opacity: 1; }
   100% { opacity: 0; }
 }
 
-@keyframes checkPop {
-  0% { opacity: 0; transform: scale(0.5); }
-  50% { opacity: 1; transform: scale(1.15); }
+@keyframes checkDraw {
+  0% { opacity: 0; transform: scale(0.6); }
+  40% { opacity: 1; transform: scale(1.05); }
   100% { opacity: 1; transform: scale(1); }
 }
+
+/* Undo toast */
+.tv-undo-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--charcoal,#3C4248); color: #fff; padding: 10px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); opacity: 0; transition: all .25s ease; z-index: 350; pointer-events: none; }
+.tv-undo-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+.tv-undo-btn { background: none; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 4px 12px; border-radius: 6px; font-family: 'Inter',sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: background .15s; white-space: nowrap; }
+.tv-undo-btn:hover { background: rgba(255,255,255,0.15); }
