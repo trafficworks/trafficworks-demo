@@ -28,17 +28,34 @@
 .status-badge { cursor:pointer; position:relative; transition:opacity .15s }
 .status-badge:hover { opacity:.85 }
 
-.empty-state { display: none; min-height: 340px; border: 1px solid var(--border); border-radius: 12px; background: transparent; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+.empty-state {
+  display: none;
+  min-height: 340px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 
-.empty-state.show { display: flex; }
+.empty-state.show {
+  display: flex;
+}
 
-.empty-state-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px 20px 20px; width: 100%; max-width: 520px; margin: -18px auto 0; }
+.empty-state-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 
-.empty-state-inner h2 { margin: 0; font-size: 17px; line-height: 1.2; font-weight: 700; }
-
-.empty-state-inner p { margin: 0; max-width: 420px; color: var(--text-muted); font-size: 14px; line-height: 1.5; }
-
-.empty-cone { width: 240px; height: 240px; display: block; }
+.empty-cone {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  display: block;
+}
 
 /* Mobile stat pills */
 .mobile-stats { display:none; }
