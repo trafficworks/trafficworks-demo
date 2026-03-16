@@ -244,9 +244,19 @@ function cycleTaskStatus(taskId){
 function showStatusConfirm(){
   var el=document.getElementById('statusConfirm');
   el.className='tv-confirm-overlay show';
+  var circle=el.querySelector('.tv-confirm-circle');
+  circle.style.opacity='0';
+  circle.style.transform='scale(0.5)';
+  void circle.offsetWidth;
+  circle.style.opacity='1';
+  circle.style.transform='scale(1)';
   setTimeout(function(){
-    el.className='tv-confirm-overlay show hide';
-    setTimeout(function(){el.className='tv-confirm-overlay'},300);
+    circle.style.opacity='0';
+    circle.style.transform='scale(0.8)';
+    setTimeout(function(){
+      el.className='tv-confirm-overlay';
+      circle.style.cssText='';
+    },300);
   },700);
 }
 var reopenTargetId=null;
