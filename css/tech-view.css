@@ -287,4 +287,3 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 .js-site-tech { font-size:12px; color:var(--tv-text-secondary); }
 .js-site-note { font-size:12px; color:var(--tv-text-secondary); margin-top:4px; padding-left:32px; font-style:italic; }
 .js-site-times { font-size:11px; color:var(--tv-text-muted); margin-top:3px; padding-left:32px; font-variant-numeric:tabular-nums; }
-.tv-card-jobsheet { color:#7A9BA8 !important; }
