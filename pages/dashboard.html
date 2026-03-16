@@ -320,11 +320,10 @@ function renderProjects(list) {
     '<div class="mobile-card-top">' +
       '<div class="mobile-card-text">' +
         '<div class="mobile-card-name">' + p.name + '</div>' +
-        '<div class="mobile-card-location">' + p.location + '</div>' +
-        '<div class="mobile-card-client">' + p.client + '</div>' +
+        '<div class="mobile-card-detail">' + p.client + ' · ' + p.location + '</div>' +
       '</div>' +
-      '<div class="mobile-card-status">' +
-        '<span class="status-badge ' + getStatusClass(p.status) + '">' + p.status + '</span>' +
+      '<div class="mobile-card-action">' +
+        '<span class="mobile-card-badge ' + getStatusClass(p.status) + '">' + p.status + '</span>' +
       '</div>' +
     '</div>' +
     '<div class="mobile-card-progress">' +
