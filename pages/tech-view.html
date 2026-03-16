@@ -58,7 +58,9 @@
 </div>
 <!-- Status change confirmation -->
 <div class="tv-confirm-overlay" id="statusConfirm">
-  <svg class="tv-confirm-check" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <div class="tv-confirm-circle">
+    <svg class="tv-confirm-check" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
 </div>
 <div class="tv-content">
   <div class="tv-view active" id="projectView"><div id="projectCards"></div></div>
@@ -241,11 +243,11 @@ function cycleTaskStatus(taskId){
 }
 function showStatusConfirm(){
   var el=document.getElementById('statusConfirm');
-  el.className='tv-confirm-overlay fade-in';
+  el.className='tv-confirm-overlay show';
   setTimeout(function(){
-    el.className='tv-confirm-overlay fade-out';
-    setTimeout(function(){el.className='tv-confirm-overlay'},400);
-  },600);
+    el.className='tv-confirm-overlay show hide';
+    setTimeout(function(){el.className='tv-confirm-overlay'},300);
+  },700);
 }
 var reopenTargetId=null;
 function promptReopen(taskId){
