@@ -60,7 +60,6 @@
 <div class="tv-confirm-overlay" id="statusConfirm">
   <svg class="tv-confirm-check" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
 </div>
-<div class="tv-undo-toast" id="undoToast"></div>
 <div class="tv-content">
   <div class="tv-view active" id="projectView"><div id="projectCards"></div></div>
   <div class="tv-view" id="taskView">
@@ -233,15 +232,11 @@ function toggleNote(id,e){e.stopPropagation();openNoteId=openNoteId===id?null:id
 function updateCharCount(id,input){var r=MAX_NOTE-input.value.length;var el=document.getElementById('char-count-'+id);if(el){el.textContent=r;el.classList.toggle('warn',r<15)}}
 function saveNote(id){var input=document.querySelector('#note-panel-'+id+' .tv-note-input');if(!input)return;var task=currentProject.tasks.find(function(t){return t.id===id});if(task)task.note=input.value.trim();openNoteId=null;renderTaskCards()}
 function setupHoldButton(btn,duration,callback){var timer=null;function start(e){e.preventDefault();btn.classList.add('holding');timer=setTimeout(function(){btn.classList.remove('holding');if(navigator.vibrate)navigator.vibrate(30);callback(parseInt(btn.dataset.taskId))},duration)}function end(){clearTimeout(timer);btn.classList.remove('holding')}btn.addEventListener('pointerdown',start,{passive:false});btn.addEventListener('pointerup',end);btn.addEventListener('pointerleave',end);btn.addEventListener('pointercancel',end)}
-var lastAction=null;
 function cycleTaskStatus(taskId){
   var task=currentProject.tasks.find(function(t){return t.id===taskId});if(!task)return;
-  var prevStatus=task.status;
   if(task.status===STATUS.PENDING){task.status=STATUS.INFIELD;task.currentCycle.deployedAt=new Date()}
   else if(task.status===STATUS.INFIELD){task.status=STATUS.COMPLETE;task.currentCycle.completedAt=new Date()}
-  lastAction={taskId:taskId,prevStatus:prevStatus,prevDeployed:prevStatus===STATUS.PENDING?null:task.currentCycle.deployedAt,prevCompleted:prevStatus===STATUS.INFIELD?null:task.currentCycle.completedAt};
   showStatusConfirm();
-  showUndoToast(task.desc,task.status);
   renderTaskView();renderProjectStats();
 }
 function showStatusConfirm(){
@@ -249,25 +244,7 @@ function showStatusConfirm(){
   el.classList.remove('visible');
   void el.offsetWidth;
   el.classList.add('visible');
-  setTimeout(function(){el.classList.remove('visible')},1050);
-}
-function showUndoToast(name,status){
-  var el=document.getElementById('undoToast');
-  el.innerHTML='<span>Changed to '+status+'</span><button class="tv-undo-btn" onclick="undoLastAction()">Undo</button>';
-  el.classList.add('visible');
-  clearTimeout(el._timer);
-  el._timer=setTimeout(function(){el.classList.remove('visible')},4000);
-}
-function undoLastAction(){
-  if(!lastAction)return;
-  var task=currentProject.tasks.find(function(t){return t.id===lastAction.taskId});
-  if(!task)return;
-  if(lastAction.prevStatus===STATUS.PENDING){task.currentCycle.deployedAt=null}
-  if(lastAction.prevStatus===STATUS.INFIELD){task.currentCycle.completedAt=null}
-  task.status=lastAction.prevStatus;
-  lastAction=null;
-  document.getElementById('undoToast').classList.remove('visible');
-  renderTaskView();renderProjectStats();
+  el.addEventListener('animationend',function(){el.classList.remove('visible')},{once:true});
 }
 var reopenTargetId=null;
 function promptReopen(taskId){
