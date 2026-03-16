@@ -100,7 +100,7 @@ var projects=[
 var currentProject=null,activeFilter='all',completedCollapsed=false,hintDismissed=false,openNoteId=null;
 function taskCounts(t){return{total:t.length,pending:t.filter(function(x){return x.status===STATUS.PENDING}).length,infield:t.filter(function(x){return x.status===STATUS.INFIELD}).length,complete:t.filter(function(x){return x.status===STATUS.COMPLETE}).length}}
 function pct(c){return c.total>0?Math.round((c.complete/c.total)*100):0}
-function fmtDuration(ms){if(ms<0)ms=0;var h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000);return h+'h '+m+'m'}
+function fmtDuration(ms){if(ms<0)ms=0;var m=Math.floor(ms/60000),h=Math.floor(m/60),mn=m%60;if(h>=24){return Math.floor(h/24)+'d '+(h%24)+'h'}return h+'h '+mn+'m'}
 function getLiveDuration(t){if(t.status!==STATUS.INFIELD||!t.currentCycle.deployedAt)return'';return fmtDuration(Date.now()-t.currentCycle.deployedAt.getTime())}
 function startDurationTimer(){stopDurationTimer();durationInterval=setInterval(function(){document.querySelectorAll('.live-duration').forEach(function(el){var taskId=parseInt(el.dataset.taskId);var task=currentProject?currentProject.tasks.find(function(t){return t.id===taskId}):null;if(task&&task.status===STATUS.INFIELD&&task.currentCycle.deployedAt){el.textContent=fmtDuration(Date.now()-task.currentCycle.deployedAt.getTime())}})},60000)}
 function stopDurationTimer(){if(durationInterval){clearInterval(durationInterval);durationInterval=null}}
