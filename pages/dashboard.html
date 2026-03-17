@@ -199,13 +199,6 @@
 </div>
 
 <script>
-// Greeting — pulls from signed-in manager name
-var managerName = 'Carlos'; // TODO: pull from Firebase Auth user.displayName
-(function(){
-  var h = new Date().getHours();
-  var g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-  document.getElementById('pageGreeting').textContent = g + ', ' + managerName;
-})();
 
 var projects = [
   {id:1,name:'Old Town Mobility Study',projectNum:'DEMO-2026-101',location:'Pasadena, CA',client:'City of Pasadena',status:'In Progress',pct:52,openTasks:11,totalTasks:23,updated:'22 min ago',created:'Mar 2'},
