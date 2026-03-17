@@ -50,9 +50,9 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
    NAVBAR
    ============================================================ */
 .topnav { background: #EEECE6; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
-.topnav-left { display: flex; align-items: center; gap: 20px; }
+.topnav-left { display: flex; align-items: center; gap: 0px; }
 .topnav-right { display: flex; align-items: center; gap: 12px; }
-.logo { display: flex; align-items: center; gap: var(--space-sm); text-decoration: none; }
+.logo { display: flex; align-items: center; gap: 6px; text-decoration: none; }
 .logo-text { font-size: var(--text-lg); font-weight: 600; color: var(--charcoal); letter-spacing: -0.3px; }
 .logo-img{ width:32px; height:32px; object-fit:contain; display:block; }
 .nav-divider { width: 1px; height: var(--space-lg); background: var(--border); }
