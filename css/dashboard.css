@@ -3,7 +3,7 @@
    ============================================================ */
 
 /* Dashboard header */
-.page-title { margin: 0; padding: 0; margin-left: 17px; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 15px; font-weight: 600; color: var(--charcoal); }
+.page-title { margin: 0; padding: 0; margin-left: 16px; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 15px; font-weight: 600; color: var(--charcoal); }
 
 .stats-row { display: none; }
 
