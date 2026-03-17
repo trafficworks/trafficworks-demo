@@ -3,7 +3,7 @@
    ============================================================ */
 
 /* PD header */
-.project-name{ font-size: 15px; line-height: 1.25; font-weight:600; color:var(--charcoal); display:flex; align-items:center; gap:6px; }
+.project-name{ font-size: 17px; line-height: 1.25; font-weight:600; color:var(--charcoal); display:flex; align-items:center; gap:6px; }
 .project-back-link{ display:none; color:var(--text-muted); text-decoration:none; flex-shrink:0; line-height:0; }
 .project-subtitle { font-size: var(--text-sm); color: var(--text-muted); margin-top: 0; }
 
