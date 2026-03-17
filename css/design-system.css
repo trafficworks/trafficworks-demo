@@ -79,7 +79,6 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 .back-link { cursor: pointer; }
 .back-link:hover { background: var(--off-white); border-color: var(--gray-light); }
 .back-link svg { width: 14px; height: 14px; }
-.project-subtitle { font-size: 13px; color: var(--text-secondary); display: flex; gap: 8px; }
 
 /* ============================================================
    BUTTONS
