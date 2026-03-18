@@ -10,7 +10,8 @@
   /* Page & surface */
   --color-bg:              #F3F2EF;
   --color-surface:         #FFFFFF;
-  --color-surface-raised:  #F0EEE8;  /* nav, table header, table wrap */
+  --color-surface-raised:  #EEECE6;  /* nav bar */
+  --color-surface-inset:   #F5F4F0;  /* table wrap, card backgrounds */
   --color-surface-hover:   #ECEAE4;  /* hover states, off-white fills */
 
   /* Borders */
@@ -186,7 +187,7 @@ body { font-family: 'Inter', sans-serif; background: var(--color-bg); color: var
 /* ============================================================
    TABLES
    ============================================================ */
-.table-wrap { background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--radius-xl); overflow: visible; box-shadow: var(--shadow-sm); }
+.table-wrap { background: var(--color-surface-inset); border: 1px solid var(--color-border); border-radius: var(--radius-xl); overflow: visible; box-shadow: var(--shadow-sm); }
 table { width: 100%; border-collapse: collapse; }
 thead th { font-size: var(--text-sm); font-weight: 600; color: var(--table-header-color); text-transform: uppercase; letter-spacing: 0.4px; text-align: left; padding: 14px var(--space-md); border-bottom: 1px solid var(--color-border); background: var(--color-surface-raised); user-select: none; }
 thead th:first-child { border-radius: var(--radius-xl) 0 0 0; }
