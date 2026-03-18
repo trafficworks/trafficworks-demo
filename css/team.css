@@ -15,13 +15,13 @@
 .team-section-subtitle { font-size: var(--text-sm); color: var(--text-muted); font-weight: 400; }
 
 /* Role badges */
-.team-role-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 18px; padding: 3px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; text-transform: uppercase; }
+.team-role-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 18px; padding: 3px 10px; border: 1px solid var(--color-border); border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; text-transform: uppercase; }
 
-.team-role-admin { background: var(--team-badge-admin); color: var(--team-color-admin); }
+.team-role-admin { background: var(--team-badge-admin); color: var(--team-color-admin); border: none; }
 
-.team-role-manager { background: var(--team-badge-manager); color: var(--team-color-manager); }
+.team-role-manager { background: var(--team-badge-manager); color: var(--team-color-manager); border: none; }
 
-.team-role-tech { background: var(--team-badge-tech); color: var(--team-color-tech); border: 1px solid var(--color-border); }
+.team-role-tech { background: var(--team-badge-tech); color: var(--team-color-tech); }
 
 /* Status */
 .team-status { display: inline-flex; align-items: center; gap: 5px; font-size: var(--text-sm); font-weight: 500; }
