@@ -8,7 +8,7 @@
 .stats-row { display: none; }
 
 /* Dashboard toolbar */
-.dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
+.dashboard-toolbar { display: flex; align-items: center; gap: 8px; margin-top: 28px; }
 
 /* Table spacing */
 .dashboard-table-wrap { margin-top: 10px; }
