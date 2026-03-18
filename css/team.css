@@ -48,7 +48,7 @@
 .team-table-secondary { color: var(--text-secondary); }
 
 /* PIN */
-.team-pin-display { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; font-weight: 500; color: var(--team-color-tech); letter-spacing: 3.5px; background: var(--team-badge-tech); padding: 4px 10px; border-radius: 5px; display: inline-block; }
+.team-pin-display { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; font-weight: 500; color: var(--team-color-tech); letter-spacing: 2px; background: var(--team-badge-tech); padding: 4px 10px; border-radius: 5px; display: inline-block; }
 
 .team-pin-note { font-size: var(--text-md); color: var(--text-muted); margin-top: 12px; font-style: italic; display: flex; align-items: flex-start; gap: 8px; padding: 10px 14px; background: var(--bg); border-radius: 6px; line-height: 1.5; }
 
