@@ -233,7 +233,7 @@ tbody tr:hover .table-action .kebab-btn { opacity: 0.85; }
 /* ============================================================
    STATUS BADGES — Unified pill system
    ============================================================ */
-.status-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 21px; padding: 3px 9px; border-radius: 5px; opacity: 0.95; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; user-select: none; vertical-align: middle; }
+.status-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 20px; padding: 3px 9px; border-radius: 5px; opacity: 0.95; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; user-select: none; }
 .status-pending { background: var(--color-pending); color: var(--color-pending-text); }
 .status-in-progress, .status-infield { background: var(--color-infield); color: var(--color-infield-text); }
 .status-on-hold { background: var(--color-onhold); color: var(--color-surface); }
