@@ -49,7 +49,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 /* ============================================================
    NAVBAR
    ============================================================ */
-.topnav { background: #374151; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border: 1px solid #E0DED8; border-radius: 12px; box-shadow: box-shadow: none; }
+.topnav { background: #F3F1EC; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border: 1px solid #E3DFD6;; border-radius: 12px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.6); }
 .topnav-left { display: flex; align-items: center; gap: 20px; }
 .topnav-right { display: flex; align-items: center; gap: 12px; }
 .logo { display: flex; align-items: center; gap: var(--space-sm); text-decoration: none; }
