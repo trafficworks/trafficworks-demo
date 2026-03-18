@@ -305,7 +305,7 @@ function renderProjects(list) {
       '</td>' +
       '<td>' +
         (p.status === 'Complete'
-          ? '<span style="display:inline-flex;gap:6px"><button class="archive-inline-btn" onclick="event.stopPropagation();promptArchive(' + p.id + ')"><span class="arc-sq"></span>Archive</button><button class="archive-inline-btn" onclick="event.stopPropagation();reopenProject(' + p.id + ')"><span class="arc-sq" style="background:var(--steel)"></span>Reopen</button></span>'
+          ? '<span style="display:inline-flex;gap:6px"><button class="archive-inline-btn" onclick="event.stopPropagation();promptArchive(' + p.id + ')">Archive</button><button class="archive-inline-btn" onclick="event.stopPropagation();reopenProject(' + p.id + ')">Reopen</button></span>'
           : '<div class="progress-cell"><div class="progress-bar"><div class="progress-fill ' + getFillClass(p.pct) + '" style="width:' + p.pct + '%"></div></div><span class="progress-pct">' + p.pct + '%</span></div>') +
       '</td>' +
       '<td style="text-align:center"><span class="open-count ' + (p.openTasks === 0 ? 'zero' : '') + '">' + p.openTasks + '</span></td>' +
