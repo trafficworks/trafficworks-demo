@@ -3,7 +3,7 @@
    ============================================================ */
 
 /* Dashboard header */
-.page-title { margin: 0; margin-bottom: 12px; padding: 0; margin-left: 1px; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 18px; font-weight: 600; color: var(--charcoal); }
+.page-title { margin: 0; padding: 0; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 19px; font-weight: 700; color: var(--charcoal); }
 
 .stats-row { display: none; }
 
@@ -28,33 +28,17 @@
 .status-badge { cursor:pointer; position:relative; transition:opacity .15s }
 .status-badge:hover { opacity:.85 }
 
-.empty-state{
-  display:none;
-  min-height:420px;
-  border:1px solid #ececec;;
-  border-radius:12px;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-}
+.empty-state { display: none; min-height: 340px; border: 1px solid var(--border); border-radius: 12px; background: transparent; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
 
-.empty-state.show{
-  display:flex;
-}
+.empty-state.show { display: flex; }
 
-.empty-state-inner{
-  width:100%;
-  display:flex;
-  justify-content:center;
-}
+.empty-state-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px 20px 20px; width: 100%; max-width: 520px; margin: -18px auto 0; }
 
-.empty-cone{
-  width:100%;
-  max-width:680px;
-  height:auto;
-  display:block;
-}
+.empty-state-inner h2 { margin: 0; font-size: 17px; line-height: 1.2; font-weight: 700; }
 
+.empty-state-inner p { margin: 0; max-width: 420px; color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+
+.empty-cone { width: 240px; height: auto; display: block; }
 
 /* Mobile stat pills */
 .mobile-stats { display:none; }
@@ -154,7 +138,7 @@
 .js-site-tech { font-size:var(--text-sm); color:var(--text-secondary); }
 .js-site-note { font-size:var(--text-sm); color:var(--text-secondary); margin-top:4px; padding-left:32px; font-style:italic; }
 .js-site-times { font-size:11px; color:var(--text-muted); margin-top:3px; padding-left:32px; font-variant-numeric:tabular-nums; }
-.mobile-card-jobsheet { margin-top:12px; padding-top:10px; border-top:1px solid var(--border); display:flex; align-items:center; gap:4px; font-size:12px; font-weight:500; color:#B87A00; cursor:pointer; }
+.mobile-card-jobsheet { margin-top:12px; padding-top:10px; border-top:1px solid #ECEAE4; display:flex; align-items:center; gap:4px; font-size:12px; font-weight:500; color:#B87A00; cursor:pointer; }
 
 @media print {
   body * { visibility:hidden; }
