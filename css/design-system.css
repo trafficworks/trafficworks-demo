@@ -193,7 +193,7 @@ body { font-family: 'Inter', sans-serif; background: var(--color-bg); color: var
 table { width: 100%; border-collapse: collapse; }
 
 /* Table header — matches nav surface */
-thead th { font-size: 11px; font-weight: 600; color: var(--table-header-color); text-transform: uppercase; letter-spacing: 0.04em; text-align: left; padding: 10px var(--space-md); border-bottom: 1px solid var(--color-border); background: #EEECE6; user-select: none; line-height: 1; }
+thead th { font-size: 11px; font-weight: 700; color: var(--table-header-color); text-transform: uppercase; letter-spacing: 0.04em; text-align: left; padding: 10px var(--space-md); border-bottom: 1px solid var(--color-border); background: #EEECE6; user-select: none; line-height: 1; }
 thead th:first-child { border-radius: var(--radius-xl) 0 0 0; }
 thead th:last-child { border-radius: 0 var(--radius-xl) 0 0; }
 
