@@ -107,7 +107,7 @@ body { font-family: 'Inter', sans-serif; background: var(--color-bg); color: var
 /* ============================================================
    NAVBAR
    ============================================================ */
-.topnav { background: var(--color-surface-raised); height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-md); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+.topnav { background: #EEECE6; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-md); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
 .topnav-left { display: flex; align-items: center; gap: 20px; }
 .topnav-right { display: flex; align-items: center; gap: var(--space-sm); }
 .logo { display: flex; align-items: center; gap: var(--space-sm); text-decoration: none; }
@@ -189,7 +189,7 @@ body { font-family: 'Inter', sans-serif; background: var(--color-bg); color: var
    ============================================================ */
 .table-wrap { background: var(--color-surface-inset); border: 1px solid var(--color-border); border-radius: var(--radius-xl); overflow: visible; box-shadow: var(--shadow-sm); }
 table { width: 100%; border-collapse: collapse; }
-thead th { font-size: var(--text-sm); font-weight: 600; color: var(--table-header-color); text-transform: uppercase; letter-spacing: 0.4px; text-align: left; padding: 14px var(--space-md); border-bottom: 1px solid var(--color-border); background: var(--color-surface-raised); user-select: none; }
+thead th { font-size: var(--text-sm); font-weight: 600; color: var(--table-header-color); text-transform: uppercase; letter-spacing: 0.4px; text-align: left; padding: 14px var(--space-md); border-bottom: 1px solid var(--color-border); background: #EEECE6; user-select: none; }
 thead th:first-child { border-radius: var(--radius-xl) 0 0 0; }
 thead th:last-child { border-radius: 0 var(--radius-xl) 0 0; }
 tbody tr { height: 56px; transition: background .15s ease; }
