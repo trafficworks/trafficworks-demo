@@ -185,23 +185,47 @@ body { font-family: 'Inter', sans-serif; background: var(--color-bg); color: var
 .toolbar-spacer { flex: 1; }
 
 /* ============================================================
-   TABLES
+   TABLES — Unified System
    ============================================================ */
+
+/* Table container */
 .table-wrap { background: var(--color-surface-inset); border: 1px solid var(--color-border); border-radius: var(--radius-xl); overflow: visible; box-shadow: var(--shadow-sm); }
 table { width: 100%; border-collapse: collapse; }
-thead th { font-size: var(--text-sm); font-weight: 600; color: var(--table-header-color); text-transform: uppercase; letter-spacing: 0.4px; text-align: left; padding: 14px var(--space-md); border-bottom: 1px solid var(--color-border); background: #EEECE6; user-select: none; }
+
+/* Table header — matches nav surface */
+thead th { font-size: 11px; font-weight: 600; color: var(--table-header-color); text-transform: uppercase; letter-spacing: 0.04em; text-align: left; padding: 10px var(--space-md); border-bottom: 1px solid var(--color-border); background: #EEECE6; user-select: none; line-height: 1; }
 thead th:first-child { border-radius: var(--radius-xl) 0 0 0; }
 thead th:last-child { border-radius: 0 var(--radius-xl) 0 0; }
-tbody tr { height: 56px; transition: background .15s ease; }
+
+/* Table rows — default (dashboard: spacious) */
+tbody tr { height: 52px; transition: background .15s ease; }
 tbody tr:hover { background: var(--color-accent-light); }
-tbody td { height: 56px; padding: 14px var(--space-md); font-size: var(--text-md); border-bottom: 0.5px solid var(--color-border-subtle); vertical-align: middle; }
+tbody td { padding: 12px var(--space-md); font-size: var(--text-md); border-bottom: 0.5px solid var(--color-border-subtle); vertical-align: middle; }
 tbody tr:last-child td { border-bottom: none; }
-.table-name { font-weight: 400; font-size: var(--text-md); font-family: 'Inter', sans-serif; color: var(--color-text); line-height: 1.35; -webkit-font-smoothing: antialiased; }
+
+/* Compact table density — PD + Team */
+.table-compact tbody tr { height: 46px; }
+.table-compact tbody td { padding: 8px var(--space-md); }
+.table-compact thead th { padding: 9px var(--space-md); }
+
+/* Primary cell text */
+.table-name { font-weight: 500; font-size: var(--text-md); color: var(--color-text); line-height: 1.35; }
+
+/* Secondary cell text */
+.table-secondary { color: var(--color-text-secondary); font-size: var(--text-md); }
+
+/* Numeric / right-aligned cells */
+.table-num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Kebab action column */
+.table-action { width: 44px; text-align: right; padding-right: 12px !important; }
+.table-action .kebab-btn { opacity: 0.35; transition: opacity .15s, background .15s; }
+tbody tr:hover .table-action .kebab-btn { opacity: 1; }
 
 /* ============================================================
-   STATUS BADGES
+   STATUS BADGES — Unified pill system
    ============================================================ */
-.status-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 20px; padding: 4px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; user-select: none; vertical-align: middle; }
+.status-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 20px; padding: 3px 9px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; user-select: none; vertical-align: middle; }
 .status-pending { background: var(--color-pending); color: var(--color-pending-text); }
 .status-in-progress, .status-infield { background: var(--color-infield); color: var(--color-infield-text); }
 .status-on-hold { background: var(--color-onhold); color: var(--color-surface); }
@@ -247,10 +271,11 @@ tbody tr:last-child td { border-bottom: none; }
 /* ============================================================
    KEBAB MENU
    ============================================================ */
-.kebab-cell { position: relative; }
-.kebab-btn { background: none; border: none; cursor: pointer; color: var(--color-gray); padding: var(--space-sm); border-radius: var(--radius-sm); transition: all .15s; display: flex; align-items: center; }
+.kebab-cell { position: relative; width: 44px; text-align: right; }
+.kebab-btn { background: none; border: none; cursor: pointer; color: var(--color-gray); padding: 6px; border-radius: 50%; transition: all .15s; display: inline-flex; align-items: center; justify-content: center; opacity: 0.35; }
 .kebab-btn svg { width: 18px; height: 18px; }
-.kebab-btn:hover { background: var(--color-surface-hover); color: var(--color-text-secondary); }
+.kebab-btn:hover { background: var(--color-surface-hover); color: var(--color-text-secondary); opacity: 1; }
+tbody tr:hover .kebab-btn { opacity: 1; }
 .kebab-menu { position: absolute; right: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); z-index: 50; min-width: 170px; padding: var(--space-xs) 0; opacity: 0; transform: scale(.96) translateY(-4px); transform-origin: top right; pointer-events: none; transition: opacity .18s ease, transform .18s ease; }
 .kebab-menu.open { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
 .kebab-menu.drop-up { bottom: 100%; top: auto; }
