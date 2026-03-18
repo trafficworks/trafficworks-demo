@@ -17,11 +17,11 @@
 /* Role badges */
 .team-role-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 18px; padding: 3px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; text-transform: uppercase; }
 
-.team-role-admin { background: var(--purple); color: var(--white); }
+.team-role-admin { background: var(--team-badge-admin); color: var(--team-color-admin); }
 
-.team-role-manager { background: var(--steel-light); color: var(--steel); }
+.team-role-manager { background: var(--team-badge-manager); color: var(--team-color-manager); }
 
-.team-role-tech { background: var(--off-white); color: var(--text-secondary); }
+.team-role-tech { background: var(--team-badge-tech); color: var(--team-color-tech); }
 
 /* Status */
 .team-status { display: inline-flex; align-items: center; gap: 5px; font-size: var(--text-sm); font-weight: 500; }
