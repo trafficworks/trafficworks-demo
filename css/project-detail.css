@@ -11,7 +11,7 @@
 .stats-row { display: none; }
 
 /* PD toolbar */
-.pd-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
+.pd-toolbar { display: flex; align-items: center; gap: 8px; margin-top: 28px; }
 .jobsheet-btn { display:inline-flex; align-items:center; gap:4px; }
 
 /* PD table spacing */
