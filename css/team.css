@@ -21,7 +21,7 @@
 
 .team-role-manager { background: var(--team-badge-manager); color: var(--team-color-manager); }
 
-.team-role-tech { background: var(--team-badge-tech); color: var(--team-color-tech); border: 1px solid #D6D2C8; }
+.team-role-tech { background: var(--team-badge-tech); color: var(--team-color-tech); border: 1px solid #CFC9BD; }
 
 /* Status */
 .team-status { display: inline-flex; align-items: center; gap: 5px; font-size: var(--text-sm); font-weight: 500; }
