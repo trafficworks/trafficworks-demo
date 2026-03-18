@@ -3,9 +3,9 @@
    ============================================================ */
 
 /* PD header */
-.project-name{ font-size: 18px; line-height: 1.25; font-weight:600; color:var(--charcoal); display:flex; align-items:center; gap:6px; margin-bottom: 0px; }
+.project-name{ font-size: 19px; line-height: 1.25; font-weight:700; color:var(--charcoal); display:flex; align-items:center; gap:6px; }
 .project-back-link{ display:none; color:var(--text-muted); text-decoration:none; flex-shrink:0; line-height:0; }
-.project-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 0; gap: 8px; }
+.project-subtitle { font-size: var(--text-sm); color: var(--text-muted); margin-top: 0; }
 
 /* Stats hidden */
 .stats-row { display: none; }
@@ -60,16 +60,12 @@ tbody tr:hover .check-visual.pending-vis{display:block}
 /* Mobile task cards — TV-style two-column layout */
 .mobile-task-cards{display:none}
 .mobile-task-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.mobile-task-card::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:5px;background:var(--gray-light);border-radius:0 4px 4px 0}
-.mobile-task-card.status-complete::before{background:var(--green)}
-.mobile-task-card.status-infield::before{background:#8DB7DB}
-.mobile-task-card.status-pending::before{background:#F5C27A}
 .mobile-task-inner{display:flex;align-items:stretch;gap:0}
 .mobile-task-content{flex:1;min-width:0;padding:14px 0 14px 20px;display:flex;flex-direction:column;justify-content:center}
 .mobile-task-action{display:flex;align-items:center;justify-content:center;padding:14px 14px 14px 12px;flex-shrink:0}
 .mobile-task-title{font-size:16px;font-weight:600;color:var(--text-primary);line-height:1.25;display:flex;align-items:center;gap:6px}
 .mobile-task-note-icon{display:inline-flex;color:var(--text-muted);flex-shrink:0}
-.mobile-task-divider{width:100%;height:1px;background:var(--border);margin:8px 0}
+.mobile-task-divider{width:65%;height:1px;background:var(--color-border-subtle,#ECEAE4);margin:8px 0}
 .mobile-task-meta{font-size:12px;font-weight:500;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mobile-status-pill{display:inline-flex;align-items:center;justify-content:center;min-height:36px;min-width:80px;padding:0 12px;border-radius:10px;font-size:11px;font-weight:600;white-space:nowrap;letter-spacing:0.3px}
 .mobile-task-card.status-complete .mobile-status-pill{background:var(--green);color:#fff}
@@ -97,7 +93,7 @@ table{display:none}
 
 .project-name{ font-size:17px; line-height:1.2; }
 .project-back-link{ display:inline-flex; }
-.project-subtitle{ font-size:11px; }
+.project-subtitle{ font-size:11px; padding-left:22px; }
 
 .pd-mobile-jobsheet{ display:block; margin-top:12px; }
 }
