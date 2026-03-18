@@ -41,12 +41,20 @@
   --color-success-light:   rgba(58, 166, 106, 0.08);
 
   /* Misc */
-  --color-purple:          #5E5A96;
   --color-gray:            #C8C8C8;
   --color-jobsheet:        #B87A00;
   --color-btn-primary:     #5B6167;
   --color-btn-primary-hover: #4C5258;
   --color-btn-danger-hover: #e5585d;
+
+  /* Team Badges */
+  --team-badge-admin:       rgba(94, 90, 150, 0.16);
+  --team-badge-manager:     #E9E7E1;
+  --team-badge-tech:        #E7E4DD;
+  --team-color-admin:       #5E5A96;
+  --team-color-manager:     #5F5C55;
+  --team-color-tech:        #4F4D48;
+   
 
   /* Shadows */
   --shadow-sm:    0 1px 2px rgba(0,0,0,0.04);
