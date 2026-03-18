@@ -11,7 +11,7 @@
 .dashboard-toolbar { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
 
 /* Table spacing */
-.dashboard-table-wrap { margin-top: 6px; }
+.dashboard-table-wrap { margin-top: 10px; }
 
 /* Project table cells */
 .project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: 13px; font-weight: 400; }
@@ -23,6 +23,7 @@
 .project-created { font-size: 11px; color:var(--text-muted); font-weight: 100; margin-top: 2px; line-height: 1; }
 .open-count { font-weight:600; color:var(--text-primary); text-align:center; display:block; font-size:var(--text-sm) }
 .open-count.zero { color:var(--text-muted) }
+.complete-count { font-weight:500; color:var(--text-muted); text-align:center; display:block; font-size:var(--text-sm) }
 
 /* Status badge clickable behavior (dashboard-only) */
 .status-badge { cursor:pointer; position:relative; transition:opacity .15s }
