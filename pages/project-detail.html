@@ -20,7 +20,7 @@
 
 <div class="main">
   <div class="project-name"><a class="project-back-link" href="dashboard.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></a>Old Town Mobility Study</div>
-  <div class="project-subtitle">City of Pasadena · Pasadena, CA · DEMO-2026-101</div>
+  <div class="project-subtitle">Pasadena, CA · City of Pasadena</div>
   <div class="stats-row" id="statsRow"></div>
 
   <!-- Mobile stat pills -->
@@ -503,7 +503,7 @@ function openJobSheet(){
   var now=new Date();
   var dateStr=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
 
-  var html='<div class="js-project"><div class="js-project-name">'+pName+'</div><div class="js-project-meta">'+pClient+' · '+pLocation+' · '+pNum+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>';
+  var html='<div class="js-project"><div class="js-project-name">'+pName+'</div><div class="js-project-meta">'+pLocation+' · '+pClient+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>';
 
   if(projectNotes){
     html+='<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+projectNotes+'</div></div>';
