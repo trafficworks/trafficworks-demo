@@ -5,37 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TrafficWorks — Archive</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/design-system.css?v=4">
-<link rel="stylesheet" href="../css/archive.css?v=4">
+<link rel="stylesheet" href="../css/design-system.css">
+<link rel="stylesheet" href="../css/archive.css">
+</head>
 </head>
 <body>
 
-<div class="layout-container nav-container">
 <nav class="topnav">
   <div class="topnav-left">
-    <a class="logo" href="dashboard.html">
-      <img src="../images/logo.png" class="logo-img" alt="The Count Company">
-      <span class="logo-text">The Count Company</span>
-    </a>
+    <a class="logo" href="dashboard.html"><div class="logo-mark"></div><span class="logo-text">TrafficWorks</span></a>
     <div class="nav-divider"></div>
-    <div class="nav-links">
-      <a class="nav-link" href="dashboard.html">Projects</a>
-      <a class="nav-link" href="team.html">Team</a>
-      <a class="nav-link active" href="archive.html">Archive</a>
-    </div>
+    <div class="nav-links"><a class="nav-link" href="dashboard.html">Projects</a><a class="nav-link" href="team.html">Team</a><a class="nav-link active" href="archive.html">Archive</a><a class="nav-link" href="billing.html">Billing</a></div>
   </div>
-  <div class="topnav-right">
-    <span class="company-badge">TrafficWorks Demo</span>
-    <div class="user-avatar">TD</div>
-    <button class="mobile-nav-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-  </div>
+  <div class="topnav-right"><span class="company-badge">TrafficWorks Demo</span><div class="user-avatar">TD</div></div>
 </nav>
-</div>
-<div class="mobile-nav-menu" id="mobileNavMenu">
-  <a href="dashboard.html">Projects</a>
-  <a href="team.html">Team</a>
-  <a class="active" href="archive.html">Archive</a>
-</div>
 
 <div class="main">
   <div class="page-header">
@@ -383,9 +366,6 @@ function initDropZones(){
     });
   });
 }
-
-function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
-document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').classList.remove('open')});
 
 var _origRender=renderArchive;
 renderArchive=function(){_origRender();initDropZones()};
