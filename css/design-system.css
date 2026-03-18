@@ -107,19 +107,19 @@ body { font-family: 'Inter', sans-serif; background: var(--color-bg); color: var
 /* ============================================================
    NAVBAR
    ============================================================ */
-.topnav { background: #EEECE6; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-md); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
-.topnav-left { display: flex; align-items: center; gap: 20px; }
+.topnav { background: #EEECE6; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+.topnav-left { display: flex; align-items: center; gap: 16px; }
 .topnav-right { display: flex; align-items: center; gap: var(--space-sm); }
-.logo { display: flex; align-items: center; gap: var(--space-sm); text-decoration: none; }
-.logo-text { font-size: var(--text-lg); font-weight: 600; color: var(--color-text-heading); letter-spacing: -0.3px; }
-.logo-img { width: 32px; height: 32px; object-fit: contain; display: block; }
-.nav-divider { width: 1px; height: var(--space-lg); background: var(--color-border); }
-.nav-links { display: flex; gap: var(--space-xs); }
-.nav-link { padding: 6px 12px; border-radius: var(--radius-md); font-size: var(--text-md); font-weight: 500; color: var(--color-text-secondary); text-decoration: none; cursor: pointer; transition: all .15s; }
+.logo { display: flex; align-items: center; gap: 6px; text-decoration: none; }
+.logo-text { font-size: 15px; font-weight: 600; color: var(--color-text-heading); letter-spacing: -0.3px; line-height: 1; }
+.logo-img { width: 28px; height: 28px; object-fit: contain; display: block; }
+.nav-divider { width: 1px; height: 20px; background: var(--color-border); }
+.nav-links { display: flex; gap: 2px; }
+.nav-link { padding: 5px 10px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; color: var(--color-text-secondary); text-decoration: none; cursor: pointer; transition: all .15s; }
 .nav-link:hover { background: var(--color-accent-light); color: var(--color-text); }
 .nav-link.active { background: var(--color-accent-light); color: var(--color-accent); }
-.company-badge { font-size: var(--text-sm); font-weight: 500; color: var(--color-text-secondary); background: var(--color-surface-hover); padding: var(--space-xs) 10px; border-radius: var(--radius-sm); letter-spacing: 0.2px; text-transform: uppercase; }
-.user-avatar { width: 32px; height: 32px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-surface); font-size: var(--text-sm); font-weight: 600; cursor: pointer; transition: box-shadow .15s; }
+.company-badge { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); background: var(--color-surface-hover); padding: 3px 8px; border-radius: var(--radius-sm); letter-spacing: 0.2px; text-transform: uppercase; }
+.user-avatar { width: 30px; height: 30px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-surface); font-size: 11px; font-weight: 600; cursor: pointer; transition: box-shadow .15s; }
 .user-avatar:hover { box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-accent); }
 
 /* ============================================================
@@ -135,7 +135,7 @@ body { font-family: 'Inter', sans-serif; background: var(--color-bg); color: var
 .page-title, .back-link { display: inline-flex; align-items: center; gap: var(--space-xs); font-size: var(--text-md); font-weight: 500; color: var(--color-text-heading); padding: var(--space-sm) var(--space-md); border: 1px solid var(--color-border); border-radius: var(--radius-md); text-decoration: none; transition: all .15s; }
 .page-title { cursor: default; }
 .back-link { cursor: pointer; }
-.back-link:hover { background: var(--color-surface-hover); border-color: var(--color-gray); }
+.back-link:hover { background: var(--color-surface-hover); border-color: var(--color-text-muted); }
 .back-link svg { width: 14px; height: 14px; }
 .project-subtitle { font-size: 13px; color: var(--color-text-secondary); display: flex; gap: var(--space-sm); }
 
@@ -157,7 +157,7 @@ body { font-family: 'Inter', sans-serif; background: var(--color-bg); color: var
 .btn-archive { background: var(--color-accent-light); color: var(--color-accent); }
 .btn-archive:hover { background: rgba(122, 155, 168, 0.2); }
 .archive-inline-btn { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; background: none; color: var(--color-text-secondary); border: 1px solid var(--color-border); cursor: pointer; transition: all .15s; }
-.archive-inline-btn:hover { background: var(--color-surface-hover); border-color: var(--color-gray); }
+.archive-inline-btn:hover { background: var(--color-surface-hover); border-color: var(--color-text-muted); }
 .archive-inline-btn .arc-sq { width: 7px; height: 7px; border-radius: 2px; background: var(--color-purple); flex-shrink: 0; }
 
 /* ============================================================
@@ -219,8 +219,8 @@ tbody tr:last-child td { border-bottom: none; }
 
 /* Kebab action column */
 .table-action { width: 44px; text-align: right; padding-right: 12px !important; }
-.table-action .kebab-btn { opacity: 0.35; transition: opacity .15s, background .15s; }
-tbody tr:hover .table-action .kebab-btn { opacity: 1; }
+.table-action .kebab-btn { opacity: 0.5; transition: opacity .15s, background .15s; }
+tbody tr:hover .table-action .kebab-btn { opacity: 0.85; }
 
 /* ============================================================
    STATUS BADGES — Unified pill system
@@ -272,7 +272,7 @@ tbody tr:hover .table-action .kebab-btn { opacity: 1; }
    KEBAB MENU
    ============================================================ */
 .kebab-cell { position: relative; width: 44px; text-align: right; }
-.kebab-btn { background: none; border: none; cursor: pointer; color: var(--color-gray); padding: 6px; border-radius: 50%; transition: all .15s; display: inline-flex; align-items: center; justify-content: center; opacity: 0.35; }
+.kebab-btn { background: none; border: none; cursor: pointer; color: var(--color-text-muted); padding: 6px; border-radius: 50%; transition: all .15s; display: inline-flex; align-items: center; justify-content: center; opacity: 0.5; }
 .kebab-btn svg { width: 18px; height: 18px; }
 .kebab-btn:hover { background: var(--color-surface-hover); color: var(--color-text-secondary); opacity: 1; }
 tbody tr:hover .kebab-btn { opacity: 1; }
@@ -347,7 +347,7 @@ tbody tr:hover .kebab-btn { opacity: 1; }
 .btn-delete-sel { background: var(--color-onhold); color: var(--color-surface); padding: 6px 14px; border-radius: var(--radius-md); font-family: 'Inter', sans-serif; font-size: var(--text-sm); font-weight: 500; border: none; cursor: pointer; transition: all .15s; }
 .btn-delete-sel:hover { background: var(--color-btn-danger-hover); }
 .btn-cancel-sel { background: var(--color-surface-hover); color: var(--color-text-heading); padding: 6px 14px; border-radius: var(--radius-md); font-family: 'Inter', sans-serif; font-size: var(--text-sm); font-weight: 500; border: 1px solid var(--color-border); cursor: pointer; }
-.btn-cancel-sel:hover { background: var(--color-gray); border-color: var(--color-gray); }
+.btn-cancel-sel:hover { background: var(--color-gray); border-color: var(--color-text-muted); }
 
 /* ============================================================
    DURATION
