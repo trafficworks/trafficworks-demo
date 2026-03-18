@@ -65,11 +65,11 @@
         <thead>
           <tr>
             <th style="width:5%;text-align:center">Site</th>
-            <th style="width:32%">Task</th>
-            <th style="width:8%;cursor:pointer" onclick="sortBy('type')">Type <span style="font-size:9px;opacity:0.5">▼</span></th>
-            <th style="width:15%;cursor:pointer" onclick="sortBy('tech')">Tech <span style="font-size:9px;opacity:0.5">▼</span></th>
-            <th style="width:15%;padding-left:20px;cursor:pointer" onclick="sortBy('status')">Status <span style="font-size:9px;opacity:0.5">▼</span></th>
-            <th style="width:15%;text-align:center">Duration</th>
+            <th style="width:34%">Task</th>
+            <th style="width:7%;cursor:pointer" onclick="sortBy('type')">Type <span style="font-size:9px;opacity:0.5">▼</span></th>
+            <th style="width:14%;cursor:pointer" onclick="sortBy('tech')">Tech <span style="font-size:9px;opacity:0.5">▼</span></th>
+            <th style="width:14%;cursor:pointer" onclick="sortBy('status')">Status <span style="font-size:9px;opacity:0.5">▼</span></th>
+            <th style="width:14%;text-align:center">Duration</th>
             <th class="table-action"></th>
           </tr>
         </thead>
@@ -264,7 +264,7 @@ function renderTable(){
       '<td><span class="task-dot-wrap"><span class="task-desc table-name">'+t.desc+'</span>'+dot+'</span><input class="edit-input" value="'+t.desc+'" onkeydown="if(event.key===\'Enter\')saveEdit('+t.id+',this)" onblur="saveEdit('+t.id+',this)"></td>'+
       '<td>'+tag+'</td>'+
       '<td><div class="tech-select-wrapper"><span class="'+tc+'" onclick="showTechSelect('+t.id+',this)">'+ti+'<span class="tech-tooltip">'+tt+'</span></span></div></td>'+
-      '<td style="padding-left:20px"><span class="status-badge '+getStatusClass(t.status)+'">'+t.status+'</span></td>'+
+      '<td><span class="status-badge '+getStatusClass(t.status)+'">'+t.status+'</span></td>'+
       '<td style="text-align:center"><span class="duration-cell">'+dur+'</span></td>'+
       '<td class="table-action kebab-cell"><button class="kebab-btn" onclick="toggleKebab('+t.id+',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>'+
       '<div class="kebab-menu" id="kebab-'+t.id+'">'+
