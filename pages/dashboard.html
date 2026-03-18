@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TrafficWorks - Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/design-system.css?v=3">
-<link rel="stylesheet" href="../css/dashboard.css?v=3">
+<link rel="stylesheet" href="../css/design-system.css?v=4">
+<link rel="stylesheet" href="../css/dashboard.css?v=4">
 </head>
 <body>
 <div class="layout-container nav-container">
@@ -37,7 +37,7 @@
 </div>
 
 <div class="main">
-  <h1 class="page-title" id="pageGreeting">Projects</h1>
+  <h1 class="page-title" id="pageGreeting"></h1>
   <div class="stats-row" id="statsRow"></div>
 
   <!-- Mobile stat pills -->
@@ -67,31 +67,28 @@
 
   <!-- Table -->
   <div class="dashboard-table-wrap">
-  <div class="table-wrap">
-
-    <div id="dashboardEmptyState" class="empty-state show">
-      <div class="empty-state-inner">
-        <img src="../images/empty_state.png" class="empty-cone" alt="No projects yet">
+    <div class="table-wrap">
+      <div id="dashboardEmptyState" class="empty-state">
+        <div class="empty-state-inner">
+          <img src="../images/cone.png" class="empty-cone" alt="Traffic cone">
+          <h2>Let's get started!</h2>
+          <p>Projects organize your traffic counts, tasks, and field progress in real time.</p>
+        </div>
       </div>
+      <table id="dashboardTable">
+        <thead>
+          <tr>
+            <th style="width:35%">Project</th>
+            <th style="width:15%">Status</th>
+            <th style="width:20%">Progress</th>
+            <th style="width:12%; text-align:center">Open Tasks</th>
+            <th style="width:4%"></th>
+          </tr>
+        </thead>
+        <tbody id="projectTableBody"></tbody>
+      </table>
     </div>
-
-    <table id="dashboardTable">
-      <thead>
-        <tr>
-          <th style="width:35%">Project</th>
-          <th style="width:15%">Status</th>
-          <th style="width:20%">Progress</th>
-          <th style="width:12%; text-align:center">Open Tasks</th>
-          <th style="width:4%"></th>
-        </tr>
-      </thead>
-
-      <tbody id="projectTableBody"></tbody>
-
-    </table>
-
   </div>
-</div>
 
   <div class="mobile-cards" id="mobileCards"></div>
 </div>
@@ -199,11 +196,21 @@
 </div>
 
 <script>
+// Greeting — pulls from signed-in manager name
+var managerName = 'Carlos'; // TODO: pull from Firebase Auth user.displayName
+(function(){
+  var h = new Date().getHours();
+  var g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('pageGreeting').textContent = g + ', ' + managerName;
+})();
 
 var projects = [
   {id:1,name:'Old Town Mobility Study',projectNum:'DEMO-2026-101',location:'Pasadena, CA',client:'City of Pasadena',status:'In Progress',pct:52,openTasks:11,totalTasks:23,updated:'22 min ago',created:'Mar 2'},
   {id:2,name:'Harbor Blvd Tube Count Program',projectNum:'DEMO-2026-102',location:'Anaheim, CA',client:'Orange County Public Works',status:'In Progress',pct:74,openTasks:6,totalTasks:23,updated:'1 hour ago',created:'Mar 1'},
   {id:3,name:'Downtown Safety Corridor Review',projectNum:'DEMO-2026-103',location:'Long Beach, CA',client:'City of Long Beach',status:'In Progress',pct:89,openTasks:2,totalTasks:19,updated:'45 min ago',created:'Feb 26'},
+  {id:4,name:'School Zone Speed Survey Set',projectNum:'DEMO-2026-104',location:'Glendale, CA',client:'Glendale Public Works',status:'Pending',pct:0,openTasks:14,totalTasks:14,updated:'3 hours ago',created:'Mar 4'},
+  {id:5,name:'Foothill Signal Timing Counts',projectNum:'DEMO-2026-105',location:'Arcadia, CA',client:'City of Arcadia',status:'On Hold',pct:18,openTasks:17,totalTasks:21,updated:'1 day ago',created:'Feb 25'},
+  {id:6,name:'Regional Bikeway Before/After Study',projectNum:'DEMO-2026-106',location:'Santa Monica, CA',client:'Metro Consultant Team',status:'Complete',pct:100,openTasks:0,totalTasks:16,updated:'2 days ago',created:'Feb 18'}
 ];
 
 var nextId = 7;
