@@ -94,7 +94,7 @@ table{display:none}
 
 .project-name{ font-size:20px; line-height:1.2; }
 .project-back-link{ display:inline-flex; }
-.project-subtitle{ display: none; }
+.project-subtitle{ display:none; }
 
 .pd-mobile-jobsheet{ display:block; margin-top:12px; }
 }
