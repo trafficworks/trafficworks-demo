@@ -83,7 +83,7 @@ tbody tr:hover .check-visual.pending-vis { opacity: 1; }
 @media (max-width:768px){
 .mobile-hide{display:none}
 .stats-row{display:none}
-.pd-mobile-stats{display:flex;gap:8px;margin-top:12px}
+.pd-mobile-stats{display:none}
 .pd-mobile-stats .mobile-stat-pill{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 0;background:var(--white);border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:500;color:var(--text-secondary);flex:1;min-width:0;white-space:nowrap}
 .pd-mobile-stats .mobile-stat-pill .pill-val{font-weight:700;font-size:15px;color:var(--text-primary)}
 .pd-toolbar{display:none}
