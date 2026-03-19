@@ -92,7 +92,7 @@ table{display:none}
 .pd-table-wrap{display:none}
 .mobile-task-cards{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 
-.project-name{ font-size:20px; line-height:1.2; }
+.project-name{ font-size:20px; line-height:1.2; matgin-top:20px; margin-bottom:16px; }
 .project-back-link{ display:inline-flex; }
 .project-subtitle{display:none !important;}
 
