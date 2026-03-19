@@ -93,7 +93,7 @@ table{display:none}
 .mobile-task-cards{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 
 .project-name{ display:flex; align-items:center; font-size:20px; line-height:1.2; margin:0 0 12px;}
-.project-back-link{ display:inline-flex; align-items:center; margin-right:8px; font-weight:600; line-height:1; }
+.project-back-link{ display:inline-flex; align-items:center; margin-right:14px; font-weight:600; line-height:1; }
 .project-subtitle{display:none !important;}
 
 .pd-mobile-jobsheet{ display:block; margin-top:12px; }
