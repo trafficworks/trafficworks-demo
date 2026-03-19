@@ -61,7 +61,7 @@ tbody tr:hover .check-visual.pending-vis { opacity: 1; }
 /* Mobile task cards — TV-style two-column layout */
 .mobile-task-cards{display:none}
 .mobile-task-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-
+.mobile-task-inner{display:flex;align-items:stretch;gap:0}
 .mobile-task-content{flex:1;min-width:0;padding:14px 0 14px 20px;display:flex;flex-direction:column;justify-content:center}
 .mobile-task-action{display:flex;align-items:center;justify-content:center;padding:14px 14px 14px 12px;flex-shrink:0}
 .mobile-task-title{font-size:16px;font-weight:600;color:var(--text-primary);line-height:1.25;display:flex;align-items:center;gap:6px}
