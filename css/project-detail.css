@@ -5,13 +5,13 @@
 /* PD header */
 .project-name{ font-size: 19px; line-height: 1.25; font-weight:700; color:var(--charcoal); display:flex; align-items:center; gap:12px; }
 .project-back-link{ display:none; color:var(--text-muted); text-decoration:none; flex-shrink:0; line-height:0; }
-.project-subtitle { font-size: var(--text-sm); color: var(--text-muted); margin-top: 0; }
+.project-subtitle { font-size: var(--text-sm); color: var(--text-muted); margin-top: -2px; }
 
 /* Stats hidden */
 .stats-row { display: none; }
 
 /* PD toolbar */
-.pd-toolbar { display: flex; align-items: center; gap: 8px; margin-top: 28px; }
+.pd-toolbar { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
 .jobsheet-btn { display:inline-flex; align-items:center; gap:4px; }
 .jobsheet-btn:hover { background: none !important; color: var(--color-text-heading) !important; }
 
