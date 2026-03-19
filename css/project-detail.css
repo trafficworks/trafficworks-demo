@@ -38,7 +38,7 @@
 /* Site cell */
 .site-cell { position: relative; text-align: center; vertical-align: middle; padding-left: 24px !important; }
 .site-indicator { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
-.site-num { color: var(--text-secondary); line-height: 1; transition: opacity .1s; display: inline-block; min-width: 16px; }
+.site-num { font-size: var(--text-md); color: var(--text-secondary); line-height: 1; transition: opacity .1s; display: inline-block; min-width: 16px; }
 
 /* Bulk select checkboxes — inline swap, no layout shift */
 .check-wrap { position: relative; display: inline-block; min-width: 16px; text-align: center; }
