@@ -125,7 +125,7 @@ body { font-family: 'Inter', sans-serif; background: var(--color-bg); color: var
 .nav-links { display: flex; gap: 2px; }
 .nav-link { padding: 6px 10px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--color-text-secondary); text-decoration: none; cursor: pointer; transition: all .15s; }
 .nav-link:hover { background: var(--color-surface-inset); color: var(--color-text-heading); }
-.nav-link.active { background: var(--color-surface-hover); color: var(--color-text-heading); }
+.nav-link.active { opacity: 0.8; background: var(--color-surface-hover); color: var(--color-text-heading); }
 .company-badge { }
 .user-avatar { width: 30px; height: 30px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-surface); font-size: 11px; font-weight: 600; cursor: pointer; transition: box-shadow .15s; }
 .user-avatar:hover { box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-accent); }
