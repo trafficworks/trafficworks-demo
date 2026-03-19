@@ -41,7 +41,7 @@
   <div class="stats-row" id="statsRow"></div>
 
   <!-- Mobile stat pills -->
-  <div class="mobile-stats" id="mobileStats"></div>
+  <div class="mobile-filter-bar" id="mobileFilterBar"></div>
 
   <!-- Toolbar: Search + Filter + Create -->
   <div class="dashboard-toolbar">
@@ -253,10 +253,10 @@ function renderStats() {
     '<div class="stat-item"><span class="stat-value">' + pending + '</span><span class="stat-label"><mark>Pending</mark></span></div>' +
     '<div class="stat-item"><span class="stat-value">' + openTasks + '</span><span class="stat-label">Open Tasks</span></div>';
 
-  document.getElementById('mobileStats').innerHTML =
-    '<div class="mobile-stat-pill"><span class="pill-val">' + inProgress + '</span> Active</div>' +
-    '<div class="mobile-stat-pill"><span class="pill-val">' + pending + '</span> Pending</div>' +
-    '<div class="mobile-stat-pill"><span class="pill-val">' + openTasks + '</span> Open</div>';
+  document.getElementById('mobileFilterBar').innerHTML =
+    '<span class="mf-item' + (mobileFilter==='In Progress'?' active':'') + '" onclick="event.stopPropagation();toggleMobileFilter(\'In Progress\')">' + inProgress + ' Active</span>' +
+    '<span class="mf-dot">·</span>' +
+    '<span class="mf-item' + (mobileFilter==='Pending'?' active':'') + '" onclick="event.stopPropagation();toggleMobileFilter(\'Pending\')">' + pending + ' Pending</span>';
 }
 
 function toggleDashboardEmptyState(isEmpty) {
@@ -316,7 +316,7 @@ function renderProjects(list) {
 
   mc.innerHTML = list.map(function(p) {
   var completeTasks = p.totalTasks - p.openTasks;
-  var taskText = completeTasks + ' of ' + p.totalTasks + ' complete';
+  var taskFraction = completeTasks + '/' + p.totalTasks;
 
   return '<div class="mobile-card" onclick="window.location.href=\'project-detail.html\'">' +
     '<div class="mobile-card-top">' +
@@ -332,11 +332,18 @@ function renderProjects(list) {
       '<div class="mobile-card-bar">' +
         '<div class="mobile-card-fill ' + getFillClass(p.pct) + '" style="width:' + p.pct + '%"></div>' +
       '</div>' +
-      '<span class="mobile-card-pct">' + taskText + '</span>' +
+      '<span class="mobile-card-pct">' + taskFraction + '</span>' +
     '</div>' +
     (projectTasks[p.id] ? '<div class="mobile-card-jobsheet" onclick="event.stopPropagation();openJobSheet('+p.id+')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</div>' : '') +
   '</div>';
 }).join('');
+}
+
+var mobileFilter = null;
+function toggleMobileFilter(status){
+  mobileFilter = mobileFilter === status ? null : status;
+  renderStats();
+  filterProjects();
 }
 
 function filterProjects() {
@@ -350,7 +357,8 @@ function filterProjects() {
       p.client.toLowerCase().indexOf(search) > -1;
 
     var matchesStatus = status === 'all' || p.status === status;
-    return matchesSearch && matchesStatus;
+    var matchesMobile = !mobileFilter || p.status === mobileFilter;
+    return matchesSearch && matchesStatus && matchesMobile;
   });
 
   renderStats();
