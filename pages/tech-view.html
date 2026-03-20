@@ -12,7 +12,10 @@
 <div class="tv-header">
   <div class="tv-header-left">
     <button class="tv-back-btn" id="backBtn" onclick="showProjects()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-    <span class="tv-greeting" id="greeting"></span>
+    <div class="tv-brand" id="greeting">
+      <img src="../images/logo.png" class="tv-brand-logo" alt="">
+      <span class="tv-brand-name">The Count Company</span>
+    </div>
     <div class="tv-project-info" id="barProjectInfo">
       <span class="tv-project-name-bar" id="barProjectName"></span>
     </div>
@@ -82,7 +85,7 @@
 <script>
 (function(){var h=new Date().getHours();if(h<7||h>=19)document.documentElement.classList.add('tv-dark')})();
 var techName='Carlos';
-(function(){var h=new Date().getHours();var g=h<12?'Good morning':h<17?'Good afternoon':'Good evening';document.getElementById('greeting').textContent=g+', '+techName})();
+(function(){})();
 var STATUS={PENDING:'Pending',INFIELD:'In Field',COMPLETE:'Complete'};
 var MAX_NOTE=100,durationInterval=null;
 var projects=[
@@ -122,6 +125,7 @@ function handleLogout(){window.location.href='login.html'}
 
 function showProjects(){
   currentProject=null;activeFilter='all';completedCollapsed=false;openNoteId=null;stopDurationTimer();
+  lastAction=null;document.getElementById('undoBtn').style.display='none';
   document.getElementById('projectView').classList.add('active');
   document.getElementById('taskView').classList.remove('active');
   document.getElementById('projectStatsBar').style.display='';
@@ -157,6 +161,7 @@ function renderProjectCards(){
 
 function openProject(id){
   currentProject=projects.find(function(p){return p.id===id});if(!currentProject)return;
+  lastAction=null;document.getElementById('undoBtn').style.display='none';
   document.getElementById('projectView').classList.remove('active');
   document.getElementById('taskView').classList.add('active');
   document.getElementById('projectStatsBar').style.display='none';
