@@ -52,7 +52,7 @@
 .dmh-kebab { width:36px; height:36px; border:none; background:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--border); border-radius:6px; align-self:center; }
 .dmh-kebab svg { width:20px; height:20px; }
 .dmh-stats { background:var(--white); border-bottom:1px solid var(--border); padding:10px 16px; display:flex; align-items:center; justify-content:center; gap:16px; position:sticky; top:56px; z-index:90; }
-.dmh-stat { display:flex; align-items:center; gap:6px; }
+.dmh-stat { display:flex; align-items:center; gap:6px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .dmh-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
 .dmh-dot-active { background:var(--color-infield-bar, #8DB7DB); }
 .dmh-dot-pending { background:var(--color-pending, #F5C27A); }
