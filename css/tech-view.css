@@ -30,7 +30,8 @@ html.tv-dark { --tv-bg: #1E2024; --tv-surface: #2A2D32; --tv-text: #EAEDF0; --tv
    BASE OVERRIDES
    ============================================================ */
 html { height: 100% }
-body { background: var(--tv-bg); color: var(--tv-text); min-height: 100%; overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+body { background: var(--tv-bg); color: var(--tv-text); min-height: 100%; overflow-x: hidden; -webkit-text-size-adjust: 100%; -webkit-user-select: none; user-select: none; }
+input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; }
 
 /* ============================================================
    HEADER
@@ -44,9 +45,9 @@ body { background: var(--tv-bg); color: var(--tv-text); min-height: 100%; overfl
 .tv-logout { display: none; }
 
 
-/* Back button (task view) */
+.tv-back-btn { width: 28px; height: 28px; border: 2px solid #1E8C5A; background: none; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; color: #1E8C5A; flex-shrink: 0; }
 .tv-back-btn { width: 28px; height: 28px; border: 1.5px solid var(--green); background: none; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; color: var(--green); flex-shrink: 0; }
-
+.tv-back-btn svg { width: 15px; height: 15px; }
 .tv-back-btn svg { width: 14px; height: 14px; }
 
 .tv-header-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
@@ -298,7 +299,7 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 
 /* Undo button */
 .tv-header-right { display: flex; align-items: center; gap: 8px; }
-.tv-undo-btn { width: 32px; height: 32px; border: 1.5px solid var(--green); background: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--green); flex-shrink: 0; transition: opacity .15s; }
+.tv-undo-btn { width: 28px; height: 28px; border: 2px solid #1E8C5A; background: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #1E8C5A; flex-shrink: 0; }
 .tv-undo-btn svg { width: 16px; height: 16px; }
 
 /* Undo confirmation overlay */
