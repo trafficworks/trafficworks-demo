@@ -279,7 +279,7 @@ tbody tr:hover .table-action .kebab-btn { opacity: 0.85; }
 /* ============================================================
    KEBAB MENU
    ============================================================ */
-.kebab-cell { position: relative; width: 44px; text-align: right; }
+.kebab-cell { position: relative; width: 40px; text-align: right; }
 .kebab-btn { background: none; border: none; cursor: pointer; color: var(--color-text-muted); padding: 6px; border-radius: 50%; transition: all .15s; display: inline-flex; align-items: center; justify-content: center; opacity: 0.5; }
 .kebab-btn svg { width: 18px; height: 18px; }
 .kebab-btn:hover { background: var(--color-surface-hover); color: var(--color-text-secondary); opacity: 1; }
