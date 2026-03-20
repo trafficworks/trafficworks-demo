@@ -254,9 +254,8 @@ function renderStats() {
     '<div class="stat-item"><span class="stat-value">' + openTasks + '</span><span class="stat-label">Open Tasks</span></div>';
 
   document.getElementById('mobileFilterBar').innerHTML =
-    '<span class="mf-item' + (mobileFilter==='In Progress'?' active':'') + '" onclick="event.stopPropagation();toggleMobileFilter(\'In Progress\')">' + inProgress + ' Active</span>' +
-    '<span class="mf-dot">&middot;</span>' +
-    '<span class="mf-item' + (mobileFilter==='Pending'?' active':'') + '" onclick="event.stopPropagation();toggleMobileFilter(\'Pending\')">' + pending + ' Pending</span>';
+    '<span class="mf-item' + (mobileFilter==='In Progress'?' active':'') + '" onclick="event.stopPropagation();toggleMobileFilter(\'In Progress\')"><span class="mf-dot mf-dot-active"></span><span class="mf-num">' + inProgress + '</span><span class="mf-label">Active</span></span>' +
+    '<span class="mf-item' + (mobileFilter==='Pending'?' active':'') + '" onclick="event.stopPropagation();toggleMobileFilter(\'Pending\')"><span class="mf-dot mf-dot-pending"></span><span class="mf-num">' + pending + '</span><span class="mf-label">Pending</span></span>';
 }
 
 function toggleDashboardEmptyState(isEmpty) {
