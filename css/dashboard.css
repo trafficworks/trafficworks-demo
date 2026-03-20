@@ -14,7 +14,7 @@
 .dashboard-table-wrap { margin-top: 8px; }
 
 /* Project table cells */
-.project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: 14px; font-weight: 500; }
+.project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: 14px; font-weight: 400; }
 .project-name-link:hover { color:var(--text-primary) }
 .project-info { min-height: 56px; display: flex; align-items: center; gap: 10px; }
 
@@ -41,17 +41,30 @@
 
 .empty-cone { width: 240px; height: auto; display: block; }
 
-/* Mobile status row */
+/* ============================================================
+   MOBILE TV-STYLE HEADER (Dashboard)
+   ============================================================ */
+.dash-mobile-header { display:none; }
+.dmh-top { background:var(--white); border-bottom:1px solid var(--border); padding:0 16px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.dmh-brand { display:flex; align-items:center; gap:8px; }
+.dmh-logo { width:28px; height:28px; object-fit:contain; }
+.dmh-name { font-size:16px; font-weight:600; color:var(--charcoal); letter-spacing:-0.3px; }
+.dmh-kebab { width:36px; height:36px; border:none; background:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary); border-radius:6px; }
+.dmh-kebab svg { width:20px; height:20px; }
+.dmh-stats { background:var(--white); border-bottom:1px solid var(--border); padding:10px 16px; display:flex; align-items:center; justify-content:center; gap:20px; position:sticky; top:56px; z-index:90; }
+.dmh-stat { display:flex; align-items:center; gap:6px; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:opacity .15s; }
+.dmh-stat:not(.active) { opacity:0.5; }
+.dmh-stat.active { opacity:1; }
+.dmh-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.dmh-dot-active { background:var(--color-infield-bar, #8DB7DB); }
+.dmh-dot-pending { background:var(--color-pending, #F5C27A); }
+.dmh-val { font-size:16px; font-weight:700; color:var(--charcoal); line-height:1; }
+.dmh-label { font-size:14px; font-weight:500; color:var(--text-secondary); }
+.dmh-divider { width:1px; height:20px; background:var(--border); }
+
+/* Old filter bar - no longer used on mobile */
 .mobile-stats { display:none; }
-.mobile-filter-bar { display:none; justify-content:center; align-items:center; gap:16px; margin:16px 0 12px; }
-.mf-item { display:inline-flex; align-items:center; gap:6px; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:opacity .15s; font-size:14px; line-height:1; }
-.mf-item .mf-num { font-weight:600; color:var(--color-text); }
-.mf-item .mf-label { font-weight:500; color:var(--color-text-secondary); }
-.mf-item.active { opacity:1; }
-.mf-item:not(.active) { opacity:0.65; }
-.mf-item .mf-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-.mf-dot-active { background:var(--color-infield-bar); }
-.mf-dot-pending { background:var(--color-pending); }
+.mobile-filter-bar { display:none; }
 
 /* Mobile cards */
 .mobile-cards { display:none }
@@ -91,8 +104,14 @@
 
 /* Dashboard mobile overrides */
 @media (max-width:768px) {
+  .layout-container.nav-container { display:none; }
+
   .page-title {
     display: none;
+  }
+
+  .dash-mobile-header {
+    display: block;
   }
 
   .dashboard-toolbar {
@@ -103,15 +122,16 @@
     display: none;
   }
 
-  .mobile-filter-bar {
-    display: flex;
-  }
-
   .mobile-cards {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-top: 0;
+    padding: 12px 16px;
+  }
+
+  .main {
+    padding: 0;
   }
 }
 
