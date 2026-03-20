@@ -70,7 +70,7 @@
 
 .mobile-card-badge{ display:inline-flex; align-items:center; justify-content:center; min-height:32px; min-width:72px; padding:0 10px; border-radius:8px; font-size:11px; font-weight:600; white-space:nowrap; letter-spacing:0.3px; }
 
-.mobile-card-progress{ margin-top:10px; display:flex; align-items:center; padding-right:108px; }
+.mobile-card-progress{ margin-top:10px; display:flex; align-items:center; padding-right:111px; }
 
 .mobile-card-bar{ flex:1; height:4px; background:var(--off-white); border-radius:2px; overflow:hidden; }
 
@@ -80,7 +80,7 @@
 .mobile-card-fill.fill-mid{ background:var(--green) }
 .mobile-card-fill.fill-high{ background:var(--green) }
 
-.mobile-card-pct{ position:absolute; right:16px; font-size:12px; font-weight:500; color:var(--text-muted); text-align:right; }
+.mobile-card-pct{ position:absolute; right:16px; min-width:72px; font-size:12px; font-weight:500; color:var(--text-muted); text-align:left; padding-left:2px; }
 
 .mobile-card-jobsheet { margin-top:10px; display:flex; align-items:center; gap:4px; font-size:12px; font-weight:500; color:#B87A00; cursor:pointer; }
 
