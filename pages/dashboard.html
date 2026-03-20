@@ -266,7 +266,7 @@ function renderStats() {
     '<div class="stat-item"><span class="stat-value">' + openTasks + '</span><span class="stat-label">Open Tasks</span></div>';
 
   document.getElementById('dmhStats').innerHTML =
-    '<div class="dmh-stat" onclick="toggleMobileFilter(\'open\')">' + openTasks + '<span class="dmh-label">Open Tasks</span></div>' +
+    '<div class="dmh-stat" onclick="toggleMobileFilter(\'open\')"><span class="dmh-label">' + openTasks + ' Open Tasks</span></div>' +
     '<div class="dmh-divider"></div>' +
     '<div class="dmh-stat" onclick="toggleMobileFilter(\'In Progress\')"><span class="dmh-dot dmh-dot-active"></span><span class="dmh-val">' + inProgress + '</span><span class="dmh-label">Active</span></div>' +
     '<div class="dmh-divider"></div>' +
@@ -684,7 +684,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
-document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').classList.remove('open')});
+document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.dmh-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').classList.remove('open')});
 
 // Job Sheet — demo task data per project
 var projectTasks = {
