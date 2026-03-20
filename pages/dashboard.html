@@ -36,11 +36,23 @@
   <a href="archive.html">Archive</a>
 </div>
 
+<!-- Mobile TV-style header (hidden on desktop) -->
+<div class="dash-mobile-header" id="dashMobileHeader">
+  <div class="dmh-top">
+    <div class="dmh-brand">
+      <img src="../images/logo.png" class="dmh-logo" alt="The Count Company">
+      <span class="dmh-name">The Count Company</span>
+    </div>
+    <button class="dmh-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+  <div class="dmh-stats" id="dmhStats"></div>
+</div>
+
 <div class="main">
   <h1 class="page-title" id="pageGreeting"></h1>
   <div class="stats-row" id="statsRow"></div>
 
-  <!-- Mobile stat pills -->
+  <!-- Mobile filter bar (inside main, hidden on desktop) -->
   <div class="mobile-filter-bar" id="mobileFilterBar"></div>
 
   <!-- Toolbar: Search + Filter + Create -->
@@ -253,9 +265,10 @@ function renderStats() {
     '<div class="stat-item"><span class="stat-value">' + pending + '</span><span class="stat-label"><mark>Pending</mark></span></div>' +
     '<div class="stat-item"><span class="stat-value">' + openTasks + '</span><span class="stat-label">Open Tasks</span></div>';
 
-  document.getElementById('mobileFilterBar').innerHTML =
-    '<span class="mf-item' + (mobileFilter==='In Progress'?' active':'') + '" onclick="event.stopPropagation();toggleMobileFilter(\'In Progress\')"><span class="mf-dot mf-dot-active"></span><span class="mf-num">' + inProgress + '</span><span class="mf-label">Active</span></span>' +
-    '<span class="mf-item' + (mobileFilter==='Pending'?' active':'') + '" onclick="event.stopPropagation();toggleMobileFilter(\'Pending\')"><span class="mf-dot mf-dot-pending"></span><span class="mf-num">' + pending + '</span><span class="mf-label">Pending</span></span>';
+  document.getElementById('dmhStats').innerHTML =
+    '<div class="dmh-stat' + (mobileFilter==='In Progress'?' active':'') + '" onclick="toggleMobileFilter(\'In Progress\')"><span class="dmh-dot dmh-dot-active"></span><span class="dmh-val">' + inProgress + '</span><span class="dmh-label">Active</span></div>' +
+    '<div class="dmh-divider"></div>' +
+    '<div class="dmh-stat' + (mobileFilter==='Pending'?' active':'') + '" onclick="toggleMobileFilter(\'Pending\')"><span class="dmh-dot dmh-dot-pending"></span><span class="dmh-val">' + pending + '</span><span class="dmh-label">Pending</span></div>';
 }
 
 function toggleDashboardEmptyState(isEmpty) {
