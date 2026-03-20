@@ -39,7 +39,7 @@ body { background: var(--tv-bg); color: var(--tv-text); min-height: 100%; overfl
 
 .tv-greeting { font-size: 16px; font-weight: 600; color: var(--tv-header-text); line-height: 1.3; letter-spacing: -0.3px; }
 
-.tv-header-right { display: none; }
+.tv-header-right { display: flex; align-items: center; gap: 8px; }
 
 .tv-logout { display: none; }
 
@@ -295,3 +295,12 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 .tv-confirm-overlay.show { display: flex; }
 .tv-confirm-circle { width: 72px; height: 72px; background: #2AB57E; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(42,181,126,0.4); transition: opacity 0.25s ease, transform 0.25s ease; }
 .tv-confirm-check { width: 32px; height: 32px; }
+
+/* Undo button */
+.tv-header-right { display: flex; align-items: center; gap: 8px; }
+.tv-undo-btn { width: 32px; height: 32px; border: 1.5px solid var(--green); background: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--green); flex-shrink: 0; transition: opacity .15s; }
+.tv-undo-btn svg { width: 16px; height: 16px; }
+
+/* Undo confirmation overlay */
+.tv-undo-circle { width: 90px; height: 90px; background: var(--green); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 4px 20px rgba(42,181,126,0.4); transition: opacity 0.25s ease, transform 0.25s ease; }
+.tv-undo-text { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 0.3px; }
