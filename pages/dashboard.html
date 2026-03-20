@@ -49,7 +49,6 @@
 </div>
 
 <div class="main">
-  <h1 class="page-title" id="pageGreeting"></h1>
   <div class="stats-row" id="statsRow"></div>
 
   <!-- Mobile filter bar (inside main, hidden on desktop) -->
@@ -214,7 +213,7 @@ var managerName = 'Carlos'; // TODO: pull from Firebase Auth user.displayName
 (function(){
   var h = new Date().getHours();
   var g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-  document.getElementById('pageGreeting').textContent = g + ', ' + managerName;
+  var greetEl=document.getElementById('pageGreeting');if(greetEl)greetEl.textContent=g+', '+managerName;
 })();
 
 var projects = [
