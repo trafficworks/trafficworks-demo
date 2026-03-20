@@ -41,12 +41,17 @@
 
 .empty-cone { width: 240px; height: auto; display: block; }
 
-/* Mobile filter bar (replaces pills) */
+/* Mobile status row */
 .mobile-stats { display:none; }
-.mobile-filter-bar { display:none; text-align:center; margin:12px 0; font-size:14px; font-weight:500; color:var(--text-muted); line-height:1.2; }
-.mobile-filter-bar .mf-item { cursor:pointer; transition:color .15s; -webkit-tap-highlight-color:transparent; font-size:14px; }
-.mobile-filter-bar .mf-item.active { color:var(--text-primary); font-weight:600; }
-.mobile-filter-bar .mf-dot { display:inline-block; margin:0 14px; color:var(--gray-light); font-weight:400; }
+.mobile-filter-bar { display:none; justify-content:center; align-items:center; gap:16px; margin:18px 0 14px; }
+.mf-item { display:inline-flex; align-items:center; gap:6px; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:opacity .15s; font-size:14px; }
+.mf-item .mf-num { font-weight:600; color:var(--text-primary); }
+.mf-item .mf-label { font-weight:500; color:var(--text-secondary); }
+.mf-item.active { opacity:1; }
+.mf-item:not(.active) { opacity:0.7; }
+.mf-item .mf-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.mf-dot-active { background:var(--color-infield-bar); }
+.mf-dot-pending { background:var(--color-pending); }
 
 /* Mobile cards */
 .mobile-cards { display:none }
@@ -99,7 +104,7 @@
   }
 
   .mobile-filter-bar {
-    display: block;
+    display: flex;
   }
 
   .mobile-cards {
