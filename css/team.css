@@ -10,7 +10,7 @@
 
 .team-section-title-group { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
 
-.team-section-title { font-size: var(--text-lg); font-weight: 600; color: var(--charcoal); }
+.team-section-title { font-size: var(--text-lg); font-weight: 500; color: var(--charcoal); }
 
 .team-section-subtitle { font-size: var(--text-sm); color: var(--text-muted); font-weight: 400; }
 
