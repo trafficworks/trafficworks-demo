@@ -37,6 +37,7 @@
 </div>
 
 <div class="main">
+  <h1 class="page-title" id="pageGreeting"></h1>
   <div class="stats-row" id="statsRow"></div>
 
   <!-- Mobile stat pills -->
@@ -201,7 +202,7 @@ var managerName = 'Carlos'; // TODO: pull from Firebase Auth user.displayName
 (function(){
   var h = new Date().getHours();
   var g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-  var greetEl=document.getElementById('pageGreeting');if(greetEl)greetEl.textContent=g+', '+managerName;
+  document.getElementById('pageGreeting').textContent = g + ', ' + managerName;
 })();
 
 var projects = [
@@ -254,7 +255,7 @@ function renderStats() {
 
   document.getElementById('mobileFilterBar').innerHTML =
     '<span class="mf-item' + (mobileFilter==='In Progress'?' active':'') + '" onclick="event.stopPropagation();toggleMobileFilter(\'In Progress\')">' + inProgress + ' Active</span>' +
-    '<span class="mf-dot">·</span>' +
+    '<span class="mf-dot">&middot;</span>' +
     '<span class="mf-item' + (mobileFilter==='Pending'?' active':'') + '" onclick="event.stopPropagation();toggleMobileFilter(\'Pending\')">' + pending + ' Pending</span>';
 }
 
