@@ -47,8 +47,6 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 .tv-logout { display: none; }
 .tv-back-btn { width: 28px; height: 28px; background: var(--charcoal); border: none; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
 
-.tv-back-btn { width: 28px; height: 28px; border: 2px solid #1E8C5A; background: none; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; color: #1E8C5A; flex-shrink: 0; }
-.tv-back-btn { width: 28px; height: 28px; border: 1.5px solid var(--green); background: none; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; color: var(--green); flex-shrink: 0; }
 .tv-back-btn svg { width: 15px; height: 15px; }
 .tv-back-btn svg { width: 14px; height: 14px; }
 
