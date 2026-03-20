@@ -201,7 +201,7 @@ body { font-family: 'Inter', sans-serif; background: var(--color-bg); color: var
 table { width: 100%; border-collapse: collapse; }
 
 /* Table header — matches nav surface */
-thead th { font-size: 11px; font-weight: 700; color: var(--table-header-color); text-transform: uppercase; letter-spacing: 0.04em; text-align: left; padding: 10px var(--space-md); border-bottom: 1px solid var(--color-border); background: #EEECE6; user-select: none; line-height: 1; }
+thead th { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; text-align: left; padding: 10px var(--space-md); border-bottom: 1px solid var(--color-border); background: #EEECE6; user-select: none; line-height: 1; }
 thead th:first-child { border-radius: var(--radius-xl) 0 0 0; }
 thead th:last-child { border-radius: 0 var(--radius-xl) 0 0; }
 
@@ -233,7 +233,7 @@ tbody tr:hover .table-action .kebab-btn { opacity: 0.85; }
 /* ============================================================
    STATUS BADGES — Unified pill system
    ============================================================ */
-.status-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 20px; padding: 3px 9px; border-radius: 5px; opacity: 0.95; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; line-height: 1; user-select: none; }
+.status-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 20px; padding: 3px 9px; border-radius: 5px; opacity: 0.95; font-size: 10px; font-weight: 600; letter-spacing: 0.2px; line-height: 1; user-select: none; }
 .status-pending { background: var(--color-pending); color: var(--color-pending-text); }
 .status-in-progress, .status-infield { background: var(--color-infield); color: var(--color-infield-text); }
 .status-on-hold { background: var(--color-onhold); color: var(--color-surface); }
