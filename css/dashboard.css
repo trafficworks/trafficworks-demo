@@ -3,10 +3,12 @@
    ============================================================ */
 
 /* Dashboard header */
+.page-title { margin: 0; padding: 0; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 19px; font-weight: 700; color: var(--charcoal); display: none; }
+
 .stats-row { display: none; }
 
 /* Dashboard toolbar */
-.dashboard-toolbar { display: flex; align-items: center; gap: 8px; margin-top: 0; }
+.dashboard-toolbar { display: flex; align-items: center; gap: 8px; margin-top: 28px; }
 
 /* Table spacing */
 .dashboard-table-wrap { margin-top: 8px; }
@@ -39,11 +41,10 @@
 
 .empty-cone { width: 240px; height: auto; display: block; }
 
-/* Mobile stat pills */
+/* Mobile filter bar (replaces pills) */
 .mobile-stats { display:none; }
-.mobile-filter-bar { display:none; text-align:center; padding:12px 0; font-size:14px; font-weight:500; color:var(--text-muted); }
+.mobile-filter-bar { display:none; text-align:center; padding:0; font-size:14px; font-weight:500; color:var(--text-muted); }
 .mobile-filter-bar .mf-item { cursor:pointer; transition:color .15s; -webkit-tap-highlight-color:transparent; }
-.mobile-filter-bar .mf-item:hover { color:var(--text-primary); }
 .mobile-filter-bar .mf-item.active { color:var(--text-primary); font-weight:600; }
 .mobile-filter-bar .mf-dot { display:inline-block; margin:0 14px; color:var(--gray-light); font-weight:400; }
 
@@ -69,9 +70,9 @@
 
 .mobile-card-badge{ display:inline-flex; align-items:center; justify-content:center; min-height:32px; min-width:72px; padding:0 10px; border-radius:8px; font-size:11px; font-weight:600; white-space:nowrap; letter-spacing:0.3px; }
 
-.mobile-card-progress{ margin-top:10px; display:flex; align-items:center; padding-right:0; }
+.mobile-card-progress{ margin-top:10px; display:flex; align-items:center; padding-right:108px; }
 
-.mobile-card-bar{ flex:1; height:4px; background:var(--off-white); border-radius:2px; overflow:hidden; margin-right:20px; }
+.mobile-card-bar{ flex:1; height:4px; background:var(--off-white); border-radius:2px; overflow:hidden; }
 
 .mobile-card-fill{ height:100%; border-radius:2px; transition:width .3s ease; }
 
@@ -79,12 +80,16 @@
 .mobile-card-fill.fill-mid{ background:var(--green) }
 .mobile-card-fill.fill-high{ background:var(--green) }
 
-.mobile-card-pct{ font-size:12px; font-weight:500; color:var(--text-muted); min-width:36px; text-align:right; }
+.mobile-card-pct{ position:absolute; right:16px; font-size:12px; font-weight:500; color:var(--text-muted); text-align:right; }
 
 .mobile-card-jobsheet { margin-top:10px; display:flex; align-items:center; gap:4px; font-size:12px; font-weight:500; color:#B87A00; cursor:pointer; }
 
 /* Dashboard mobile overrides */
 @media (max-width:768px) {
+  .page-title {
+    display: none;
+  }
+
   .dashboard-toolbar {
     display: none;
   }
