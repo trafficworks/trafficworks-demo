@@ -517,7 +517,7 @@ document.querySelectorAll('.modal-overlay').forEach(function(el){el.addEventList
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDeleteModal();closeReopenModal();closeAddTaskModal();closeBulkDeleteModal()}});
 
 function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
-document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').classList.remove('open')});
+document.addEventListener('click',function(e){if(!e.target.closest('.mobile-nav-kebab,.pmh-kebab,.mobile-nav-menu'))document.getElementById('mobileNavMenu').classList.remove('open')});
 
 // Mobile info-dot tap to show/hide tooltip
 document.addEventListener('click',function(e){
