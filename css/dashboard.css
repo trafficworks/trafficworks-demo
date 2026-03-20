@@ -3,8 +3,6 @@
    ============================================================ */
 
 /* Dashboard header */
-.page-title { margin: 0; padding: 0; background: none; border: none; border-radius: 0; box-shadow: none; font-size: 19px; font-weight: 700; color: var(--charcoal); display: none; }
-
 .stats-row { display: none; }
 
 /* Dashboard toolbar */
@@ -43,11 +41,11 @@
 
 /* Mobile stat pills */
 .mobile-stats { display:none; }
-.mobile-filter-bar { display:none; text-align:center; padding:12px 0; font-size:12px; font-weight:500; color:var(--text-muted); }
+.mobile-filter-bar { display:none; text-align:center; padding:12px 0; font-size:14px; font-weight:500; color:var(--text-muted); }
 .mobile-filter-bar .mf-item { cursor:pointer; transition:color .15s; -webkit-tap-highlight-color:transparent; }
 .mobile-filter-bar .mf-item:hover { color:var(--text-primary); }
 .mobile-filter-bar .mf-item.active { color:var(--text-primary); font-weight:600; }
-.mobile-filter-bar .mf-dot { display:inline-block; margin:0 10px; color:var(--border); font-weight:400; }
+.mobile-filter-bar .mf-dot { display:inline-block; margin:0 14px; color:var(--gray-light); font-weight:400; }
 
 /* Mobile cards */
 .mobile-cards { display:none }
@@ -71,7 +69,7 @@
 
 .mobile-card-badge{ display:inline-flex; align-items:center; justify-content:center; min-height:32px; min-width:72px; padding:0 10px; border-radius:8px; font-size:11px; font-weight:600; white-space:nowrap; letter-spacing:0.3px; }
 
-.mobile-card-progress{ margin-top:10px; display:flex; align-items:center; gap:0; }
+.mobile-card-progress{ margin-top:10px; display:flex; align-items:center; padding-right:0; }
 
 .mobile-card-bar{ flex:1; height:4px; background:var(--off-white); border-radius:2px; overflow:hidden; margin-right:20px; }
 
@@ -81,16 +79,12 @@
 .mobile-card-fill.fill-mid{ background:var(--green) }
 .mobile-card-fill.fill-high{ background:var(--green) }
 
-.mobile-card-pct{ font-size:12px; font-weight:500; color:var(--text-muted); min-width:40px; text-align:right; }
+.mobile-card-pct{ font-size:12px; font-weight:500; color:var(--text-muted); min-width:36px; text-align:right; }
 
 .mobile-card-jobsheet { margin-top:10px; display:flex; align-items:center; gap:4px; font-size:12px; font-weight:500; color:#B87A00; cursor:pointer; }
 
 /* Dashboard mobile overrides */
 @media (max-width:768px) {
-  .page-title {
-    display: none;
-  }
-
   .dashboard-toolbar {
     display: none;
   }
@@ -109,7 +103,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 16px;
+    margin-top: 0;
   }
 }
 
@@ -143,7 +137,6 @@
 .js-site-tech { font-size:var(--text-sm); color:var(--text-secondary); }
 .js-site-note { font-size:var(--text-sm); color:var(--text-secondary); margin-top:4px; padding-left:32px; font-style:italic; }
 .js-site-times { font-size:11px; color:var(--text-muted); margin-top:3px; padding-left:32px; font-variant-numeric:tabular-nums; }
-.mobile-card-jobsheet { margin-top:12px; padding-top:10px; border-top:1px solid #ECEAE4; display:flex; align-items:center; gap:4px; font-size:12px; font-weight:500; color:#B87A00; cursor:pointer; }
 
 @media print {
   body * { visibility:hidden; }
