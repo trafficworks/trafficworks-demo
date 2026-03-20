@@ -17,6 +17,9 @@
       <span class="tv-project-name-bar" id="barProjectName"></span>
     </div>
   </div>
+  <div class="tv-header-right">
+    <button class="tv-undo-btn" id="undoBtn" onclick="undoLastAction()" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg></button>
+  </div>
 </div>
 <div class="tv-stats" id="projectStatsBar">
   <div class="tv-stat"><span class="tv-stat-value" id="statProjects">0</span><span class="tv-stat-label">jobs need attention</span></div>
@@ -57,6 +60,12 @@
 <div class="tv-confirm-overlay" id="statusConfirm">
   <div class="tv-confirm-circle">
     <svg class="tv-confirm-check" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+</div>
+<div class="tv-confirm-overlay" id="undoConfirm">
+  <div class="tv-undo-circle">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg>
+    <span class="tv-undo-text">Undone</span>
   </div>
 </div>
 <div class="tv-content">
@@ -233,12 +242,43 @@ function toggleNote(id,e){e.stopPropagation();openNoteId=openNoteId===id?null:id
 function updateCharCount(id,input){var r=MAX_NOTE-input.value.length;var el=document.getElementById('char-count-'+id);if(el){el.textContent=r;el.classList.toggle('warn',r<15)}}
 function saveNote(id){var input=document.querySelector('#note-panel-'+id+' .tv-note-input');if(!input)return;var task=currentProject.tasks.find(function(t){return t.id===id});if(task)task.note=input.value.trim();openNoteId=null;renderTaskCards()}
 function setupHoldButton(btn,duration,callback){var timer=null;function start(e){e.preventDefault();btn.classList.add('holding');timer=setTimeout(function(){btn.classList.remove('holding');if(navigator.vibrate)navigator.vibrate(30);callback(parseInt(btn.dataset.taskId))},duration)}function end(){clearTimeout(timer);btn.classList.remove('holding')}btn.addEventListener('pointerdown',start,{passive:false});btn.addEventListener('pointerup',end);btn.addEventListener('pointerleave',end);btn.addEventListener('pointercancel',end)}
+var lastAction=null;
 function cycleTaskStatus(taskId){
   var task=currentProject.tasks.find(function(t){return t.id===taskId});if(!task)return;
+  var prev={taskId:taskId,status:task.status,deployedAt:task.currentCycle.deployedAt,completedAt:task.currentCycle.completedAt};
   if(task.status===STATUS.PENDING){task.status=STATUS.INFIELD;task.currentCycle.deployedAt=new Date()}
   else if(task.status===STATUS.INFIELD){task.status=STATUS.COMPLETE;task.currentCycle.completedAt=new Date()}
+  lastAction=prev;
+  document.getElementById('undoBtn').style.display='flex';
   showStatusConfirm();
   renderTaskView();renderProjectStats();
+}
+function undoLastAction(){
+  if(!lastAction)return;
+  var task=currentProject.tasks.find(function(t){return t.id===lastAction.taskId});
+  if(!task)return;
+  task.status=lastAction.status;
+  task.currentCycle.deployedAt=lastAction.deployedAt;
+  task.currentCycle.completedAt=lastAction.completedAt;
+  lastAction=null;
+  document.getElementById('undoBtn').style.display='none';
+  showUndoConfirm();
+  renderTaskView();renderProjectStats();
+}
+function showUndoConfirm(){
+  var el=document.getElementById('undoConfirm');
+  el.className='tv-confirm-overlay show';
+  var circle=el.querySelector('.tv-undo-circle');
+  circle.style.opacity='0';
+  circle.style.transform='scale(0.5)';
+  void circle.offsetWidth;
+  circle.style.opacity='1';
+  circle.style.transform='scale(1)';
+  setTimeout(function(){
+    circle.style.opacity='0';
+    circle.style.transform='scale(0.8)';
+    setTimeout(function(){el.className='tv-confirm-overlay';circle.style.cssText=''},400);
+  },1200);
 }
 function showStatusConfirm(){
   var el=document.getElementById('statusConfirm');
