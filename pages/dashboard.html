@@ -266,9 +266,11 @@ function renderStats() {
     '<div class="stat-item"><span class="stat-value">' + openTasks + '</span><span class="stat-label">Open Tasks</span></div>';
 
   document.getElementById('dmhStats').innerHTML =
-    '<div class="dmh-stat' + (mobileFilter==='In Progress'?' active':'') + '" onclick="toggleMobileFilter(\'In Progress\')"><span class="dmh-dot dmh-dot-active"></span><span class="dmh-val">' + inProgress + '</span><span class="dmh-label">Active</span></div>' +
+    '<div class="dmh-stat"><span class="dmh-val">' + openTasks + '</span><span class="dmh-label">Open Tasks</span></div>' +
     '<div class="dmh-divider"></div>' +
-    '<div class="dmh-stat' + (mobileFilter==='Pending'?' active':'') + '" onclick="toggleMobileFilter(\'Pending\')"><span class="dmh-dot dmh-dot-pending"></span><span class="dmh-val">' + pending + '</span><span class="dmh-label">Pending</span></div>';
+    '<div class="dmh-stat"><span class="dmh-dot dmh-dot-active"></span><span class="dmh-val">' + inProgress + '</span><span class="dmh-label">Active</span></div>' +
+    '<div class="dmh-divider"></div>' +
+    '<div class="dmh-stat"><span class="dmh-dot dmh-dot-pending"></span><span class="dmh-val">' + pending + '</span><span class="dmh-label">Pending</span></div>';
 }
 
 function toggleDashboardEmptyState(isEmpty) {
