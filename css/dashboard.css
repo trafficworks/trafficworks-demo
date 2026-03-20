@@ -54,10 +54,10 @@
 .dmh-stats { background:var(--white); border-bottom:1px solid var(--border); padding:10px 16px; display:flex; align-items:center; justify-content:center; gap:16px; position:sticky; top:56px; z-index:90; }
 .dmh-stat { display:flex; align-items:center; gap:6px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .dmh-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-.dmh-dot-active { background:var(--color-infield-bar, #8DB7DB); }
-.dmh-dot-pending { background:var(--color-pending, #F5C27A); }
-.dmh-val { font-size:16px; font-weight:700; color:var(--charcoal); line-height:1; }
-.dmh-label { font-size:14px; font-weight:500; color:var(--text-secondary); }
+.dmh-dot-active { background:#5A9FCC; }
+.dmh-dot-pending { background:#E8A830; }
+.dmh-val { font-size:18px; font-weight:700; color:var(--charcoal); line-height:1; }
+.dmh-label { font-size:15px; font-weight:500; color:var(--text-secondary); }
 .dmh-divider { width:1px; height:20px; background:var(--border); }
 
 /* Old filter bar - no longer used on mobile */
