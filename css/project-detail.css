@@ -67,7 +67,7 @@ tbody tr:hover .check-visual.pending-vis { opacity: 1; }
 .mobile-task-inner{display:flex;align-items:stretch;gap:0}
 .mobile-task-content{flex:1;min-width:0;padding:14px 0 14px 20px;display:flex;flex-direction:column;justify-content:center}
 .mobile-task-action{display:flex;align-items:center;justify-content:center;padding:14px 14px 14px 12px;flex-shrink:0}
-.mobile-task-title{font-size:16px;font-weight:600;color:var(--text-primary);line-height:1.25;display:flex;align-items:center;gap:6px}
+.mobile-task-title{font-size:16px;font-weight:500;color:var(--text-primary);line-height:1.25;display:flex;align-items:center;gap:6px}
 .mobile-task-note-icon{display:inline-flex;color:var(--text-muted);flex-shrink:0}
 .mobile-task-divider{height:4px}
 .mobile-task-meta{font-size:12px;font-weight:400;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -84,7 +84,7 @@ tbody tr:hover .check-visual.pending-vis { opacity: 1; }
 .pmh-back { display:flex; align-items:center; justify-content:center; width:28px; height:28px; background:var(--charcoal); border:none; border-radius:50%; color:#fff; text-decoration:none; flex-shrink:0; }
 .pmh-back svg { width:14px; height:14px; }
 .pmh-title { flex:1; font-size:17px; font-weight:600; color:var(--charcoal); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; letter-spacing:-0.3px; }
-.pmh-kebab { width:36px; height:36px; border:none; background:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--border); border-radius:6px; flex-shrink:0; align-self:center; }
+.pmh-kebab { width:32px; height:32px; padding:0; margin:0; border:none; background:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--border); border-radius:6px; flex-shrink:0; align-self:center; }
 .pmh-kebab svg { width:20px; height:20px; }
 .pmh-stats { background:var(--white); border-bottom:1px solid var(--border); padding:10px 16px; display:flex; align-items:center; justify-content:center; gap:16px; position:sticky; top:56px; z-index:90; }
 .pmh-stat { display:flex; align-items:center; gap:5px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
