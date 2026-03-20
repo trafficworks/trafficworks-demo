@@ -81,14 +81,13 @@ tbody tr:hover .check-visual.pending-vis { opacity: 1; }
    ============================================================ */
 .pd-mobile-header { display:none; }
 .pmh-top { background:var(--white); border-bottom:1px solid var(--border); padding:0 16px; height:56px; display:flex; align-items:center; gap:10px; position:sticky; top:0; z-index:100; }
-.pmh-back { display:flex; align-items:center; justify-content:center; width:28px; height:28px; background:var(--green); border-radius:50%; color:var(--white); text-decoration:none; flex-shrink:0; transition:opacity .15s; }
-.pmh-back:hover { opacity:0.85; }
-.pmh-back svg { width:16px; height:16px; }
+.pmh-back { display:flex; align-items:center; justify-content:center; width:28px; height:28px; background:none; border:1.5px solid var(--green); border-radius:50%; color:var(--green); text-decoration:none; flex-shrink:0; }
+.pmh-back svg { width:14px; height:14px; }
 .pmh-title { flex:1; font-size:16px; font-weight:600; color:var(--charcoal); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; letter-spacing:-0.3px; }
 .pmh-kebab { width:36px; height:36px; border:none; background:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--border); border-radius:6px; flex-shrink:0; align-self:center; }
 .pmh-kebab svg { width:20px; height:20px; }
 .pmh-stats { background:var(--white); border-bottom:1px solid var(--border); padding:10px 16px; display:flex; align-items:center; justify-content:center; gap:16px; position:sticky; top:56px; z-index:90; }
-.pmh-stat { display:flex; align-items:center; gap:5px; }
+.pmh-stat { display:flex; align-items:center; gap:5px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .pmh-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
 .pmh-dot-pending { background:var(--color-pending, #F5C27A); }
 .pmh-dot-infield { background:var(--color-infield-bar, #8DB7DB); }
