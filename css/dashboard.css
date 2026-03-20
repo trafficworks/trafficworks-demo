@@ -171,3 +171,9 @@
   .jobsheet-header { display:none; }
   .jobsheet-body { padding:0; max-width:100%; overflow:visible; }
 }
+
+/* Muted mobile badges */
+.mobile-card-badge.status-pending { background: #F5D4A0; }
+.mobile-card-badge.status-in-progress { background: #CFDFEB; }
+.mobile-card-badge.status-on-hold { background: #FC9497; }
+.mobile-card-badge.status-complete { background: #6FCDA0; }
