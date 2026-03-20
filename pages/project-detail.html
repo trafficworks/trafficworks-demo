@@ -18,6 +18,20 @@
   <a href="archive.html">Archive</a>
 </div>
 
+<!-- Mobile TV-style header (hidden on desktop) -->
+<div class="pd-mobile-header" id="pdMobileHeader">
+  <div class="pmh-top">
+    <a class="pmh-back" href="dashboard.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></a>
+    <span class="pmh-title">Old Town Mobility Study</span>
+    <button class="pmh-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+  <div class="pmh-stats" id="pmhStats"></div>
+  <div class="pmh-progress" id="pmhProgress">
+    <div class="pmh-bar"><div class="pmh-fill" id="pmhFill" style="width:0%"></div></div>
+    <span class="pmh-pct" id="pmhPct">0%</span>
+  </div>
+</div>
+
 <div class="main">
   <div class="project-name"><a class="project-back-link" href="dashboard.html"><svg class="back-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></a>Old Town Mobility Study</div>
   <div class="stats-row" id="statsRow"></div>
@@ -233,13 +247,35 @@ function renderStats(){
     '<div class="mobile-stat-pill"><span class="pill-val">'+total+'</span> Total</div>'+
     '<div class="mobile-stat-pill"><span class="pill-val">'+pend+'</span> Pending</div>'+
     '<div class="mobile-stat-pill"><span class="pill-val">'+inf+'</span> In Field</div>';
+
+  var pmh=document.getElementById('pmhStats');
+  if(pmh){
+    pmh.innerHTML=
+      '<div class="pmh-stat'+(pdMobileFilter===null?' active':'')+'" onclick="togglePdMobileFilter(null)"><span class="pmh-val">'+total+'</span><span class="pmh-label">Total</span></div>'+
+      '<div class="pmh-divider"></div>'+
+      '<div class="pmh-stat'+(pdMobileFilter==='Pending'?' active':'')+'" onclick="togglePdMobileFilter(\'Pending\')"><span class="pmh-dot pmh-dot-pending"></span><span class="pmh-val">'+pend+'</span><span class="pmh-label">Pending</span></div>'+
+      '<div class="pmh-divider"></div>'+
+      '<div class="pmh-stat'+(pdMobileFilter==='In Field'?' active':'')+'" onclick="togglePdMobileFilter(\'In Field\')"><span class="pmh-dot pmh-dot-infield"></span><span class="pmh-val">'+inf+'</span><span class="pmh-label">In Field</span></div>';
+  }
+  var pmhFill=document.getElementById('pmhFill');
+  var pmhPct=document.getElementById('pmhPct');
+  if(pmhFill){pmhFill.style.width=pct+'%'}
+  if(pmhPct){pmhPct.textContent=pct+'%'}
+}
+
+var pdMobileFilter=null;
+function togglePdMobileFilter(status){
+  pdMobileFilter=pdMobileFilter===status?null:status;
+  renderStats();
+  render();
 }
 
 function getFiltered(){
   var s=(document.getElementById('searchInput').value||'').toLowerCase();
   var st=document.getElementById('statusFilter').value;
   return tasks.filter(function(t){
-    return (!s||t.desc.toLowerCase().indexOf(s)>-1||(t.type||'').toLowerCase().indexOf(s)>-1||(t.tech||'').toLowerCase().indexOf(s)>-1) && (st==='all'||t.status===st);
+    var matchMobile=!pdMobileFilter||t.status===pdMobileFilter;
+    return (!s||t.desc.toLowerCase().indexOf(s)>-1||(t.type||'').toLowerCase().indexOf(s)>-1||(t.tech||'').toLowerCase().indexOf(s)>-1) && (st==='all'||t.status===st) && matchMobile;
   });
 }
 
