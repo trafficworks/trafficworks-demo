@@ -37,24 +37,24 @@ body { background: var(--tv-bg); color: var(--tv-text); min-height: 100%; overfl
    ============================================================ */
 .tv-header { background: var(--tv-header-bg); border-bottom: 1px solid var(--tv-border); padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
 
-.tv-greeting { font-size: 18px; font-weight: 600; color: var(--tv-header-text); line-height: 1.3; }
+.tv-greeting { font-size: 16px; font-weight: 600; color: var(--tv-header-text); line-height: 1.3; letter-spacing: -0.3px; }
 
-.tv-header-right { display: flex; align-items: center; gap: 8px; }
+.tv-header-right { display: none; }
 
-.tv-logout { font-family: 'Inter', sans-serif; font-size: var(--text-sm); font-weight: 500; color: var(--tv-text-muted); background: none; border: 1px solid var(--tv-border); padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all .15s; }
-.tv-logout:hover { background: var(--tv-surface-hover) }
+.tv-logout { display: none; }
+
 
 /* Back button (task view) */
-.tv-back-btn { width: 32px; height: 32px; border: none; background: none; border-radius: 6px; cursor: pointer; display: none; align-items: center; justify-content: center; color: var(--tv-header-text); transition: background .15s; flex-shrink: 0; }
-.tv-back-btn:hover { background: var(--tv-surface-hover) }
-.tv-back-btn svg { width: 18px; height: 18px }
+.tv-back-btn { width: 28px; height: 28px; border: 1.5px solid var(--green); background: none; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; color: var(--green); flex-shrink: 0; }
+
+.tv-back-btn svg { width: 14px; height: 14px; }
 
 .tv-header-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
 
 /* Project info in header (task view) */
 .tv-project-info { display: none; flex-direction: column; line-height: 1.15; min-width: 0; flex: 1; }
 .tv-project-info.visible { display: flex }
-.tv-project-name-bar { font-size: 16px; font-weight: 700; color: var(--tv-header-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tv-project-name-bar { font-size: 16px; font-weight: 600; color: var(--tv-header-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.3px; }
 .tv-project-loc-bar { font-size: 14px; color: var(--tv-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ============================================================
