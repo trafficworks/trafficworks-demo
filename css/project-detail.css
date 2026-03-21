@@ -71,11 +71,11 @@ tbody tr:hover .check-visual.pending-vis { opacity: 1; }
 .mobile-task-note-icon{display:inline-flex;color:var(--text-muted);flex-shrink:0}
 .mobile-task-divider{height:6px}
 .mobile-task-meta{display:flex;align-items:center;gap:0;font-size:12px;font-weight:400;color:var(--text-secondary);overflow:hidden}
-.mtm-site{font-size:12px;font-weight:600;color:var(--text-muted);flex-shrink:0}
-.mtm-dot{margin:0 6px;color:var(--text-muted);flex-shrink:0}
-.mtm-type{display:inline-flex;align-items:center;justify-content:center;width:38px;padding:2px 0;border:1px solid var(--border);border-radius:4px;font-size:10px;font-weight:600;letter-spacing:0.3px;color:var(--text-muted);flex-shrink:0}
-.mtm-tech{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:none;border:1px solid var(--border);color:var(--text-muted);font-size:9px;font-weight:600;flex-shrink:0;letter-spacing:0}
-.mtm-dur{font-size:12px;font-weight:400;color:var(--text-muted);font-variant-numeric:tabular-nums;flex-shrink:0;min-width:40px}
+.mtm-site{font-size:12px;font-weight:400;color:var(--text-secondary);flex-shrink:0}
+.mtm-dot{margin:0 8px;color:var(--text-secondary);flex-shrink:0}
+.mtm-type{display:inline-flex;align-items:center;justify-content:center;width:38px;padding:2px 0;border:1px solid var(--border);border-radius:4px;font-size:10px;font-weight:500;letter-spacing:0.3px;color:var(--text-secondary);flex-shrink:0}
+.mtm-tech{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:none;border:1px solid var(--border);color:var(--text-secondary);font-size:9px;font-weight:500;flex-shrink:0;letter-spacing:0}
+.mtm-dur{font-size:12px;font-weight:400;color:var(--text-secondary);font-variant-numeric:tabular-nums;flex-shrink:0;min-width:40px}
 .mobile-status-pill{display:inline-flex;align-items:center;justify-content:center;min-height:32px;min-width:72px;padding:0 10px;border-radius:8px;font-size:11px;font-weight:600;white-space:nowrap;letter-spacing:0.3px}
 .mobile-task-card.status-complete .mobile-status-pill{background:#6FCDA0;color:#fff}
 .mobile-task-card.status-infield .mobile-status-pill{background:#CFDFEB;color:#2C3034}
@@ -96,8 +96,8 @@ tbody tr:hover .check-visual.pending-vis { opacity: 1; }
 .pmh-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
 .pmh-dot-pending { background:#E8A830; }
 .pmh-dot-infield { background:#5A9FCC; }
-.pmh-val { font-size:18px; font-weight:700; color:var(--charcoal); line-height:1; display:flex; align-items:center; }
-.pmh-label { font-size:15px; font-weight:500; color:var(--text-secondary); line-height:1; }
+.pmh-val { font-size:19px; font-weight:700; color:var(--charcoal); line-height:1; display:flex; align-items:center; }
+.pmh-label { font-size:19px; font-weight:500; color:var(--text-secondary); line-height:1; }
 .pmh-divider { width:1px; height:20px; background:var(--border); }
 .pmh-progress { background:var(--white); padding:8px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--border); }
 .pmh-bar { flex:1; height:4px; background:var(--off-white); border-radius:2px; overflow:hidden; }
@@ -176,7 +176,7 @@ table{display:none}
 }
 
 /* Logo badge for Complete status */
-.mobile-card-logo-badge { width: 36px; height: 36px; object-fit: contain; display: block; opacity: 0.6; }
+.mobile-card-logo-badge { width: 36px; height: 36px; object-fit: contain; display: block; opacity: 0.5; }
 /* Preserved badge styles for revert:
 .mobile-task-card.status-complete .mobile-status-pill{background:#6FCDA0;color:#fff}
 */
