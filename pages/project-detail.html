@@ -40,7 +40,7 @@
   <!-- Mobile stat pills -->
   <div class="pd-mobile-stats" id="pdMobileStats"></div>
 
-  <!-- Toolbar: Search + Filter + Job Sheet + Add Task -->
+  <!-- Toolbar: Search + Job Sheet + Add Task -->
   <div class="pd-toolbar">
     <div id="normalItems" style="display:flex;align-items:center;gap:10px;flex:1">
       <div class="search-box mobile-hide">
@@ -51,16 +51,9 @@
         <input type="text" placeholder="Search tasks…" id="searchInput" oninput="render()">
       </div>
 
-      <select class="filter-select" id="statusFilter" onchange="render()">
-        <option value="all">All Statuses</option>
-        <option value="Pending">Pending</option>
-        <option value="In Field">In Field</option>
-        <option value="Complete">Complete</option>
-      </select>
-
       <div class="toolbar-spacer"></div>
       <button class="btn btn-ghost jobsheet-btn" onclick="openJobSheet()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</button>
-      <button class="btn btn-add" onclick="openAddTaskModal()"><span class="btn-icon">+</span> Add Task</button>
+      <button class="btn btn-action" onclick="openAddTaskModal()"><span class="btn-icon">+</span> Add Task</button>
     </div>
 
     <div id="selectItems" style="display:none;align-items:center;gap:8px;flex:1">
@@ -271,7 +264,7 @@ function togglePdMobileFilter(status){
 
 function getFiltered(){
   var s=(document.getElementById('searchInput').value||'').toLowerCase();
-  var st=document.getElementById('statusFilter').value;
+  var stEl=document.getElementById('statusFilter');var st=stEl?stEl.value:'all';
   return tasks.filter(function(t){
     var matchMobile=!pdMobileFilter||t.status===pdMobileFilter;
     return (!s||t.desc.toLowerCase().indexOf(s)>-1||(t.type||'').toLowerCase().indexOf(s)>-1||(t.tech||'').toLowerCase().indexOf(s)>-1) && (st==='all'||t.status===st) && matchMobile;
