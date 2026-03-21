@@ -57,7 +57,7 @@
 .dmh-dot-active { background:#5A9FCC; }
 .dmh-dot-pending { background:#E8A830; }
 .dmh-val { font-size:19px; font-weight:700; color:var(--charcoal); line-height:1; display:flex; align-items:center; }
-.dmh-label { font-size:19px; font-weight:500; color:var(--text-secondary); line-height:1; }
+.dmh-label { font-size:15px; font-weight:500; color:var(--text-secondary); line-height:1; }
 .dmh-divider { width:1px; height:20px; background:var(--border); }
 
 /* Old filter bar - no longer used on mobile */
