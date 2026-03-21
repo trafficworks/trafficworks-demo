@@ -306,3 +306,10 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 /* Undo confirmation overlay */
 .tv-undo-circle { width: 90px; height: 90px; background: var(--green); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 4px 20px rgba(42,181,126,0.4); transition: opacity 0.25s ease, transform 0.25s ease; }
 .tv-undo-text { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 0.3px; }
+
+/* Dark mode — back button and undo button */
+html.tv-dark .tv-back-btn { background: var(--tv-text); color: var(--tv-bg); }
+html.tv-dark .tv-undo-btn { color: var(--tv-text-secondary); }
+
+/* Dark mode — filter pill active state */
+html.tv-dark .tv-filter-pill.active { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); }
