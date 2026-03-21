@@ -45,7 +45,6 @@
     </div>
     <button class="dmh-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
-  <div class="dmh-stats" id="dmhStats"></div>
 </div>
 
 <div class="main">
@@ -257,7 +256,7 @@ function renderStats() {
     '<div class="stat-item"><span class="stat-value">' + pending + '</span><span class="stat-label"><mark>Pending</mark></span></div>' +
     '<div class="stat-item"><span class="stat-value">' + openTasks + '</span><span class="stat-label">Open Tasks</span></div>';
 
-  document.getElementById('dmhStats').innerHTML =
+  var dmhEl=document.getElementById('dmhStats');if(dmhEl) dmhEl.innerHTML =
     '<div class="dmh-stat" onclick="toggleMobileFilter(\'open\')"><span class="dmh-label">' + openTasks + ' Open Tasks</span></div>' +
     '<div class="dmh-divider"></div>' +
     '<div class="dmh-stat" onclick="toggleMobileFilter(\'In Progress\')"><span class="dmh-dot dmh-dot-active"></span><span class="dmh-val">' + inProgress + '</span><span class="dmh-label">Active</span></div>' +
