@@ -54,7 +54,7 @@
   <!-- Mobile filter bar (inside main, hidden on desktop) -->
   <div class="mobile-filter-bar" id="mobileFilterBar"></div>
 
-  <!-- Toolbar: Search + Filter + Create -->
+  <!-- Toolbar: Search + Create -->
   <div class="dashboard-toolbar">
     <div class="search-box">
       <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -63,15 +63,8 @@
       </svg>
       <input type="text" placeholder="Search projects…" id="searchInput" oninput="filterProjects()">
     </div>
-    <select class="filter-select" id="statusFilter" onchange="filterProjects()">
-      <option value="all">All Statuses</option>
-      <option value="Pending">Pending</option>
-      <option value="In Progress">In Progress</option>
-      <option value="On Hold">On Hold</option>
-      <option value="Complete">Complete</option>
-    </select>
     <div class="toolbar-spacer"></div>
-    <button class="btn btn-primary" onclick="openCreateModal()">
+    <button class="btn btn-action" onclick="openCreateModal()">
       <span class="btn-icon">+</span> Create Project
     </button>
   </div>
@@ -361,7 +354,7 @@ function toggleMobileFilter(status){
 
 function filterProjects() {
   var search = document.getElementById('searchInput').value.toLowerCase();
-  var status = document.getElementById('statusFilter').value;
+  var statusEl = document.getElementById('statusFilter'); var status = statusEl ? statusEl.value : 'all';
 
   var filtered = projects.filter(function(p) {
     var matchesSearch = !search ||
