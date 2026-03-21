@@ -14,7 +14,7 @@
 .dashboard-table-wrap { margin-top: 8px; }
 
 /* Project table cells */
-.project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: 12px; font-weight: 400; }
+.project-name-link { text-decoration:none; cursor:pointer; display:block; font-size: 13px; font-weight: 400; }
 .project-name-link:hover { color:var(--text-primary) }
 .project-info { min-height: 56px; display: flex; align-items: center; gap: 10px; }
 
