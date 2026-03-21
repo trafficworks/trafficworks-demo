@@ -74,9 +74,9 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 /* Task view stats — filter pills */
 .tv-filter-bar { background: var(--tv-header-bg); border-bottom: 1px solid var(--tv-border); padding: 8px 16px; display: none; align-items: center; justify-content: space-between; gap: 4px; position: sticky; top: 56px; z-index: 90; }
 
-.tv-filter-pill { display: flex; flex-direction: column; align-items: center; flex: 1; padding: 6px 4px; border-radius: 8px; border: 1.5px solid transparent; cursor: pointer; transition: all .15s; -webkit-tap-highlight-color: transparent; }
+.tv-filter-pill { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 6px 4px; border-radius: 8px; border: 1.5px solid transparent; cursor: pointer; transition: all .15s; -webkit-tap-highlight-color: transparent; }
 .tv-filter-pill:active { transform: scale(0.96) }
-.tv-filter-pill.active { border-color: var(--tv-text-muted); background: var(--tv-surface-hover); }
+.tv-filter-pill.active { border-color: rgba(156,160,166,0.35); background: rgba(240,239,235,0.5); padding: 8px 6px; }
 .tv-filter-value { font-size: 18px; font-weight: 700; color: var(--tv-header-text); line-height: 1.2; }
 .tv-filter-label { font-size: 12px; font-weight: 600; color: var(--tv-text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
 .tv-filter-pill.active .tv-filter-label { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; color: var(--tv-text-secondary); }
@@ -88,7 +88,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 
 .tv-task-progress-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width .4s ease; }
 
-.tv-task-progress-pct { display: flex; align-items: center; font-size: var(--text-sm); font-weight: 600; color: var(--tv-header-text); min-width: 32px; justify-content: flex-end; }
+.tv-task-progress-pct { display: flex; align-items: center; font-size: var(--text-sm); font-weight: 600; color: var(--tv-text-secondary); min-width: 32px; justify-content: flex-end; }
 
 /* ============================================================
    CONTENT AREA
