@@ -7,7 +7,7 @@
 .project-back-link{ display:none; color:var(--text-muted); text-decoration:none; flex-shrink:0; line-height:0; min-width:32px; min-height:32px; align-items:center; justify-content:center; margin-left:-6px; border-radius:6px; transition:color .15s; }
 .project-back-link:hover{ color:var(--color-text-heading, var(--charcoal)); }
 .back-icon{ display:block; }
-.project-subtitle { font-size: var(--text-sm); color: var(--text-muted); margin-top: -2px; }
+.project-subtitle { font-size: var(--text-sm); color: var(--text-muted); font-weight:400; margin-top: -2px; }
 
 /* Stats hidden */
 .stats-row { display: none; }
