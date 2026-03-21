@@ -92,9 +92,9 @@
 
 .mobile-card-fill{ height:100%; border-radius:2px; transition:width .3s ease; }
 
-.mobile-card-fill.fill-low{ background:var(--green) }
-.mobile-card-fill.fill-mid{ background:var(--green) }
-.mobile-card-fill.fill-high{ background:var(--green) }
+.mobile-card-fill.fill-low{ background:#6FCDA0 }
+.mobile-card-fill.fill-mid{ background:#6FCDA0 }
+.mobile-card-fill.fill-high{ background:#6FCDA0 }
 
 .mobile-card-pct{ margin-left:8px; font-size:12px; font-weight:500; color:var(--text-muted); white-space:nowrap; }
 
@@ -123,7 +123,7 @@
   .mobile-cards {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 11px;
     margin-top: 0;
     padding: 12px 16px;
   }
