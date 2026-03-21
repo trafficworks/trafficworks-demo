@@ -45,7 +45,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 .tv-header-right { display: flex; align-items: center; gap: 8px; }
 
 .tv-logout { display: none; }
-.tv-back-btn { width: 28px; height: 28px; background: var(--charcoal); border: none; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
+.tv-back-btn { width: 28px; height: 28px; background: none; border: 2px solid #1E8C5A; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; color: #1E8C5A; flex-shrink: 0; }
 
 .tv-back-btn svg { width: 15px; height: 15px; }
 .tv-back-btn svg { width: 14px; height: 14px; }
@@ -308,7 +308,7 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 .tv-undo-text { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 0.3px; }
 
 /* Dark mode — back button and undo button */
-html.tv-dark .tv-back-btn { background: var(--tv-text); color: var(--tv-bg); }
+html.tv-dark .tv-back-btn { border-color: var(--tv-text-secondary); color: var(--tv-text-secondary); background: none; }
 html.tv-dark .tv-undo-btn { color: var(--tv-text-secondary); }
 
 /* Dark mode — filter pill active state */
