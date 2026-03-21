@@ -76,10 +76,10 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 
 .tv-filter-pill { display: flex; flex-direction: column; align-items: center; flex: 1; padding: 6px 4px; border-radius: 8px; border: 1.5px solid transparent; cursor: pointer; transition: all .15s; -webkit-tap-highlight-color: transparent; }
 .tv-filter-pill:active { transform: scale(0.96) }
-.tv-filter-pill.active { border-color: transparent; background: none; }
+.tv-filter-pill.active { border-color: var(--tv-text-muted); background: var(--tv-surface-hover); }
 .tv-filter-value { font-size: 18px; font-weight: 700; color: var(--tv-header-text); line-height: 1.2; }
 .tv-filter-label { font-size: 12px; font-weight: 600; color: var(--tv-text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
-.tv-filter-pill.active .tv-filter-label { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+.tv-filter-pill.active .tv-filter-label { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; color: var(--tv-text-secondary); }
 
 /* Task view progress */
 .tv-task-progress { display: flex; align-items: center; gap: 8px; padding: 7px 16px 7px; background: var(--tv-header-bg); }
@@ -125,7 +125,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 /* ============================================================
    TASK CARDS
    ============================================================ */
-.tv-task-card { background: var(--tv-surface); border: none; border-radius: 12px; margin-bottom: 9px; overflow: hidden; transition: all .2s ease; -webkit-tap-highlight-color: transparent; box-shadow: var(--tv-card-shadow); }
+.tv-task-card { background: var(--tv-surface); border: none; border-radius: 12px; margin-bottom: 11px; overflow: hidden; transition: all .2s ease; -webkit-tap-highlight-color: transparent; box-shadow: var(--tv-card-shadow); }
 .tv-task-card.complete-card { opacity: 0.45 }
 
 .tv-task-inner { display: flex; align-items: stretch; gap: 0; }
