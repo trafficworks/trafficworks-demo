@@ -86,7 +86,7 @@
 
 .mobile-card-badge{ display:inline-flex; align-items:center; justify-content:center; min-height:32px; min-width:72px; padding:0 10px; border-radius:8px; font-size:11px; font-weight:600; white-space:nowrap; letter-spacing:0.3px; }
 
-.mobile-card-progress{ margin-top:10px; display:flex; align-items:center; padding-right:16px; }
+.mobile-card-progress{ margin-top:10px; display:flex; align-items:center; padding-right:0; }
 
 .mobile-card-bar{ flex:1; height:4px; background:var(--off-white); border-radius:2px; overflow:hidden; }
 
@@ -179,7 +179,7 @@
 .mobile-card-badge.status-complete { background: #6FCDA0; }
 
 /* Logo badge for Complete status */
-.mobile-card-logo-badge { width: 32px; height: 32px; object-fit: contain; display: block; }
+.mobile-card-logo-badge { width: 32px; height: 32px; object-fit: contain; display: block; opacity: 0.6; }
 /* Preserved badge styles for revert:
 .mobile-card-badge.status-complete { background: #6FCDA0; }
 */
