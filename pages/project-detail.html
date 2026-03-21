@@ -314,7 +314,12 @@ function renderTable(){
         '<div class="mobile-task-content">'+
           '<div class="mobile-task-title">'+t.desc+noteIcon+'</div>'+
           '<div class="mobile-task-divider"></div>'+
-          '<div class="mobile-task-meta">#'+t.site+' · '+t.type+' · '+techLabel+(dur?' · '+dur:'')+'</div>'+
+          '<div class="mobile-task-meta">'+
+            '<span class="mtm-site">#'+t.site+'</span>'+
+            (t.type?'<span class="mtm-dot">·</span><span class="mtm-type">'+t.type+'</span>':'')+
+            (t.tech?'<span class="mtm-dot">·</span><span class="mtm-tech">'+initials+'</span>':'')+
+            (dur?'<span class="mtm-dot">·</span><span class="mtm-dur">'+dur+'</span>':'')+
+          '</div>'+
         '</div>'+
         '<div class="mobile-task-action">'+
           (t.status===STATUS.COMPLETE
