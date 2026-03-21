@@ -243,8 +243,6 @@ function renderStats(){
   var pmh=document.getElementById('pmhStats');
   if(pmh){
     pmh.innerHTML=
-      '<div class="pmh-stat" onclick="togglePdMobileFilter(null)"><span class="pmh-label">'+total+' Total</span></div>'+
-      '<div class="pmh-divider"></div>'+
       '<div class="pmh-stat" onclick="togglePdMobileFilter(\'Pending\')"><span class="pmh-dot pmh-dot-pending"></span><span class="pmh-val">'+pend+'</span><span class="pmh-label">Pending</span></div>'+
       '<div class="pmh-divider"></div>'+
       '<div class="pmh-stat" onclick="togglePdMobileFilter(\'In Field\')"><span class="pmh-dot pmh-dot-infield"></span><span class="pmh-val">'+inf+'</span><span class="pmh-label">In Field</span></div>';
