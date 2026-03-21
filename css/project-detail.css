@@ -92,12 +92,12 @@ tbody tr:hover .check-visual.pending-vis { opacity: 1; }
 .pmh-kebab { width:32px; height:32px; padding:0; margin:0; border:none; background:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--border); border-radius:6px; flex-shrink:0; align-self:center; }
 .pmh-kebab svg { width:20px; height:20px; }
 .pmh-stats { background:var(--white); border-bottom:1px solid var(--border); padding:10px 16px; display:flex; align-items:center; justify-content:center; gap:16px; position:sticky; top:56px; z-index:90; }
-.pmh-stat { display:flex; align-items:center; gap:5px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-.pmh-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.pmh-stat { display:flex; align-items:center; gap:6px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.pmh-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 .pmh-dot-pending { background:#E8A830; }
 .pmh-dot-infield { background:#5A9FCC; }
 .pmh-val { font-size:19px; font-weight:700; color:var(--charcoal); line-height:1; display:flex; align-items:center; }
-.pmh-label { font-size:19px; font-weight:500; color:var(--text-secondary); line-height:1; }
+.pmh-label { font-size:15px; font-weight:500; color:var(--text-secondary); line-height:1; }
 .pmh-divider { width:1px; height:20px; background:var(--border); }
 .pmh-progress { background:var(--white); padding:8px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--border); }
 .pmh-bar { flex:1; height:4px; background:var(--off-white); border-radius:2px; overflow:hidden; }
