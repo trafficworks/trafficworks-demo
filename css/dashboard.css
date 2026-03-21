@@ -56,8 +56,8 @@
 .dmh-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
 .dmh-dot-active { background:#5A9FCC; }
 .dmh-dot-pending { background:#E8A830; }
-.dmh-val { font-size:18px; font-weight:700; color:var(--charcoal); line-height:1; display:flex; align-items:center; }
-.dmh-label { font-size:15px; font-weight:500; color:var(--text-secondary); line-height:1; }
+.dmh-val { font-size:19px; font-weight:700; color:var(--charcoal); line-height:1; display:flex; align-items:center; }
+.dmh-label { font-size:19px; font-weight:500; color:var(--text-secondary); line-height:1; }
 .dmh-divider { width:1px; height:20px; background:var(--border); }
 
 /* Old filter bar - no longer used on mobile */
@@ -179,7 +179,7 @@
 .mobile-card-badge.status-complete { background: #6FCDA0; }
 
 /* Logo badge for Complete status */
-.mobile-card-logo-badge { width: 32px; height: 32px; object-fit: contain; display: block; opacity: 0.6; }
+.mobile-card-logo-badge { width: 32px; height: 32px; object-fit: contain; display: block; opacity: 0.5; }
 /* Preserved badge styles for revert:
 .mobile-card-badge.status-complete { background: #6FCDA0; }
 */
