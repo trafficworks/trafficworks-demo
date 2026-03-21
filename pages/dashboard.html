@@ -331,7 +331,9 @@ function renderProjects(list) {
         '<div class="mobile-card-detail">' + p.location + '</div>' +
       '</div>' +
       '<div class="mobile-card-action">' +
-        '<span class="mobile-card-badge ' + getStatusClass(p.status) + '">' + p.status + '</span>' +
+        (p.status === 'Complete' 
+          ? '<img class="mobile-card-logo-badge" src="../images/logo.png" alt="Complete">' 
+          : '<span class="mobile-card-badge ' + getStatusClass(p.status) + '">' + p.status + '</span>') +
       '</div>' +
     '</div>' +
     '<div class="mobile-card-progress">' +
