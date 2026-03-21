@@ -96,7 +96,7 @@
 .mobile-card-fill.fill-mid{ background:#6FCDA0 }
 .mobile-card-fill.fill-high{ background:#6FCDA0 }
 
-.mobile-card-pct{ margin-left:8px; font-size:12px; font-weight:500; color:var(--text-muted); white-space:nowrap; }
+.mobile-card-pct{ margin-left:auto; padding-left:8px; font-size:12px; font-weight:500; color:var(--text-muted); white-space:nowrap; text-align:right; }
 
 .mobile-card-jobsheet { margin-top:10px; display:flex; align-items:center; gap:4px; font-size:12px; font-weight:500; color:#B87A00; cursor:pointer; }
 
@@ -177,3 +177,9 @@
 .mobile-card-badge.status-in-progress { background: #CFDFEB; }
 .mobile-card-badge.status-on-hold { background: #FC9497; }
 .mobile-card-badge.status-complete { background: #6FCDA0; }
+
+/* Logo badge for Complete status */
+.mobile-card-logo-badge { width: 32px; height: 32px; object-fit: contain; display: block; }
+/* Preserved badge styles for revert:
+.mobile-card-badge.status-complete { background: #6FCDA0; }
+*/
