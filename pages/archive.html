@@ -42,6 +42,11 @@
 
   <div id="archiveTable"></div>
 
+  <!-- Mobile view -->
+  <div class="mobile-only">
+    <div id="mobileArchiveList"></div>
+  </div>
+
   <div class="table-footer" id="tableFooter"></div>
 </div>
 
@@ -188,6 +193,62 @@ function renderArchive(){
 
   html+='</tbody></table>';
   document.getElementById('archiveTable').innerHTML=html;
+
+  // Mobile render
+  var mArch = document.getElementById('mobileArchiveList');
+  if(mArch) {
+    var mHtml = '';
+    filtered.forEach(function(p) {
+      mHtml += '<div class="m-project-row" onclick="toggleExpand('+p.id+')">';
+      mHtml += '<div class="m-project-left">';
+      mHtml += '<div class="m-project-name">'+p.name+'</div>';
+      mHtml += '<div class="m-project-detail">'+p.client+' · '+p.tasks.length+' tasks</div>';
+      mHtml += '</div>';
+      mHtml += '<div class="m-project-right">';
+      mHtml += '<div class="m-project-tasks">'+p.bulkFiles.length+' files</div>';
+      mHtml += '<div class="m-project-tasks" style="font-size:10px">'+p.archivedDate+'</div>';
+      mHtml += '</div>';
+      mHtml += '</div>';
+
+      // Expanded panel on mobile
+      if(expandedId === p.id) {
+        mHtml += '<div style="padding:12px 0 16px;border-bottom:1px solid var(--line);border-left:3px solid var(--accent);padding-left:16px;margin-left:4px">';
+        
+        // Action buttons
+        mHtml += '<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">';
+        mHtml += '<button class="btn-small" onclick="event.stopPropagation();downloadAll('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download All</button>';
+        mHtml += '<button class="btn-small btn-upload" onclick="event.stopPropagation();document.getElementById(\'upload-'+p.id+'\').click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload<input type="file" id="upload-'+p.id+'" multiple accept=".pdf,.xlsx,.xls,.csv" style="display:none" onchange="bulkUpload('+p.id+')"></button>';
+        mHtml += '</div>';
+
+        // Sites
+        mHtml += '<div class="expand-col-label" style="margin-bottom:6px">Sites <span class="col-count">'+p.tasks.length+'</span></div>';
+        p.tasks.forEach(function(t) {
+          var tc = getTypeClass(t.type||'');
+          mHtml += '<div style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px">';
+          mHtml += '<span style="color:var(--text-3);min-width:18px;font-variant-numeric:tabular-nums">#'+t.site+'</span>';
+          mHtml += '<span style="flex:1;color:var(--text);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">'+t.desc+'</span>';
+          if(t.type) mHtml += '<span class="type-pill '+tc+'" style="font-size:9px;min-width:28px;padding:1px 5px">'+t.type+'</span>';
+          mHtml += '</div>';
+        });
+
+        // Files
+        if(p.bulkFiles.length > 0) {
+          mHtml += '<div class="expand-col-label" style="margin-top:12px;margin-bottom:6px">Files <span class="col-count">'+p.bulkFiles.length+'</span></div>';
+          p.bulkFiles.forEach(function(f, i) {
+            var ext = getFileExt(f), name = getFileName(f);
+            mHtml += '<div style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px">';
+            mHtml += '<span style="flex:1;color:var(--text-2);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">'+name+'</span>';
+            mHtml += '<span class="file-ext">'+ext+'</span>';
+            mHtml += '<button class="file-action" onclick="event.stopPropagation();downloadFile('+p.id+','+i+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>';
+            mHtml += '</div>';
+          });
+        }
+
+        mHtml += '</div>';
+      }
+    });
+    mArch.innerHTML = mHtml;
+  }
 }
 
 function toggleExpand(id){ expandedId=expandedId===id?null:id; renderArchive(); }
