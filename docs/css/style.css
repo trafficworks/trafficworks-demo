@@ -1671,6 +1671,7 @@ tr.editing .edit-input { display: block; }
   .stats-row { display: none; }
   .section-label { display: none; }
   .section-header .btn-action { display: none; }
+  .team-section { display: none; }
 
   /* Show mobile elements */
   .mobile-only { display: block; }
@@ -1741,4 +1742,18 @@ tr.editing .edit-input { display: block; }
 /* Mobile section spacing fix */
 @media (max-width: 768px) {
   .m-section:first-child { padding-top: 8px; }
+}
+
+
+/* Mobile role pill colors */
+.m-team-pill-admin {
+  background: rgba(58,166,106,0.16);
+  color: var(--accent);
+  border: none;
+}
+
+.m-team-pill-manager {
+  background: rgba(106,155,184,0.18);
+  color: var(--infield);
+  border: none;
 }
