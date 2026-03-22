@@ -21,6 +21,7 @@
       <a href="team.html">Team</a>
       <a href="archive.html">Archive</a>
     </div>
+    <button class="m-kebab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
   <div class="nav-line"></div>
 </div>
@@ -47,6 +48,12 @@
 
   <!-- TABLE CONTAINER — sections injected by JS -->
   <div id="projectSections"></div>
+
+  <!-- Mobile view -->
+  <div class="mobile-only">
+    <div class="m-page-sub" id="mobilePageSub"></div>
+    <div id="mobileProjectList"></div>
+  </div>
 
   <!-- EMPTY STATE -->
   <div class="empty-state" id="emptyState">No projects yet. Create one to get started.</div>
@@ -301,9 +308,37 @@ function renderProjects(list) {
 
   sections.innerHTML = html;
 
-  // Footer
+  // Mobile render
+  var mList = document.getElementById('mobileProjectList');
+  var mSub = document.getElementById('mobilePageSub');
   var active = projects.filter(function(p){return p.status !== 'Complete'});
   var openTasks = active.reduce(function(s,p){return s+p.openTasks},0);
+  
+  if(mSub) mSub.textContent = active.length + ' active · ' + openTasks + ' open tasks';
+
+  if(mList) {
+    var mHtml = '';
+    list.forEach(function(p) {
+      var done = p.totalTasks - p.openTasks;
+      var isComplete = p.status === 'Complete';
+      mHtml += '<div class="m-project-row' + (isComplete?' complete':'') + '" onclick="window.location.href=\'project-detail.html\'">';
+      mHtml += '<div class="m-project-left">';
+      mHtml += '<div class="m-project-name">' + p.name + '</div>';
+      mHtml += '<div class="m-project-detail">' + p.location + (isComplete ? '' : ' · ' + p.openTasks + ' open') + '</div>';
+      mHtml += '</div>';
+      mHtml += '<div class="m-project-right">';
+      if (isComplete) {
+        mHtml += '<div class="m-project-tasks" style="color:var(--accent)">Complete</div>';
+      } else {
+        mHtml += '<div class="m-progress-mini"><div class="m-progress-mini-fill" style="width:' + p.pct + '%"></div></div>';
+        mHtml += '<div class="m-project-tasks">' + done + '/' + p.totalTasks + '</div>';
+      }
+      mHtml += '</div></div>';
+    });
+    mList.innerHTML = mHtml;
+  }
+
+  // Footer
   document.getElementById('projectCount').textContent = active.length + ' active';
   footer.style.display = '';
   footer.textContent = projects.length + ' projects · ' + openTasks + ' open tasks';
