@@ -242,12 +242,13 @@ function renderProjects(list) {
 
   var html = '';
   var statusLabels = {'In Progress':'Active','Pending':'Pending','On Hold':'On Hold','Complete':'Complete'};
+    var statusDots = {'In Progress':'s-active','Pending':'s-pending','On Hold':'s-hold','Complete':'s-complete'};
 
   ['In Progress','Pending','On Hold','Complete'].forEach(function(status) {
     var g = groups[status];
     if (g.length === 0) return;
 
-    html += '<div class="section-label">' + statusLabels[status] + ' <span class="count">' + g.length + '</span></div>';
+    html += '<div class="section-label"><span class="s-dot ' + statusDots[status] + '"></span>' + statusLabels[status] + ' <span class="count">' + g.length + '</span></div>';
     html += '<table><thead><tr>';
     html += '<th style="width:35%">Project</th>';
     html += '<th style="width:12%">Status</th>';
@@ -280,8 +281,8 @@ function renderProjects(list) {
       html += '<td><div class="cell-name">' + p.name + '</div><div class="cell-sub">' + (p.location || '') + '</div></td>';
       html += '<td style="position:relative"><span class="badge ' + badgeClass(p.status) + '"' + statusClick + '>' + p.status + '</span>' + statusDropdown + '</td>';
       html += '<td>' + progressCell + '</td>';
-      html += '<td class="c"><span class="cell-num">' + p.openTasks + '</span></td>';
-      html += '<td class="c"><span class="cell-secondary">' + complete + '</span></td>';
+      html += '<td class="c"><span class="cell-num-open ' + (p.openTasks===0?'zero':'') + '">' + p.openTasks + '</span></td>';
+      html += '<td class="c"><span class="cell-num-done">' + complete + '</span></td>';
       html += '<td class="r kebab-cell"><button class="kebab" onclick="event.stopPropagation();toggleKebab(' + p.id + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
       html += '<div class="kebab-menu" id="kebab-' + p.id + '">';
       html += '<button class="kebab-menu-item" onclick="event.stopPropagation();openEditModal(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
