@@ -216,10 +216,10 @@ body {
    ═══════════════════════════════════════════════════════════════ */
 .section-label {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--text-3);
+  color: var(--text-2);
   padding: 20px 0 8px;
   display: flex;
   align-items: center;
@@ -241,7 +241,7 @@ table {
 thead th {
   font-size: 11px;
   font-weight: 600;
-  color: var(--text-3);
+  color: var(--text-2);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   text-align: left;
@@ -400,13 +400,23 @@ tbody tr:last-child td { border-bottom: none; }
   display: inline-flex;
   align-items: center;
   padding: 2px 8px;
-  border: 1px solid var(--line);
   border-radius: 3px;
   font-size: var(--text-xs);
-  font-weight: 500;
-  color: var(--text-3);
+  font-weight: 600;
   letter-spacing: 0.3px;
   text-transform: uppercase;
+}
+
+.role-pill-admin {
+  background: rgba(58,166,106,0.10);
+  color: var(--accent);
+  border: 1px solid rgba(58,166,106,0.18);
+}
+
+.role-pill-manager {
+  background: rgba(106,155,184,0.12);
+  color: var(--infield);
+  border: 1px solid rgba(106,155,184,0.2);
 }
 
 
@@ -666,9 +676,7 @@ tr.expand-row td { padding: 0; border-bottom: 1px solid var(--line); }
 tr.expand-row:hover { background: none; cursor: default; }
 
 .row-chevron {
-  display: inline-flex;
-  color: var(--line);
-  transition: color .15s, transform .2s;
+  display: none;
 }
 
 .row-chevron svg { width: 16px; height: 16px; }
@@ -1381,10 +1389,13 @@ tr.editing .edit-input { display: block; }
    ═══════════════════════════════════════════════════════════════ */
 .section-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 0;
+  padding: 20px 0 8px;
 }
+
+.section-header .section-label { padding: 0; }
 
 .member-locked {
   font-size: 11px;
