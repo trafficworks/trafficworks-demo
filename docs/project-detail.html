@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Count Company — Project Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<div class="container">
+  <div class="nav">
+    <a class="nav-brand" href="projects.html">
+      <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <span class="nav-name">The Count Company</span>
+    </a>
+    <div class="nav-links">
+      <a href="projects.html" class="active">Projects</a>
+      <a href="team.html">Team</a>
+      <a href="archive.html">Archive</a>
+    </div>
+    <button class="m-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+  <div class="nav-line"></div>
+</div>
+
+<!-- Mobile nav menu -->
+<div class="mobile-nav-menu" id="mobileNavMenu">
+  <a href="projects.html">Projects</a>
+  <a href="team.html">Team</a>
+  <a href="archive.html">Archive</a>
+</div>
+
+<!-- MAIN -->
+<div class="container main">
+
+  <!-- BACK -->
+  <div class="back-row">
+    <a class="back-link" href="projects.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Projects
+    </a>
+  </div>
+
+  <!-- PROJECT HEADER -->
+  <div style="margin-bottom:24px">
+    <div class="page-title">Old Town Mobility Study</div>
+    <div style="font-size:13px;color:var(--text-3);margin-top:4px">City of Pasadena · Pasadena, CA</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row" id="statsRow"></div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-left" id="normalItems">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-input" type="text" placeholder="Search tasks…" id="searchInput" oninput="render()" style="width:240px">
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <button class="btn-ghost" onclick="openJobSheet()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Job Sheet
+      </button>
+      <button class="btn-action" onclick="openAddTaskModal()"><span class="plus">+</span> Add Task</button>
+    </div>
+  </div>
+
+  <!-- TASK SECTIONS — injected by JS -->
+  <div id="taskSections"></div>
+
+  <!-- Mobile view -->
+  <div class="mobile-only">
+    <div class="m-stats" id="mobileStats"></div>
+    <div class="m-progress-row" id="mobileProgress"></div>
+    <div id="mobileTaskList"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="table-footer" id="tableFooter"></div>
+
+</div>
+
+<!-- ADD TASK MODAL -->
+<div class="modal-overlay" id="addTaskModal"><div class="modal" style="max-width:440px">
+  <div class="modal-title">Add Task</div>
+  <div class="tab-bar">
+    <div class="tab-btn active" id="tabManual" onclick="switchTab('manual')">Manual Entry</div>
+    <div class="tab-btn" id="tabBulk" onclick="switchTab('bulk')">Bulk Upload</div>
+  </div>
+  <div id="manualTab">
+    <div class="form-group"><label class="form-label">Task Description</label><input class="form-input" type="text" id="newTaskDesc"></div>
+    <div class="form-group"><label class="form-label">Count Type</label><select class="form-select" id="newTaskType"><option value="TMC">TMC</option><option value="ADT">ADT</option><option value="SPD">SPD</option><option value="CLS">CLS</option><option value="RDR">RDR</option><option value="OTH">OTH</option></select></div>
+    <div class="form-group"><label class="form-label">Assign Tech <span class="optional">(optional)</span></label><select class="form-select" id="newTaskTech"><option value="">Unassigned</option></select></div>
+    <div class="modal-actions"><button class="btn-ghost" onclick="closeAddTaskModal()">Cancel</button><button class="btn-solid" onclick="addTask()">Add Task</button></div>
+  </div>
+  <div id="bulkTab" style="display:none">
+    <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">Upload a CSV with columns: <strong>A</strong> — Description &nbsp; <strong>B</strong> — Type &nbsp; <strong>C</strong> — Tech (optional)</div>
+    <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <span class="drop-zone-text"><strong>Drop CSV</strong> or click to browse</span>
+      <input type="file" id="fileInput" accept=".csv" style="display:none" onchange="handleUpload(this)">
+    </div>
+    <div class="modal-actions"><button class="btn-ghost" onclick="closeAddTaskModal()">Cancel</button></div>
+  </div>
+</div></div>
+
+<!-- DELETE MODAL -->
+<div class="modal-overlay" id="deleteModal"><div class="modal">
+  <div class="modal-title">Delete Task</div>
+  <div class="modal-body" id="deleteModalBody">Remove this task?</div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeDeleteModal()">Cancel</button><button class="btn-danger" id="confirmDeleteBtn">Delete</button></div>
+</div></div>
+
+<!-- REOPEN MODAL -->
+<div class="modal-overlay" id="reopenModal"><div class="modal">
+  <div class="modal-title">Reopen Task</div>
+  <div class="modal-body" id="reopenModalBody"></div>
+  <div class="form-group"><label class="form-label">Reason <span class="optional">(optional)</span></label><input class="form-input" type="text" id="reopenReason" placeholder="Equipment damaged, data incomplete…"></div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeReopenModal()">Cancel</button><button class="btn-solid" id="confirmReopenBtn">Reopen</button></div>
+</div></div>
+
+<!-- BULK DELETE MODAL -->
+<div class="modal-overlay" id="bulkDeleteModal"><div class="modal">
+  <div class="modal-title">Delete Tasks</div>
+  <div class="modal-body" id="bulkDeleteBody"></div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeBulkDeleteModal()">Cancel</button><button class="btn-danger" onclick="executeDeleteSelected()">Delete</button></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<!-- JOB SHEET -->
+<div class="jobsheet-overlay" id="jobsheetOverlay">
+  <div class="jobsheet-header">
+    <button class="jobsheet-close" onclick="closeJobSheet()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="jobsheet-title">Job Sheet</span>
+    <button class="jobsheet-download" onclick="printJobSheet()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
+  </div>
+  <div class="jobsheet-body" id="jobsheetBody"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════
+var techsList = ['Ava R.','Noah K.','Maya T.','Leo S.','Sofia P.'];
+var STATUS = {PENDING:'Pending', INFIELD:'In Field', COMPLETE:'Complete'};
+var countTypes = ['TMC','ADT','SPD','CLS','RDR','OTH'];
+var projectNotes = 'Gate code: #4521. Equipment staging in east parking lot. Client contact: Maria Chen (626) 555-0142.';
+
+var tasks = [
+  {id:1,site:1,desc:'Colorado & Fair Oaks',type:'TMC',tech:'Ava R.',status:STATUS.COMPLETE,note:'48-hour count confirmed',cycles:[],currentCycle:{deployedAt:new Date('2026-03-02T06:42:00'),completedAt:new Date('2026-03-03T07:15:00')}},
+  {id:2,site:2,desc:'Colorado & Arroyo',type:'TMC',tech:'Ava R.',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-02T06:55:00'),completedAt:new Date('2026-03-03T07:22:00')}},
+  {id:3,site:3,desc:'Union & Raymond',type:'TMC',tech:'Noah K.',status:STATUS.INFIELD,note:'Pole mount confirmed',cycles:[],currentCycle:{deployedAt:new Date('2026-03-04T06:30:00'),completedAt:null}},
+  {id:4,site:4,desc:'Fair Oaks & Green',type:'TMC',tech:'Noah K.',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-04T06:38:00'),completedAt:null}},
+  {id:5,site:5,desc:'Walnut & Marengo',type:'ADT',tech:'Maya T.',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}},
+  {id:6,site:6,desc:'Pasadena Ave NB',type:'SPD',tech:'',status:STATUS.PENDING,note:'Resident requested set after 8 AM',cycles:[{deployedAt:new Date('2026-03-01T07:00:00'),completedAt:new Date('2026-03-01T09:30:00'),tech:'Ava R.',reopenReason:'Data incomplete',reopenedBy:'manager'}],currentCycle:{deployedAt:null,completedAt:null}},
+  {id:7,site:7,desc:'Pasadena Ave SB',type:'SPD',tech:'Sofia P.',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-04T05:50:00'),completedAt:null}},
+  {id:8,site:8,desc:'Green St Midblock',type:'CLS',tech:'Leo S.',status:STATUS.PENDING,note:'Bike lane activity focus area',cycles:[],currentCycle:{deployedAt:null,completedAt:null}}
+];
+
+var nextId=9, nextSite=9, deleteTarget=null, reopenTarget=null;
+
+// Populate tech select
+var techSel = document.getElementById('newTaskTech');
+techsList.forEach(function(t){ var o=document.createElement('option'); o.value=t; o.textContent=t; techSel.appendChild(o); });
+
+
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+function formatElapsed(ms) {
+  var m=Math.floor(ms/60000), h=Math.floor(m/60), mn=m%60;
+  if(h>=24) return Math.floor(h/24)+'d '+(h%24)+'h';
+  return h+'h '+mn+'m';
+}
+
+function getDuration(t) {
+  if(t.status===STATUS.INFIELD && t.currentCycle.deployedAt) return formatElapsed(Date.now()-t.currentCycle.deployedAt.getTime());
+  if(t.status===STATUS.COMPLETE && t.currentCycle.deployedAt && t.currentCycle.completedAt) return formatElapsed(t.currentCycle.completedAt.getTime()-t.currentCycle.deployedAt.getTime());
+  return '';
+}
+
+function badgeClass(s) {
+  return s===STATUS.PENDING ? 'badge-pending' : s===STATUS.INFIELD ? 'badge-infield' : 'badge-complete';
+}
+
+function getInitials(name) { if(!name) return '—'; return name.split(' ').map(function(p){return p[0]}).join('').toUpperCase(); }
+
+function fmtTime(d) { if(!d) return ''; var m=d.getMonth()+1; var day=d.getDate(); var h=d.getHours(); var min=d.getMinutes(); var ampm=h>=12?'p':'a'; h=h%12||12; return m+'/'+day+' '+h+':'+(min<10?'0':'')+min+ampm; }
+
+function fmtDur(ms) { if(!ms||ms<0) return ''; var h=Math.floor(ms/3600000); var m=Math.floor((ms%3600000)/60000); return h+'h '+m+'m'; }
+
+
+// ═══════════════════════════════════════
+// SORT
+// ═══════════════════════════════════════
+var currentSort = 'site';
+
+function sortTasks() {
+  if(currentSort==='tech') tasks.sort(function(a,b){ return (a.tech||'zzz').localeCompare(b.tech||'zzz'); });
+  else if(currentSort==='status') { var order={Pending:0,'In Field':1,Complete:2}; tasks.sort(function(a,b){return order[a.status]-order[b.status]}); }
+  else if(currentSort==='type') tasks.sort(function(a,b){ return (a.type||'').localeCompare(b.type||''); });
+  else tasks.sort(function(a,b){ return a.site-b.site; });
+}
+
+function sortBy(col) { currentSort = currentSort===col ? 'site' : col; render(); }
+
+
+// ═══════════════════════════════════════
+// FILTER
+// ═══════════════════════════════════════
+function getFiltered() {
+  var s = (document.getElementById('searchInput').value||'').toLowerCase();
+  return tasks.filter(function(t) {
+    return !s || t.desc.toLowerCase().indexOf(s)>-1 || (t.type||'').toLowerCase().indexOf(s)>-1 || (t.tech||'').toLowerCase().indexOf(s)>-1;
+  });
+}
+
+
+// ═══════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════
+function render() {
+  sortTasks();
+  renderStats();
+  renderTable();
+}
+
+function renderStats() {
+  var total=tasks.length;
+  var pend=tasks.filter(function(t){return t.status===STATUS.PENDING}).length;
+  var inf=tasks.filter(function(t){return t.status===STATUS.INFIELD}).length;
+  var comp=tasks.filter(function(t){return t.status===STATUS.COMPLETE}).length;
+  var pct=total>0 ? Math.round((comp/total)*100) : 0;
+
+  document.getElementById('statsRow').innerHTML =
+    '<div class="stat"><span class="stat-num">'+total+'</span><span class="stat-label">Tasks</span></div>' +
+    '<div class="stat-divider"></div>' +
+    '<div class="stat"><span class="stat-num">'+pend+'</span><span class="stat-label">Pending</span></div>' +
+    '<div class="stat"><span class="stat-num">'+inf+'</span><span class="stat-label">In Field</span></div>' +
+    '<div class="stat"><span class="stat-num">'+comp+'</span><span class="stat-label">Complete</span></div>' +
+    '<div class="stat-divider"></div>' +
+    '<div class="stat-progress"><div class="stat-progress-bar"><div class="stat-progress-fill" style="width:'+pct+'%"></div></div><span class="stat-progress-pct">'+pct+'%</span></div>';
+
+  document.getElementById('tableFooter').textContent = total + ' tasks · ' + (total-comp) + ' open · Generated 3/21/2026';
+
+  // Mobile stats
+  var ms = document.getElementById('mobileStats');
+  if(ms) {
+    ms.innerHTML = '<span class="m-stat-num">'+total+'</span><span class="m-stat-label">Tasks</span>' +
+      '<div class="m-stat-div"></div>' +
+      '<span class="m-stat-num">'+pend+'</span><span class="m-stat-label">Pending</span>' +
+      '<span class="m-stat-num">'+inf+'</span><span class="m-stat-label">In Field</span>';
+  }
+  var mp = document.getElementById('mobileProgress');
+  if(mp) {
+    mp.innerHTML = '<div class="m-progress-bar"><div class="m-progress-fill" style="width:'+pct+'%"></div></div>' +
+      '<span class="m-progress-pct">'+pct+'%</span>';
+  }
+}
+
+function renderTable() {
+  var filtered = getFiltered();
+  var sections = document.getElementById('taskSections');
+
+  if (filtered.length === 0) {
+    sections.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-3)">No tasks match your search</div>';
+    return;
+  }
+
+  // Group by status
+  var groups = {
+    'Pending': filtered.filter(function(t){return t.status===STATUS.PENDING}),
+    'In Field': filtered.filter(function(t){return t.status===STATUS.INFIELD}),
+    'Complete': filtered.filter(function(t){return t.status===STATUS.COMPLETE})
+  };
+
+  var html = '';
+
+  ['Pending','In Field','Complete'].forEach(function(status) {
+    var g = groups[status];
+    if (g.length === 0) return;
+
+    var sDot = status==='Pending'?'s-pending':status==='In Field'?'s-infield':'s-complete';
+    html += '<div class="section-label"><span class="s-dot ' + sDot + '"></span>' + status + ' <span class="count">' + g.length + '</span></div>';
+    html += '<table><thead><tr>';
+    html += '<th style="width:5%">#</th>';
+    html += '<th style="width:30%">Task</th>';
+    html += '<th style="width:10%">Type</th>';
+    html += '<th style="width:12%">Tech</th>';
+    html += '<th style="width:12%">Status</th>';
+    html += '<th style="width:12%">Duration</th>';
+    html += '<th style="width:4%"></th>';
+    html += '</tr></thead><tbody>';
+
+    g.forEach(function(t) {
+      var dur = getDuration(t);
+      var initials = getInitials(t.tech);
+      var reopenNote = '';
+      if (t.cycles.length > 0) {
+        var lastCycle = t.cycles[t.cycles.length-1];
+        if (lastCycle.reopenReason) reopenNote = '<div class="cell-reopen">Reopened: ' + lastCycle.reopenReason + '</div>';
+      }
+      var noteHtml = t.note ? '<div class="cell-note">' + t.note + '</div>' : '';
+
+      html += '<tr id="row-'+t.id+'">';
+      html += '<td><span class="site-num">'+t.site+'</span></td>';
+      html += '<td><div class="cell-name">'+t.desc+'</div>'+reopenNote+noteHtml+'<input class="edit-input" value="'+t.desc+'" onkeydown="if(event.key===\'Enter\')saveEdit('+t.id+',this)" onblur="saveEdit('+t.id+',this)"></td>';
+      html += '<td><span class="type-pill">'+t.type+'</span></td>';
+      html += '<td><div class="tech-select-wrapper"><span class="tech-avatar '+(t.tech?'assigned':'unassigned')+'" onclick="showTechSelect('+t.id+',this)">'+initials+'<span class="tech-tooltip">'+(t.tech||'Unassigned')+'</span></span></div></td>';
+      html += '<td><span class="badge '+badgeClass(t.status)+'">'+t.status+'</span></td>';
+      html += '<td><span class="cell-duration">'+(dur||'—')+'</span></td>';
+      html += '<td class="r kebab-cell"><button class="kebab" onclick="toggleKebab('+t.id+',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
+      html += '<div class="kebab-menu" id="kebab-'+t.id+'">';
+      html += '<button class="kebab-menu-item" onclick="startEdit('+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
+      if (t.status===STATUS.COMPLETE) html += '<button class="kebab-menu-item" onclick="promptReopen('+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg>Reopen</button>';
+      html += '<button class="kebab-menu-item danger" onclick="promptDelete('+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
+      html += '</div></td>';
+      html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+  });
+
+  sections.innerHTML = html;
+
+  // Mobile task list
+  var mTasks = document.getElementById('mobileTaskList');
+  if(mTasks) {
+    var mHtml = '';
+    var mGroups = {
+      'Pending': filtered.filter(function(t){return t.status===STATUS.PENDING}),
+      'In Field': filtered.filter(function(t){return t.status===STATUS.INFIELD}),
+      'Complete': filtered.filter(function(t){return t.status===STATUS.COMPLETE})
+    };
+    var mDotMap = {'Pending':'s-pending','In Field':'s-infield','Complete':'s-complete'};
+    var mBadgeMap = {'Pending':'m-badge-pending','In Field':'m-badge-infield','Complete':'m-badge-complete'};
+    var mLabelMap = {'Pending':'Pending','In Field':'In Field','Complete':'Done'};
+
+    ['Pending','In Field','Complete'].forEach(function(status) {
+      var mg = mGroups[status];
+      if(mg.length === 0) return;
+      mHtml += '<div class="m-section"><span class="s-dot '+mDotMap[status]+'"></span>'+status+' <span class="count">'+mg.length+'</span></div>';
+      mg.forEach(function(t) {
+        var dur = getDuration(t);
+        var isDone = t.status === STATUS.COMPLETE;
+        var reopenNote = '';
+        if(t.cycles.length > 0) { var lc = t.cycles[t.cycles.length-1]; if(lc.reopenReason) reopenNote = '<div class="m-task-note" style="font-style:normal;color:var(--hold)">Reopened: '+lc.reopenReason+'</div>'; }
+        var noteHtml = t.note ? '<div class="m-task-note">'+t.note+'</div>' : '';
+
+        mHtml += '<div class="m-task-row'+(isDone?' done':'')+'">';
+        mHtml += '<div class="m-task-left">';
+        mHtml += '<div class="m-task-name">'+t.desc+'</div>';
+        mHtml += '<div class="m-task-meta">#'+t.site+' <span class="sep">·</span> <span class="m-task-type">'+t.type+'</span>';
+        if(dur) mHtml += ' <span class="sep">·</span> '+dur;
+        mHtml += '</div>';
+        mHtml += reopenNote + noteHtml;
+        mHtml += '</div>';
+        mHtml += '<span class="m-task-badge '+mBadgeMap[status]+'">'+mLabelMap[status]+'</span>';
+        mHtml += '</div>';
+      });
+    });
+    mTasks.innerHTML = mHtml;
+  }
+}
+
+
+// ═══════════════════════════════════════
+// TASK ACTIONS
+// ═══════════════════════════════════════
+function openAddTaskModal() {
+  document.getElementById('addTaskModal').classList.add('visible');
+  switchTab('manual');
+  document.getElementById('newTaskDesc').value = '';
+  setTimeout(function(){ document.getElementById('newTaskDesc').focus(); }, 100);
+}
+
+function closeAddTaskModal() { document.getElementById('addTaskModal').classList.remove('visible'); }
+
+function switchTab(tab) {
+  document.getElementById('manualTab').style.display = tab==='manual' ? 'block' : 'none';
+  document.getElementById('bulkTab').style.display = tab==='bulk' ? 'block' : 'none';
+  document.getElementById('tabManual').classList.toggle('active', tab==='manual');
+  document.getElementById('tabBulk').classList.toggle('active', tab==='bulk');
+}
+
+function addTask() {
+  var d = document.getElementById('newTaskDesc').value.trim();
+  if(!d) { document.getElementById('newTaskDesc').focus(); return; }
+  tasks.push({id:nextId++, site:nextSite++, desc:d, type:document.getElementById('newTaskType').value, tech:document.getElementById('newTaskTech').value, status:STATUS.PENDING, note:'', cycles:[], currentCycle:{deployedAt:null, completedAt:null}});
+  closeAddTaskModal(); render(); showToast('Task added');
+}
+
+function handleUpload(input) {
+  var file = input.files[0]; if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var lines=e.target.result.split('\n'), added=0;
+    lines.forEach(function(line) {
+      if(!line.trim()) return;
+      var cols=line.split(',');
+      var desc=(cols[0]||'').trim().replace(/^"|"$/g,'');
+      var type=(cols[1]||'TMC').trim().replace(/^"|"$/g,'').toUpperCase();
+      var tech=(cols[2]||'').trim().replace(/^"|"$/g,'');
+      if(countTypes.indexOf(type)===-1) type='OTH';
+      if(tech && techsList.indexOf(tech)===-1) tech='';
+      if(desc) { tasks.push({id:nextId++, site:nextSite++, desc:desc, type:type, tech:tech, status:STATUS.PENDING, note:'', cycles:[], currentCycle:{deployedAt:null,completedAt:null}}); added++; }
+    });
+    render(); showToast(added+' task'+(added!==1?'s':'')+' imported'); closeAddTaskModal();
+  };
+  reader.readAsText(file); input.value='';
+}
+
+
+// ═══════════════════════════════════════
+// TECH SELECT
+// ═══════════════════════════════════════
+function showTechSelect(id, el) {
+  var existing = document.querySelector('.tech-dd'); if(existing) existing.remove();
+  var w=el.parentElement, task=tasks.find(function(t){return t.id===id});
+  var dd=document.createElement('div'); dd.className='tech-dd';
+  var rect=el.getBoundingClientRect();
+  dd.style.left='-8px';
+  if(window.innerHeight-rect.bottom < 200) dd.style.bottom='calc(100% + 4px)'; else dd.style.top='calc(100% + 4px)';
+  [''].concat(techsList).forEach(function(n) {
+    var item=document.createElement('div');
+    item.className='tech-dd-item'+(n===task.tech?' selected':'')+(n===''?' unassigned-opt':'');
+    item.textContent=n||'Unassigned';
+    item.addEventListener('click',function(e){e.stopPropagation();assignTech(id,n);dd.remove()});
+    dd.appendChild(item);
+  });
+  w.appendChild(dd);
+  setTimeout(function(){ document.addEventListener('click',function closeTech(e){ if(!dd.contains(e.target)){dd.remove();document.removeEventListener('click',closeTech)} }); },0);
+}
+
+function assignTech(id, tech) { var t=tasks.find(function(x){return x.id===id}); if(t){t.tech=tech; render(); showToast(tech?'Assigned to '+tech:'Unassigned');} }
+
+
+// ═══════════════════════════════════════
+// EDIT / DELETE / REOPEN
+// ═══════════════════════════════════════
+function startEdit(id) { var row=document.getElementById('row-'+id); if(row){row.classList.add('editing'); var input=row.querySelector('.edit-input'); if(input){input.focus();input.select();}} }
+function saveEdit(id, input) { var t=tasks.find(function(x){return x.id===id}); var v=input.value.trim(); if(t&&v) t.desc=v; render(); }
+
+function promptDelete(id) {
+  deleteTarget=id;
+  var t=tasks.find(function(x){return x.id===id});
+  document.getElementById('deleteModalBody').textContent='Remove "'+(t?t.desc:'this task')+'"?';
+  document.getElementById('deleteModal').classList.add('visible');
+}
+
+function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('visible'); }
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+  if(deleteTarget!==null) { tasks=tasks.filter(function(t){return t.id!==deleteTarget}); deleteTarget=null; closeDeleteModal(); render(); showToast('Task deleted'); }
+});
+
+function promptReopen(id) {
+  reopenTarget=id;
+  var t=tasks.find(function(x){return x.id===id});
+  document.getElementById('reopenModalBody').textContent='Send "'+(t?t.desc:'this task')+'" back to Pending?';
+  document.getElementById('reopenReason').value='';
+  document.getElementById('reopenModal').classList.add('visible');
+}
+
+function closeReopenModal() { document.getElementById('reopenModal').classList.remove('visible'); }
+
+document.getElementById('confirmReopenBtn').addEventListener('click', function() {
+  if(reopenTarget!==null) {
+    var t=tasks.find(function(x){return x.id===reopenTarget});
+    var r=document.getElementById('reopenReason').value;
+    if(t) {
+      if(t.currentCycle.deployedAt) t.cycles.push({deployedAt:t.currentCycle.deployedAt, completedAt:t.currentCycle.completedAt, tech:t.tech, reopenReason:r||'No reason given', reopenedBy:'manager'});
+      t.status=STATUS.PENDING; t.currentCycle={deployedAt:null,completedAt:null};
+    }
+    reopenTarget=null; closeReopenModal(); render(); showToast('Reopened'+(r?' — '+r:''));
+  }
+});
+
+function confirmDeleteSelected() { var checks=document.querySelectorAll('.row-check:checked'); if(checks.length===0) return; document.getElementById('bulkDeleteBody').textContent='Remove '+checks.length+' task'+(checks.length!==1?'s':'')+'?'; document.getElementById('bulkDeleteModal').classList.add('visible'); }
+function closeBulkDeleteModal() { document.getElementById('bulkDeleteModal').classList.remove('visible'); }
+function executeDeleteSelected() { var checks=document.querySelectorAll('.row-check:checked'); var ids=[]; checks.forEach(function(c){ids.push(parseInt(c.dataset.id))}); tasks=tasks.filter(function(t){return ids.indexOf(t.id)===-1}); closeBulkDeleteModal(); render(); showToast(ids.length+' task'+(ids.length!==1?'s':'')+' deleted'); }
+
+
+// ═══════════════════════════════════════
+// KEBAB
+// ═══════════════════════════════════════
+var openKebab = null;
+
+function toggleKebab(id, e) {
+  e.stopPropagation();
+  if(openKebab && openKebab!==id) { var old=document.getElementById('kebab-'+openKebab); if(old) old.classList.remove('open','drop-up','drop-down'); }
+  var menu=document.getElementById('kebab-'+id);
+  var isOpen=menu.classList.contains('open');
+  menu.classList.remove('open','drop-up','drop-down');
+  if(!isOpen) { var rect=e.currentTarget.getBoundingClientRect(); menu.classList.add('open',(window.innerHeight-rect.bottom)<160?'drop-up':'drop-down'); openKebab=id; }
+  else { openKebab=null; }
+}
+
+document.addEventListener('click', function() { if(openKebab) { var el=document.getElementById('kebab-'+openKebab); if(el) el.classList.remove('open','drop-up','drop-down'); openKebab=null; } });
+
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function showToast(msg) {
+  var el=document.getElementById('toast'); el.textContent=msg; el.classList.add('visible');
+  clearTimeout(el._timer); el._timer=setTimeout(function(){el.classList.remove('visible')},2500);
+}
+
+
+// ═══════════════════════════════════════
+// JOB SHEET
+// ═══════════════════════════════════════
+function openJobSheet() {
+  var pending=tasks.filter(function(t){return t.status===STATUS.PENDING});
+  var infield=tasks.filter(function(t){return t.status===STATUS.INFIELD});
+  var complete=tasks.filter(function(t){return t.status===STATUS.COMPLETE});
+  var now=new Date();
+  var dateStr=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
+
+  var html='<div class="js-project"><div class="js-project-name">Old Town Mobility Study</div><div class="js-project-meta">City of Pasadena · Pasadena, CA</div><div class="js-project-date">Generated '+dateStr+'</div></div>';
+  if(projectNotes) html+='<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+projectNotes+'</div></div>';
+
+  function renderGroup(title, list) {
+    if(list.length===0) return '';
+    var s='<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">';
+    list.forEach(function(t) {
+      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+getInitials(t.tech)+'</span></div>';
+      var times=[];
+      if(t.currentCycle&&t.currentCycle.deployedAt) times.push('Set: '+fmtTime(t.currentCycle.deployedAt));
+      if(t.currentCycle&&t.currentCycle.completedAt) times.push('Picked: '+fmtTime(t.currentCycle.completedAt));
+      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) times.push('Duration: '+fmtDur(t.currentCycle.completedAt-t.currentCycle.deployedAt));
+      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt) times.push('In field: '+fmtDur(Date.now()-t.currentCycle.deployedAt.getTime()));
+      if(times.length>0) s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
+      if(t.note) s+='<div class="js-site-note">'+t.note+'</div>';
+      s+='</div>';
+    });
+    return s+'</div></div>';
+  }
+
+  html += renderGroup('Pending', pending);
+  html += renderGroup('In Field', infield);
+  html += renderGroup('Complete', complete);
+
+  document.getElementById('jobsheetBody').innerHTML = html;
+  document.getElementById('jobsheetOverlay').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeJobSheet() { document.getElementById('jobsheetOverlay').classList.remove('visible'); document.body.style.overflow=''; }
+function printJobSheet() { window.print(); }
+
+
+// ═══════════════════════════════════════
+// GLOBAL LISTENERS
+// ═══════════════════════════════════════
+document.querySelectorAll('.modal-overlay').forEach(function(el) {
+  el.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('visible'); });
+});
+
+document.addEventListener('keydown', function(e) {
+  if(e.key==='Escape') { closeAddTaskModal(); closeDeleteModal(); closeReopenModal(); closeBulkDeleteModal(); closeJobSheet(); }
+});
+
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+render();
+
+// Mobile nav
+function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
+document.addEventListener('click',function(e){if(!e.target.closest('.m-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
+</script>
+
+</body>
+</html>
