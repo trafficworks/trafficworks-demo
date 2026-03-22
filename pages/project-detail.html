@@ -257,7 +257,8 @@ function renderTable() {
     var g = groups[status];
     if (g.length === 0) return;
 
-    html += '<div class="section-label">' + status + ' <span class="count">' + g.length + '</span></div>';
+    var sDot = status==='Pending'?'s-pending':status==='In Field'?'s-infield':'s-complete';
+    html += '<div class="section-label"><span class="s-dot ' + sDot + '"></span>' + status + ' <span class="count">' + g.length + '</span></div>';
     html += '<table><thead><tr>';
     html += '<th style="width:5%">#</th>';
     html += '<th style="width:30%">Task</th>';
