@@ -20,9 +20,16 @@
       <a href="team.html">Team</a>
       <a href="archive.html" class="active">Archive</a>
     </div>
-    <button class="m-kebab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <button class="m-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
   <div class="nav-line"></div>
+</div>
+
+<!-- Mobile nav menu -->
+<div class="mobile-nav-menu" id="mobileNavMenu">
+  <a href="projects.html">Projects</a>
+  <a href="team.html">Team</a>
+  <a class="active" href="archive.html">Archive</a>
 </div>
 
 <div class="container main">
@@ -31,11 +38,6 @@
       <span class="page-title">Archive</span>
       <span class="page-count" id="archiveCount"></span>
     </div>
-    <button class="btn-action btn-upload" onclick="document.getElementById('bulkArchiveUpload').click()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      Upload Files
-      <input type="file" id="bulkArchiveUpload" multiple accept=".pdf,.xlsx,.xls,.csv" style="display:none">
-    </button>
   </div>
 
   <div class="search-row">
@@ -355,6 +357,10 @@ document.querySelectorAll('.modal-overlay').forEach(function(el){el.addEventList
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeEditModal();closeDeleteModal();closeRestoreModal();}});
 
 renderArchive();
+
+// Mobile nav
+function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
+document.addEventListener('click',function(e){if(!e.target.closest('.m-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
 </script>
 
 </body>
