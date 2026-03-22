@@ -1757,3 +1757,9 @@ tr.editing .edit-input { display: block; }
   color: var(--infield);
   border: none;
 }
+
+/* Team mobile — tighten title to content */
+@media (max-width: 768px) {
+  .team-section { display: none !important; }
+  .page-header + .team-section { display: none !important; }
+}
