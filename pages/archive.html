@@ -31,6 +31,11 @@
       <span class="page-title">Archive</span>
       <span class="page-count" id="archiveCount"></span>
     </div>
+    <button class="btn-action btn-upload" onclick="document.getElementById('bulkArchiveUpload').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Upload Files
+      <input type="file" id="bulkArchiveUpload" multiple accept=".pdf,.xlsx,.xls,.csv" style="display:none">
+    </button>
   </div>
 
   <div class="search-row">
@@ -115,8 +120,8 @@ function renderArchive(){
   }
 
   var html='<table><thead><tr>'+
-    '<th style="width:3%"></th>'+
-    '<th style="width:27%">Project</th>'+
+    
+    '<th style="width:30%">Project</th>'+
     '<th style="width:14%">Location</th>'+
     '<th style="width:8%" class="c">Tasks</th>'+
     '<th style="width:13%">Completed</th>'+
@@ -128,8 +133,8 @@ function renderArchive(){
   filtered.forEach(function(p){
     var isExpanded=expandedId===p.id;
 
-    html+='<tr class="'+(isExpanded?'row-expanded':'')+'" onclick="toggleExpand('+p.id+')">';
-    html+='<td><span class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span></td>';
+    html+='<tr class="'+(isExpanded?'row-expanded':'')+'" onclick="toggleExpand('+p.id+')" style="cursor:pointer">';
+    
     html+='<td><div class="cell-name">'+p.name+'</div><div class="cell-sub">'+p.client+'</div></td>';
     html+='<td><span class="cell-secondary">'+p.location+'</span></td>';
     html+='<td class="c"><span class="cell-num">'+p.tasks.length+'</span></td>';
@@ -145,7 +150,7 @@ function renderArchive(){
 
     // Expanded panel
     if(isExpanded){
-      html+='<tr class="expand-row" onclick="event.stopPropagation()"><td colspan="8"><div class="expand-panel">';
+      html+='<tr class="expand-row" onclick="event.stopPropagation()"><td colspan="7"><div class="expand-panel">';
 
       // Action strip
       html+='<div class="action-strip">';
