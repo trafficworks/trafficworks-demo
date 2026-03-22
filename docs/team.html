@@ -203,7 +203,7 @@ function renderMobileTeam() {
       h += '<div class="m-team-name">' + m.first + ' ' + m.last + '</div>';
       h += '<div class="m-team-detail">' + m.phone + '</div>';
       h += '</div><div class="m-team-right">';
-      h += '<span class="m-team-pill">' + m.role + '</span>';
+      h += '<span class="m-team-pill m-team-pill-'+m.role+'">' + m.role.charAt(0).toUpperCase()+m.role.slice(1) + '</span>';
       h += '<div class="m-team-dot' + (m.status !== 'active' ? ' off' : '') + '"></div>';
       h += '</div></div>';
     });
