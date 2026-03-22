@@ -367,11 +367,11 @@ tbody tr:last-child td { border-bottom: none; }
   text-transform: uppercase;
 }
 
-.badge-progress { background: rgba(106,155,184,0.15); color: var(--infield); }
-.badge-pending  { background: rgba(212,168,67,0.15);  color: var(--pending); }
-.badge-infield  { background: rgba(106,155,184,0.12); color: var(--infield); }
-.badge-complete { background: rgba(58,166,106,0.12);  color: var(--complete); }
-.badge-hold     { background: rgba(196,92,92,0.12);   color: var(--hold); }
+.badge-progress { background: rgba(106,155,184,0.20); color: var(--infield); }
+.badge-pending  { background: rgba(212,168,67,0.20);  color: var(--pending); }
+.badge-infield  { background: rgba(106,155,184,0.20); color: var(--infield); }
+.badge-complete { background: rgba(58,166,106,0.16);  color: var(--complete); }
+.badge-hold     { background: rgba(196,92,92,0.16);   color: var(--hold); }
 
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1464,3 +1464,43 @@ tr.editing .edit-input { display: block; }
 
 /* Section spacing */
 .team-section { margin-bottom: 36px; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   NUMBER EMPHASIS — open vs done
+   ═══════════════════════════════════════════════════════════════ */
+.cell-num-open {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-num-open.zero {
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+.cell-num-done {
+  font-size: var(--text-base);
+  font-weight: 400;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION LABEL — colored dots
+   ═══════════════════════════════════════════════════════════════ */
+.section-label .s-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.s-dot.s-active   { background: var(--infield); }
+.s-dot.s-pending  { background: var(--pending); }
+.s-dot.s-hold     { background: var(--hold); }
+.s-dot.s-complete { background: var(--complete); }
+.s-dot.s-infield  { background: var(--infield); }
