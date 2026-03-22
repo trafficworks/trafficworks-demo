@@ -20,6 +20,7 @@
       <a href="team.html" class="active">Team</a>
       <a href="archive.html">Archive</a>
     </div>
+    <button class="m-kebab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
   <div class="nav-line"></div>
 </div>
@@ -66,6 +67,13 @@
       </tr></thead>
       <tbody id="techTableBody"></tbody>
     </table>
+  </div>
+
+  <!-- Mobile view -->
+  <div class="mobile-only">
+    <div class="m-page-sub" id="mobileTeamSub"></div>
+    <div id="mobileManagerList"></div>
+    <div id="mobileTechList"></div>
   </div>
 
 </div>
@@ -174,7 +182,42 @@ var techs=[
 
 var nextId=9,addType='tech',editingId=null,deleteTarget=null,deleteType=null,openKebab=null;
 
-function render(){ renderManagers(); renderTechs(); }
+function render(){ renderManagers(); renderTechs(); renderMobileTeam(); }
+
+function renderMobileTeam() {
+  var mSub = document.getElementById('mobileTeamSub');
+  if(mSub) mSub.textContent = managers.length + ' managers · ' + techs.length + ' technicians';
+
+  var mMgr = document.getElementById('mobileManagerList');
+  if(mMgr) {
+    var h = '<div class="m-section" style="padding-top:8px">Managers <span class="count">' + managers.length + '</span></div>';
+    managers.forEach(function(m) {
+      h += '<div class="m-team-row"><div class="m-team-left">';
+      h += '<div class="m-team-name">' + m.first + ' ' + m.last + '</div>';
+      h += '<div class="m-team-detail">' + m.phone + '</div>';
+      h += '</div><div class="m-team-right">';
+      h += '<span class="m-team-pill">' + m.role + '</span>';
+      h += '<div class="m-team-dot' + (m.status !== 'active' ? ' off' : '') + '"></div>';
+      h += '</div></div>';
+    });
+    mMgr.innerHTML = h;
+  }
+
+  var mTech = document.getElementById('mobileTechList');
+  if(mTech) {
+    var h = '<div class="m-section">Technicians <span class="count">' + techs.length + '</span></div>';
+    techs.forEach(function(t) {
+      h += '<div class="m-team-row"><div class="m-team-left">';
+      h += '<div class="m-team-name">' + t.first + ' ' + t.last + '</div>';
+      h += '<div class="m-team-detail">' + t.phone + '</div>';
+      h += '</div><div class="m-team-right">';
+      h += '<span class="m-team-pin">' + t.pin + '</span>';
+      h += '<div class="m-team-dot' + (t.status !== 'active' ? ' off' : '') + '"></div>';
+      h += '</div></div>';
+    });
+    mTech.innerHTML = h;
+  }
+}
 
 function renderManagers(){
   document.getElementById('managerCount').textContent=managers.length;
