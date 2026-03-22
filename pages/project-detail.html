@@ -21,9 +21,16 @@
       <a href="team.html">Team</a>
       <a href="archive.html">Archive</a>
     </div>
-    <button class="m-kebab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <button class="m-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
   <div class="nav-line"></div>
+</div>
+
+<!-- Mobile nav menu -->
+<div class="mobile-nav-menu" id="mobileNavMenu">
+  <a href="projects.html">Projects</a>
+  <a href="team.html">Team</a>
+  <a href="archive.html">Archive</a>
 </div>
 
 <!-- MAIN -->
@@ -70,6 +77,9 @@
   <div class="mobile-only">
     <div class="m-stats" id="mobileStats"></div>
     <div class="m-progress-row" id="mobileProgress"></div>
+    <div style="padding-top:10px">
+      <button class="btn-action" onclick="openAddTaskModal()" style="width:100%;justify-content:center;padding:10px"><span class="plus">+</span> Add Task</button>
+    </div>
     <div id="mobileTaskList"></div>
   </div>
 
@@ -566,6 +576,10 @@ document.addEventListener('keydown', function(e) {
 // INIT
 // ═══════════════════════════════════════
 render();
+
+// Mobile nav
+function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
+document.addEventListener('click',function(e){if(!e.target.closest('.m-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
 </script>
 
 </body>
