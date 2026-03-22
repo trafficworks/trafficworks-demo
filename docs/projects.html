@@ -1,1 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Count Company — Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
 
+<!-- NAV -->
+<div class="container">
+  <div class="nav">
+    <a class="nav-brand" href="projects.html">
+      <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <span class="nav-name">The Count Company</span>
+    </a>
+    <div class="nav-links">
+      <a href="projects.html" class="active">Projects</a>
+      <a href="team.html">Team</a>
+      <a href="archive.html">Archive</a>
+    </div>
+    <button class="m-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+  <div class="nav-line"></div>
+</div>
+
+<!-- Mobile nav menu -->
+<div class="mobile-nav-menu" id="mobileNavMenu">
+  <a class="active" href="projects.html">Projects</a>
+  <a href="team.html">Team</a>
+  <a href="archive.html">Archive</a>
+</div>
+
+<!-- MAIN -->
+<div class="container main">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <span class="page-title">Projects</span>
+      <span class="page-count" id="projectCount"></span>
+    </div>
+    <button class="btn-action" onclick="openCreateModal()"><span class="plus">+</span> New Project</button>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-row">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" type="text" placeholder="Search projects…" id="searchInput" oninput="filterProjects()">
+    </div>
+  </div>
+
+  <!-- TABLE CONTAINER — sections injected by JS -->
+  <div id="projectSections"></div>
+
+  <!-- Mobile view -->
+  <div class="mobile-only">
+    <div class="m-page-sub" id="mobilePageSub"></div>
+    <div id="mobileProjectList"></div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState">No projects yet. Create one to get started.</div>
+
+  <!-- FOOTER -->
+  <div class="table-footer" id="tableFooter"></div>
+
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="createModal">
+  <div class="modal">
+    <div class="modal-title">New Project</div>
+    <div class="form-group">
+      <label class="form-label">Project Name</label>
+      <input class="form-input" type="text" id="newProjectName">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Project Number <span class="optional">(optional)</span></label>
+      <input class="form-input" type="text" id="newProjectNum">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Client <span class="optional">(optional)</span></label>
+      <input class="form-input" type="text" id="newProjectClient">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Location</label>
+      <input class="form-input" type="text" id="newProjectLocation">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tech Notes <span class="optional">(optional)</span></label>
+      <textarea class="form-input" id="newProjectNotes" rows="3" placeholder="Gate codes, equipment notes, client requirements…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeCreateModal()">Cancel</button>
+      <button class="btn-solid" onclick="createProject()">Create Project</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-title">Edit Project</div>
+    <div class="form-group">
+      <label class="form-label">Project Name</label>
+      <input class="form-input" type="text" id="editProjectName">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Project Number <span class="optional">(optional)</span></label>
+      <input class="form-input" type="text" id="editProjectNum">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Client</label>
+      <input class="form-input" type="text" id="editProjectClient">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Location</label>
+      <input class="form-input" type="text" id="editProjectLocation">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeEditModal()">Cancel</button>
+      <button class="btn-solid" onclick="saveEditProject()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <div class="modal-title">Delete Project</div>
+    <div class="modal-body" id="deleteModalBody"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn-danger" onclick="confirmDelete()">Delete Project</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="archiveModal">
+  <div class="modal">
+    <div class="modal-title">Archive Project</div>
+    <div class="modal-body" id="archiveModalBody"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeArchiveModal()">Cancel</button>
+      <button class="btn-archive" onclick="confirmArchive()">Archive Project</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="notesModal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-title">Tech Notes</div>
+    <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">Notes visible to field techs on this project</div>
+    <textarea class="form-input" id="notesInput" rows="5" placeholder="Gate codes, equipment notes, client requirements…"></textarea>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeNotesModal()">Cancel</button>
+      <button class="btn-solid" onclick="saveNotes()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- JOB SHEET OVERLAY -->
+<div class="jobsheet-overlay" id="jobsheetOverlay">
+  <div class="jobsheet-header">
+    <button class="jobsheet-close" onclick="closeJobSheet()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="jobsheet-title">Job Sheet</span>
+    <button class="jobsheet-download" onclick="printJobSheet()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
+  </div>
+  <div class="jobsheet-body" id="jobsheetBody"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════
+var projects = [
+  {id:1,name:'Old Town Mobility Study',projectNum:'DEMO-2026-101',location:'Pasadena, CA',client:'City of Pasadena',status:'In Progress',pct:52,openTasks:11,totalTasks:23,updated:'22 min ago',created:'Mar 2'},
+  {id:2,name:'Harbor Blvd Tube Count Program',projectNum:'DEMO-2026-102',location:'Anaheim, CA',client:'Orange County Public Works',status:'In Progress',pct:74,openTasks:6,totalTasks:23,updated:'1 hour ago',created:'Mar 1'},
+  {id:3,name:'Downtown Safety Corridor Review',projectNum:'DEMO-2026-103',location:'Long Beach, CA',client:'City of Long Beach',status:'In Progress',pct:89,openTasks:2,totalTasks:19,updated:'45 min ago',created:'Feb 26'},
+  {id:4,name:'School Zone Speed Survey Set',projectNum:'DEMO-2026-104',location:'Glendale, CA',client:'Glendale Public Works',status:'Pending',pct:0,openTasks:14,totalTasks:14,updated:'3 hours ago',created:'Mar 4'},
+  {id:5,name:'Foothill Signal Timing Counts',projectNum:'DEMO-2026-105',location:'Arcadia, CA',client:'City of Arcadia',status:'On Hold',pct:18,openTasks:17,totalTasks:21,updated:'1 day ago',created:'Feb 25'},
+  {id:6,name:'Regional Bikeway Before/After Study',projectNum:'DEMO-2026-106',location:'Santa Monica, CA',client:'Metro Consultant Team',status:'Complete',pct:100,openTasks:0,totalTasks:16,updated:'2 days ago',created:'Feb 18'}
+];
+
+var nextId = 7;
+var editTarget = null;
+var deleteTarget = null;
+var archiveTarget = null;
+var notesTarget = null;
+var openKebab = null;
+var openSD = null;
+
+var projectTasks = {
+  1:{notes:'Gate code: #4521. Equipment staging in east parking lot.',tasks:[
+    {site:1,desc:'Colorado & Fair Oaks',type:'TMC',tech:'Ava R.',status:'Complete',note:'48-hour count confirmed',deployed:'3/2 6:42a',picked:'3/3 7:15a',dur:'24h 33m'},
+    {site:2,desc:'Colorado & Arroyo',type:'TMC',tech:'Ava R.',status:'Complete',note:'',deployed:'3/2 6:55a',picked:'3/3 7:22a',dur:'24h 27m'},
+    {site:3,desc:'Union & Raymond',type:'TMC',tech:'Noah K.',status:'In Field',note:'Pole mount confirmed',deployed:'3/4 6:30a',picked:'',dur:''},
+    {site:4,desc:'Fair Oaks & Green',type:'TMC',tech:'Noah K.',status:'In Field',note:'',deployed:'3/4 6:38a',picked:'',dur:''},
+    {site:5,desc:'Walnut & Marengo',type:'ADT',tech:'Maya T.',status:'Pending',note:'',deployed:'',picked:'',dur:''}
+  ]},
+  2:{notes:'Tube counters only — no radar.',tasks:[
+    {site:1,desc:'Harbor Blvd NB',type:'ADT',tech:'Leo S.',status:'In Field',note:'',deployed:'3/5 7:10a',picked:'',dur:''},
+    {site:2,desc:'Harbor Blvd SB',type:'ADT',tech:'Leo S.',status:'In Field',note:'',deployed:'3/5 7:18a',picked:'',dur:''}
+  ]},
+  3:{notes:'',tasks:[{site:1,desc:'Ocean & Pine',type:'TMC',tech:'Sofia P.',status:'Complete',note:'',deployed:'2/26 6:00a',picked:'2/27 6:45a',dur:'24h 45m'}]},
+  4:{notes:'Radar speed surveys near school zones.',tasks:[{site:1,desc:'Glenoaks & Pacific',type:'SPD',tech:'',status:'Pending',note:'',deployed:'',picked:'',dur:''}]},
+  5:{notes:'',tasks:[{site:1,desc:'Foothill & Santa Anita',type:'TMC',tech:'Maya T.',status:'In Field',note:'',deployed:'3/3 5:45a',picked:'',dur:''}]},
+  6:{notes:'Bikeway study complete.',tasks:[{site:1,desc:'Ocean Park Blvd',type:'CLS',tech:'Ava R.',status:'Complete',note:'',deployed:'2/18 6:20a',picked:'2/19 7:00a',dur:'24h 40m'}]}
+};
+
+
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+function badgeClass(s) {
+  return s === 'In Progress' ? 'badge-progress' : s === 'Pending' ? 'badge-pending' : s === 'On Hold' ? 'badge-hold' : 'badge-complete';
+}
+
+function getInitials(name) { if(!name) return '—'; return name.split(' ').map(function(p){return p[0]}).join('').toUpperCase(); }
+
+
+// ═══════════════════════════════════════
+// RENDER — grouped by status
+// ═══════════════════════════════════════
+function renderProjects(list) {
+  var sections = document.getElementById('projectSections');
+  var footer = document.getElementById('tableFooter');
+  var empty = document.getElementById('emptyState');
+
+  if (projects.length === 0) {
+    sections.innerHTML = '';
+    footer.style.display = 'none';
+    empty.classList.add('show');
+    return;
+  }
+
+  empty.classList.remove('show');
+
+  if (list.length === 0) {
+    sections.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-3)">No projects match your search</div>';
+    footer.style.display = 'none';
+    return;
+  }
+
+  // Group
+  var groups = {
+    'In Progress': list.filter(function(p){return p.status==='In Progress'}),
+    'Pending': list.filter(function(p){return p.status==='Pending'}),
+    'On Hold': list.filter(function(p){return p.status==='On Hold'}),
+    'Complete': list.filter(function(p){return p.status==='Complete'})
+  };
+
+  var html = '';
+  var statusLabels = {'In Progress':'Active','Pending':'Pending','On Hold':'On Hold','Complete':'Complete'};
+    var statusDots = {'In Progress':'s-active','Pending':'s-pending','On Hold':'s-hold','Complete':'s-complete'};
+
+  ['In Progress','Pending','On Hold','Complete'].forEach(function(status) {
+    var g = groups[status];
+    if (g.length === 0) return;
+
+    html += '<div class="section-label"><span class="s-dot ' + statusDots[status] + '"></span>' + statusLabels[status] + ' <span class="count">' + g.length + '</span></div>';
+    html += '<table><thead><tr>';
+    html += '<th style="width:35%">Project</th>';
+    html += '<th style="width:12%">Status</th>';
+    html += '<th style="width:22%">Progress</th>';
+    html += '<th style="width:8%" class="c">Open</th>';
+    html += '<th style="width:8%" class="c">Done</th>';
+    html += '<th style="width:4%"></th>';
+    html += '</tr></thead><tbody>';
+
+    g.forEach(function(p) {
+      var complete = p.totalTasks - p.openTasks;
+      var statusDropdown = '';
+      var statusClick = '';
+      var progressCell = '';
+
+      // Status dropdown for non-complete
+      if (p.status !== 'Complete') {
+        statusClick = ' onclick="event.stopPropagation();toggleStatusDrop(' + p.id + ')" style="cursor:pointer"';
+        statusDropdown = '<div class="status-dropdown" id="sd-' + p.id + '">' + getStatusOptions(p) + '</div>';
+      }
+
+      // Progress or archive/reopen
+      if (p.status === 'Complete') {
+        progressCell = '<span style="display:inline-flex;gap:6px"><button class="btn-small" onclick="event.stopPropagation();promptArchive(' + p.id + ')">Archive</button><button class="btn-small" onclick="event.stopPropagation();reopenProject(' + p.id + ')">Reopen</button></span>';
+      } else {
+        progressCell = '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + p.pct + '%"></div></div><span class="progress-pct">' + p.pct + '%</span></div>';
+      }
+
+      html += '<tr onclick="window.location.href=\'project-detail.html\'" style="cursor:pointer">';
+      html += '<td><div class="cell-name">' + p.name + '</div><div class="cell-sub">' + (p.location || '') + '</div></td>';
+      html += '<td style="position:relative"><span class="badge ' + badgeClass(p.status) + '"' + statusClick + '>' + p.status + '</span>' + statusDropdown + '</td>';
+      html += '<td>' + progressCell + '</td>';
+      html += '<td class="c"><span class="cell-num-open ' + (p.openTasks===0?'zero':'') + '">' + p.openTasks + '</span></td>';
+      html += '<td class="c"><span class="cell-num-done">' + complete + '</span></td>';
+      html += '<td class="r kebab-cell"><button class="kebab" onclick="event.stopPropagation();toggleKebab(' + p.id + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
+      html += '<div class="kebab-menu" id="kebab-' + p.id + '">';
+      html += '<button class="kebab-menu-item" onclick="event.stopPropagation();openEditModal(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
+      html += '<button class="kebab-menu-item" onclick="event.stopPropagation();openNotesModal(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Tech Notes</button>';
+      html += '<button class="kebab-menu-item" onclick="event.stopPropagation();openJobSheet(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</button>';
+      if (p.status === 'Complete') {
+        html += '<button class="kebab-menu-item" onclick="event.stopPropagation();promptArchive(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Archive</button>';
+      }
+      html += '<button class="kebab-menu-item danger" onclick="event.stopPropagation();promptDelete(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
+      html += '</div></td>';
+      html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+  });
+
+  sections.innerHTML = html;
+
+  // Mobile render
+  var mList = document.getElementById('mobileProjectList');
+  var mSub = document.getElementById('mobilePageSub');
+  var active = projects.filter(function(p){return p.status !== 'Complete'});
+  var openTasks = active.reduce(function(s,p){return s+p.openTasks},0);
+  
+  if(mSub) mSub.textContent = active.length + ' active · ' + openTasks + ' open tasks';
+
+  if(mList) {
+    var mHtml = '';
+    list.forEach(function(p) {
+      var done = p.totalTasks - p.openTasks;
+      var isComplete = p.status === 'Complete';
+      mHtml += '<div class="m-project-row' + (isComplete?' complete':'') + '" onclick="window.location.href=\'project-detail.html\'">';
+      mHtml += '<div class="m-project-left">';
+      mHtml += '<div class="m-project-name">' + p.name + '</div>';
+      mHtml += '<div class="m-project-detail">' + p.location + (isComplete ? '' : ' · ' + p.openTasks + ' open') + '</div>';
+      mHtml += '</div>';
+      mHtml += '<div class="m-project-right">';
+      if (isComplete) {
+        mHtml += '<div class="m-project-tasks" style="color:var(--accent)">Complete</div>';
+      } else {
+        mHtml += '<div class="m-progress-mini"><div class="m-progress-mini-fill" style="width:' + p.pct + '%"></div></div>';
+        mHtml += '<div class="m-project-tasks">' + done + '/' + p.totalTasks + '</div>';
+      }
+      mHtml += '</div></div>';
+    });
+    mList.innerHTML = mHtml;
+  }
+
+  // Footer
+  document.getElementById('projectCount').textContent = active.length + ' active';
+  footer.style.display = '';
+  footer.textContent = projects.length + ' projects · ' + openTasks + ' open tasks';
+}
+
+
+// ═══════════════════════════════════════
+// FILTER
+// ═══════════════════════════════════════
+function filterProjects() {
+  var search = (document.getElementById('searchInput').value || '').toLowerCase();
+  var filtered = projects.filter(function(p) {
+    return !search ||
+      p.name.toLowerCase().indexOf(search) > -1 ||
+      (p.location || '').toLowerCase().indexOf(search) > -1 ||
+      (p.client || '').toLowerCase().indexOf(search) > -1;
+  });
+  renderProjects(filtered);
+}
+
+
+// ═══════════════════════════════════════
+// STATUS LOGIC
+// ═══════════════════════════════════════
+var dotClasses = {'Pending':'sd-pending','In Progress':'sd-in-progress','On Hold':'sd-on-hold','Complete':'sd-complete'};
+
+function getStatusOptions(p) {
+  var allowed;
+  if (p.status === 'On Hold') {
+    allowed = p.pct === 0 ? ['Pending'] : ['In Progress'];
+  } else {
+    var map = {'Pending':['On Hold'],'In Progress':['On Hold','Complete'],'Complete':[]};
+    allowed = map[p.status] || [];
+  }
+  return allowed.map(function(s) {
+    return '<button class="status-dropdown-item" onclick="event.stopPropagation();setProjectStatus('+p.id+',\''+s+'\')"><span class="sd-dot '+dotClasses[s]+'"></span>'+s+'</button>';
+  }).join('');
+}
+
+function setProjectStatus(id, status) {
+  var p = projects.find(function(x){return x.id===id});
+  if (!p) return;
+  p.status = status;
+  if (status === 'Complete') { p.pct = 100; p.openTasks = 0; }
+  closeStatusDrops();
+  filterProjects();
+  showToast('Status changed to ' + status);
+}
+
+function reopenProject(id) {
+  var p = projects.find(function(x){return x.id===id});
+  if (!p) return;
+  p.status = 'In Progress';
+  p.pct = Math.round((p.totalTasks - p.openTasks) / p.totalTasks * 100) || 0;
+  filterProjects();
+  showToast('Project reopened');
+}
+
+function toggleStatusDrop(id) {
+  closeKebabs();
+  if (openSD && openSD !== id) { var old = document.getElementById('sd-'+openSD); if(old) old.classList.remove('open'); }
+  var dd = document.getElementById('sd-'+id);
+  var isOpen = dd.classList.contains('open');
+  dd.classList.remove('open');
+  if (!isOpen) { dd.classList.add('open'); openSD = id; } else { openSD = null; }
+}
+
+function closeStatusDrops() {
+  if (openSD) { var el = document.getElementById('sd-'+openSD); if(el) el.classList.remove('open'); openSD = null; }
+}
+
+
+// ═══════════════════════════════════════
+// KEBAB
+// ═══════════════════════════════════════
+function toggleKebab(id, e) {
+  e.stopPropagation();
+  if (openKebab && openKebab !== id) { var old = document.getElementById('kebab-'+openKebab); if(old) old.classList.remove('open','drop-up','drop-down'); }
+  var menu = document.getElementById('kebab-'+id);
+  var isOpen = menu.classList.contains('open');
+  menu.classList.remove('open','drop-up','drop-down');
+  if (!isOpen) {
+    var rect = e.currentTarget.getBoundingClientRect();
+    var spaceBelow = window.innerHeight - rect.bottom;
+    menu.classList.add('open', spaceBelow < 160 ? 'drop-up' : 'drop-down');
+    openKebab = id;
+  } else { openKebab = null; }
+}
+
+function closeKebabs() {
+  if (openKebab) { var el = document.getElementById('kebab-'+openKebab); if(el) el.classList.remove('open','drop-up','drop-down'); openKebab = null; }
+}
+
+
+// ═══════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════
+function openCreateModal() { document.getElementById('createModal').classList.add('visible'); document.getElementById('newProjectName').focus(); }
+function closeCreateModal() { document.getElementById('createModal').classList.remove('visible'); }
+
+function createProject() {
+  var n = document.getElementById('newProjectName').value.trim();
+  var l = document.getElementById('newProjectLocation').value.trim();
+  var c = document.getElementById('newProjectClient').value.trim();
+  var pn = document.getElementById('newProjectNum').value.trim();
+  if (!n) { document.getElementById('newProjectName').focus(); return; }
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var now = new Date();
+  projects.unshift({ id:nextId++, name:n, projectNum:pn, location:l, client:c, status:'Pending', pct:0, openTasks:0, totalTasks:0, updated:'Just now', created:months[now.getMonth()]+' '+now.getDate() });
+  closeCreateModal();
+  ['newProjectName','newProjectLocation','newProjectClient','newProjectNum','newProjectNotes'].forEach(function(id){document.getElementById(id).value='';});
+  filterProjects();
+  showToast('Project created');
+}
+
+function openEditModal(id) {
+  closeKebabs(); editTarget = id;
+  var p = projects.find(function(x){return x.id===id}); if(!p) return;
+  document.getElementById('editProjectName').value = p.name;
+  document.getElementById('editProjectNum').value = p.projectNum || '';
+  document.getElementById('editProjectLocation').value = p.location;
+  document.getElementById('editProjectClient').value = p.client;
+  document.getElementById('editModal').classList.add('visible');
+  document.getElementById('editProjectName').focus();
+}
+
+function closeEditModal() { document.getElementById('editModal').classList.remove('visible'); editTarget = null; }
+
+function saveEditProject() {
+  if (!editTarget) return;
+  var p = projects.find(function(x){return x.id===editTarget}); if(!p) return;
+  var n = document.getElementById('editProjectName').value.trim();
+  if (!n) { document.getElementById('editProjectName').focus(); return; }
+  p.name = n;
+  p.projectNum = document.getElementById('editProjectNum').value.trim();
+  p.location = document.getElementById('editProjectLocation').value.trim();
+  p.client = document.getElementById('editProjectClient').value.trim();
+  p.updated = 'Just now';
+  closeEditModal(); filterProjects(); showToast('Project updated');
+}
+
+function promptDelete(id) {
+  closeKebabs(); deleteTarget = id;
+  var p = projects.find(function(x){return x.id===id});
+  document.getElementById('deleteModalBody').textContent = 'Delete "' + (p?p.name:'this project') + '"? This permanently removes the project and all its tasks.';
+  document.getElementById('deleteModal').classList.add('visible');
+}
+
+function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('visible'); deleteTarget = null; }
+
+function confirmDelete() {
+  if (!deleteTarget) return;
+  var p = projects.find(function(x){return x.id===deleteTarget});
+  projects = projects.filter(function(x){return x.id !== deleteTarget});
+  closeDeleteModal(); filterProjects(); showToast('"' + (p?p.name:'Project') + '" deleted');
+}
+
+function promptArchive(id) {
+  closeKebabs(); archiveTarget = id;
+  var p = projects.find(function(x){return x.id===id});
+  document.getElementById('archiveModalBody').textContent = 'Archive "' + (p?p.name:'this project') + '"? You can access it later from the Archive page.';
+  document.getElementById('archiveModal').classList.add('visible');
+}
+
+function closeArchiveModal() { document.getElementById('archiveModal').classList.remove('visible'); archiveTarget = null; }
+
+function confirmArchive() {
+  if (!archiveTarget) return;
+  var p = projects.find(function(x){return x.id===archiveTarget});
+  projects = projects.filter(function(x){return x.id !== archiveTarget});
+  closeArchiveModal(); filterProjects(); showToast('"' + (p?p.name:'Project') + '" archived');
+}
+
+function openNotesModal(id) { closeKebabs(); notesTarget = id; document.getElementById('notesModal').classList.add('visible'); document.getElementById('notesInput').focus(); }
+function closeNotesModal() { document.getElementById('notesModal').classList.remove('visible'); notesTarget = null; }
+function saveNotes() { closeNotesModal(); showToast('Notes saved'); }
+
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function showToast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('visible');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(function(){ el.classList.remove('visible'); }, 2500);
+}
+
+
+// ═══════════════════════════════════════
+// JOB SHEET
+// ═══════════════════════════════════════
+function openJobSheet(id) {
+  closeKebabs();
+  var p = projects.find(function(x){return x.id===id}); if(!p) return;
+  var pd = projectTasks[id] || {notes:'',tasks:[]};
+  var now = new Date();
+  var dateStr = (now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
+
+  var html = '<div class="js-project"><div class="js-project-name">'+p.name+'</div><div class="js-project-meta">'+p.client+' · '+p.location+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>';
+
+  if (pd.notes) {
+    html += '<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+pd.notes+'</div></div>';
+  }
+
+  var pending = pd.tasks.filter(function(t){return t.status==='Pending'});
+  var infield = pd.tasks.filter(function(t){return t.status==='In Field'||t.status==='In Progress'});
+  var complete = pd.tasks.filter(function(t){return t.status==='Complete'});
+
+  function renderGroup(title, list) {
+    if (list.length === 0) return '';
+    var s = '<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">';
+    list.forEach(function(t) {
+      s += '<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+getInitials(t.tech)+'</span></div>';
+      var times = [];
+      if (t.deployed) times.push('Set: '+t.deployed);
+      if (t.picked) times.push('Picked: '+t.picked);
+      if (t.dur) times.push('Duration: '+t.dur);
+      if (times.length > 0) s += '<div class="js-site-times">'+times.join(' · ')+'</div>';
+      if (t.note) s += '<div class="js-site-note">'+t.note+'</div>';
+      s += '</div>';
+    });
+    return s + '</div></div>';
+  }
+
+  html += renderGroup('Pending', pending);
+  html += renderGroup('In Field', infield);
+  html += renderGroup('Complete', complete);
+
+  document.getElementById('jobsheetBody').innerHTML = html;
+  document.getElementById('jobsheetOverlay').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeJobSheet() { document.getElementById('jobsheetOverlay').classList.remove('visible'); document.body.style.overflow = ''; }
+function printJobSheet() { window.print(); }
+
+
+// ═══════════════════════════════════════
+// GLOBAL LISTENERS
+// ═══════════════════════════════════════
+document.addEventListener('click', function() { closeKebabs(); closeStatusDrops(); });
+
+document.querySelectorAll('.modal-overlay').forEach(function(el) {
+  el.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closeCreateModal(); closeEditModal(); closeDeleteModal(); closeArchiveModal(); closeNotesModal(); closeJobSheet(); }
+});
+
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+filterProjects();
+
+window.addEventListener('pageshow', function(e) { if (e.persisted) filterProjects(); });
+
+// Mobile nav
+function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
+document.addEventListener('click',function(e){if(!e.target.closest('.m-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
+</script>
+
+</body>
+</html>
