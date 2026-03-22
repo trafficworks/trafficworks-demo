@@ -242,7 +242,7 @@ function renderManagers(){
       '<td><div class="cell-name">'+m.first+' '+m.last+'</div></td>'+
       '<td><span class="cell-secondary">'+m.email+'</span></td>'+
       '<td><span class="cell-secondary">'+m.phone+'</span></td>'+
-      '<td><span class="role-pill">'+m.role+'</span></td>'+
+      '<td><span class="role-pill role-pill-'+m.role+'">'+m.role.charAt(0).toUpperCase()+m.role.slice(1)+'</span></td>'+
       '<td><span class="status-dot'+(m.status!=='active'?' inactive':'')+'">'+m.status.charAt(0).toUpperCase()+m.status.slice(1)+'</span></td>'+
       '<td class="r kebab-cell">'+kebab+'</td>'+
     '</tr>';
