@@ -21,6 +21,7 @@
       <a href="team.html">Team</a>
       <a href="archive.html">Archive</a>
     </div>
+    <button class="m-kebab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
   <div class="nav-line"></div>
 </div>
@@ -64,6 +65,13 @@
 
   <!-- TASK SECTIONS — injected by JS -->
   <div id="taskSections"></div>
+
+  <!-- Mobile view -->
+  <div class="mobile-only">
+    <div class="m-stats" id="mobileStats"></div>
+    <div class="m-progress-row" id="mobileProgress"></div>
+    <div id="mobileTaskList"></div>
+  </div>
 
   <!-- FOOTER -->
   <div class="table-footer" id="tableFooter"></div>
@@ -233,6 +241,20 @@ function renderStats() {
     '<div class="stat-progress"><div class="stat-progress-bar"><div class="stat-progress-fill" style="width:'+pct+'%"></div></div><span class="stat-progress-pct">'+pct+'%</span></div>';
 
   document.getElementById('tableFooter').textContent = total + ' tasks · ' + (total-comp) + ' open · Generated 3/21/2026';
+
+  // Mobile stats
+  var ms = document.getElementById('mobileStats');
+  if(ms) {
+    ms.innerHTML = '<span class="m-stat-num">'+total+'</span><span class="m-stat-label">Tasks</span>' +
+      '<div class="m-stat-div"></div>' +
+      '<span class="m-stat-num">'+pend+'</span><span class="m-stat-label">Pending</span>' +
+      '<span class="m-stat-num">'+inf+'</span><span class="m-stat-label">In Field</span>';
+  }
+  var mp = document.getElementById('mobileProgress');
+  if(mp) {
+    mp.innerHTML = '<div class="m-progress-bar"><div class="m-progress-fill" style="width:'+pct+'%"></div></div>' +
+      '<span class="m-progress-pct">'+pct+'%</span>';
+  }
 }
 
 function renderTable() {
@@ -299,6 +321,45 @@ function renderTable() {
   });
 
   sections.innerHTML = html;
+
+  // Mobile task list
+  var mTasks = document.getElementById('mobileTaskList');
+  if(mTasks) {
+    var mHtml = '';
+    var mGroups = {
+      'Pending': filtered.filter(function(t){return t.status===STATUS.PENDING}),
+      'In Field': filtered.filter(function(t){return t.status===STATUS.INFIELD}),
+      'Complete': filtered.filter(function(t){return t.status===STATUS.COMPLETE})
+    };
+    var mDotMap = {'Pending':'s-pending','In Field':'s-infield','Complete':'s-complete'};
+    var mBadgeMap = {'Pending':'m-badge-pending','In Field':'m-badge-infield','Complete':'m-badge-complete'};
+    var mLabelMap = {'Pending':'Pending','In Field':'In Field','Complete':'Done'};
+
+    ['Pending','In Field','Complete'].forEach(function(status) {
+      var mg = mGroups[status];
+      if(mg.length === 0) return;
+      mHtml += '<div class="m-section"><span class="s-dot '+mDotMap[status]+'"></span>'+status+' <span class="count">'+mg.length+'</span></div>';
+      mg.forEach(function(t) {
+        var dur = getDuration(t);
+        var isDone = t.status === STATUS.COMPLETE;
+        var reopenNote = '';
+        if(t.cycles.length > 0) { var lc = t.cycles[t.cycles.length-1]; if(lc.reopenReason) reopenNote = '<div class="m-task-note" style="font-style:normal;color:var(--hold)">Reopened: '+lc.reopenReason+'</div>'; }
+        var noteHtml = t.note ? '<div class="m-task-note">'+t.note+'</div>' : '';
+
+        mHtml += '<div class="m-task-row'+(isDone?' done':'')+'">';
+        mHtml += '<div class="m-task-left">';
+        mHtml += '<div class="m-task-name">'+t.desc+'</div>';
+        mHtml += '<div class="m-task-meta">#'+t.site+' <span class="sep">·</span> <span class="m-task-type">'+t.type+'</span>';
+        if(dur) mHtml += ' <span class="sep">·</span> '+dur;
+        mHtml += '</div>';
+        mHtml += reopenNote + noteHtml;
+        mHtml += '</div>';
+        mHtml += '<span class="m-task-badge '+mBadgeMap[status]+'">'+mLabelMap[status]+'</span>';
+        mHtml += '</div>';
+      });
+    });
+    mTasks.innerHTML = mHtml;
+  }
 }
 
 
