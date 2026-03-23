@@ -480,18 +480,46 @@ function openCreateModal() { document.getElementById('createModal').classList.ad
 function closeCreateModal() { document.getElementById('createModal').classList.remove('visible'); }
 
 function createProject() {
-  var n = document.getElementById('newProjectName').value.trim();
-  var l = document.getElementById('newProjectLocation').value.trim();
-  var c = document.getElementById('newProjectClient').value.trim();
-  var pn = document.getElementById('newProjectNum').value.trim();
-  if (!n) { document.getElementById('newProjectName').focus(); return; }
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var now = new Date();
-  projects.unshift({ id:nextId++, name:n, projectNum:pn, location:l, client:c, status:'Pending', pct:0, openTasks:0, totalTasks:0, updated:'Just now', created:months[now.getMonth()]+' '+now.getDate() });
-  closeCreateModal();
-  ['newProjectName','newProjectLocation','newProjectClient','newProjectNum','newProjectNotes'].forEach(function(id){document.getElementById(id).value='';});
-  filterProjects();
-  showToast('Project created');
+  async function createProject() {
+  const name = document.getElementById('newProjectName').value.trim()
+  const location = document.getElementById('newProjectLocation').value.trim()
+  const client = document.getElementById('newProjectClient').value.trim()
+  const projectNum = document.getElementById('newProjectNum').value.trim()
+  const notes = document.getElementById('newProjectNotes').value.trim()
+
+  if (!name) {
+    document.getElementById('newProjectName').focus()
+    return
+  }
+
+  const { error } = await supabase
+    .from('projects')
+    .insert([{
+      company_id: '4f365a63-e2d8-45ea-960a-67d35b5f95e1',
+      name: name,
+      project_num: projectNum,
+      client: client,
+      location: location,
+      notes: notes,
+      status: 'active'
+    }])
+
+  if (error) {
+    console.error('Error creating project:', error)
+    alert('Error creating project')
+    return
+  }
+
+  closeCreateModal()
+
+  // Clear inputs
+  ['newProjectName','newProjectLocation','newProjectClient','newProjectNum','newProjectNotes']
+    .forEach(id => document.getElementById(id).value = '')
+
+  // Reload from DB
+  loadProjects()
+
+  showToast('Project created')
 }
 
 function openEditModal(id) {
