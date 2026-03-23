@@ -1401,6 +1401,10 @@ tr.editing .edit-input { display: block; }
   padding: 5px 12px;
 }
 
+.team-section:first-of-type .section-header {
+  padding-top: 0;
+}
+
 .member-locked {
   font-size: 11px;
   color: var(--text-3);
