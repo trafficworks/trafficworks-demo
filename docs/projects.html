@@ -323,7 +323,7 @@ function renderProjects(list) {
         progressCell = '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + p.pct + '%"></div></div><span class="progress-pct">' + p.pct + '%</span></div>';
       }
 
-      html += '<tr onclick="window.location.href=\'project-detail.html\'" style="cursor:pointer">';
+      html += '<tr class="project-row" data-project-id="' + p.id + '" style="cursor:pointer">';
       html += '<td><div class="cell-name">' + p.name + '</div><div class="cell-sub">' + (p.location || '') + '</div></td>';
       html += '<td style="position:relative"><span class="badge ' + badgeClass(p.status) + '"' + statusClick + '>' + p.status + '</span>' + statusDropdown + '</td>';
       html += '<td>' + progressCell + '</td>';
@@ -346,6 +346,17 @@ function renderProjects(list) {
   });
 
   sections.innerHTML = html;
+
+  sections.querySelectorAll('.project-row').forEach(function(row) {
+  row.addEventListener('click', function(e) {
+    if (e.target.closest('.kebab-cell')) return
+    if (e.target.closest('.badge')) return
+    if (e.target.closest('.status-dropdown')) return
+    if (e.target.closest('.kebab-menu')) return
+
+    window.location.href = 'project-detail.html'
+  })
+})
 
   // Mobile render
   var mList = document.getElementById('mobileProjectList');
