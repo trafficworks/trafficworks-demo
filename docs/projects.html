@@ -670,6 +670,32 @@ window.addEventListener('pageshow', function(e) { if (e.persisted) filterProject
 // Mobile nav
 function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
 document.addEventListener('click',function(e){if(!e.target.closest('.m-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
+
+window.openCreateModal = openCreateModal
+window.closeCreateModal = closeCreateModal
+window.createProject = createProject
+window.openEditModal = openEditModal
+window.closeEditModal = closeEditModal
+window.saveEditProject = saveEditProject
+window.promptDelete = promptDelete
+window.closeDeleteModal = closeDeleteModal
+window.confirmDelete = confirmDelete
+window.promptArchive = promptArchive
+window.closeArchiveModal = closeArchiveModal
+window.confirmArchive = confirmArchive
+window.openNotesModal = openNotesModal
+window.closeNotesModal = closeNotesModal
+window.saveNotes = saveNotes
+window.openJobSheet = openJobSheet
+window.closeJobSheet = closeJobSheet
+window.printJobSheet = printJobSheet
+window.toggleMobileNav = toggleMobileNav
+window.toggleKebab = toggleKebab
+window.toggleStatusDrop = toggleStatusDrop
+window.setProjectStatus = setProjectStatus
+window.reopenProject = reopenProject
+window.filterProjects = filterProjects
+  
 </script>
 
 </body>
