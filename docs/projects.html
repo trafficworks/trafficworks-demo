@@ -479,8 +479,7 @@ function closeKebabs() {
 function openCreateModal() { document.getElementById('createModal').classList.add('visible'); document.getElementById('newProjectName').focus(); }
 function closeCreateModal() { document.getElementById('createModal').classList.remove('visible'); }
 
-function createProject() {
-  async function createProject() {
+async function createProject() {
   const name = document.getElementById('newProjectName').value.trim()
   const location = document.getElementById('newProjectLocation').value.trim()
   const client = document.getElementById('newProjectClient').value.trim()
@@ -516,8 +515,7 @@ function createProject() {
   ['newProjectName','newProjectLocation','newProjectClient','newProjectNum','newProjectNotes']
     .forEach(id => document.getElementById(id).value = '')
 
-  // Reload from DB
-  loadProjects()
+  await loadProjects()
 
   showToast('Project created')
 }
