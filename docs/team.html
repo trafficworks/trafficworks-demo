@@ -33,7 +33,7 @@
 
 <div class="container main">
 
-  <div class="page-header">
+  <div class="page-header" style="margin-top:0;padding-top:0">
     <span class="page-title">Team</span>
   </div>
 
@@ -131,8 +131,8 @@ function renderTechs(){
 
 function renderMobile(){
   var el=document.getElementById('mobileTeam'); if(!el) return;
-  var h='<div style="font-size:14px;color:var(--text-3);margin-bottom:10px">'+managers.length+' managers · '+techs.length+' technicians</div>';
-  h+='<div class="m-section" style="padding-top:4px">Managers <span class="count">'+managers.length+'</span></div>';
+  var h='';
+  h+='<div class="m-section" style="padding-top:0">Managers <span class="count">'+managers.length+'</span></div>';
   managers.forEach(function(m){
     h+='<div class="m-team-row"><div class="m-team-left"><div class="m-team-name">'+m.first+' '+m.last+'</div><div class="m-team-detail">'+m.phone+'</div></div><div class="m-team-right"><span class="m-task-badge m-team-pill-'+m.role+'">'+m.role.charAt(0).toUpperCase()+m.role.slice(1)+'</span><div class="m-team-dot'+(m.status!=='active'?' off':'')+'"></div></div></div>';
   });
