@@ -1603,13 +1603,36 @@ tr.editing .edit-input { display: block; }
 
 /* Mobile stats */
 .m-stats {
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center; justify-content: center;
   padding: 12px 0; border-bottom: 1px solid var(--line);
+  gap: 0;
 }
 
-.m-stat-num { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1; }
-.m-stat-label { font-size: 11px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.04em; margin-left: 3px; }
-.m-stat-div { width: 1px; height: 14px; background: var(--line); }
+.m-stat {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.m-stat-num {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.m-stat-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.m-stat-div { width: 1px; height: 14px; background: var(--line); align-self: center; }
 
 /* Mobile progress */
 .m-progress-row { display: flex; align-items: center; gap: 8px; padding: 8px 0 0; }
@@ -1825,4 +1848,11 @@ tr.editing .edit-input { display: block; }
   
   /* Hide back link text arrow, show circle */
   .back-row { margin-bottom: 8px; }
+}
+
+/* Desktop only */
+.desktop-only { display: block; }
+
+@media (max-width: 768px) {
+  .desktop-only { display: none !important; }
 }
