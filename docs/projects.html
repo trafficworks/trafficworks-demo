@@ -329,8 +329,8 @@ function renderProjects(list) {
       html += '<td>' + progressCell + '</td>';
       html += '<td class="c"><span class="cell-num-open ' + (p.openTasks===0?'zero':'') + '">' + p.openTasks + '</span></td>';
       html += '<td class="c"><span class="cell-num-done">' + complete + '</span></td>';
-      html += '<td class="r kebab-cell"><button class="kebab" onclick="event.stopPropagation();toggleKebab(' + p.id + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
-      html += '<div class="kebab-menu" id="kebab-' + p.id + '">';
+      html += '<td class="r kebab-cell"><button class="kebab" onclick="toggleKebab(' + p.id + ', event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
+      html += '<div class="kebab-menu" id="kebab-' + p.id + '" onclick="event.stopPropagation()">';
       html += '<button class="kebab-menu-item" onclick="event.stopPropagation();openEditModal(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
       html += '<button class="kebab-menu-item" onclick="event.stopPropagation();openNotesModal(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Tech Notes</button>';
       html += '<button class="kebab-menu-item" onclick="event.stopPropagation();openJobSheet(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</button>';
@@ -466,21 +466,32 @@ function closeStatusDrops() {
 // KEBAB
 // ═══════════════════════════════════════
 function toggleKebab(id, e) {
-  e.stopPropagation();
-  if (openKebab && openKebab !== id) { var old = document.getElementById('kebab-'+openKebab); if(old) old.classList.remove('open','drop-up','drop-down'); }
-  var menu = document.getElementById('kebab-'+id);
-  var isOpen = menu.classList.contains('open');
-  menu.classList.remove('open','drop-up','drop-down');
-  if (!isOpen) {
-    var rect = e.currentTarget.getBoundingClientRect();
-    var spaceBelow = window.innerHeight - rect.bottom;
-    menu.classList.add('open', spaceBelow < 160 ? 'drop-up' : 'drop-down');
-    openKebab = id;
-  } else { openKebab = null; }
-}
+  if (e) {
+    e.preventDefault()
+    e.stopPropagation()
+  }
 
-function closeKebabs() {
-  if (openKebab) { var el = document.getElementById('kebab-'+openKebab); if(el) el.classList.remove('open','drop-up','drop-down'); openKebab = null; }
+  closeStatusDrops()
+
+  if (openKebab && openKebab !== id) {
+    var old = document.getElementById('kebab-' + openKebab)
+    if (old) old.classList.remove('open', 'drop-up', 'drop-down')
+  }
+
+  var menu = document.getElementById('kebab-' + id)
+  if (!menu) return
+
+  var isOpen = menu.classList.contains('open')
+  menu.classList.remove('open', 'drop-up', 'drop-down')
+
+  if (!isOpen) {
+    var rect = e.currentTarget.getBoundingClientRect()
+    var spaceBelow = window.innerHeight - rect.bottom
+    menu.classList.add('open', spaceBelow < 160 ? 'drop-up' : 'drop-down')
+    openKebab = id
+  } else {
+    openKebab = null
+  }
 }
 
 
