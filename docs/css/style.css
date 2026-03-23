@@ -1819,7 +1819,7 @@ tr.editing .edit-input { display: block; }
 
 @media (max-width: 768px) {
   .pd-header { margin-bottom: 8px; }
-  .pd-meta { margin-top: 2px; }
+  .pd-meta { margin-top: 1px; font-size: 12px; }
   
   /* Hide back link text arrow, show circle */
   .back-row { margin-bottom: 8px; }
