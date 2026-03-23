@@ -768,6 +768,7 @@ window.addEventListener('pageshow', function(e) { if (e.persisted) filterProject
 function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
 document.addEventListener('click',function(e){if(!e.target.closest('.m-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
 
+// expose functions for inline onclick (required for module scripts)
 window.openCreateModal = openCreateModal
 window.closeCreateModal = closeCreateModal
 window.createProject = createProject
