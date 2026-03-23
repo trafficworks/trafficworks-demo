@@ -19,7 +19,7 @@
 
   /* Status colors */
   --accent:      #3AA66A;
-  --pending:     #D4A843;
+  --pending:     #C49A2E;
   --infield:     #6A9BB8;
   --complete:    #3AA66A;
   --hold:        #C45C5C;
@@ -1811,4 +1811,16 @@ tr.editing .edit-input { display: block; }
 
   /* Darker hamburger */
   .m-kebab { color: var(--text-3); }
+}
+
+/* PD header */
+.pd-header { margin-bottom: 20px; }
+.pd-meta { font-size: 13px; color: var(--text-3); margin-top: 3px; }
+
+@media (max-width: 768px) {
+  .pd-header { margin-bottom: 8px; }
+  .pd-meta { margin-top: 2px; }
+  
+  /* Hide back link text arrow, show circle */
+  .back-row { margin-bottom: 8px; }
 }
