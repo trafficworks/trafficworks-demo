@@ -1484,6 +1484,9 @@ tr.editing .edit-input { display: block; }
 /* Section spacing */
 .team-section { margin-bottom: 40px; }
 
+.page-header {
+  margin-bottom: 8px;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    NUMBER EMPHASIS — open vs done
