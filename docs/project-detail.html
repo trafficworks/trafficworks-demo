@@ -47,7 +47,7 @@
   <!-- PROJECT HEADER -->
   <div class="pd-header">
     <div class="page-title">Old Town Mobility Study</div>
-    <div class="pd-meta">City of Pasadena · Pasadena, CA</div>
+    <div class="pd-meta desktop-only">City of Pasadena · Pasadena, CA</div>
   </div>
 
   <!-- STATS -->
@@ -252,10 +252,9 @@ function renderStats() {
   // Mobile stats
   var ms = document.getElementById('mobileStats');
   if(ms) {
-    ms.innerHTML = '<span class="m-stat-num">'+total+'</span><span class="m-stat-label">Tasks</span>' +
-      '<div class="m-stat-div"></div>' +
-      '<span class="m-stat-num">'+pend+'</span><span class="m-stat-label">Pending</span>' +
-      '<span class="m-stat-num">'+inf+'</span><span class="m-stat-label">In Field</span>';
+    ms.innerHTML = '<div class="m-stat"><span class="m-stat-num">'+total+'</span><span class="m-stat-label">Total</span></div>' +
+      '<div class="m-stat"><span class="m-stat-num">'+pend+'</span><span class="m-stat-label">Pending</span></div>' +
+      '<div class="m-stat"><span class="m-stat-num">'+inf+'</span><span class="m-stat-label">In Field</span></div>';
   }
   var mp = document.getElementById('mobileProgress');
   if(mp) {
