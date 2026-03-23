@@ -1488,6 +1488,14 @@ tr.editing .edit-input { display: block; }
   margin-bottom: 8px;
 }
 
+.team-page .page-header {
+  margin-bottom: 8px;
+}
+
+.team-page .team-section:first-of-type .section-header {
+  padding-top: 0 !important;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    NUMBER EMPHASIS — open vs done
    ═══════════════════════════════════════════════════════════════ */
