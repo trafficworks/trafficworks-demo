@@ -38,6 +38,8 @@
     <span class="page-title">Team</span>
   </div>
 
+  <div class="mobile-only"><div class="m-page-sub" id="mobileTeamSub2"></div></div>
+
   <!-- MANAGERS -->
   <div class="team-section">
     <div class="section-header">
@@ -193,7 +195,7 @@ function render(){ renderManagers(); renderTechs(); renderMobileTeam(); }
 
 function renderMobileTeam() {
   var mSub = document.getElementById('mobileTeamSub');
-  if(mSub) mSub.textContent = managers.length + ' managers · ' + techs.length + ' technicians';
+  if(mSub) mSub.textContent = managers.length + ' managers · ' + techs.length + ' technicians'; var mSub2=document.getElementById('mobileTeamSub2'); if(mSub2) mSub2.textContent = managers.length + ' managers · ' + techs.length + ' technicians';
 
   var mMgr = document.getElementById('mobileManagerList');
   if(mMgr) {
