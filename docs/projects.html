@@ -284,53 +284,73 @@ function renderProjects(list) {
     return;
   }
 
+  // Group
+  var groups = {
+    'In Progress': list.filter(function(p){return p.status==='In Progress'}),
+    'Pending': list.filter(function(p){return p.status==='Pending'}),
+    'On Hold': list.filter(function(p){return p.status==='On Hold'}),
+    'Complete': list.filter(function(p){return p.status==='Complete'})
+  };
+
   var html = '';
-  html += '<table><thead><tr>';
-  html += '<th style="width:35%">Project</th>';
-  html += '<th style="width:12%">Status</th>';
-  html += '<th style="width:22%">Progress</th>';
-  html += '<th style="width:8%" class="c">Open</th>';
-  html += '<th style="width:8%" class="c">Done</th>';
-  html += '<th style="width:4%"></th>';
-  html += '</tr></thead><tbody>';
+  var statusLabels = {'In Progress':'Active','Pending':'Pending','On Hold':'On Hold','Complete':'Complete'};
+    var statusDots = {'In Progress':'s-active','Pending':'s-pending','On Hold':'s-hold','Complete':'s-complete'};
 
-  list.forEach(function(p) {
-    var complete = p.totalTasks - p.openTasks;
-    var statusDropdown = '';
-    var statusClick = '';
-    var progressCell = '';
+  ['In Progress','Pending','On Hold','Complete'].forEach(function(status) {
+    var g = groups[status];
+    if (g.length === 0) return;
 
-    if (p.status !== 'Complete') {
-      statusClick = ' data-action="toggle-status" data-id="' + p.id + '" style="cursor:pointer"';
-      statusDropdown = '<div class="status-dropdown" id="sd-' + p.id + '">' + getStatusOptions(p) + '</div>';
-    }
+    html += '<div class="section-label"><span class="s-dot ' + statusDots[status] + '"></span>' + statusLabels[status] + ' <span class="count">' + g.length + '</span></div>';
+    html += '<table><thead><tr>';
+    html += '<th style="width:35%">Project</th>';
+    html += '<th style="width:12%">Status</th>';
+    html += '<th style="width:22%">Progress</th>';
+    html += '<th style="width:8%" class="c">Open</th>';
+    html += '<th style="width:8%" class="c">Done</th>';
+    html += '<th style="width:4%"></th>';
+    html += '</tr></thead><tbody>';
 
-    if (p.status === 'Complete') {
-      progressCell = '<span style="display:inline-flex;gap:6px"><button class="btn-small" data-action="archive" data-id="' + p.id + '">Archive</button><button class="btn-small" data-action="reopen" data-id="' + p.id + '">Reopen</button></span>';
-    } else {
-      progressCell = '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + p.pct + '%"></div></div><span class="progress-pct">' + p.pct + '%</span></div>';
-    }
+    g.forEach(function(p) {
+      var complete = p.totalTasks - p.openTasks;
+      var statusDropdown = '';
+      var statusClick = '';
+      var progressCell = '';
 
-    html += '<tr class="project-row" data-project-id="' + p.id + '" style="cursor:pointer">';
-    html += '<td><div class="cell-name">' + p.name + '</div><div class="cell-sub">' + (p.location || '') + '</div></td>';
-    html += '<td style="position:relative"><span class="badge ' + badgeClass(p.status) + '"' + statusClick + '>' + p.status + '</span>' + statusDropdown + '</td>';
-    html += '<td>' + progressCell + '</td>';
-    html += '<td class="c"><span class="cell-num-open ' + (p.openTasks===0?'zero':'') + '">' + p.openTasks + '</span></td>';
-    html += '<td class="c"><span class="cell-num-done">' + complete + '</span></td>';
-    html += '<td class="r kebab-cell"><button class="kebab" data-action="toggle-kebab" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
-    html += '<div class="kebab-menu" id="kebab-' + p.id + '">';
-    html += '<button class="kebab-menu-item" data-action="edit" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
-    html += '<button class="kebab-menu-item" data-action="notes" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Tech Notes</button>';
-    html += '<button class="kebab-menu-item" data-action="jobsheet" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</button>';
-    if (p.status === 'Complete') {
-      html += '<button class="kebab-menu-item" data-action="archive" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Archive</button>';
-    }
-    html += '<button class="kebab-menu-item danger" data-action="delete" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
-    html += '</div></td>';
-    html += '</tr>';
+      // Status dropdown for non-complete
+      if (p.status !== 'Complete') {
+        statusClick = ' data-action="toggle-status" data-id="' + p.id + '" style="cursor:pointer"';
+        statusDropdown = '<div class="status-dropdown" id="sd-' + p.id + '">' + getStatusOptions(p) + '</div>';
+      }
+
+      // Progress or archive/reopen
+      if (p.status === 'Complete') {
+        progressCell = '<span style="display:inline-flex;gap:6px"><button class="btn-small" data-action="archive" data-id="' + p.id + '">Archive</button><button class="btn-small" data-action="reopen" data-id="' + p.id + '">Reopen</button></span>';
+      } else {
+        progressCell = '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + p.pct + '%"></div></div><span class="progress-pct">' + p.pct + '%</span></div>';
+      }
+
+      html += '<tr class="project-row" data-project-id="' + p.id + '" style="cursor:pointer">';
+      html += '<td><div class="cell-name">' + p.name + '</div><div class="cell-sub">' + (p.location || '') + '</div></td>';
+      html += '<td style="position:relative"><span class="badge ' + badgeClass(p.status) + '"' + statusClick + '>' + p.status + '</span>' + statusDropdown + '</td>';
+      html += '<td>' + progressCell + '</td>';
+      html += '<td class="c"><span class="cell-num-open ' + (p.openTasks===0?'zero':'') + '">' + p.openTasks + '</span></td>';
+      html += '<td class="c"><span class="cell-num-done">' + complete + '</span></td>';
+      html += '<td class="r kebab-cell"><button class="kebab" data-action="toggle-kebab" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
+      html += '<div class="kebab-menu" id="kebab-' + p.id + '">';
+      html += '<button class="kebab-menu-item" data-action="edit" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
+      html += '<button class="kebab-menu-item" data-action="notes" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Tech Notes</button>';
+      html += '<button class="kebab-menu-item" data-action="jobsheet" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</button>';
+      if (p.status === 'Complete') {
+        html += '<button class="kebab-menu-item" data-action="archive" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Archive</button>';
+      }
+      html += '<button class="kebab-menu-item danger" data-action="delete" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
+      html += '</div></td>';
+      html += '</tr>';
+    });
+
+    html += '</tbody></table>';
   });
 
-  html += '</tbody></table>';
   sections.innerHTML = html;
 
   sections.querySelectorAll('.project-row').forEach(function(row) {
@@ -342,42 +362,7 @@ function renderProjects(list) {
 
       openProjectDetail(row.dataset.projectId)
     })
-  });
-
-  var mList = document.getElementById('mobileProjectList');
-  var mSub = document.getElementById('mobilePageSub');
-  var active = projects.filter(function(p){ return p.status !== 'Complete' });
-  var openTasks = active.reduce(function(s,p){ return s + p.openTasks }, 0);
-
-  if (mSub) mSub.textContent = active.length + ' active · ' + openTasks + ' open tasks';
-
-  if (mList) {
-    var mHtml = '';
-    list.forEach(function(p) {
-      var done = p.totalTasks - p.openTasks;
-      var isComplete = p.status === 'Complete';
-      mHtml += '<div class="m-project-row' + (isComplete?' complete':'') + '">';
-      mHtml += '<div class="m-project-left" data-action="open-project" data-id="' + p.id + '">';
-      mHtml += '<div class="m-project-name">' + p.name + '</div>';
-      mHtml += '<div class="m-project-detail">' + p.location + (isComplete ? '' : ' · ' + p.openTasks + ' open') + '</div>';
-      mHtml += '<div class="m-project-js" data-action="jobsheet" data-id="' + p.id + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</div>';
-      mHtml += '</div>';
-      mHtml += '<div class="m-project-right">';
-      if (isComplete) {
-        mHtml += '<div class="m-project-tasks" style="color:var(--accent)">Complete</div>';
-      } else {
-        mHtml += '<div class="m-progress-mini"><div class="m-progress-mini-fill" style="width:' + p.pct + '%"></div></div>';
-        mHtml += '<div class="m-project-tasks">' + done + '/' + p.totalTasks + '</div>';
-      }
-      mHtml += '</div></div>';
-    });
-    mList.innerHTML = mHtml;
-  }
-
-  document.getElementById('projectCount').textContent = active.length + ' active';
-  footer.style.display = '';
-  footer.textContent = projects.length + ' projects · ' + openTasks + ' open tasks';
-}
+  })
 
   // Mobile render
   var mList = document.getElementById('mobileProjectList');
