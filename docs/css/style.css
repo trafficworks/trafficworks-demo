@@ -600,6 +600,10 @@ tbody tr:hover .kebab { color: var(--text-3); }
   gap: 10px;
 }
 
+.search-row,
+.toolbar {
+  margin-bottom: 20px;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    STATS ROW (project detail)
