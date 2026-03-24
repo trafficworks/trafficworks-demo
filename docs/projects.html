@@ -312,13 +312,13 @@ function renderProjects(list) {
 
       // Status dropdown for non-complete
       if (p.status !== 'Complete') {
-        statusClick = ' onclick="event.stopPropagation();toggleStatusDrop(' + p.id + ')" style="cursor:pointer"';
+        statusClick = ' onclick="toggleStatusDrop(\'' + p.id + '\'); event.stopPropagation();" style="cursor:pointer"';
         statusDropdown = '<div class="status-dropdown" id="sd-' + p.id + '">' + getStatusOptions(p) + '</div>';
       }
 
       // Progress or archive/reopen
       if (p.status === 'Complete') {
-        progressCell = '<span style="display:inline-flex;gap:6px"><button class="btn-small" onclick="event.stopPropagation();promptArchive(' + p.id + ')">Archive</button><button class="btn-small" onclick="event.stopPropagation();reopenProject(' + p.id + ')">Reopen</button></span>';
+        progressCell = '<span style="display:inline-flex;gap:6px"><button class="btn-small" onclick="promptArchive(\'' + p.id + '\'); event.stopPropagation();">Archive</button><button class="btn-small" onclick="reopenProject(\'' + p.id + '\'); event.stopPropagation();">Reopen</button></span>';
       } else {
         progressCell = '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + p.pct + '%"></div></div><span class="progress-pct">' + p.pct + '%</span></div>';
       }
@@ -331,13 +331,13 @@ function renderProjects(list) {
       html += '<td class="c"><span class="cell-num-done">' + complete + '</span></td>';
       html += '<td class="r kebab-cell"><button class="kebab" onclick="toggleKebab(\'' + p.id + '\', event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
       html += '<div class="kebab-menu" id="kebab-' + p.id + '" onclick="event.stopPropagation()">';
-      html += '<button class="kebab-menu-item" onclick="event.stopPropagation();openEditModal(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
-      html += '<button class="kebab-menu-item" onclick="event.stopPropagation();openNotesModal(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Tech Notes</button>';
-      html += '<button class="kebab-menu-item" onclick="event.stopPropagation();openJobSheet(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</button>';
+      html += '<button class="kebab-menu-item" onclick="openEditModal(\'' + p.id + '\'); event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
+      html += '<button class="kebab-menu-item" onclick="openNotesModal(\'' + p.id + '\'); event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Tech Notes</button>';
+      html += '<button class="kebab-menu-item" onclick="openJobSheet(\'' + p.id + '\'); event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</button>';
       if (p.status === 'Complete') {
-        html += '<button class="kebab-menu-item" onclick="event.stopPropagation();promptArchive(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Archive</button>';
+        html += '<button class="kebab-menu-item" onclick="promptArchive(\'' + p.id + '\'); event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Archive</button>';
       }
-      html += '<button class="kebab-menu-item danger" onclick="event.stopPropagation();promptDelete(' + p.id + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
+      html += '<button class="kebab-menu-item danger" onclick="promptDelete(\'' + p.id + '\'); event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
       html += '</div></td>';
       html += '</tr>';
     });
@@ -375,7 +375,7 @@ function renderProjects(list) {
       mHtml += '<div class="m-project-left" onclick="window.location.href=\'project-detail.html\'">';
       mHtml += '<div class="m-project-name">' + p.name + '</div>';
       mHtml += '<div class="m-project-detail">' + p.location + (isComplete ? '' : ' · ' + p.openTasks + ' open') + '</div>';
-      mHtml += '<div class="m-project-js" onclick="event.stopPropagation();openJobSheet(' + p.id + ')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</div>';
+      mHtml += '<div class="m-project-js" onclick="openJobSheet(\'' + p.id + '\'); event.stopPropagation();"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</div>';
       mHtml += '</div>';
       mHtml += '<div class="m-project-right">';
       if (isComplete) {
@@ -425,7 +425,8 @@ function getStatusOptions(p) {
     allowed = map[p.status] || [];
   }
   return allowed.map(function(s) {
-    return '<button class="status-dropdown-item" onclick="event.stopPropagation();setProjectStatus('+p.id+',\''+s+'\')"><span class="sd-dot '+dotClasses[s]+'"></span>'+s+'</button>';
+    return '<button class="status-dropdown-item" onclick="setProjectStatus(\'' + p.id + '\', \''
+      + s + '\'); event.stopPropagation();"><span class="sd-dot '+dotClasses[s]+'"></span>'+s+'</button>';
   }).join('');
 }
 
