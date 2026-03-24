@@ -367,12 +367,12 @@ tbody tr:last-child td { border-bottom: none; }
   text-transform: uppercase;
 }
 
-.badge-progress { background: rgba(106,155,184,0.28); color: var(--infield); }
-.badge-pending  { background: rgba(212,168,67,0.28);  color: var(--pending); }
-.badge-infield  { background: rgba(106,155,184,0.28); color: var(--infield); }
-.badge-complete { background: rgba(58,166,106,0.22);  color: var(--complete); }
-.badge-hold     { background: rgba(196,92,92,0.22);   color: var(--hold); }
-
+/* CLEANER, LIGHTER BACKGROUNDS */
+.badge-pending  { background: rgba(230,168,0,0.14);  color: var(--pending); }
+.badge-infield  { background: rgba(76,142,179,0.14); color: var(--infield); }
+.badge-progress { background: rgba(76,142,179,0.14); color: var(--infield); }
+.badge-complete { background: rgba(47,163,107,0.14); color: var(--complete); }
+.badge-hold     { background: rgba(211,92,92,0.14);  color: var(--hold); }
 
 /* ═══════════════════════════════════════════════════════════════
    PILLS — type, role
