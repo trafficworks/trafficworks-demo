@@ -606,6 +606,7 @@ async function saveEditProject() {
   if (error) {
     console.error('Error updating project:', error)
     alert('Error updating project')
+    alert(JSON.stringify(error))
     return
   }
 
