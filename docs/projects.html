@@ -196,6 +196,7 @@ async function loadProjects() {
     projectNum: p.project_num,
     location: p.location,
     client: p.client,
+    notes: p.notes || '',
     status: mapStatus(p.status),
     pct: p.pct_complete,
     openTasks: (p.pending_tasks || 0) + (p.infield_tasks || 0),
@@ -701,9 +702,52 @@ async function confirmArchive() {
   showToast('"' + (p ? p.name : 'Project') + '" archived')
 }
 
-function openNotesModal(id) { closeKebabs(); notesTarget = id; document.getElementById('notesModal').classList.add('visible'); document.getElementById('notesInput').focus(); }
-function closeNotesModal() { document.getElementById('notesModal').classList.remove('visible'); notesTarget = null; }
-function saveNotes() { closeNotesModal(); showToast('Notes saved'); }
+function openNotesModal(id) {
+  closeKebabs()
+  notesTarget = id
+
+  var p = projects.find(function(x){ return x.id === id })
+  document.getElementById('notesInput').value = (p && p.notes) ? p.notes : ''
+
+  document.getElementById('notesModal').classList.add('visible')
+
+  setTimeout(function() {
+    document.getElementById('notesInput').focus()
+  }, 50)
+}
+
+function closeNotesModal() {
+  document.getElementById('notesModal').classList.remove('visible')
+  notesTarget = null
+}
+
+async function saveNotes() {
+  if (!notesTarget) return
+
+  var notes = document.getElementById('notesInput').value.trim()
+
+  const { data, error } = await supabase
+    .from('projects')
+    .update({ notes: notes })
+    .eq('id', notesTarget)
+    .eq('company_id', COMPANY_ID)
+    .select('id, notes')
+
+  if (error) {
+    console.error('Error saving notes:', error)
+    alert(JSON.stringify(error))
+    return
+  }
+
+  if (!data || data.length === 0) {
+    alert('Notes update matched 0 rows')
+    return
+  }
+
+  closeNotesModal()
+  await loadProjects()
+  showToast(notes ? 'Notes saved' : 'Notes cleared')
+}
 
 
 // ═══════════════════════════════════════
