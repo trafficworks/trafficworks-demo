@@ -438,15 +438,21 @@ async function setProjectStatus(id, status) {
     'In Progress': 'active'
   }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('projects')
     .update({ status: dbStatusMap[status] || 'active' })
     .eq('id', id)
     .eq('company_id', COMPANY_ID)
+    .select('id')
 
   if (error) {
     console.error('Error updating status:', error)
-    alert('Error updating status')
+    alert(JSON.stringify(error))
+    return
+  }
+
+  if (!data || data.length === 0) {
+    alert('Status update matched 0 rows')
     return
   }
 
@@ -597,16 +603,21 @@ async function saveEditProject() {
     client: document.getElementById('editProjectClient').value.trim()
   }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('projects')
     .update(payload)
     .eq('id', editTarget)
     .eq('company_id', COMPANY_ID)
+    .select('id')
 
   if (error) {
     console.error('Error updating project:', error)
-    alert('Error updating project')
     alert(JSON.stringify(error))
+    return
+  }
+
+  if (!data || data.length === 0) {
+    alert('Update matched 0 rows')
     return
   }
 
@@ -630,15 +641,21 @@ async function confirmDelete() {
   const targetId = deleteTarget
   const p = projects.find(function(x){ return x.id === targetId })
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('projects')
     .delete()
     .eq('id', targetId)
     .eq('company_id', COMPANY_ID)
+    .select('id')
 
   if (error) {
     console.error('Error deleting project:', error)
-    alert('Error deleting project')
+    alert(JSON.stringify(error))
+    return
+  }
+
+  if (!data || data.length === 0) {
+    alert('Delete matched 0 rows')
     return
   }
 
