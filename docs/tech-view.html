@@ -388,8 +388,21 @@ async function getLatestCycleRow(taskId){
   if(error) throw error;
   return data || null;
 }
+async function getCycleRowById(cycleId){
+  if(!cycleId) return null;
+  const {data,error}=await supabase.from('cycles').select('*').eq('id',cycleId).maybeSingle();
+  if(error) throw error;
+  return data || null;
+}
+async function refreshCurrentProject(projectId){
+  await loadProjectsAndTasks();
+  if(projectId){
+    state.currentProject=state.projects.find(function(p){return String(p.id)===String(projectId)}) || null;
+  }
+}
 async function cycleTaskStatus(taskId){
   if(!state.currentProject)return;
+  var projectId=state.currentProject.id;
   var task=state.currentProject.tasks.find(function(t){return String(t.id)===String(taskId)});if(!task)return;
   try{
     if(task.status===STATUS.PENDING){
@@ -408,8 +421,17 @@ async function cycleTaskStatus(taskId){
       task.reopenReason='';
       task.currentCycle={deployedAt:new Date(newCycle.deployed_at),completedAt:null,pickedUpAt:null,cycleId:newCycle.id,cycleNum:newCycle.cycle_num};
       task.cycles.unshift({id:newCycle.id,cycle_num:newCycle.cycle_num,deployedAt:new Date(newCycle.deployed_at),completedAt:null,pickedUpAt:null,reopenReason:'',reopenedBy:''});
+      await refreshCurrentProject(projectId);
     } else if(task.status===STATUS.INFIELD){
-      const latest=await getLatestCycleRow(taskId);
+      const inMemoryCycleId=task.currentCycle&&task.currentCycle.cycleId?task.currentCycle.cycleId:null;
+      let latest=inMemoryCycleId ? await getCycleRowById(inMemoryCycleId) : null;
+      if(!latest) latest=await getLatestCycleRow(taskId);
+      if(!latest){
+        await refreshCurrentProject(projectId);
+        task=state.currentProject?state.currentProject.tasks.find(function(t){return String(t.id)===String(taskId)}):null;
+        const refreshedCycleId=task&&task.currentCycle&&task.currentCycle.cycleId?task.currentCycle.cycleId:null;
+        latest=refreshedCycleId ? await getCycleRowById(refreshedCycleId) : await getLatestCycleRow(taskId);
+      }
       if(!latest) throw new Error('No cycle found for this task.');
       const now=new Date().toISOString();
       const coords=await getCoords();
@@ -423,6 +445,7 @@ async function cycleTaskStatus(taskId){
       task.status=STATUS.COMPLETE;
       task.currentCycle={deployedAt:latest.deployed_at?new Date(latest.deployed_at):null,completedAt:new Date(now),pickedUpAt:new Date(now),cycleId:latest.id,cycleNum:latest.cycle_num};
       if(task.cycles.length){task.cycles[0].completedAt=new Date(now);task.cycles[0].pickedUpAt=new Date(now)}
+      await refreshCurrentProject(projectId);
     }
     document.getElementById('undoBtn').style.display='flex';
     showStatusConfirm();
