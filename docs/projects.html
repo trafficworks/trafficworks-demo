@@ -702,13 +702,23 @@ async function confirmArchive() {
   showToast('"' + (p ? p.name : 'Project') + '" archived')
 }
 
-function openNotesModal(id) {
+async function openNotesModal(id) {
   closeKebabs()
   notesTarget = id
 
-  var p = projects.find(function(x){ return x.id === id })
-  document.getElementById('notesInput').value = (p && p.notes) ? p.notes : ''
+  const { data, error } = await supabase
+    .from('projects')
+    .select('notes')
+    .eq('id', id)
+    .single()
 
+  if (error) {
+    console.error('Error loading notes:', error)
+    alert(JSON.stringify(error))
+    return
+  }
+
+  document.getElementById('notesInput').value = data?.notes || ''
   document.getElementById('notesModal').classList.add('visible')
 
   setTimeout(function() {
@@ -730,7 +740,6 @@ async function saveNotes() {
     .from('projects')
     .update({ notes: notes })
     .eq('id', notesTarget)
-    .eq('company_id', COMPANY_ID)
     .select('id, notes')
 
   if (error) {
@@ -743,6 +752,9 @@ async function saveNotes() {
     alert('Notes update matched 0 rows')
     return
   }
+
+  var p = projects.find(function(x){ return x.id === notesTarget })
+  if (p) p.notes = notes
 
   closeNotesModal()
   await loadProjects()
@@ -768,8 +780,17 @@ function showToast(msg) {
 async function openJobSheet(id) {
   closeKebabs()
 
-  const p = projects.find(function(x){ return x.id === id })
-  if (!p) return
+  const { data: projectData, error: projectError } = await supabase
+    .from('projects')
+    .select('id, name, client, location, notes')
+    .eq('id', id)
+    .single()
+
+  if (projectError || !projectData) {
+    console.error('Error loading job sheet project:', projectError)
+    alert(JSON.stringify(projectError))
+    return
+  }
 
   const { data: taskRows, error: taskError } = await supabase
     .from('tasks')
@@ -787,8 +808,8 @@ async function openJobSheet(id) {
     return
   }
 
-  const taskIds = (taskRows || []).map(t => t.id)
-  let cyclesByTask = {}
+  const taskIds = (taskRows || []).map(function(t){ return t.id })
+  var cyclesByTask = {}
 
   if (taskIds.length) {
     const { data: cycleRows, error: cycleError } = await supabase
@@ -816,8 +837,8 @@ async function openJobSheet(id) {
 
   function getTechName(user) {
     if (!user) return ''
-    const first = user.first_name || ''
-    const last = user.last_name || ''
+    var first = user.first_name || ''
+    var last = user.last_name || ''
     return [first, last ? last[0] + '.' : ''].filter(Boolean).join(' ').trim()
   }
 
@@ -827,26 +848,26 @@ async function openJobSheet(id) {
 
   function fmtTime(d) {
     if (!d) return ''
-    const dt = new Date(d)
-    const m = dt.getMonth() + 1
-    const day = dt.getDate()
-    let h = dt.getHours()
-    const min = dt.getMinutes()
-    const ampm = h >= 12 ? 'p' : 'a'
+    var dt = new Date(d)
+    var m = dt.getMonth() + 1
+    var day = dt.getDate()
+    var h = dt.getHours()
+    var min = dt.getMinutes()
+    var ampm = h >= 12 ? 'p' : 'a'
     h = h % 12 || 12
     return m + '/' + day + ' ' + h + ':' + (min < 10 ? '0' : '') + min + ampm
   }
 
   function fmtDur(ms) {
     if (!ms || ms < 0) return ''
-    const h = Math.floor(ms / 3600000)
-    const m = Math.floor((ms % 3600000) / 60000)
+    var h = Math.floor(ms / 3600000)
+    var m = Math.floor((ms % 3600000) / 60000)
     return h + 'h ' + m + 'm'
   }
 
-  const tasks = (taskRows || []).map(function(row) {
-    const cycle = getLatestCycle(row.id)
-    let dur = ''
+  var tasks = (taskRows || []).map(function(row) {
+    var cycle = getLatestCycle(row.id)
+    var dur = ''
 
     if (cycle?.deployed_at && cycle?.completed_at) {
       dur = fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at))
@@ -868,25 +889,25 @@ async function openJobSheet(id) {
     }
   })
 
-  const now = new Date()
-  const dateStr = (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear()
+  var now = new Date()
+  var dateStr = (now.getMonth()+1) + '/' + now.getDate() + '/' + now.getFullYear()
 
-  let html = '<div class="js-project"><div class="js-project-name">' + p.name + '</div><div class="js-project-meta">' + (p.client || '') + ' · ' + (p.location || '') + '</div><div class="js-project-date">Generated ' + dateStr + '</div></div>'
+  var html = '<div class="js-project"><div class="js-project-name">'+projectData.name+'</div><div class="js-project-meta">'+(projectData.client || '')+' · '+(projectData.location || '')+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>'
 
-  if (p.notes) {
-    html += '<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">' + p.notes + '</div></div>'
+  if (projectData.notes) {
+    html += '<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+projectData.notes+'</div></div>'
   }
 
-  const pending = tasks.filter(function(t){ return t.status === 'Pending' })
-  const infield = tasks.filter(function(t){ return t.status === 'In Field' })
-  const complete = tasks.filter(function(t){ return t.status === 'Complete' })
+  var pending = tasks.filter(function(t){ return t.status === 'Pending' })
+  var infield = tasks.filter(function(t){ return t.status === 'In Field' })
+  var complete = tasks.filter(function(t){ return t.status === 'Complete' })
 
   function renderGroup(title, list) {
     if (list.length === 0) return ''
-    let s = '<div class="js-section"><div class="js-section-title">' + title + ' <span class="js-count">' + list.length + '</span></div><div class="js-site-list">'
+    var s = '<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">'
     list.forEach(function(t) {
-      s += '<div class="js-site"><div class="js-site-header"><span class="js-site-num">#' + t.site + '</span><span class="js-site-desc">' + t.desc + '</span><span class="js-site-type">' + t.type + '</span><span class="js-site-tech">' + getInitials(t.tech) + '</span></div>'
-      const times = []
+      s += '<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+getInitials(t.tech)+'</span></div>'
+      var times = []
       if (t.deployed) times.push('Set: ' + t.deployed)
       if (t.picked) times.push('Picked: ' + t.picked)
       if (t.dur) times.push('Duration: ' + t.dur)
@@ -905,6 +926,10 @@ async function openJobSheet(id) {
   document.getElementById('jobsheetOverlay').classList.add('visible')
   document.body.style.overflow = 'hidden'
 }
+
+function closeJobSheet() { document.getElementById('jobsheetOverlay').classList.remove('visible'); document.body.style.overflow = ''; }
+function printJobSheet() { window.print(); }
+
 
 // ═══════════════════════════════════════
 // GLOBAL LISTENERS
