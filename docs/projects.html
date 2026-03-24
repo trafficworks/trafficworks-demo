@@ -765,51 +765,146 @@ function showToast(msg) {
 // ═══════════════════════════════════════
 // JOB SHEET
 // ═══════════════════════════════════════
-function openJobSheet(id) {
-  closeKebabs();
-  var p = projects.find(function(x){return x.id===id}); if(!p) return;
-  var pd = projectTasks[id] || {notes:'',tasks:[]};
-  var now = new Date();
-  var dateStr = (now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
+async function openJobSheet(id) {
+  closeKebabs()
 
-  var html = '<div class="js-project"><div class="js-project-name">'+p.name+'</div><div class="js-project-meta">'+p.client+' · '+p.location+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>';
+  const p = projects.find(function(x){ return x.id === id })
+  if (!p) return
 
-  if (pd.notes) {
-    html += '<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+pd.notes+'</div></div>';
+  const { data: taskRows, error: taskError } = await supabase
+    .from('tasks')
+    .select(`
+      *,
+      study_types:study_type_id ( id, code, name ),
+      users:tech_id ( id, first_name, last_name )
+    `)
+    .eq('project_id', id)
+    .order('site', { ascending: true })
+
+  if (taskError) {
+    console.error('Error loading job sheet tasks:', taskError)
+    alert(JSON.stringify(taskError))
+    return
   }
 
-  var pending = pd.tasks.filter(function(t){return t.status==='Pending'});
-  var infield = pd.tasks.filter(function(t){return t.status==='In Field'||t.status==='In Progress'});
-  var complete = pd.tasks.filter(function(t){return t.status==='Complete'});
+  const taskIds = (taskRows || []).map(t => t.id)
+  let cyclesByTask = {}
+
+  if (taskIds.length) {
+    const { data: cycleRows, error: cycleError } = await supabase
+      .from('cycles')
+      .select('*')
+      .in('task_id', taskIds)
+      .order('cycle_num', { ascending: false })
+
+    if (cycleError) {
+      console.error('Error loading job sheet cycles:', cycleError)
+      alert(JSON.stringify(cycleError))
+      return
+    }
+
+    ;(cycleRows || []).forEach(function(cycle) {
+      if (!cyclesByTask[cycle.task_id]) cyclesByTask[cycle.task_id] = []
+      cyclesByTask[cycle.task_id].push(cycle)
+    })
+  }
+
+  function getStudyTypeCode(studyType) {
+    if (!studyType) return 'OTH'
+    return studyType.code || 'OTH'
+  }
+
+  function getTechName(user) {
+    if (!user) return ''
+    const first = user.first_name || ''
+    const last = user.last_name || ''
+    return [first, last ? last[0] + '.' : ''].filter(Boolean).join(' ').trim()
+  }
+
+  function getLatestCycle(taskId) {
+    return cyclesByTask[taskId]?.[0] || null
+  }
+
+  function fmtTime(d) {
+    if (!d) return ''
+    const dt = new Date(d)
+    const m = dt.getMonth() + 1
+    const day = dt.getDate()
+    let h = dt.getHours()
+    const min = dt.getMinutes()
+    const ampm = h >= 12 ? 'p' : 'a'
+    h = h % 12 || 12
+    return m + '/' + day + ' ' + h + ':' + (min < 10 ? '0' : '') + min + ampm
+  }
+
+  function fmtDur(ms) {
+    if (!ms || ms < 0) return ''
+    const h = Math.floor(ms / 3600000)
+    const m = Math.floor((ms % 3600000) / 60000)
+    return h + 'h ' + m + 'm'
+  }
+
+  const tasks = (taskRows || []).map(function(row) {
+    const cycle = getLatestCycle(row.id)
+    let dur = ''
+
+    if (cycle?.deployed_at && cycle?.completed_at) {
+      dur = fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at))
+    } else if (cycle?.deployed_at && row.status === 'in-field') {
+      dur = fmtDur(Date.now() - new Date(cycle.deployed_at).getTime())
+    }
+
+    return {
+      id: row.id,
+      site: row.site,
+      desc: row.description || '',
+      type: getStudyTypeCode(row.study_types),
+      tech: getTechName(row.users),
+      status: row.status === 'pending' ? 'Pending' : row.status === 'complete' ? 'Complete' : 'In Field',
+      note: row.notes || '',
+      deployed: cycle?.deployed_at ? fmtTime(cycle.deployed_at) : '',
+      picked: cycle?.completed_at ? fmtTime(cycle.completed_at) : '',
+      dur: dur
+    }
+  })
+
+  const now = new Date()
+  const dateStr = (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear()
+
+  let html = '<div class="js-project"><div class="js-project-name">' + p.name + '</div><div class="js-project-meta">' + (p.client || '') + ' · ' + (p.location || '') + '</div><div class="js-project-date">Generated ' + dateStr + '</div></div>'
+
+  if (p.notes) {
+    html += '<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">' + p.notes + '</div></div>'
+  }
+
+  const pending = tasks.filter(function(t){ return t.status === 'Pending' })
+  const infield = tasks.filter(function(t){ return t.status === 'In Field' })
+  const complete = tasks.filter(function(t){ return t.status === 'Complete' })
 
   function renderGroup(title, list) {
-    if (list.length === 0) return '';
-    var s = '<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">';
+    if (list.length === 0) return ''
+    let s = '<div class="js-section"><div class="js-section-title">' + title + ' <span class="js-count">' + list.length + '</span></div><div class="js-site-list">'
     list.forEach(function(t) {
-      s += '<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+getInitials(t.tech)+'</span></div>';
-      var times = [];
-      if (t.deployed) times.push('Set: '+t.deployed);
-      if (t.picked) times.push('Picked: '+t.picked);
-      if (t.dur) times.push('Duration: '+t.dur);
-      if (times.length > 0) s += '<div class="js-site-times">'+times.join(' · ')+'</div>';
-      if (t.note) s += '<div class="js-site-note">'+t.note+'</div>';
-      s += '</div>';
-    });
-    return s + '</div></div>';
+      s += '<div class="js-site"><div class="js-site-header"><span class="js-site-num">#' + t.site + '</span><span class="js-site-desc">' + t.desc + '</span><span class="js-site-type">' + t.type + '</span><span class="js-site-tech">' + getInitials(t.tech) + '</span></div>'
+      const times = []
+      if (t.deployed) times.push('Set: ' + t.deployed)
+      if (t.picked) times.push('Picked: ' + t.picked)
+      if (t.dur) times.push('Duration: ' + t.dur)
+      if (times.length) s += '<div class="js-site-times">' + times.join(' · ') + '</div>'
+      if (t.note) s += '<div class="js-site-note">' + t.note + '</div>'
+      s += '</div>'
+    })
+    return s + '</div></div>'
   }
 
-  html += renderGroup('Pending', pending);
-  html += renderGroup('In Field', infield);
-  html += renderGroup('Complete', complete);
+  html += renderGroup('Pending', pending)
+  html += renderGroup('In Field', infield)
+  html += renderGroup('Complete', complete)
 
-  document.getElementById('jobsheetBody').innerHTML = html;
-  document.getElementById('jobsheetOverlay').classList.add('visible');
-  document.body.style.overflow = 'hidden';
+  document.getElementById('jobsheetBody').innerHTML = html
+  document.getElementById('jobsheetOverlay').classList.add('visible')
+  document.body.style.overflow = 'hidden'
 }
-
-function closeJobSheet() { document.getElementById('jobsheetOverlay').classList.remove('visible'); document.body.style.overflow = ''; }
-function printJobSheet() { window.print(); }
-
 
 // ═══════════════════════════════════════
 // GLOBAL LISTENERS
