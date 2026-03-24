@@ -9,7 +9,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <div class="container">
   <div class="nav">
     <a class="nav-brand" href="projects.html">
@@ -21,562 +20,918 @@
       <a href="team.html">Team</a>
       <a href="archive.html">Archive</a>
     </div>
-    <button class="m-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <button class="m-kebab" id="mobileNavToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
   </div>
   <div class="nav-line"></div>
 </div>
 
-<!-- Mobile nav menu -->
 <div class="mobile-nav-menu" id="mobileNavMenu">
   <a href="projects.html">Projects</a>
   <a href="team.html">Team</a>
   <a href="archive.html">Archive</a>
 </div>
 
-<!-- MAIN -->
 <div class="container main">
-
-  <!-- BACK -->
   <div class="back-row">
     <a class="back-link" href="projects.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
       Projects
     </a>
   </div>
 
-  <!-- PROJECT HEADER -->
   <div class="pd-header">
-    <div class="page-title">Old Town Mobility Study</div>
-    <div class="pd-meta desktop-only">City of Pasadena · Pasadena, CA</div>
+    <div class="page-title" id="projectTitle">Loading project…</div>
+    <div class="pd-meta desktop-only" id="projectMeta"></div>
   </div>
 
-  <!-- STATS -->
   <div class="stats-row" id="statsRow"></div>
 
-  <!-- TOOLBAR -->
   <div class="toolbar">
-    <div class="toolbar-left" id="normalItems">
+    <div class="toolbar-left">
       <div class="search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input class="search-input" type="text" placeholder="Search tasks…" id="searchInput" oninput="render()" style="width:240px">
+        <input class="search-input" type="text" placeholder="Search tasks…" id="searchInput" style="width:240px">
       </div>
     </div>
     <div class="toolbar-right">
-      <button class="btn-ghost" onclick="openJobSheet()">
+      <button class="btn-ghost" id="openJobSheetBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Job Sheet
       </button>
-      <button class="btn-action" onclick="openAddTaskModal()"><span class="plus">+</span> Add Task</button>
+      <button class="btn-action" id="openAddTaskModalBtn"><span class="plus">+</span> Add Task</button>
     </div>
   </div>
 
-  <!-- TASK SECTIONS — injected by JS -->
   <div id="taskSections"></div>
 
-  <!-- Mobile view -->
   <div class="mobile-only">
     <div class="m-stats" id="mobileStats"></div>
     <div class="m-progress-row" id="mobileProgress"></div>
     <div id="mobileTaskList"></div>
   </div>
 
-  <!-- FOOTER -->
   <div class="table-footer" id="tableFooter"></div>
-
 </div>
 
-<!-- ADD TASK MODAL -->
 <div class="modal-overlay" id="addTaskModal"><div class="modal" style="max-width:440px">
   <div class="modal-title">Add Task</div>
   <div class="tab-bar">
-    <div class="tab-btn active" id="tabManual" onclick="switchTab('manual')">Manual Entry</div>
-    <div class="tab-btn" id="tabBulk" onclick="switchTab('bulk')">Bulk Upload</div>
+    <div class="tab-btn active" id="tabManual">Manual Entry</div>
+    <div class="tab-btn" id="tabBulk">Bulk Upload</div>
   </div>
   <div id="manualTab">
     <div class="form-group"><label class="form-label">Task Description</label><input class="form-input" type="text" id="newTaskDesc"></div>
-    <div class="form-group"><label class="form-label">Count Type</label><select class="form-select" id="newTaskType"><option value="TMC">TMC</option><option value="ADT">ADT</option><option value="SPD">SPD</option><option value="CLS">CLS</option><option value="RDR">RDR</option><option value="OTH">OTH</option></select></div>
+    <div class="form-group"><label class="form-label">Count Type</label><select class="form-select" id="newTaskType"></select></div>
     <div class="form-group"><label class="form-label">Assign Tech <span class="optional">(optional)</span></label><select class="form-select" id="newTaskTech"><option value="">Unassigned</option></select></div>
-    <div class="modal-actions"><button class="btn-ghost" onclick="closeAddTaskModal()">Cancel</button><button class="btn-solid" onclick="addTask()">Add Task</button></div>
+    <div class="modal-actions"><button class="btn-ghost" id="closeAddTaskModalBtn">Cancel</button><button class="btn-solid" id="submitAddTaskBtn">Add Task</button></div>
   </div>
   <div id="bulkTab" style="display:none">
     <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">Upload a CSV with columns: <strong>A</strong> — Description &nbsp; <strong>B</strong> — Type &nbsp; <strong>C</strong> — Tech (optional)</div>
-    <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+    <div class="drop-zone" id="bulkDropZone">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       <span class="drop-zone-text"><strong>Drop CSV</strong> or click to browse</span>
-      <input type="file" id="fileInput" accept=".csv" style="display:none" onchange="handleUpload(this)">
+      <input type="file" id="fileInput" accept=".csv" style="display:none">
     </div>
-    <div class="modal-actions"><button class="btn-ghost" onclick="closeAddTaskModal()">Cancel</button></div>
+    <div class="modal-actions"><button class="btn-ghost" id="closeAddTaskModalBtnBulk">Cancel</button></div>
   </div>
 </div></div>
 
-<!-- DELETE MODAL -->
 <div class="modal-overlay" id="deleteModal"><div class="modal">
   <div class="modal-title">Delete Task</div>
   <div class="modal-body" id="deleteModalBody">Remove this task?</div>
-  <div class="modal-actions"><button class="btn-ghost" onclick="closeDeleteModal()">Cancel</button><button class="btn-danger" id="confirmDeleteBtn">Delete</button></div>
+  <div class="modal-actions"><button class="btn-ghost" id="closeDeleteModalBtn">Cancel</button><button class="btn-danger" id="confirmDeleteBtn">Delete</button></div>
 </div></div>
 
-<!-- REOPEN MODAL -->
 <div class="modal-overlay" id="reopenModal"><div class="modal">
   <div class="modal-title">Reopen Task</div>
   <div class="modal-body" id="reopenModalBody"></div>
   <div class="form-group"><label class="form-label">Reason <span class="optional">(optional)</span></label><input class="form-input" type="text" id="reopenReason" placeholder="Equipment damaged, data incomplete…"></div>
-  <div class="modal-actions"><button class="btn-ghost" onclick="closeReopenModal()">Cancel</button><button class="btn-solid" id="confirmReopenBtn">Reopen</button></div>
-</div></div>
-
-<!-- BULK DELETE MODAL -->
-<div class="modal-overlay" id="bulkDeleteModal"><div class="modal">
-  <div class="modal-title">Delete Tasks</div>
-  <div class="modal-body" id="bulkDeleteBody"></div>
-  <div class="modal-actions"><button class="btn-ghost" onclick="closeBulkDeleteModal()">Cancel</button><button class="btn-danger" onclick="executeDeleteSelected()">Delete</button></div>
+  <div class="modal-actions"><button class="btn-ghost" id="closeReopenModalBtn">Cancel</button><button class="btn-solid" id="confirmReopenBtn">Reopen</button></div>
 </div></div>
 
 <div class="toast" id="toast"></div>
 
-<!-- JOB SHEET -->
 <div class="jobsheet-overlay" id="jobsheetOverlay">
   <div class="jobsheet-header">
-    <button class="jobsheet-close" onclick="closeJobSheet()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <button class="jobsheet-close" id="closeJobSheetBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <span class="jobsheet-title">Job Sheet</span>
-    <button class="jobsheet-download" onclick="printJobSheet()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
+    <button class="jobsheet-download" id="printJobSheetBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
   </div>
   <div class="jobsheet-body" id="jobsheetBody"></div>
 </div>
 
-<script>
-// ═══════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════
-var techsList = ['Ava R.','Noah K.','Maya T.','Leo S.','Sofia P.'];
-var STATUS = {PENDING:'Pending', INFIELD:'In Field', COMPLETE:'Complete'};
-var countTypes = ['TMC','ADT','SPD','CLS','RDR','OTH'];
-var projectNotes = 'Gate code: #4521. Equipment staging in east parking lot. Client contact: Maria Chen (626) 555-0142.';
+<script type="module">
+import { supabase } from './js/supabase.js'
 
-var tasks = [
-  {id:1,site:1,desc:'Colorado & Fair Oaks',type:'TMC',tech:'Ava R.',status:STATUS.COMPLETE,note:'48-hour count confirmed',cycles:[],currentCycle:{deployedAt:new Date('2026-03-02T06:42:00'),completedAt:new Date('2026-03-03T07:15:00')}},
-  {id:2,site:2,desc:'Colorado & Arroyo',type:'TMC',tech:'Ava R.',status:STATUS.COMPLETE,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-02T06:55:00'),completedAt:new Date('2026-03-03T07:22:00')}},
-  {id:3,site:3,desc:'Union & Raymond',type:'TMC',tech:'Noah K.',status:STATUS.INFIELD,note:'Pole mount confirmed',cycles:[],currentCycle:{deployedAt:new Date('2026-03-04T06:30:00'),completedAt:null}},
-  {id:4,site:4,desc:'Fair Oaks & Green',type:'TMC',tech:'Noah K.',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-04T06:38:00'),completedAt:null}},
-  {id:5,site:5,desc:'Walnut & Marengo',type:'ADT',tech:'Maya T.',status:STATUS.PENDING,note:'',cycles:[],currentCycle:{deployedAt:null,completedAt:null}},
-  {id:6,site:6,desc:'Pasadena Ave NB',type:'SPD',tech:'',status:STATUS.PENDING,note:'Resident requested set after 8 AM',cycles:[{deployedAt:new Date('2026-03-01T07:00:00'),completedAt:new Date('2026-03-01T09:30:00'),tech:'Ava R.',reopenReason:'Data incomplete',reopenedBy:'manager'}],currentCycle:{deployedAt:null,completedAt:null}},
-  {id:7,site:7,desc:'Pasadena Ave SB',type:'SPD',tech:'Sofia P.',status:STATUS.INFIELD,note:'',cycles:[],currentCycle:{deployedAt:new Date('2026-03-04T05:50:00'),completedAt:null}},
-  {id:8,site:8,desc:'Green St Midblock',type:'CLS',tech:'Leo S.',status:STATUS.PENDING,note:'Bike lane activity focus area',cycles:[],currentCycle:{deployedAt:null,completedAt:null}}
-];
+const STATUS = { PENDING: 'Pending', INFIELD: 'In Field', COMPLETE: 'Complete' }
 
-var nextId=9, nextSite=9, deleteTarget=null, reopenTarget=null;
-
-// Populate tech select
-var techSel = document.getElementById('newTaskTech');
-techsList.forEach(function(t){ var o=document.createElement('option'); o.value=t; o.textContent=t; techSel.appendChild(o); });
-
-
-// ═══════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════
-function formatElapsed(ms) {
-  var m=Math.floor(ms/60000), h=Math.floor(m/60), mn=m%60;
-  if(h>=24) return Math.floor(h/24)+'d '+(h%24)+'h';
-  return h+'h '+mn+'m';
+const state = {
+  companyId: '4f365a63-e2d8-45ea-960a-67d35b5f95e1',
+  projectId: new URLSearchParams(window.location.search).get('id'),
+  project: null,
+  tasks: [],
+  techs: [],
+  studyTypes: [],
+  cyclesByTask: {},
+  deleteTarget: null,
+  reopenTarget: null,
+  openKebab: null,
+  currentSort: 'site'
 }
 
-function getDuration(t) {
-  if(t.status===STATUS.INFIELD && t.currentCycle.deployedAt) return formatElapsed(Date.now()-t.currentCycle.deployedAt.getTime());
-  if(t.status===STATUS.COMPLETE && t.currentCycle.deployedAt && t.currentCycle.completedAt) return formatElapsed(t.currentCycle.completedAt.getTime()-t.currentCycle.deployedAt.getTime());
-  return '';
+if (!state.projectId) {
+  document.getElementById('projectTitle').textContent = 'Project not found'
+  document.getElementById('taskSections').innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-3)">Missing project id.</div>'
+  throw new Error('Missing project id in URL')
+}
+
+function mapTaskStatus(status) {
+  if (status === 'pending') return STATUS.PENDING
+  if (status === 'complete') return STATUS.COMPLETE
+  return STATUS.INFIELD
+}
+
+function mapDbStatus(label) {
+  if (label === STATUS.PENDING) return 'pending'
+  if (label === STATUS.COMPLETE) return 'complete'
+  return 'in-field'
+}
+
+function getStudyTypeCode(studyType) {
+  if (!studyType) return 'OTH'
+  if (studyType.code) return studyType.code
+  return 'OTH'
+}
+
+function getTechName(user) {
+  if (!user) return ''
+  const first = user.first_name || ''
+  const last = user.last_name || ''
+  return [first, last ? last[0] + '.' : ''].filter(Boolean).join(' ').trim()
+}
+
+function getInitials(name) {
+  if (!name) return '—'
+  return name.split(' ').map(part => part[0]).join('').toUpperCase()
+}
+
+function fmtTime(d) {
+  if (!d) return ''
+  const dt = new Date(d)
+  const m = dt.getMonth() + 1
+  const day = dt.getDate()
+  let h = dt.getHours()
+  const min = dt.getMinutes()
+  const ampm = h >= 12 ? 'p' : 'a'
+  h = h % 12 || 12
+  return m + '/' + day + ' ' + h + ':' + (min < 10 ? '0' : '') + min + ampm
+}
+
+function fmtDur(ms) {
+  if (!ms || ms < 0) return ''
+  const h = Math.floor(ms / 3600000)
+  const m = Math.floor((ms % 3600000) / 60000)
+  return h + 'h ' + m + 'm'
+}
+
+function getLatestCycle(taskId) {
+  return state.cyclesByTask[taskId]?.[0] || null
+}
+
+function getDuration(task) {
+  const cycle = getLatestCycle(task.id)
+  if (!cycle || !cycle.deployed_at) return ''
+  if (task.statusLabel === STATUS.INFIELD) return fmtDur(Date.now() - new Date(cycle.deployed_at).getTime())
+  if (task.statusLabel === STATUS.COMPLETE && cycle.completed_at) {
+    return fmtDur(new Date(cycle.completed_at).getTime() - new Date(cycle.deployed_at).getTime())
+  }
+  return ''
 }
 
 function badgeClass(s) {
-  return s===STATUS.PENDING ? 'badge-pending' : s===STATUS.INFIELD ? 'badge-infield' : 'badge-complete';
+  return s === STATUS.PENDING ? 'badge-pending' : s === STATUS.INFIELD ? 'badge-infield' : 'badge-complete'
 }
 
-function getInitials(name) { if(!name) return '—'; return name.split(' ').map(function(p){return p[0]}).join('').toUpperCase(); }
-
-function fmtTime(d) { if(!d) return ''; var m=d.getMonth()+1; var day=d.getDate(); var h=d.getHours(); var min=d.getMinutes(); var ampm=h>=12?'p':'a'; h=h%12||12; return m+'/'+day+' '+h+':'+(min<10?'0':'')+min+ampm; }
-
-function fmtDur(ms) { if(!ms||ms<0) return ''; var h=Math.floor(ms/3600000); var m=Math.floor((ms%3600000)/60000); return h+'h '+m+'m'; }
-
-
-// ═══════════════════════════════════════
-// SORT
-// ═══════════════════════════════════════
-var currentSort = 'site';
-
-function sortTasks() {
-  if(currentSort==='tech') tasks.sort(function(a,b){ return (a.tech||'zzz').localeCompare(b.tech||'zzz'); });
-  else if(currentSort==='status') { var order={Pending:0,'In Field':1,Complete:2}; tasks.sort(function(a,b){return order[a.status]-order[b.status]}); }
-  else if(currentSort==='type') tasks.sort(function(a,b){ return (a.type||'').localeCompare(b.type||''); });
-  else tasks.sort(function(a,b){ return a.site-b.site; });
+function showToast(msg) {
+  const el = document.getElementById('toast')
+  el.textContent = msg
+  el.classList.add('visible')
+  clearTimeout(el._timer)
+  el._timer = setTimeout(() => el.classList.remove('visible'), 2500)
 }
 
-function sortBy(col) { currentSort = currentSort===col ? 'site' : col; render(); }
-
-
-// ═══════════════════════════════════════
-// FILTER
-// ═══════════════════════════════════════
-function getFiltered() {
-  var s = (document.getElementById('searchInput').value||'').toLowerCase();
-  return tasks.filter(function(t) {
-    return !s || t.desc.toLowerCase().indexOf(s)>-1 || (t.type||'').toLowerCase().indexOf(s)>-1 || (t.tech||'').toLowerCase().indexOf(s)>-1;
-  });
+function openModal(id) {
+  document.getElementById(id).classList.add('visible')
 }
 
+function closeModal(id) {
+  document.getElementById(id).classList.remove('visible')
+}
 
-// ═══════════════════════════════════════
-// RENDER
-// ═══════════════════════════════════════
-function render() {
-  sortTasks();
-  renderStats();
-  renderTable();
+function getFilteredTasks() {
+  const s = (document.getElementById('searchInput').value || '').toLowerCase()
+  return state.tasks.filter(t => {
+    return !s ||
+      t.desc.toLowerCase().includes(s) ||
+      (t.type || '').toLowerCase().includes(s) ||
+      (t.tech || '').toLowerCase().includes(s)
+  })
+}
+
+function sortTasks(list) {
+  const sorted = [...list]
+  if (state.currentSort === 'tech') sorted.sort((a, b) => (a.tech || 'zzz').localeCompare(b.tech || 'zzz'))
+  else if (state.currentSort === 'status') {
+    const order = { [STATUS.PENDING]: 0, [STATUS.INFIELD]: 1, [STATUS.COMPLETE]: 2 }
+    sorted.sort((a, b) => order[a.statusLabel] - order[b.statusLabel])
+  } else if (state.currentSort === 'type') sorted.sort((a, b) => (a.type || '').localeCompare(b.type || ''))
+  else sorted.sort((a, b) => a.site - b.site)
+  return sorted
 }
 
 function renderStats() {
-  var total=tasks.length;
-  var pend=tasks.filter(function(t){return t.status===STATUS.PENDING}).length;
-  var inf=tasks.filter(function(t){return t.status===STATUS.INFIELD}).length;
-  var comp=tasks.filter(function(t){return t.status===STATUS.COMPLETE}).length;
-  var pct=total>0 ? Math.round((comp/total)*100) : 0;
+  const total = state.tasks.length
+  const pend = state.tasks.filter(t => t.statusLabel === STATUS.PENDING).length
+  const inf = state.tasks.filter(t => t.statusLabel === STATUS.INFIELD).length
+  const comp = state.tasks.filter(t => t.statusLabel === STATUS.COMPLETE).length
+  const pct = total > 0 ? Math.round((comp / total) * 100) : 0
 
   document.getElementById('statsRow').innerHTML =
-    '<div class="stat"><span class="stat-num">'+total+'</span><span class="stat-label">Tasks</span></div>' +
+    '<div class="stat"><span class="stat-num">' + total + '</span><span class="stat-label">Tasks</span></div>' +
     '<div class="stat-divider"></div>' +
-    '<div class="stat"><span class="stat-num">'+pend+'</span><span class="stat-label">Pending</span></div>' +
-    '<div class="stat"><span class="stat-num">'+inf+'</span><span class="stat-label">In Field</span></div>' +
-    '<div class="stat"><span class="stat-num">'+comp+'</span><span class="stat-label">Complete</span></div>' +
+    '<div class="stat"><span class="stat-num">' + pend + '</span><span class="stat-label">Pending</span></div>' +
+    '<div class="stat"><span class="stat-num">' + inf + '</span><span class="stat-label">In Field</span></div>' +
+    '<div class="stat"><span class="stat-num">' + comp + '</span><span class="stat-label">Complete</span></div>' +
     '<div class="stat-divider"></div>' +
-    '<div class="stat-progress"><div class="stat-progress-bar"><div class="stat-progress-fill" style="width:'+pct+'%"></div></div><span class="stat-progress-pct">'+pct+'%</span></div>';
+    '<div class="stat-progress"><div class="stat-progress-bar"><div class="stat-progress-fill" style="width:' + pct + '%"></div></div><span class="stat-progress-pct">' + pct + '%</span></div>'
 
-  document.getElementById('tableFooter').textContent = total + ' tasks · ' + (total-comp) + ' open · Generated 3/21/2026';
+  document.getElementById('tableFooter').textContent = total + ' tasks · ' + (total - comp) + ' open'
 
-  // Mobile stats
-  var ms = document.getElementById('mobileStats');
-  if(ms) {
-    ms.innerHTML = '<div class="m-stat"><span class="m-stat-num">'+total+'</span><span class="m-stat-label">Total</span></div>' +
-      '<div class="m-stat"><span class="m-stat-num">'+pend+'</span><span class="m-stat-label">Pending</span></div>' +
-      '<div class="m-stat"><span class="m-stat-num">'+inf+'</span><span class="m-stat-label">In Field</span></div>';
-  }
-  var mp = document.getElementById('mobileProgress');
-  if(mp) {
-    mp.innerHTML = '<div class="m-progress-bar"><div class="m-progress-fill" style="width:'+pct+'%"></div></div>' +
-      '<span class="m-progress-pct">'+pct+'%</span>';
-  }
+  const ms = document.getElementById('mobileStats')
+  ms.innerHTML =
+    '<div class="m-stat"><span class="m-stat-num">' + total + '</span><span class="m-stat-label">Total</span></div>' +
+    '<div class="m-stat"><span class="m-stat-num">' + pend + '</span><span class="m-stat-label">Pending</span></div>' +
+    '<div class="m-stat"><span class="m-stat-num">' + inf + '</span><span class="m-stat-label">In Field</span></div>'
+
+  const mp = document.getElementById('mobileProgress')
+  mp.innerHTML = '<div class="m-progress-bar"><div class="m-progress-fill" style="width:' + pct + '%"></div></div><span class="m-progress-pct">' + pct + '%</span>'
 }
 
 function renderTable() {
-  var filtered = getFiltered();
-  var sections = document.getElementById('taskSections');
+  const filtered = sortTasks(getFilteredTasks())
+  const sections = document.getElementById('taskSections')
 
   if (filtered.length === 0) {
-    sections.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-3)">No tasks match your search</div>';
-    return;
+    sections.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-3)">No tasks match your search</div>'
+    document.getElementById('mobileTaskList').innerHTML = ''
+    return
   }
 
-  // Group by status
-  var groups = {
-    'Pending': filtered.filter(function(t){return t.status===STATUS.PENDING}),
-    'In Field': filtered.filter(function(t){return t.status===STATUS.INFIELD}),
-    'Complete': filtered.filter(function(t){return t.status===STATUS.COMPLETE})
-  };
-
-  var html = '';
-
-  ['Pending','In Field','Complete'].forEach(function(status) {
-    var g = groups[status];
-    if (g.length === 0) return;
-
-    var sDot = status==='Pending'?'s-pending':status==='In Field'?'s-infield':'s-complete';
-    html += '<div class="section-label"><span class="s-dot ' + sDot + '"></span>' + status + ' <span class="count">' + g.length + '</span></div>';
-    html += '<table><thead><tr>';
-    html += '<th style="width:5%">#</th>';
-    html += '<th style="width:30%">Task</th>';
-    html += '<th style="width:10%">Type</th>';
-    html += '<th style="width:12%">Tech</th>';
-    html += '<th style="width:12%">Status</th>';
-    html += '<th style="width:12%">Duration</th>';
-    html += '<th style="width:4%"></th>';
-    html += '</tr></thead><tbody>';
-
-    g.forEach(function(t) {
-      var dur = getDuration(t);
-      var initials = getInitials(t.tech);
-      var reopenNote = '';
-      if (t.cycles.length > 0) {
-        var lastCycle = t.cycles[t.cycles.length-1];
-        if (lastCycle.reopenReason) reopenNote = '<div class="cell-reopen">Reopened: ' + lastCycle.reopenReason + '</div>';
-      }
-      var noteHtml = t.note ? '<div class="cell-note">' + t.note + '</div>' : '';
-
-      html += '<tr id="row-'+t.id+'">';
-      html += '<td><span class="site-num">'+t.site+'</span></td>';
-      html += '<td><div class="cell-name">'+t.desc+'</div>'+reopenNote+noteHtml+'<input class="edit-input" value="'+t.desc+'" onkeydown="if(event.key===\'Enter\')saveEdit('+t.id+',this)" onblur="saveEdit('+t.id+',this)"></td>';
-      html += '<td><span class="type-pill">'+t.type+'</span></td>';
-      html += '<td><div class="tech-select-wrapper"><span class="tech-avatar '+(t.tech?'assigned':'unassigned')+'" onclick="showTechSelect('+t.id+',this)">'+initials+'<span class="tech-tooltip">'+(t.tech||'Unassigned')+'</span></span></div></td>';
-      html += '<td><span class="badge '+badgeClass(t.status)+'">'+t.status+'</span></td>';
-      html += '<td><span class="cell-duration">'+(dur||'—')+'</span></td>';
-      html += '<td class="r kebab-cell"><button class="kebab" onclick="toggleKebab('+t.id+',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
-      html += '<div class="kebab-menu" id="kebab-'+t.id+'">';
-      html += '<button class="kebab-menu-item" onclick="startEdit('+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
-      if (t.status===STATUS.COMPLETE) html += '<button class="kebab-menu-item" onclick="promptReopen('+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg>Reopen</button>';
-      html += '<button class="kebab-menu-item danger" onclick="promptDelete('+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
-      html += '</div></td>';
-      html += '</tr>';
-    });
-
-    html += '</tbody></table>';
-  });
-
-  sections.innerHTML = html;
-
-  // Mobile task list
-  var mTasks = document.getElementById('mobileTaskList');
-  if(mTasks) {
-    var mHtml = '';
-    var mGroups = {
-      'Pending': filtered.filter(function(t){return t.status===STATUS.PENDING}),
-      'In Field': filtered.filter(function(t){return t.status===STATUS.INFIELD}),
-      'Complete': filtered.filter(function(t){return t.status===STATUS.COMPLETE})
-    };
-    var mDotMap = {'Pending':'s-pending','In Field':'s-infield','Complete':'s-complete'};
-    var mBadgeMap = {'Pending':'m-badge-pending','In Field':'m-badge-infield','Complete':'m-badge-complete'};
-    var mLabelMap = {'Pending':'Pending','In Field':'In Field','Complete':'Done'};
-
-    ['Pending','In Field','Complete'].forEach(function(status) {
-      var mg = mGroups[status];
-      if(mg.length === 0) return;
-      mHtml += '<div class="m-section"><span class="s-dot '+mDotMap[status]+'"></span>'+status+' <span class="count">'+mg.length+'</span></div>';
-      mg.forEach(function(t) {
-        var dur = getDuration(t);
-        var isDone = t.status === STATUS.COMPLETE;
-        var reopenNote = '';
-        if(t.cycles.length > 0) { var lc = t.cycles[t.cycles.length-1]; if(lc.reopenReason) reopenNote = '<div class="m-task-note" style="font-style:normal;color:var(--hold)">Reopened: '+lc.reopenReason+'</div>'; }
-        var noteHtml = t.note ? '<div class="m-task-note">'+t.note+'</div>' : '';
-
-        mHtml += '<div class="m-task-row'+(isDone?' done':'')+'">';
-        mHtml += '<div class="m-task-left">';
-        mHtml += '<div class="m-task-name">'+t.desc+'</div>';
-        mHtml += '<div class="m-task-meta">#'+t.site+' <span class="sep">·</span> <span class="m-task-type">'+t.type+'</span>';
-        if(dur) mHtml += ' <span class="sep">·</span> '+dur;
-        mHtml += '</div>';
-        mHtml += reopenNote + noteHtml;
-        mHtml += '</div>';
-        mHtml += '<span class="m-task-badge '+mBadgeMap[status]+'">'+mLabelMap[status]+'</span>';
-        mHtml += '</div>';
-      });
-    });
-    mTasks.innerHTML = mHtml;
+  const groups = {
+    [STATUS.PENDING]: filtered.filter(t => t.statusLabel === STATUS.PENDING),
+    [STATUS.INFIELD]: filtered.filter(t => t.statusLabel === STATUS.INFIELD),
+    [STATUS.COMPLETE]: filtered.filter(t => t.statusLabel === STATUS.COMPLETE)
   }
+
+  let html = ''
+  const dotMap = { [STATUS.PENDING]: 's-pending', [STATUS.INFIELD]: 's-infield', [STATUS.COMPLETE]: 's-complete' }
+
+  ;[STATUS.PENDING, STATUS.INFIELD, STATUS.COMPLETE].forEach(status => {
+    const g = groups[status]
+    if (!g.length) return
+
+    html += '<div class="section-label"><span class="s-dot ' + dotMap[status] + '"></span>' + status + ' <span class="count">' + g.length + '</span></div>'
+    html += '<table><thead><tr>'
+    html += '<th style="width:5%">#</th>'
+    html += '<th style="width:30%">Task</th>'
+    html += '<th style="width:10%">Type</th>'
+    html += '<th style="width:12%">Tech</th>'
+    html += '<th style="width:12%">Status</th>'
+    html += '<th style="width:12%">Duration</th>'
+    html += '<th style="width:4%"></th>'
+    html += '</tr></thead><tbody>'
+
+    g.forEach(t => {
+      const dur = getDuration(t)
+      const initials = getInitials(t.tech)
+      const latestCycle = getLatestCycle(t.id)
+      const reopenNote = latestCycle && latestCycle.notes ? '<div class="cell-reopen">' + latestCycle.notes + '</div>' : ''
+      const noteHtml = t.note ? '<div class="cell-note">' + t.note + '</div>' : ''
+
+      html += '<tr id="row-' + t.id + '">'
+      html += '<td><span class="site-num">' + t.site + '</span></td>'
+      html += '<td><div class="cell-name">' + escapeHtml(t.desc) + '</div>' + reopenNote + noteHtml + '<input class="edit-input" value="' + escapeAttr(t.desc) + '" data-action="save-edit" data-id="' + t.id + '"></td>'
+      html += '<td><span class="type-pill">' + escapeHtml(t.type) + '</span></td>'
+      html += '<td><div class="tech-select-wrapper"><span class="tech-avatar ' + (t.tech ? 'assigned' : 'unassigned') + '" data-action="show-tech" data-id="' + t.id + '">' + initials + '<span class="tech-tooltip">' + escapeHtml(t.tech || 'Unassigned') + '</span></span></div></td>'
+      html += '<td><span class="badge ' + badgeClass(t.statusLabel) + '">' + t.statusLabel + '</span></td>'
+      html += '<td><span class="cell-duration">' + (dur || '—') + '</span></td>'
+      html += '<td class="r kebab-cell"><button class="kebab" data-action="toggle-kebab" data-id="' + t.id + '"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>'
+      html += '<div class="kebab-menu" id="kebab-' + t.id + '">'
+      html += '<button class="kebab-menu-item" data-action="edit-task" data-id="' + t.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'
+      if (t.statusLabel === STATUS.COMPLETE) html += '<button class="kebab-menu-item" data-action="reopen-task" data-id="' + t.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg>Reopen</button>'
+      html += '<button class="kebab-menu-item danger" data-action="delete-task" data-id="' + t.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>'
+      html += '</div></td>'
+      html += '</tr>'
+    })
+
+    html += '</tbody></table>'
+  })
+
+  sections.innerHTML = html
+
+  const mTasks = document.getElementById('mobileTaskList')
+  let mHtml = ''
+  const mBadgeMap = { [STATUS.PENDING]: 'm-badge-pending', [STATUS.INFIELD]: 'm-badge-infield', [STATUS.COMPLETE]: 'm-badge-complete' }
+  const mLabelMap = { [STATUS.PENDING]: 'Pending', [STATUS.INFIELD]: 'In Field', [STATUS.COMPLETE]: 'Done' }
+
+  ;[STATUS.PENDING, STATUS.INFIELD, STATUS.COMPLETE].forEach(status => {
+    const mg = groups[status]
+    if (!mg.length) return
+    mHtml += '<div class="m-section"><span class="s-dot ' + dotMap[status] + '"></span>' + status + ' <span class="count">' + mg.length + '</span></div>'
+    mg.forEach(t => {
+      const dur = getDuration(t)
+      const noteHtml = t.note ? '<div class="m-task-note">' + escapeHtml(t.note) + '</div>' : ''
+      mHtml += '<div class="m-task-row' + (t.statusLabel === STATUS.COMPLETE ? ' done' : '') + '">'
+      mHtml += '<div class="m-task-left">'
+      mHtml += '<div class="m-task-name">' + escapeHtml(t.desc) + '</div>'
+      mHtml += '<div class="m-task-meta">#' + t.site + ' <span class="sep">·</span> <span class="m-task-type">' + escapeHtml(t.type) + '</span>' + (dur ? ' <span class="sep">·</span> ' + dur : '') + '</div>'
+      mHtml += noteHtml
+      mHtml += '</div>'
+      mHtml += '<span class="m-task-badge ' + mBadgeMap[status] + '">' + mLabelMap[status] + '</span>'
+      mHtml += '</div>'
+    })
+  })
+  mTasks.innerHTML = mHtml
 }
 
+function render() {
+  renderStats()
+  renderTable()
+}
 
-// ═══════════════════════════════════════
-// TASK ACTIONS
-// ═══════════════════════════════════════
+function escapeHtml(str) {
+  return String(str ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+}
+
+function escapeAttr(str) {
+  return escapeHtml(str).replaceAll('"', '&quot;')
+}
+
+async function loadProject() {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('id', state.projectId)
+    .single()
+
+  if (error || !data) {
+    document.getElementById('projectTitle').textContent = 'Project not found'
+    document.getElementById('taskSections').innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-3)">Could not load project.</div>'
+    console.error('Error loading project:', error)
+    return
+  }
+
+  state.project = data
+  state.companyId = data.company_id
+  document.getElementById('projectTitle').textContent = data.name || 'Untitled Project'
+  document.getElementById('projectMeta').textContent = [data.client || '', data.location || ''].filter(Boolean).join(' · ')
+}
+
+async function loadStudyTypes() {
+  const { data, error } = await supabase
+    .from('study_types')
+    .select('id, code, name, sort_order')
+    .eq('company_id', state.companyId)
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true })
+
+  if (error) {
+    console.error('Error loading study types:', error)
+    return
+  }
+
+  state.studyTypes = data || []
+  const sel = document.getElementById('newTaskType')
+  sel.innerHTML = ''
+  state.studyTypes.forEach(st => {
+    const opt = document.createElement('option')
+    opt.value = st.id
+    opt.textContent = st.code
+    sel.appendChild(opt)
+  })
+}
+
+async function loadTechs() {
+  const { data, error } = await supabase
+    .from('users')
+    .select('id, first_name, last_name, role')
+    .eq('company_id', state.companyId)
+    .eq('status', 'active')
+
+  if (error) {
+    console.error('Error loading techs:', error)
+    return
+  }
+
+  state.techs = (data || []).filter(u => u.role === 'tech')
+  const techSel = document.getElementById('newTaskTech')
+  techSel.innerHTML = '<option value="">Unassigned</option>'
+  state.techs.forEach(t => {
+    const opt = document.createElement('option')
+    opt.value = t.id
+    opt.textContent = getTechName(t)
+    techSel.appendChild(opt)
+  })
+}
+
+async function loadTasks() {
+  const { data, error } = await supabase
+    .from('tasks')
+    .select(`
+      *,
+      study_types:study_type_id ( id, code, name ),
+      users:tech_id ( id, first_name, last_name )
+    `)
+    .eq('project_id', state.projectId)
+    .order('site', { ascending: true })
+
+  if (error) {
+    console.error('Error loading tasks:', error)
+    document.getElementById('taskSections').innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-3)">Could not load tasks.</div>'
+    return
+  }
+
+  const rows = data || []
+  state.tasks = rows.map(row => ({
+    id: row.id,
+    site: row.site,
+    desc: row.description || '',
+    type: getStudyTypeCode(row.study_types),
+    studyTypeId: row.study_type_id,
+    techId: row.tech_id,
+    tech: getTechName(row.users),
+    status: row.status,
+    statusLabel: mapTaskStatus(row.status),
+    note: row.notes || '',
+    reopenReason: row.reopen_reason || ''
+  }))
+
+  const taskIds = state.tasks.map(t => t.id)
+  state.cyclesByTask = {}
+
+  if (taskIds.length) {
+    const { data: cycles, error: cyclesError } = await supabase
+      .from('cycles')
+      .select('*')
+      .in('task_id', taskIds)
+      .order('cycle_num', { ascending: false })
+
+    if (cyclesError) {
+      console.error('Error loading cycles:', cyclesError)
+    } else {
+      ;(cycles || []).forEach(cycle => {
+        if (!state.cyclesByTask[cycle.task_id]) state.cyclesByTask[cycle.task_id] = []
+        state.cyclesByTask[cycle.task_id].push(cycle)
+      })
+    }
+  }
+
+  render()
+}
+
+async function loadAll() {
+  await loadProject()
+  if (!state.project) return
+  await Promise.all([loadStudyTypes(), loadTechs()])
+  await loadTasks()
+}
+
 function openAddTaskModal() {
-  document.getElementById('addTaskModal').classList.add('visible');
-  switchTab('manual');
-  document.getElementById('newTaskDesc').value = '';
-  setTimeout(function(){ document.getElementById('newTaskDesc').focus(); }, 100);
+  openModal('addTaskModal')
+  switchTab('manual')
+  document.getElementById('newTaskDesc').value = ''
+  setTimeout(() => document.getElementById('newTaskDesc').focus(), 50)
 }
 
-function closeAddTaskModal() { document.getElementById('addTaskModal').classList.remove('visible'); }
+function closeAddTaskModal() {
+  closeModal('addTaskModal')
+}
 
 function switchTab(tab) {
-  document.getElementById('manualTab').style.display = tab==='manual' ? 'block' : 'none';
-  document.getElementById('bulkTab').style.display = tab==='bulk' ? 'block' : 'none';
-  document.getElementById('tabManual').classList.toggle('active', tab==='manual');
-  document.getElementById('tabBulk').classList.toggle('active', tab==='bulk');
+  document.getElementById('manualTab').style.display = tab === 'manual' ? 'block' : 'none'
+  document.getElementById('bulkTab').style.display = tab === 'bulk' ? 'block' : 'none'
+  document.getElementById('tabManual').classList.toggle('active', tab === 'manual')
+  document.getElementById('tabBulk').classList.toggle('active', tab === 'bulk')
 }
 
-function addTask() {
-  var d = document.getElementById('newTaskDesc').value.trim();
-  if(!d) { document.getElementById('newTaskDesc').focus(); return; }
-  tasks.push({id:nextId++, site:nextSite++, desc:d, type:document.getElementById('newTaskType').value, tech:document.getElementById('newTaskTech').value, status:STATUS.PENDING, note:'', cycles:[], currentCycle:{deployedAt:null, completedAt:null}});
-  closeAddTaskModal(); render(); showToast('Task added');
-}
+async function addTask() {
+  const desc = document.getElementById('newTaskDesc').value.trim()
+  const studyTypeId = document.getElementById('newTaskType').value
+  const techId = document.getElementById('newTaskTech').value || null
 
-function handleUpload(input) {
-  var file = input.files[0]; if(!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var lines=e.target.result.split('\n'), added=0;
-    lines.forEach(function(line) {
-      if(!line.trim()) return;
-      var cols=line.split(',');
-      var desc=(cols[0]||'').trim().replace(/^"|"$/g,'');
-      var type=(cols[1]||'TMC').trim().replace(/^"|"$/g,'').toUpperCase();
-      var tech=(cols[2]||'').trim().replace(/^"|"$/g,'');
-      if(countTypes.indexOf(type)===-1) type='OTH';
-      if(tech && techsList.indexOf(tech)===-1) tech='';
-      if(desc) { tasks.push({id:nextId++, site:nextSite++, desc:desc, type:type, tech:tech, status:STATUS.PENDING, note:'', cycles:[], currentCycle:{deployedAt:null,completedAt:null}}); added++; }
-    });
-    render(); showToast(added+' task'+(added!==1?'s':'')+' imported'); closeAddTaskModal();
-  };
-  reader.readAsText(file); input.value='';
-}
-
-
-// ═══════════════════════════════════════
-// TECH SELECT
-// ═══════════════════════════════════════
-function showTechSelect(id, el) {
-  var existing = document.querySelector('.tech-dd'); if(existing) existing.remove();
-  var w=el.parentElement, task=tasks.find(function(t){return t.id===id});
-  var dd=document.createElement('div'); dd.className='tech-dd';
-  var rect=el.getBoundingClientRect();
-  dd.style.left='-8px';
-  if(window.innerHeight-rect.bottom < 200) dd.style.bottom='calc(100% + 4px)'; else dd.style.top='calc(100% + 4px)';
-  [''].concat(techsList).forEach(function(n) {
-    var item=document.createElement('div');
-    item.className='tech-dd-item'+(n===task.tech?' selected':'')+(n===''?' unassigned-opt':'');
-    item.textContent=n||'Unassigned';
-    item.addEventListener('click',function(e){e.stopPropagation();assignTech(id,n);dd.remove()});
-    dd.appendChild(item);
-  });
-  w.appendChild(dd);
-  setTimeout(function(){ document.addEventListener('click',function closeTech(e){ if(!dd.contains(e.target)){dd.remove();document.removeEventListener('click',closeTech)} }); },0);
-}
-
-function assignTech(id, tech) { var t=tasks.find(function(x){return x.id===id}); if(t){t.tech=tech; render(); showToast(tech?'Assigned to '+tech:'Unassigned');} }
-
-
-// ═══════════════════════════════════════
-// EDIT / DELETE / REOPEN
-// ═══════════════════════════════════════
-function startEdit(id) { var row=document.getElementById('row-'+id); if(row){row.classList.add('editing'); var input=row.querySelector('.edit-input'); if(input){input.focus();input.select();}} }
-function saveEdit(id, input) { var t=tasks.find(function(x){return x.id===id}); var v=input.value.trim(); if(t&&v) t.desc=v; render(); }
-
-function promptDelete(id) {
-  deleteTarget=id;
-  var t=tasks.find(function(x){return x.id===id});
-  document.getElementById('deleteModalBody').textContent='Remove "'+(t?t.desc:'this task')+'"?';
-  document.getElementById('deleteModal').classList.add('visible');
-}
-
-function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('visible'); }
-
-document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-  if(deleteTarget!==null) { tasks=tasks.filter(function(t){return t.id!==deleteTarget}); deleteTarget=null; closeDeleteModal(); render(); showToast('Task deleted'); }
-});
-
-function promptReopen(id) {
-  reopenTarget=id;
-  var t=tasks.find(function(x){return x.id===id});
-  document.getElementById('reopenModalBody').textContent='Send "'+(t?t.desc:'this task')+'" back to Pending?';
-  document.getElementById('reopenReason').value='';
-  document.getElementById('reopenModal').classList.add('visible');
-}
-
-function closeReopenModal() { document.getElementById('reopenModal').classList.remove('visible'); }
-
-document.getElementById('confirmReopenBtn').addEventListener('click', function() {
-  if(reopenTarget!==null) {
-    var t=tasks.find(function(x){return x.id===reopenTarget});
-    var r=document.getElementById('reopenReason').value;
-    if(t) {
-      if(t.currentCycle.deployedAt) t.cycles.push({deployedAt:t.currentCycle.deployedAt, completedAt:t.currentCycle.completedAt, tech:t.tech, reopenReason:r||'No reason given', reopenedBy:'manager'});
-      t.status=STATUS.PENDING; t.currentCycle={deployedAt:null,completedAt:null};
-    }
-    reopenTarget=null; closeReopenModal(); render(); showToast('Reopened'+(r?' — '+r:''));
+  if (!desc) {
+    document.getElementById('newTaskDesc').focus()
+    return
   }
-});
 
-function confirmDeleteSelected() { var checks=document.querySelectorAll('.row-check:checked'); if(checks.length===0) return; document.getElementById('bulkDeleteBody').textContent='Remove '+checks.length+' task'+(checks.length!==1?'s':'')+'?'; document.getElementById('bulkDeleteModal').classList.add('visible'); }
-function closeBulkDeleteModal() { document.getElementById('bulkDeleteModal').classList.remove('visible'); }
-function executeDeleteSelected() { var checks=document.querySelectorAll('.row-check:checked'); var ids=[]; checks.forEach(function(c){ids.push(parseInt(c.dataset.id))}); tasks=tasks.filter(function(t){return ids.indexOf(t.id)===-1}); closeBulkDeleteModal(); render(); showToast(ids.length+' task'+(ids.length!==1?'s':'')+' deleted'); }
+  const nextSite = (Math.max(0, ...state.tasks.map(t => t.site || 0)) || 0) + 1
 
+  const { error } = await supabase
+    .from('tasks')
+    .insert([{
+      project_id: state.projectId,
+      site: nextSite,
+      description: desc,
+      study_type_id: studyTypeId || null,
+      tech_id: techId,
+      status: 'pending',
+      notes: ''
+    }])
 
-// ═══════════════════════════════════════
-// KEBAB
-// ═══════════════════════════════════════
-var openKebab = null;
+  if (error) {
+    console.error('Error adding task:', error)
+    alert(JSON.stringify(error))
+    return
+  }
+
+  closeAddTaskModal()
+  await loadTasks()
+  showToast('Task added')
+}
+
+async function handleUpload(file) {
+  if (!file) return
+  const text = await file.text()
+  const lines = text.split('\n').filter(Boolean)
+  const studyTypeByCode = {}
+  state.studyTypes.forEach(st => studyTypeByCode[st.code.toUpperCase()] = st.id)
+  const techByName = {}
+  state.techs.forEach(t => techByName[getTechName(t)] = t.id)
+
+  let nextSite = (Math.max(0, ...state.tasks.map(t => t.site || 0)) || 0) + 1
+  const rows = []
+
+  lines.forEach(line => {
+    const cols = line.split(',')
+    const desc = (cols[0] || '').trim().replace(/^"|"$/g, '')
+    const typeCode = ((cols[1] || 'OTH').trim().replace(/^"|"$/g, '') || 'OTH').toUpperCase()
+    const techName = (cols[2] || '').trim().replace(/^"|"$/g, '')
+
+    if (!desc) return
+
+    rows.push({
+      project_id: state.projectId,
+      site: nextSite++,
+      description: desc,
+      study_type_id: studyTypeByCode[typeCode] || null,
+      tech_id: techByName[techName] || null,
+      status: 'pending',
+      notes: ''
+    })
+  })
+
+  if (!rows.length) return
+
+  const { error } = await supabase.from('tasks').insert(rows)
+  if (error) {
+    console.error('Error importing tasks:', error)
+    alert(JSON.stringify(error))
+    return
+  }
+
+  closeAddTaskModal()
+  await loadTasks()
+  showToast(rows.length + ' task' + (rows.length !== 1 ? 's' : '') + ' imported')
+}
+
+function closeKebabs() {
+  if (state.openKebab) {
+    const el = document.getElementById('kebab-' + state.openKebab)
+    if (el) el.classList.remove('open', 'drop-up', 'drop-down')
+    state.openKebab = null
+  }
+}
 
 function toggleKebab(id, e) {
-  e.stopPropagation();
-  if(openKebab && openKebab!==id) { var old=document.getElementById('kebab-'+openKebab); if(old) old.classList.remove('open','drop-up','drop-down'); }
-  var menu=document.getElementById('kebab-'+id);
-  var isOpen=menu.classList.contains('open');
-  menu.classList.remove('open','drop-up','drop-down');
-  if(!isOpen) { var rect=e.currentTarget.getBoundingClientRect(); menu.classList.add('open',(window.innerHeight-rect.bottom)<160?'drop-up':'drop-down'); openKebab=id; }
-  else { openKebab=null; }
-}
-
-document.addEventListener('click', function() { if(openKebab) { var el=document.getElementById('kebab-'+openKebab); if(el) el.classList.remove('open','drop-up','drop-down'); openKebab=null; } });
-
-
-// ═══════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════
-function showToast(msg) {
-  var el=document.getElementById('toast'); el.textContent=msg; el.classList.add('visible');
-  clearTimeout(el._timer); el._timer=setTimeout(function(){el.classList.remove('visible')},2500);
-}
-
-
-// ═══════════════════════════════════════
-// JOB SHEET
-// ═══════════════════════════════════════
-function openJobSheet() {
-  var pending=tasks.filter(function(t){return t.status===STATUS.PENDING});
-  var infield=tasks.filter(function(t){return t.status===STATUS.INFIELD});
-  var complete=tasks.filter(function(t){return t.status===STATUS.COMPLETE});
-  var now=new Date();
-  var dateStr=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
-
-  var html='<div class="js-project"><div class="js-project-name">Old Town Mobility Study</div><div class="js-project-meta">City of Pasadena · Pasadena, CA</div><div class="js-project-date">Generated '+dateStr+'</div></div>';
-  if(projectNotes) html+='<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+projectNotes+'</div></div>';
-
-  function renderGroup(title, list) {
-    if(list.length===0) return '';
-    var s='<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">';
-    list.forEach(function(t) {
-      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+getInitials(t.tech)+'</span></div>';
-      var times=[];
-      if(t.currentCycle&&t.currentCycle.deployedAt) times.push('Set: '+fmtTime(t.currentCycle.deployedAt));
-      if(t.currentCycle&&t.currentCycle.completedAt) times.push('Picked: '+fmtTime(t.currentCycle.completedAt));
-      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) times.push('Duration: '+fmtDur(t.currentCycle.completedAt-t.currentCycle.deployedAt));
-      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt) times.push('In field: '+fmtDur(Date.now()-t.currentCycle.deployedAt.getTime()));
-      if(times.length>0) s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
-      if(t.note) s+='<div class="js-site-note">'+t.note+'</div>';
-      s+='</div>';
-    });
-    return s+'</div></div>';
+  if (e) {
+    e.preventDefault()
+    e.stopPropagation()
   }
 
-  html += renderGroup('Pending', pending);
-  html += renderGroup('In Field', infield);
-  html += renderGroup('Complete', complete);
+  if (state.openKebab && state.openKebab !== id) {
+    const old = document.getElementById('kebab-' + state.openKebab)
+    if (old) old.classList.remove('open', 'drop-up', 'drop-down')
+  }
 
-  document.getElementById('jobsheetBody').innerHTML = html;
-  document.getElementById('jobsheetOverlay').classList.add('visible');
-  document.body.style.overflow = 'hidden';
+  const menu = document.getElementById('kebab-' + id)
+  if (!menu) return
+  const isOpen = menu.classList.contains('open')
+  menu.classList.remove('open', 'drop-up', 'drop-down')
+
+  if (!isOpen) {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const spaceBelow = window.innerHeight - rect.bottom
+    menu.classList.add('open', spaceBelow < 160 ? 'drop-up' : 'drop-down')
+    state.openKebab = id
+  } else {
+    state.openKebab = null
+  }
 }
 
-function closeJobSheet() { document.getElementById('jobsheetOverlay').classList.remove('visible'); document.body.style.overflow=''; }
-function printJobSheet() { window.print(); }
+function startEdit(id) {
+  const row = document.getElementById('row-' + id)
+  if (!row) return
+  row.classList.add('editing')
+  const input = row.querySelector('.edit-input')
+  if (input) {
+    input.focus()
+    input.select()
+  }
+  closeKebabs()
+}
 
+async function saveEdit(id, input) {
+  const value = input.value.trim()
+  const row = document.getElementById('row-' + id)
+  if (!value) {
+    row?.classList.remove('editing')
+    return
+  }
 
-// ═══════════════════════════════════════
-// GLOBAL LISTENERS
-// ═══════════════════════════════════════
-document.querySelectorAll('.modal-overlay').forEach(function(el) {
-  el.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('visible'); });
-});
+  const { error } = await supabase
+    .from('tasks')
+    .update({ description: value })
+    .eq('id', id)
 
-document.addEventListener('keydown', function(e) {
-  if(e.key==='Escape') { closeAddTaskModal(); closeDeleteModal(); closeReopenModal(); closeBulkDeleteModal(); closeJobSheet(); }
-});
+  if (error) {
+    console.error('Error saving task:', error)
+    alert(JSON.stringify(error))
+    return
+  }
 
+  row?.classList.remove('editing')
+  await loadTasks()
+  showToast('Task updated')
+}
 
-// ═══════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════
-render();
+async function assignTech(id, techId) {
+  const { error } = await supabase
+    .from('tasks')
+    .update({ tech_id: techId || null })
+    .eq('id', id)
 
-// Mobile nav
-function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
-document.addEventListener('click',function(e){if(!e.target.closest('.m-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
+  if (error) {
+    console.error('Error assigning tech:', error)
+    alert(JSON.stringify(error))
+    return
+  }
+
+  await loadTasks()
+  showToast(techId ? 'Tech assigned' : 'Unassigned')
+}
+
+function showTechSelect(id, el) {
+  const existing = document.querySelector('.tech-dd')
+  if (existing) existing.remove()
+
+  const wrapper = el.parentElement
+  const task = state.tasks.find(t => t.id === id)
+  const dd = document.createElement('div')
+  dd.className = 'tech-dd'
+
+  const rect = el.getBoundingClientRect()
+  dd.style.left = '-8px'
+  if (window.innerHeight - rect.bottom < 200) dd.style.bottom = 'calc(100% + 4px)'
+  else dd.style.top = 'calc(100% + 4px)'
+
+  const all = [{ id: '', label: 'Unassigned' }].concat(state.techs.map(t => ({ id: t.id, label: getTechName(t) })))
+  all.forEach(item => {
+    const div = document.createElement('div')
+    div.className = 'tech-dd-item' + ((item.id || '') === (task.techId || '') ? ' selected' : '') + (!item.id ? ' unassigned-opt' : '')
+    div.textContent = item.label
+    div.addEventListener('click', async ev => {
+      ev.stopPropagation()
+      await assignTech(id, item.id)
+      dd.remove()
+    })
+    dd.appendChild(div)
+  })
+
+  wrapper.appendChild(dd)
+  setTimeout(() => {
+    const close = evt => {
+      if (!dd.contains(evt.target)) {
+        dd.remove()
+        document.removeEventListener('click', close)
+      }
+    }
+    document.addEventListener('click', close)
+  }, 0)
+}
+
+function promptDelete(id) {
+  state.deleteTarget = id
+  const task = state.tasks.find(t => t.id === id)
+  document.getElementById('deleteModalBody').textContent = 'Remove "' + (task ? task.desc : 'this task') + '"?'
+  openModal('deleteModal')
+  closeKebabs()
+}
+
+async function confirmDelete() {
+  if (!state.deleteTarget) return
+  const targetId = state.deleteTarget
+
+  const { data, error } = await supabase
+    .from('tasks')
+    .delete()
+    .eq('id', targetId)
+    .select('id')
+
+  if (error) {
+    console.error('Error deleting task:', error)
+    alert(JSON.stringify(error))
+    return
+  }
+
+  if (!data || data.length === 0) {
+    alert('Delete matched 0 rows')
+    return
+  }
+
+  state.deleteTarget = null
+  closeModal('deleteModal')
+  await loadTasks()
+  showToast('Task deleted')
+}
+
+function promptReopen(id) {
+  state.reopenTarget = id
+  const task = state.tasks.find(t => t.id === id)
+  document.getElementById('reopenModalBody').textContent = 'Send "' + (task ? task.desc : 'this task') + '" back to Pending?'
+  document.getElementById('reopenReason').value = ''
+  openModal('reopenModal')
+  closeKebabs()
+}
+
+async function confirmReopen() {
+  if (!state.reopenTarget) return
+  const reopenReason = document.getElementById('reopenReason').value.trim()
+
+  const { error } = await supabase
+    .from('tasks')
+    .update({
+      status: 'pending',
+      reopen_reason: reopenReason || null
+    })
+    .eq('id', state.reopenTarget)
+
+  if (error) {
+    console.error('Error reopening task:', error)
+    alert(JSON.stringify(error))
+    return
+  }
+
+  state.reopenTarget = null
+  closeModal('reopenModal')
+  await loadTasks()
+  showToast('Task reopened')
+}
+
+function openJobSheet() {
+  const pending = state.tasks.filter(t => t.statusLabel === STATUS.PENDING)
+  const infield = state.tasks.filter(t => t.statusLabel === STATUS.INFIELD)
+  const complete = state.tasks.filter(t => t.statusLabel === STATUS.COMPLETE)
+  const now = new Date()
+  const dateStr = (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear()
+  const meta = [state.project?.client || '', state.project?.location || ''].filter(Boolean).join(' · ')
+
+  let html = '<div class="js-project"><div class="js-project-name">' + escapeHtml(state.project?.name || 'Project') + '</div><div class="js-project-meta">' + escapeHtml(meta) + '</div><div class="js-project-date">Generated ' + dateStr + '</div></div>'
+  if (state.project?.notes) html += '<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">' + escapeHtml(state.project.notes) + '</div></div>'
+
+  function renderGroup(title, list) {
+    if (!list.length) return ''
+    let s = '<div class="js-section"><div class="js-section-title">' + title + ' <span class="js-count">' + list.length + '</span></div><div class="js-site-list">'
+    list.forEach(t => {
+      const cycle = getLatestCycle(t.id)
+      s += '<div class="js-site"><div class="js-site-header"><span class="js-site-num">#' + t.site + '</span><span class="js-site-desc">' + escapeHtml(t.desc) + '</span><span class="js-site-type">' + escapeHtml(t.type) + '</span><span class="js-site-tech">' + getInitials(t.tech) + '</span></div>'
+      const times = []
+      if (cycle?.deployed_at) times.push('Set: ' + fmtTime(cycle.deployed_at))
+      if (cycle?.completed_at) times.push('Picked: ' + fmtTime(cycle.completed_at))
+      if (cycle?.deployed_at && cycle?.completed_at) times.push('Duration: ' + fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at)))
+      else if (cycle?.deployed_at && !cycle?.completed_at) times.push('In field: ' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime()))
+      if (times.length) s += '<div class="js-site-times">' + times.join(' · ') + '</div>'
+      if (t.note) s += '<div class="js-site-note">' + escapeHtml(t.note) + '</div>'
+      s += '</div>'
+    })
+    return s + '</div></div>'
+  }
+
+  html += renderGroup('Pending', pending)
+  html += renderGroup('In Field', infield)
+  html += renderGroup('Complete', complete)
+
+  document.getElementById('jobsheetBody').innerHTML = html
+  openModal('jobsheetOverlay')
+  document.body.style.overflow = 'hidden'
+}
+
+function closeJobSheet() {
+  closeModal('jobsheetOverlay')
+  document.body.style.overflow = ''
+}
+
+function printJobSheet() {
+  window.print()
+}
+
+function toggleMobileNav() {
+  document.getElementById('mobileNavMenu').classList.toggle('open')
+}
+
+document.getElementById('mobileNavToggle').addEventListener('click', e => {
+  e.stopPropagation()
+  toggleMobileNav()
+})
+
+document.getElementById('searchInput').addEventListener('input', render)
+document.getElementById('openJobSheetBtn').addEventListener('click', openJobSheet)
+document.getElementById('openAddTaskModalBtn').addEventListener('click', openAddTaskModal)
+document.getElementById('closeAddTaskModalBtn').addEventListener('click', closeAddTaskModal)
+document.getElementById('closeAddTaskModalBtnBulk').addEventListener('click', closeAddTaskModal)
+document.getElementById('submitAddTaskBtn').addEventListener('click', addTask)
+document.getElementById('closeDeleteModalBtn').addEventListener('click', () => closeModal('deleteModal'))
+document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete)
+document.getElementById('closeReopenModalBtn').addEventListener('click', () => closeModal('reopenModal'))
+document.getElementById('confirmReopenBtn').addEventListener('click', confirmReopen)
+document.getElementById('closeJobSheetBtn').addEventListener('click', closeJobSheet)
+document.getElementById('printJobSheetBtn').addEventListener('click', printJobSheet)
+document.getElementById('tabManual').addEventListener('click', () => switchTab('manual'))
+document.getElementById('tabBulk').addEventListener('click', () => switchTab('bulk'))
+document.getElementById('bulkDropZone').addEventListener('click', () => document.getElementById('fileInput').click())
+document.getElementById('fileInput').addEventListener('change', e => handleUpload(e.target.files[0]))
+
+document.getElementById('taskSections').addEventListener('click', e => {
+  const actionEl = e.target.closest('[data-action]')
+  if (!actionEl) return
+
+  const action = actionEl.dataset.action
+  const id = actionEl.dataset.id
+
+  if (actionEl.closest('.kebab-cell') || actionEl.closest('.kebab-menu')) e.stopPropagation()
+
+  if (action === 'toggle-kebab') return toggleKebab(id, e)
+  if (action === 'edit-task') return startEdit(id)
+  if (action === 'delete-task') return promptDelete(id)
+  if (action === 'reopen-task') return promptReopen(id)
+  if (action === 'show-tech') return showTechSelect(id, actionEl)
+})
+
+document.getElementById('taskSections').addEventListener('keydown', e => {
+  const input = e.target.closest('.edit-input')
+  if (!input) return
+  if (e.key === 'Enter') saveEdit(input.dataset.id, input)
+})
+
+document.getElementById('taskSections').addEventListener('focusout', e => {
+  const input = e.target.closest('.edit-input')
+  if (!input) return
+  if (document.getElementById('row-' + input.dataset.id)?.classList.contains('editing')) {
+    saveEdit(input.dataset.id, input)
+  }
+})
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.m-kebab,.mobile-nav-menu')) {
+    document.getElementById('mobileNavMenu').classList.remove('open')
+  }
+  if (!e.target.closest('.kebab-cell,.kebab-menu')) closeKebabs()
+})
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('visible')
+      if (this.id === 'jobsheetOverlay') document.body.style.overflow = ''
+    }
+  })
+})
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeAddTaskModal()
+    closeModal('deleteModal')
+    closeModal('reopenModal')
+    closeJobSheet()
+  }
+})
+
+await loadAll()
 </script>
-
 </body>
 </html>
