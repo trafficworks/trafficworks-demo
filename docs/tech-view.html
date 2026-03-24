@@ -7,6 +7,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css">
+
+<style>
+.tv-task-card{transition:background-color .22s ease, opacity .28s ease, transform .28s ease, box-shadow .22s ease}
+.tv-task-card.row-success-infield{background:rgba(141,183,219,.14);box-shadow:0 0 0 1px rgba(141,183,219,.20) inset}
+.tv-task-card.row-success-complete{background:rgba(42,181,126,.12);box-shadow:0 0 0 1px rgba(42,181,126,.20) inset}
+.tv-task-card.row-exit{opacity:0;transform:translateY(-6px)}
+.tv-note-indicator,.tv-note-save-btn{position:relative;z-index:3}
+</style>
+
 </head>
 <body>
 <div class="tv-header">
@@ -361,8 +370,8 @@ function taskCardHTML(t,isComplete){
   } else {
     actionHTML='<button class="toggle-btn '+toggleBtnClass(t.status)+'" data-task-id="'+t.id+'"><div class="toggle-fill"></div><span class="toggle-label">'+actionLabel(t.status)+'</span></button>';
   }
-  var notePanel='<div class="tv-note-panel'+(state.openNoteId===t.id?' open':'')+'" id="note-panel-'+t.id+'"><div class="tv-note-panel-inner"><input class="tv-note-input" maxlength="'+MAX_NOTE+'" placeholder="Add a quick note…" value="'+escapeAttr(t.note||'')+'" oninput="updateCharCount('+JSON.stringify(String(t.id))+',this)" onkeydown="if(event.key===\'Enter\')saveNote('+JSON.stringify(String(t.id))+')"><span class="tv-note-char-count" id="char-count-'+t.id+'">'+(MAX_NOTE-(t.note||'').length)+'</span><button class="tv-note-save-btn" onclick="saveNote('+JSON.stringify(String(t.id))+')">Save</button></div></div>';
-  return '<div class="tv-task-card '+cc+'"><div class="tv-task-inner"><div class="tv-task-content"><div class="tv-task-desc-row"><div class="tv-task-desc">'+escapeHtml(t.desc)+'</div><button class="'+noteClass+'" onclick="toggleNote('+JSON.stringify(String(t.id))+',event)">'+noteIconSvg+'</button></div><div class="tv-task-divider"></div><div class="tv-task-detail-row">'+detailHTML+'</div>'+reopenHTML+'</div><div class="tv-task-action">'+actionHTML+'</div></div>'+notePanel+'</div>';
+  var notePanel='<div class="tv-note-panel'+(state.openNoteId===t.id?' open':'')+'" id="note-panel-'+t.id+'"><div class="tv-note-panel-inner"><input class="tv-note-input" maxlength="'+MAX_NOTE+'" placeholder="Add a quick note…" value="'+escapeAttr(t.note||'')+'" oninput="updateCharCount('+JSON.stringify(String(t.id))+',this)" onkeydown="if(event.key===\'Enter\')saveNote('+JSON.stringify(String(t.id))+')"><span class="tv-note-char-count" id="char-count-'+t.id+'">'+(MAX_NOTE-(t.note||'').length)+'</span><button type="button" class="tv-note-save-btn" data-action="save-note" data-task-id="'+t.id+'" onclick="saveNote('+JSON.stringify(String(t.id))+')">Save</button></div></div>';
+  return '<div class="tv-task-card '+cc+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'"><div class="tv-task-inner"><div class="tv-task-content"><div class="tv-task-desc-row"><div class="tv-task-desc">'+escapeHtml(t.desc)+'</div><button type="button" class="'+noteClass+'" data-action="toggle-note" data-task-id="'+t.id+'" onclick="toggleNote('+JSON.stringify(String(t.id))+',event)">'+noteIconSvg+'</button></div><div class="tv-task-divider"></div><div class="tv-task-detail-row">'+detailHTML+'</div>'+reopenHTML+'</div><div class="tv-task-action">'+actionHTML+'</div></div>'+notePanel+'</div>';
 }
 function toggleCompleted(){state.completedCollapsed=!state.completedCollapsed;renderTaskCards()}
 function toggleNote(id,e){e.stopPropagation();state.openNoteId=state.openNoteId===id?null:id;renderTaskCards();if(state.openNoteId===id){var input=document.querySelector('#note-panel-'+String(id)+' .tv-note-input');if(input)setTimeout(function(){input.focus()},80)}}
@@ -409,6 +418,13 @@ async function refreshCurrentProject(projectId){
     state.currentProject=state.projects.find(function(p){return String(p.id)===String(projectId)}) || null;
   }
 }
+function markTaskSuccess(taskId, kind){
+  var row=document.getElementById('task-card-'+String(taskId));
+  if(!row) return;
+  row.classList.add(kind==='complete' ? 'row-success-complete' : 'row-success-infield');
+  setTimeout(function(){ row.classList.add('row-exit'); }, 420);
+}
+function delay(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
 async function cycleTaskStatus(taskId){
   if(!state.currentProject)return;
   var projectId=state.currentProject.id;
@@ -430,6 +446,10 @@ async function cycleTaskStatus(taskId){
       task.reopenReason='';
       task.currentCycle={deployedAt:new Date(newCycle.deployed_at),completedAt:null,pickedUpAt:null,cycleId:newCycle.id,cycleNum:newCycle.cycle_num};
       task.cycles.unshift({id:newCycle.id,cycle_num:newCycle.cycle_num,deployedAt:new Date(newCycle.deployed_at),completedAt:null,pickedUpAt:null,reopenReason:'',reopenedBy:''});
+      document.getElementById('undoBtn').style.display='flex';
+      showStatusConfirm();
+      markTaskSuccess(taskId,'infield');
+      await delay(760);
       await refreshCurrentProject(projectId);
     } else if(task.status===STATUS.INFIELD){
       const inMemoryCycleId=task.currentCycle&&task.currentCycle.cycleId?task.currentCycle.cycleId:null;
@@ -454,10 +474,12 @@ async function cycleTaskStatus(taskId){
       task.status=STATUS.COMPLETE;
       task.currentCycle={deployedAt:latest.deployed_at?new Date(latest.deployed_at):null,completedAt:new Date(now),pickedUpAt:new Date(now),cycleId:latest.id,cycleNum:latest.cycle_num};
       if(task.cycles.length){task.cycles[0].completedAt=new Date(now);task.cycles[0].pickedUpAt=new Date(now)}
+      document.getElementById('undoBtn').style.display='flex';
+      showStatusConfirm();
+      markTaskSuccess(taskId,'complete');
+      await delay(860);
       await refreshCurrentProject(projectId);
     }
-    document.getElementById('undoBtn').style.display='flex';
-    showStatusConfirm();
     renderTaskView();renderProjectStats();renderProjectCards();
   }catch(error){ showError('Could not update task status.', error); }
 }
@@ -551,6 +573,23 @@ function openJobSheet(projectId){
   document.body.style.overflow='hidden';
 }
 function closePrintView(){document.getElementById('printOverlay').classList.remove('visible');document.body.style.overflow=''}
+
+
+document.addEventListener('click',function(e){
+  var noteBtn=e.target.closest('[data-action="toggle-note"]');
+  if(noteBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    toggleNote(noteBtn.dataset.taskId,e);
+    return;
+  }
+  var saveBtn=e.target.closest('[data-action="save-note"]');
+  if(saveBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    saveNote(saveBtn.dataset.taskId);
+  }
+});
 
 Object.assign(window,{showProjects,openProject,dismissHint,toggleFilter,toggleCompleted,toggleNote,updateCharCount,saveNote,undoLastAction,promptReopen,closeReopenModal,confirmReopen,openJobSheet,closePrintView,cycleTaskStatus});
 loadAll();
