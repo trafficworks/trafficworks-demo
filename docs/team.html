@@ -402,9 +402,9 @@ async function addMember() {
     const { error } = await supabase.from('users').insert([payload])
 
     if (error) {
-      console.error('Error adding tech:', error)
-      alert(JSON.stringify(error))
-      return
+      console.error(error)
+      showToast('Could not add tech')
+    return
     }
 
     closeAddModal()
