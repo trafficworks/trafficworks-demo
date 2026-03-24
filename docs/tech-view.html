@@ -365,22 +365,31 @@ function taskCardHTML(t,isComplete){
   return '<div class="tv-task-card '+cc+'"><div class="tv-task-inner"><div class="tv-task-content"><div class="tv-task-desc-row"><div class="tv-task-desc">'+escapeHtml(t.desc)+'</div><button class="'+noteClass+'" onclick="toggleNote('+JSON.stringify(String(t.id))+',event)">'+noteIconSvg+'</button></div><div class="tv-task-divider"></div><div class="tv-task-detail-row">'+detailHTML+'</div>'+reopenHTML+'</div><div class="tv-task-action">'+actionHTML+'</div></div>'+notePanel+'</div>';
 }
 function toggleCompleted(){state.completedCollapsed=!state.completedCollapsed;renderTaskCards()}
-function toggleNote(id,e){e.stopPropagation();state.openNoteId=state.openNoteId===id?null:id;renderTaskCards();if(state.openNoteId===id){var input=document.querySelector('#note-panel-'+CSS.escape(String(id))+' .tv-note-input');if(input)setTimeout(function(){input.focus()},250)}}
+function toggleNote(id,e){e.stopPropagation();state.openNoteId=state.openNoteId===id?null:id;renderTaskCards();if(state.openNoteId===id){var input=document.querySelector('#note-panel-'+String(id)+' .tv-note-input');if(input)setTimeout(function(){input.focus()},80)}}
 function updateCharCount(id,input){var r=MAX_NOTE-input.value.length;var el=document.getElementById('char-count-'+id);if(el){el.textContent=r;el.classList.toggle('warn',r<15)}}
 async function saveNote(id){
-  var input=document.querySelector('#note-panel-'+CSS.escape(String(id))+' .tv-note-input');if(!input||!state.currentProject)return;
+  var input=document.querySelector('#note-panel-'+String(id)+' .tv-note-input');if(!input||!state.currentProject)return;
   var task=state.currentProject.tasks.find(function(t){return String(t.id)===String(id)});if(!task)return;
   var note=input.value.trim();
   const {error}=await supabase.from('tasks').update({notes:note}).eq('id',id);
   if(error){showError('Could not save note.', error);return;}
-  task.note=note; state.openNoteId=null; renderTaskCards();
+  task.note=note;
+  state.openNoteId=null;
+  await refreshCurrentProject(state.currentProject.id);
+  renderTaskView();renderProjectCards();
+  showToast(note ? 'Note saved' : 'Note cleared');
 }
 function setupHoldButton(btn,duration,callback){var timer=null;function start(e){e.preventDefault();btn.classList.add('holding');timer=setTimeout(function(){btn.classList.remove('holding');if(navigator.vibrate)navigator.vibrate(30);callback(btn.dataset.taskId)},duration)}function end(){clearTimeout(timer);btn.classList.remove('holding')}btn.addEventListener('pointerdown',start,{passive:false});btn.addEventListener('pointerup',end);btn.addEventListener('pointerleave',end);btn.addEventListener('pointercancel',end)}
 
 async function getCoords(){
+  if(qp('geo')!=='1') return null;
   if(!navigator.geolocation) return null;
   return new Promise(function(resolve){
-    navigator.geolocation.getCurrentPosition(function(pos){resolve({lat:pos.coords.latitude,lng:pos.coords.longitude})},function(){resolve(null)},{enableHighAccuracy:true,timeout:5000,maximumAge:60000})
+    navigator.geolocation.getCurrentPosition(
+      function(pos){resolve({lat:pos.coords.latitude,lng:pos.coords.longitude})},
+      function(){resolve(null)},
+      {enableHighAccuracy:true,timeout:3000,maximumAge:300000}
+    )
   })
 }
 async function getLatestCycleRow(taskId){
@@ -474,6 +483,7 @@ async function undoLastAction(){
       task.currentCycle.completedAt=null; task.currentCycle.pickedUpAt=null;
       if(task.cycles.length){task.cycles[0].completedAt=null;task.cycles[0].pickedUpAt=null;}
     }
+    await refreshCurrentProject(state.currentProject.id);
     state.lastAction=null;
     document.getElementById('undoBtn').style.display='none';
     showUndoConfirm();
@@ -499,6 +509,7 @@ async function confirmReopen(){
     task.status=STATUS.PENDING;
     task.reopenReason=reason;
     task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+    await refreshCurrentProject(state.currentProject.id);
     closeReopenModal();renderTaskView();renderProjectStats();renderProjectCards();
   }catch(error){ showError('Could not reopen task.', error); }
 }
@@ -526,7 +537,8 @@ function openJobSheet(projectId){
       if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)times.push('Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime()));
       else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt)times.push('In field: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime()));
       if(times.length>0)s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
-      if(t.note)s+='<div class="js-site-note">'+escapeHtml(t.note)+'</div>';
+      if(t.reopenReason)s+='<div class="js-site-note">Reopened: '+escapeHtml(t.reopenReason)+'</div>';
+      if(t.note)s+='<div class="js-site-note">Note: '+escapeHtml(t.note)+'</div>';
       s+='</div>';
     });
     return s+'</div></div>';
