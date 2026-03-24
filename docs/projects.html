@@ -21,7 +21,7 @@
       <a href="team.html">Team</a>
       <a href="archive.html">Archive</a>
     </div>
-    <button class="m-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <button class="m-kebab" id="mobileNavToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
   <div class="nav-line"></div>
 </div>
@@ -42,14 +42,14 @@
       <span class="page-title">Projects</span>
       <span class="page-count" id="projectCount"></span>
     </div>
-    <button class="btn-action" onclick="openCreateModal()"><span class="plus">+</span> New Project</button>
+    <button class="btn-action" id="openCreateModalBtn"><span class="plus">+</span> New Project</button>
   </div>
 
   <!-- SEARCH -->
   <div class="search-row">
     <div class="search-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input class="search-input" type="text" placeholder="Search projects…" id="searchInput" oninput="filterProjects()">
+      <input class="search-input" type="text" placeholder="Search projects…" id="searchInput">
     </div>
   </div>
 
@@ -95,8 +95,8 @@
       <textarea class="form-input" id="newProjectNotes" rows="3" placeholder="Gate codes, equipment notes, client requirements…"></textarea>
     </div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeCreateModal()">Cancel</button>
-      <button class="btn-solid" onclick="createProject()">Create Project</button>
+      <button class="btn-ghost" id="closeCreateModalBtn">Cancel</button>
+      <button class="btn-solid" id="submitCreateProjectBtn">Create Project</button>
     </div>
   </div>
 </div>
@@ -121,8 +121,8 @@
       <input class="form-input" type="text" id="editProjectLocation">
     </div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeEditModal()">Cancel</button>
-      <button class="btn-solid" onclick="saveEditProject()">Save Changes</button>
+      <button class="btn-ghost" id="closeEditModalBtn">Cancel</button>
+      <button class="btn-solid" id="saveEditProjectBtn">Save Changes</button>
     </div>
   </div>
 </div>
@@ -132,8 +132,8 @@
     <div class="modal-title">Delete Project</div>
     <div class="modal-body" id="deleteModalBody"></div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeDeleteModal()">Cancel</button>
-      <button class="btn-danger" onclick="confirmDelete()">Delete Project</button>
+      <button class="btn-ghost" id="closeDeleteModalBtn">Cancel</button>
+      <button class="btn-danger" id="confirmDeleteBtn">Delete Project</button>
     </div>
   </div>
 </div>
@@ -143,8 +143,8 @@
     <div class="modal-title">Archive Project</div>
     <div class="modal-body" id="archiveModalBody"></div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeArchiveModal()">Cancel</button>
-      <button class="btn-archive" onclick="confirmArchive()">Archive Project</button>
+      <button class="btn-ghost" id="closeArchiveModalBtn">Cancel</button>
+      <button class="btn-archive" id="confirmArchiveBtn">Archive Project</button>
     </div>
   </div>
 </div>
@@ -155,8 +155,8 @@
     <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">Notes visible to field techs on this project</div>
     <textarea class="form-input" id="notesInput" rows="5" placeholder="Gate codes, equipment notes, client requirements…"></textarea>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeNotesModal()">Cancel</button>
-      <button class="btn-solid" onclick="saveNotes()">Save</button>
+      <button class="btn-ghost" id="closeNotesModalBtn">Cancel</button>
+      <button class="btn-solid" id="saveNotesBtn">Save</button>
     </div>
   </div>
 </div>
@@ -166,9 +166,9 @@
 <!-- JOB SHEET OVERLAY -->
 <div class="jobsheet-overlay" id="jobsheetOverlay">
   <div class="jobsheet-header">
-    <button class="jobsheet-close" onclick="closeJobSheet()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <button class="jobsheet-close" id="closeJobSheetBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <span class="jobsheet-title">Job Sheet</span>
-    <button class="jobsheet-download" onclick="printJobSheet()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
+    <button class="jobsheet-download" id="printJobSheetBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
   </div>
   <div class="jobsheet-body" id="jobsheetBody"></div>
 </div>
@@ -254,6 +254,11 @@ function badgeClass(s) {
 
 function getInitials(name) { if(!name) return '—'; return name.split(' ').map(function(p){return p[0]}).join('').toUpperCase(); }
 
+function openProjectDetail(id) {
+  window.location.href = 'project-detail.html?id=' + encodeURIComponent(id);
+}
+
+
 
 // ═══════════════════════════════════════
 // RENDER — grouped by status
@@ -312,13 +317,13 @@ function renderProjects(list) {
 
       // Status dropdown for non-complete
       if (p.status !== 'Complete') {
-        statusClick = ' onclick="toggleStatusDrop(\'' + p.id + '\'); event.stopPropagation();" style="cursor:pointer"';
+        statusClick = ' data-action="toggle-status" data-id="' + p.id + '" style="cursor:pointer"';
         statusDropdown = '<div class="status-dropdown" id="sd-' + p.id + '">' + getStatusOptions(p) + '</div>';
       }
 
       // Progress or archive/reopen
       if (p.status === 'Complete') {
-        progressCell = '<span style="display:inline-flex;gap:6px"><button class="btn-small" onclick="promptArchive(\'' + p.id + '\'); event.stopPropagation();">Archive</button><button class="btn-small" onclick="reopenProject(\'' + p.id + '\'); event.stopPropagation();">Reopen</button></span>';
+        progressCell = '<span style="display:inline-flex;gap:6px"><button class="btn-small" data-action="archive" data-id="' + p.id + '">Archive</button><button class="btn-small" data-action="reopen" data-id="' + p.id + '">Reopen</button></span>';
       } else {
         progressCell = '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + p.pct + '%"></div></div><span class="progress-pct">' + p.pct + '%</span></div>';
       }
@@ -329,15 +334,15 @@ function renderProjects(list) {
       html += '<td>' + progressCell + '</td>';
       html += '<td class="c"><span class="cell-num-open ' + (p.openTasks===0?'zero':'') + '">' + p.openTasks + '</span></td>';
       html += '<td class="c"><span class="cell-num-done">' + complete + '</span></td>';
-      html += '<td class="r kebab-cell"><button class="kebab" onclick="toggleKebab(\'' + p.id + '\', event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
-      html += '<div class="kebab-menu" id="kebab-' + p.id + '" onclick="event.stopPropagation()">';
-      html += '<button class="kebab-menu-item" onclick="openEditModal(\'' + p.id + '\'); event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
-      html += '<button class="kebab-menu-item" onclick="openNotesModal(\'' + p.id + '\'); event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Tech Notes</button>';
-      html += '<button class="kebab-menu-item" onclick="openJobSheet(\'' + p.id + '\'); event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</button>';
+      html += '<td class="r kebab-cell"><button class="kebab" data-action="toggle-kebab" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
+      html += '<div class="kebab-menu" id="kebab-' + p.id + '">';
+      html += '<button class="kebab-menu-item" data-action="edit" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
+      html += '<button class="kebab-menu-item" data-action="notes" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Tech Notes</button>';
+      html += '<button class="kebab-menu-item" data-action="jobsheet" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</button>';
       if (p.status === 'Complete') {
-        html += '<button class="kebab-menu-item" onclick="promptArchive(\'' + p.id + '\'); event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Archive</button>';
+        html += '<button class="kebab-menu-item" data-action="archive" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Archive</button>';
       }
-      html += '<button class="kebab-menu-item danger" onclick="promptDelete(\'' + p.id + '\'); event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
+      html += '<button class="kebab-menu-item danger" data-action="delete" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
       html += '</div></td>';
       html += '</tr>';
     });
@@ -354,7 +359,7 @@ function renderProjects(list) {
       if (e.target.closest('.status-dropdown')) return
       if (e.target.closest('.kebab-menu')) return
 
-      window.location.href = 'project-detail.html'
+      openProjectDetail(row.dataset.projectId)
     })
   })
 
@@ -372,10 +377,10 @@ function renderProjects(list) {
       var done = p.totalTasks - p.openTasks;
       var isComplete = p.status === 'Complete';
       mHtml += '<div class="m-project-row' + (isComplete?' complete':'') + '">';
-      mHtml += '<div class="m-project-left" onclick="window.location.href=\'project-detail.html\'">';
+      mHtml += '<div class="m-project-left" data-action="open-project" data-id="' + p.id + '">';
       mHtml += '<div class="m-project-name">' + p.name + '</div>';
       mHtml += '<div class="m-project-detail">' + p.location + (isComplete ? '' : ' · ' + p.openTasks + ' open') + '</div>';
-      mHtml += '<div class="m-project-js" onclick="openJobSheet(\'' + p.id + '\'); event.stopPropagation();"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</div>';
+      mHtml += '<div class="m-project-js" data-action="jobsheet" data-id="' + p.id + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</div>';
       mHtml += '</div>';
       mHtml += '<div class="m-project-right">';
       if (isComplete) {
@@ -787,38 +792,72 @@ window.addEventListener('pageshow', function(e) { if (e.persisted) filterProject
 function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
 document.addEventListener('click',function(e){if(!e.target.closest('.m-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
 
-// expose functions for inline onclick (required for module scripts)
-window.openCreateModal = openCreateModal
-window.closeCreateModal = closeCreateModal
-window.createProject = createProject
+// UI listeners
+document.getElementById('openCreateModalBtn')?.addEventListener('click', openCreateModal)
+document.getElementById('closeCreateModalBtn')?.addEventListener('click', closeCreateModal)
+document.getElementById('submitCreateProjectBtn')?.addEventListener('click', createProject)
 
-window.openEditModal = openEditModal
-window.closeEditModal = closeEditModal
-window.saveEditProject = saveEditProject
+document.getElementById('closeEditModalBtn')?.addEventListener('click', closeEditModal)
+document.getElementById('saveEditProjectBtn')?.addEventListener('click', saveEditProject)
 
-window.promptDelete = promptDelete
-window.closeDeleteModal = closeDeleteModal
-window.confirmDelete = confirmDelete
+document.getElementById('closeDeleteModalBtn')?.addEventListener('click', closeDeleteModal)
+document.getElementById('confirmDeleteBtn')?.addEventListener('click', confirmDelete)
 
-window.promptArchive = promptArchive
-window.closeArchiveModal = closeArchiveModal
-window.confirmArchive = confirmArchive
+document.getElementById('closeArchiveModalBtn')?.addEventListener('click', closeArchiveModal)
+document.getElementById('confirmArchiveBtn')?.addEventListener('click', confirmArchive)
 
-window.openNotesModal = openNotesModal
-window.closeNotesModal = closeNotesModal
-window.saveNotes = saveNotes
+document.getElementById('closeNotesModalBtn')?.addEventListener('click', closeNotesModal)
+document.getElementById('saveNotesBtn')?.addEventListener('click', saveNotes)
 
-window.openJobSheet = openJobSheet
-window.closeJobSheet = closeJobSheet
-window.printJobSheet = printJobSheet
+document.getElementById('closeJobSheetBtn')?.addEventListener('click', closeJobSheet)
+document.getElementById('printJobSheetBtn')?.addEventListener('click', printJobSheet)
 
-window.toggleMobileNav = toggleMobileNav
-window.toggleKebab = toggleKebab
-window.toggleStatusDrop = toggleStatusDrop
-window.setProjectStatus = setProjectStatus
-window.reopenProject = reopenProject
-window.filterProjects = filterProjects
-  
+document.getElementById('searchInput')?.addEventListener('input', filterProjects)
+document.getElementById('mobileNavToggle')?.addEventListener('click', function(e) {
+  e.stopPropagation()
+  toggleMobileNav()
+})
+
+document.getElementById('projectSections')?.addEventListener('click', function(e) {
+  var actionEl = e.target.closest('[data-action]')
+  if (!actionEl) return
+
+  var action = actionEl.dataset.action
+  var id = actionEl.dataset.id
+  var status = actionEl.dataset.status
+
+  if (actionEl.closest('.kebab-menu') || actionEl.closest('.kebab-cell') || actionEl.closest('.status-dropdown') || action === 'toggle-status') {
+    e.stopPropagation()
+  }
+
+  if (action === 'toggle-kebab') return toggleKebab(id, e)
+  if (action === 'edit') return openEditModal(id)
+  if (action === 'notes') return openNotesModal(id)
+  if (action === 'jobsheet') return openJobSheet(id)
+  if (action === 'archive') return promptArchive(id)
+  if (action === 'delete') return promptDelete(id)
+  if (action === 'reopen') return reopenProject(id)
+  if (action === 'toggle-status') return toggleStatusDrop(id)
+  if (action === 'set-status') return setProjectStatus(id, status)
+})
+
+document.getElementById('mobileProjectList')?.addEventListener('click', function(e) {
+  var actionEl = e.target.closest('[data-action]')
+  if (!actionEl) return
+
+  var action = actionEl.dataset.action
+  var id = actionEl.dataset.id
+
+  if (action === 'jobsheet') {
+    e.stopPropagation()
+    return openJobSheet(id)
+  }
+
+  if (action === 'open-project') {
+    return openProjectDetail(id)
+  }
+})
+
 </script>
 
 </body>
