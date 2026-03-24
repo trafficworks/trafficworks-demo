@@ -43,7 +43,7 @@
   <!-- DESKTOP MANAGERS -->
   <div class="team-section">
     <div class="section-header">
-      <span class="section-label">Managers <span class="count" id="managerCount">2</span></span>
+      <span class="section-label" style="padding-top:0">Managers <span class="count" id="managerCount">0</span></span>
       <button class="btn-action" onclick="openAddModal('manager')"><span class="plus">+</span> Add Manager</button>
     </div>
     <table>
@@ -55,7 +55,7 @@
   <!-- DESKTOP TECHS -->
   <div class="team-section">
     <div class="section-header">
-      <span class="section-label">Field Technicians <span class="count" id="techCount">2</span></span>
+      <span class="section-label" style="padding-top:0">Field Technicians <span class="count" id="techCount">0</span></span>
       <button class="btn-action" onclick="openAddModal('tech')"><span class="plus">+</span> Add Tech</button>
     </div>
     <table>
@@ -63,7 +63,6 @@
       <tbody id="techTableBody"></tbody>
     </table>
   </div>
-
 
 </div>
 
@@ -98,82 +97,532 @@
 
 <div class="toast" id="toast"></div>
 
-<script>
-function generatePin(){var p='';for(var i=0;i<6;i++)p+=Math.floor(Math.random()*10);return p}
-function formatPhone(v){var d=v.replace(/\D/g,'');if(d.length>10)d=d.slice(0,10);if(!d.length)return '';if(d.length<=3)return '('+d;if(d.length<=6)return '('+d.slice(0,3)+') '+d.slice(3);return '('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6)}
-document.addEventListener('input',function(e){if(e.target.id==='addPhone'){var p=e.target.selectionStart,b=e.target.value.length;e.target.value=formatPhone(e.target.value);e.target.selectionStart=e.target.selectionEnd=p+(e.target.value.length-b)}if(e.target.classList.contains('form-input')&&e.target.classList.contains('error')){e.target.classList.remove('error');var err=document.getElementById('err'+e.target.id.replace('add',''));if(err)err.classList.remove('show')}});
+<script type="module">
+import { supabase } from './js/supabase.js'
 
-var managers=[
-  {id:1,first:'Wesley',last:'Johnson',email:'wesley@acmetraffic.com',phone:'(626) 555-0101',role:'admin',status:'active'},
-  {id:2,first:'Sarah',last:'Chen',email:'sarah@acmetraffic.com',phone:'(626) 555-0102',role:'manager',status:'active'}
-];
-var techs=[
-  {id:3,first:'Carlos',last:'M.',email:'carlos@acmetraffic.com',phone:'(626) 555-0201',pin:'318472',status:'active'},
-  {id:4,first:'Diana',last:'R.',email:'diana@acmetraffic.com',phone:'(626) 555-0202',pin:'825139',status:'active'}
-];
-var nextId=9,addType='tech',editingId=null,deleteTarget=null,deleteType=null,openKebab=null;
+const COMPANY_ID = '4f365a63-e2d8-45ea-960a-67d35b5f95e1'
 
-function render(){ renderManagers(); renderTechs(); renderMobile(); }
+let managers = []
+let techs = []
+let addType = 'tech'
+let editingId = null
+let deleteTarget = null
+let deleteType = null
+let openKebab = null
 
-function renderManagers(){
-  document.getElementById('managerCount').textContent=managers.length;
-  document.getElementById('managerTableBody').innerHTML=managers.map(function(m){
-    var k=m.role==='admin'?'<span class="member-locked">Account owner</span>':'<button class="kebab" onclick="toggleKebab(\'m\','+m.id+',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button><div class="kebab-menu" id="kebab-m-'+m.id+'"><button class="kebab-menu-item" onclick="editMember(\'manager\','+m.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button><button class="kebab-menu-item danger" onclick="promptDelete(\'manager\','+m.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button></div>';
-    return '<tr><td><div class="cell-name">'+m.first+' '+m.last+'</div></td><td><span class="cell-secondary">'+m.email+'</span></td><td><span class="cell-secondary">'+m.phone+'</span></td><td><span class="role-pill role-pill-'+m.role+'">'+m.role.charAt(0).toUpperCase()+m.role.slice(1)+'</span></td><td><span class="status-dot'+(m.status!=='active'?' inactive':'')+'">'+m.status.charAt(0).toUpperCase()+m.status.slice(1)+'</span></td><td class="r kebab-cell">'+k+'</td></tr>';
-  }).join('');
+function generatePinValue() {
+  let pin = ''
+  for (let i = 0; i < 6; i++) pin += Math.floor(Math.random() * 10)
+  return pin
 }
 
-function renderTechs(){
-  document.getElementById('techCount').textContent=techs.length;
-  document.getElementById('techTableBody').innerHTML=techs.map(function(t){
-    return '<tr><td><div class="cell-name">'+t.first+' '+t.last+'</div></td><td><span class="cell-secondary">'+t.email+'</span></td><td><span class="cell-secondary">'+t.phone+'</span></td><td><span class="cell-pin">'+t.pin+'</span></td><td><span class="status-dot'+(t.status!=='active'?' inactive':'')+'">'+t.status.charAt(0).toUpperCase()+t.status.slice(1)+'</span></td><td class="r kebab-cell"><button class="kebab" onclick="toggleKebab(\'t\','+t.id+',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button><div class="kebab-menu" id="kebab-t-'+t.id+'"><button class="kebab-menu-item" onclick="editMember(\'tech\','+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button><button class="kebab-menu-item" onclick="toggleStatus('+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>'+(t.status==='active'?'Deactivate':'Activate')+'</button><button class="kebab-menu-item danger" onclick="promptDelete(\'tech\','+t.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button></div></td></tr>';
-  }).join('');
+async function generateUniquePin() {
+  for (let i = 0; i < 25; i++) {
+    const pin = generatePinValue()
+    const { data, error } = await supabase
+      .from('users')
+      .select('id')
+      .eq('company_id', COMPANY_ID)
+      .eq('pin', pin)
+      .limit(1)
+
+    if (error) throw error
+    if (!data || data.length === 0) return pin
+  }
+  throw new Error('Could not generate unique PIN')
 }
 
-function renderMobile(){
-  var el=document.getElementById('mobileTeam'); if(!el) return;
-  var h='';
-  h+='<div class="m-section">Managers <span class="count">'+managers.length+'</span></div>';
-  managers.forEach(function(m){
-    h+='<div class="m-team-row"><div class="m-team-left"><div class="m-team-name">'+m.first+' '+m.last+'</div><div class="m-team-detail">'+m.phone+'</div></div><div class="m-team-right"><span class="m-task-badge m-team-pill-'+m.role+'">'+m.role.charAt(0).toUpperCase()+m.role.slice(1)+'</span><div class="m-team-dot'+(m.status!=='active'?' off':'')+'"></div></div></div>';
-  });
-  h+='<div class="m-section">Technicians <span class="count">'+techs.length+'</span></div>';
-  techs.forEach(function(t){
-    h+='<div class="m-team-row"><div class="m-team-left"><div class="m-team-name">'+t.first+' '+t.last+'</div><div class="m-team-detail">'+t.phone+'</div></div><div class="m-team-right"><span class="m-team-pin">'+t.pin+'</span><div class="m-team-dot'+(t.status!=='active'?' off':'')+'"></div></div></div>';
-  });
-  el.innerHTML=h;
+function formatPhone(v) {
+  const d = String(v || '').replace(/\D/g, '').slice(0, 10)
+  if (!d.length) return ''
+  if (d.length <= 3) return '(' + d
+  if (d.length <= 6) return '(' + d.slice(0, 3) + ') ' + d.slice(3)
+  return '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6)
 }
 
-function openAddModal(type){addType=type;editingId=null;clearErrors();document.getElementById('addModalTitle').textContent=type==='manager'?'Add Manager':'Add Technician';['addFirst','addLast','addEmail','addPhone'].forEach(function(id){document.getElementById(id).value=''});document.getElementById('addSubmitBtn').textContent='Add Member';document.getElementById('addModal').classList.add('visible');document.getElementById('addFirst').focus()}
-function closeAddModal(){document.getElementById('addModal').classList.remove('visible')}
-function clearErrors(){['First','Last','Email','Phone'].forEach(function(f){document.getElementById('add'+f).classList.remove('error');document.getElementById('err'+f).classList.remove('show')})}
-function validateForm(){clearErrors();var v=true,first=document.getElementById('addFirst').value.trim(),last=document.getElementById('addLast').value.trim(),email=document.getElementById('addEmail').value.trim(),phone=document.getElementById('addPhone').value.trim(),digits=phone.replace(/\D/g,'');if(!first){document.getElementById('addFirst').classList.add('error');document.getElementById('errFirst').classList.add('show');v=false}if(!last){document.getElementById('addLast').classList.add('error');document.getElementById('errLast').classList.add('show');v=false}if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){document.getElementById('addEmail').classList.add('error');document.getElementById('errEmail').classList.add('show');v=false}if(digits.length!==10){document.getElementById('addPhone').classList.add('error');document.getElementById('errPhone').classList.add('show');v=false}return v}
+document.addEventListener('input', function(e) {
+  if (e.target.id === 'addPhone') {
+    const p = e.target.selectionStart || 0
+    const before = e.target.value.length
+    e.target.value = formatPhone(e.target.value)
+    const delta = e.target.value.length - before
+    e.target.selectionStart = e.target.selectionEnd = Math.max(0, p + delta)
+  }
 
-function addMember(){if(!validateForm())return;var first=document.getElementById('addFirst').value.trim(),last=document.getElementById('addLast').value.trim(),email=document.getElementById('addEmail').value.trim(),phone=document.getElementById('addPhone').value.trim();if(editingId!==null){var list=addType==='manager'?managers:techs;var ex=list.find(function(x){return x.id===editingId});if(ex){ex.first=first;ex.last=last;ex.email=email;ex.phone=phone}editingId=null;closeAddModal();render();showToast('Changes saved');return}var member={id:nextId++,first:first,last:last,email:email,phone:phone,pin:generatePin(),status:'active'};if(addType==='manager'){member.role='manager';member.status='invited';delete member.pin;managers.push(member);closeAddModal();render();showToast('Invite sent to '+email)}else{techs.push(member);closeAddModal();render();showPinModal(member)}}
+  if (e.target.classList.contains('form-input') && e.target.classList.contains('error')) {
+    e.target.classList.remove('error')
+    const err = document.getElementById('err' + e.target.id.replace('add', ''))
+    if (err) err.classList.remove('show')
+  }
+})
 
-function editMember(type,id){closeKebabs();var list=type==='manager'?managers:techs;var m=list.find(function(x){return x.id===id});if(!m)return;addType=type;editingId=id;clearErrors();document.getElementById('addModalTitle').textContent='Edit '+(type==='manager'?'Manager':'Technician');document.getElementById('addFirst').value=m.first;document.getElementById('addLast').value=m.last;document.getElementById('addEmail').value=m.email;document.getElementById('addPhone').value=m.phone;document.getElementById('addSubmitBtn').textContent='Save Changes';document.getElementById('addModal').classList.add('visible');document.getElementById('addFirst').focus()}
-function toggleStatus(id){closeKebabs();var t=techs.find(function(x){return x.id===id});if(!t)return;t.status=t.status==='active'?'inactive':'active';render();showToast(t.first+' '+(t.status==='active'?'activated':'deactivated'))}
-function promptDelete(type,id){closeKebabs();deleteTarget=id;deleteType=type;var list=type==='manager'?managers:techs;var m=list.find(function(x){return x.id===id});document.getElementById('deleteModalBody').textContent='Remove '+(m?m.first+' '+m.last:'this member')+'? This cannot be undone.';document.getElementById('deleteModal').classList.add('visible')}
-function closeDeleteModal(){document.getElementById('deleteModal').classList.remove('visible')}
-document.getElementById('confirmDeleteBtn').addEventListener('click',function(){if(deleteTarget===null)return;if(deleteType==='manager')managers=managers.filter(function(x){return x.id!==deleteTarget});else techs=techs.filter(function(x){return x.id!==deleteTarget});deleteTarget=null;deleteType=null;closeDeleteModal();render();showToast('Member removed')});
+function fullName(person) {
+  return [person.first_name, person.last_name].filter(Boolean).join(' ').trim()
+}
 
-function toggleKebab(prefix,id,e){e.stopPropagation();var key=prefix+'-'+id;if(openKebab&&openKebab!==key){var old=document.getElementById('kebab-'+openKebab);if(old)old.classList.remove('open','drop-up','drop-down')}var menu=document.getElementById('kebab-'+key);var isOpen=menu.classList.contains('open');menu.classList.remove('open','drop-up','drop-down');if(!isOpen){var rect=e.currentTarget.getBoundingClientRect();menu.classList.add('open',(window.innerHeight-rect.bottom)<160?'drop-up':'drop-down');openKebab=key}else{openKebab=null}}
-function closeKebabs(){if(openKebab){var el=document.getElementById('kebab-'+openKebab);if(el)el.classList.remove('open','drop-up','drop-down');openKebab=null}}
-document.addEventListener('click',closeKebabs);
+function displayRole(role) {
+  if (!role) return ''
+  if (role === 'owner') return 'Owner'
+  if (role === 'admin') return 'Admin'
+  return role.charAt(0).toUpperCase() + role.slice(1)
+}
 
-function showPinModal(m){document.getElementById('pinModalTitle').textContent=m.first+' '+m.last+' Added';document.getElementById('pinModalName').textContent='Field Technician';document.getElementById('pinModalPin').textContent=m.pin;document.getElementById('pinModal').classList.add('visible')}
-function closePinModal(){document.getElementById('pinModal').classList.remove('visible')}
-function copyPin(){var pin=document.getElementById('pinModalPin').textContent;navigator.clipboard.writeText(pin).then(function(){showToast('PIN copied')}).catch(function(){showToast('PIN: '+pin)})}
-function resendInvite(id){closeKebabs();var m=managers.find(function(x){return x.id===id});if(m)showToast('Invite resent to '+m.email)}
-function showToast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('visible');clearTimeout(el._timer);el._timer=setTimeout(function(){el.classList.remove('visible')},2500)}
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+}
 
-document.querySelectorAll('.modal-overlay').forEach(function(el){el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('visible')})});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAddModal();closeDeleteModal();closePinModal()}});
+async function loadUsers() {
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('company_id', COMPANY_ID)
+    .order('created_at', { ascending: false })
 
-function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
-document.addEventListener('click',function(e){if(!e.target.closest('.m-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
+  if (error) {
+    console.error('Error loading users:', error)
+    alert('Error loading team.')
+    return
+  }
 
-render();
+  managers = (data || []).filter(u => ['owner', 'admin', 'manager'].includes(u.role))
+  techs = (data || []).filter(u => u.role === 'tech')
+  render()
+}
+
+function render() {
+  renderManagers()
+  renderTechs()
+  renderMobile()
+}
+
+function renderManagers() {
+  document.getElementById('managerCount').textContent = managers.length
+
+  document.getElementById('managerTableBody').innerHTML = managers.map(function(m) {
+    const locked = m.role === 'owner' || m.role === 'admin'
+    const kebab = locked
+      ? '<span class="member-locked">Account owner</span>'
+      : '<button class="kebab" onclick="toggleKebab(\'m\',' + '\'' + m.id + '\'' + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>' +
+        '<div class="kebab-menu" id="kebab-m-' + m.id + '">' +
+        '<button class="kebab-menu-item" onclick="editMember(\'manager\',' + '\'' + m.id + '\'' + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
+        '<button class="kebab-menu-item danger" onclick="promptDelete(\'manager\',' + '\'' + m.id + '\'' + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+        '</div>'
+
+    return '<tr>' +
+      '<td><div class="cell-name">' + escapeHtml(fullName(m)) + '</div></td>' +
+      '<td><span class="cell-secondary">' + escapeHtml(m.email || '—') + '</span></td>' +
+      '<td><span class="cell-secondary">' + escapeHtml(formatPhone(m.phone || '')) + '</span></td>' +
+      '<td><span class="role-pill role-pill-' + escapeHtml(m.role || 'manager') + '">' + escapeHtml(displayRole(m.role || 'manager')) + '</span></td>' +
+      '<td><span class="status-dot' + (m.status !== 'active' ? ' inactive' : '') + '">' + escapeHtml(displayRole(m.status || 'inactive')) + '</span></td>' +
+      '<td class="r kebab-cell">' + kebab + '</td>' +
+      '</tr>'
+  }).join('')
+}
+
+function renderTechs() {
+  document.getElementById('techCount').textContent = techs.length
+
+  document.getElementById('techTableBody').innerHTML = techs.map(function(t) {
+    return '<tr>' +
+      '<td><div class="cell-name">' + escapeHtml(fullName(t)) + '</div></td>' +
+      '<td><span class="cell-secondary">' + escapeHtml(t.email || '—') + '</span></td>' +
+      '<td><span class="cell-secondary">' + escapeHtml(formatPhone(t.phone || '')) + '</span></td>' +
+      '<td><span class="cell-pin">' + escapeHtml(t.pin || '—') + '</span></td>' +
+      '<td><span class="status-dot' + (t.status !== 'active' ? ' inactive' : '') + '">' + escapeHtml(displayRole(t.status || 'inactive')) + '</span></td>' +
+      '<td class="r kebab-cell">' +
+      '<button class="kebab" onclick="toggleKebab(\'t\',' + '\'' + t.id + '\'' + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>' +
+      '<div class="kebab-menu" id="kebab-t-' + t.id + '">' +
+      '<button class="kebab-menu-item" onclick="editMember(\'tech\',' + '\'' + t.id + '\'' + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
+      '<button class="kebab-menu-item" onclick="toggleStatus(' + '\'' + t.id + '\'' + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>' + (t.status === 'active' ? 'Deactivate' : 'Activate') + '</button>' +
+      '<button class="kebab-menu-item danger" onclick="promptDelete(\'tech\',' + '\'' + t.id + '\'' + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+      '</div>' +
+      '</td>' +
+      '</tr>'
+  }).join('')
+}
+
+function renderMobile() {
+  const el = document.getElementById('mobileTeam')
+  if (!el) return
+
+  let html = ''
+  html += '<div class="m-section" style="padding-top:0">Managers <span class="count">' + managers.length + '</span></div>'
+  managers.forEach(function(m) {
+    html += '<div class="m-team-row">' +
+      '<div class="m-team-left">' +
+      '<div class="m-team-name">' + escapeHtml(fullName(m)) + '</div>' +
+      '<div class="m-team-detail">' + escapeHtml(formatPhone(m.phone || '')) + '</div>' +
+      '</div>' +
+      '<div class="m-team-right">' +
+      '<span class="m-task-badge m-team-pill-' + escapeHtml(m.role || 'manager') + '">' + escapeHtml(displayRole(m.role || 'manager')) + '</span>' +
+      '<div class="m-team-dot' + (m.status !== 'active' ? ' off' : '') + '"></div>' +
+      '</div>' +
+      '</div>'
+  })
+
+  html += '<div class="m-section">Technicians <span class="count">' + techs.length + '</span></div>'
+  techs.forEach(function(t) {
+    html += '<div class="m-team-row">' +
+      '<div class="m-team-left">' +
+      '<div class="m-team-name">' + escapeHtml(fullName(t)) + '</div>' +
+      '<div class="m-team-detail">' + escapeHtml(formatPhone(t.phone || '')) + '</div>' +
+      '</div>' +
+      '<div class="m-team-right">' +
+      '<span class="m-team-pin">' + escapeHtml(t.pin || '—') + '</span>' +
+      '<div class="m-team-dot' + (t.status !== 'active' ? ' off' : '') + '"></div>' +
+      '</div>' +
+      '</div>'
+  })
+
+  el.innerHTML = html
+}
+
+function openAddModal(type) {
+  addType = type
+  editingId = null
+  clearErrors()
+  document.getElementById('addModalTitle').textContent = type === 'manager' ? 'Add Manager' : 'Add Technician'
+  ;['addFirst','addLast','addEmail','addPhone'].forEach(function(id) {
+    document.getElementById(id).value = ''
+  })
+  document.getElementById('addSubmitBtn').textContent = 'Add Member'
+  document.getElementById('addModal').classList.add('visible')
+  document.getElementById('addFirst').focus()
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('visible')
+}
+
+function clearErrors() {
+  ;['First','Last','Email','Phone'].forEach(function(f) {
+    document.getElementById('add' + f).classList.remove('error')
+    document.getElementById('err' + f).classList.remove('show')
+  })
+}
+
+function validateForm() {
+  clearErrors()
+
+  const first = document.getElementById('addFirst').value.trim()
+  const last = document.getElementById('addLast').value.trim()
+  const email = document.getElementById('addEmail').value.trim()
+  const phone = document.getElementById('addPhone').value.trim()
+  const digits = phone.replace(/\D/g, '')
+
+  let valid = true
+
+  if (!first) {
+    document.getElementById('addFirst').classList.add('error')
+    document.getElementById('errFirst').classList.add('show')
+    valid = false
+  }
+
+  if (!last) {
+    document.getElementById('addLast').classList.add('error')
+    document.getElementById('errLast').classList.add('show')
+    valid = false
+  }
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('addEmail').classList.add('error')
+    document.getElementById('errEmail').classList.add('show')
+    valid = false
+  }
+
+  if (digits.length !== 10) {
+    document.getElementById('addPhone').classList.add('error')
+    document.getElementById('errPhone').classList.add('show')
+    valid = false
+  }
+
+  return valid
+}
+
+async function addMember() {
+  if (!validateForm()) return
+
+  const first = document.getElementById('addFirst').value.trim()
+  const last = document.getElementById('addLast').value.trim()
+  const email = document.getElementById('addEmail').value.trim()
+  const phone = formatPhone(document.getElementById('addPhone').value.trim())
+
+  if (editingId !== null) {
+    const updates = {
+      first_name: first,
+      last_name: last,
+      email: email,
+      phone: phone
+    }
+
+    const { error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', editingId)
+      .eq('company_id', COMPANY_ID)
+
+    if (error) {
+      console.error('Error updating user:', error)
+      alert('Error saving changes.')
+      return
+    }
+
+    editingId = null
+    closeAddModal()
+    await loadUsers()
+    showToast('Changes saved')
+    return
+  }
+
+  if (addType === 'tech') {
+    let pin = ''
+    try {
+      pin = await generateUniquePin()
+    } catch (err) {
+      console.error(err)
+      alert('Could not generate PIN.')
+      return
+    }
+
+    const payload = {
+      company_id: COMPANY_ID,
+      first_name: first,
+      last_name: last,
+      email: email,
+      phone: phone,
+      role: 'tech',
+      status: 'active',
+      pin: pin
+    }
+
+    const { error } = await supabase.from('users').insert([payload])
+
+    if (error) {
+      console.error('Error adding tech:', error)
+      alert('Error adding tech.')
+      return
+    }
+
+    closeAddModal()
+    await loadUsers()
+    showPinModal({ first_name: first, last_name: last, pin: pin })
+    return
+  }
+
+  const payload = {
+    company_id: COMPANY_ID,
+    first_name: first,
+    last_name: last,
+    email: email,
+    phone: phone,
+    role: 'manager',
+    status: 'active',
+    pin: null
+  }
+
+  const { error } = await supabase.from('users').insert([payload])
+
+  if (error) {
+    console.error('Error adding manager:', error)
+    alert('Error adding manager.')
+    return
+  }
+
+  closeAddModal()
+  await loadUsers()
+  showToast('Manager added')
+}
+
+function editMember(type, id) {
+  closeKebabs()
+
+  const list = type === 'manager' ? managers : techs
+  const member = list.find(function(x) { return x.id === id })
+  if (!member) return
+
+  addType = type
+  editingId = id
+  clearErrors()
+  document.getElementById('addModalTitle').textContent = 'Edit ' + (type === 'manager' ? 'Manager' : 'Technician')
+  document.getElementById('addFirst').value = member.first_name || ''
+  document.getElementById('addLast').value = member.last_name || ''
+  document.getElementById('addEmail').value = member.email || ''
+  document.getElementById('addPhone').value = formatPhone(member.phone || '')
+  document.getElementById('addSubmitBtn').textContent = 'Save Changes'
+  document.getElementById('addModal').classList.add('visible')
+  document.getElementById('addFirst').focus()
+}
+
+async function toggleStatus(id) {
+  closeKebabs()
+
+  const tech = techs.find(function(x) { return x.id === id })
+  if (!tech) return
+
+  const nextStatus = tech.status === 'active' ? 'inactive' : 'active'
+
+  const { error } = await supabase
+    .from('users')
+    .update({ status: nextStatus })
+    .eq('id', id)
+    .eq('company_id', COMPANY_ID)
+
+  if (error) {
+    console.error('Error updating tech status:', error)
+    alert('Error updating status.')
+    return
+  }
+
+  await loadUsers()
+  showToast((tech.first_name || 'Tech') + ' ' + (nextStatus === 'active' ? 'activated' : 'deactivated'))
+}
+
+function promptDelete(type, id) {
+  closeKebabs()
+  deleteTarget = id
+  deleteType = type
+
+  const list = type === 'manager' ? managers : techs
+  const member = list.find(function(x) { return x.id === id })
+
+  document.getElementById('deleteModalBody').textContent =
+    'Remove ' + (member ? fullName(member) : 'this member') + '? This cannot be undone.'
+
+  document.getElementById('deleteModal').classList.add('visible')
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.remove('visible')
+}
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+  if (!deleteTarget) return
+
+  const { error } = await supabase
+    .from('users')
+    .delete()
+    .eq('id', deleteTarget)
+    .eq('company_id', COMPANY_ID)
+
+  if (error) {
+    console.error('Error deleting user:', error)
+    alert('Error removing member.')
+    return
+  }
+
+  deleteTarget = null
+  deleteType = null
+  closeDeleteModal()
+  await loadUsers()
+  showToast('Member removed')
+})
+
+function toggleKebab(prefix, id, e) {
+  e.stopPropagation()
+  const key = prefix + '-' + id
+
+  if (openKebab && openKebab !== key) {
+    const old = document.getElementById('kebab-' + openKebab)
+    if (old) old.classList.remove('open', 'drop-up', 'drop-down')
+  }
+
+  const menu = document.getElementById('kebab-' + key)
+  if (!menu) return
+
+  const isOpen = menu.classList.contains('open')
+  menu.classList.remove('open', 'drop-up', 'drop-down')
+
+  if (!isOpen) {
+    const rect = e.currentTarget.getBoundingClientRect()
+    menu.classList.add('open', (window.innerHeight - rect.bottom) < 160 ? 'drop-up' : 'drop-down')
+    openKebab = key
+  } else {
+    openKebab = null
+  }
+}
+
+function closeKebabs() {
+  if (openKebab) {
+    const el = document.getElementById('kebab-' + openKebab)
+    if (el) el.classList.remove('open', 'drop-up', 'drop-down')
+    openKebab = null
+  }
+}
+
+document.addEventListener('click', closeKebabs)
+
+function showPinModal(member) {
+  document.getElementById('pinModalTitle').textContent = fullName(member) + ' Added'
+  document.getElementById('pinModalName').textContent = 'Field Technician'
+  document.getElementById('pinModalPin').textContent = member.pin || ''
+  document.getElementById('pinModal').classList.add('visible')
+}
+
+function closePinModal() {
+  document.getElementById('pinModal').classList.remove('visible')
+}
+
+function copyPin() {
+  const pin = document.getElementById('pinModalPin').textContent
+  navigator.clipboard.writeText(pin).then(function() {
+    showToast('PIN copied')
+  }).catch(function() {
+    showToast('PIN: ' + pin)
+  })
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast')
+  el.textContent = msg
+  el.classList.add('visible')
+  clearTimeout(el._timer)
+  el._timer = setTimeout(function() {
+    el.classList.remove('visible')
+  }, 2500)
+}
+
+document.querySelectorAll('.modal-overlay').forEach(function(el) {
+  el.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible')
+  })
+})
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeAddModal()
+    closeDeleteModal()
+    closePinModal()
+  }
+})
+
+function toggleMobileNav() {
+  document.getElementById('mobileNavMenu').classList.toggle('open')
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.m-kebab,.mobile-nav-menu')) {
+    const menu = document.getElementById('mobileNavMenu')
+    if (menu) menu.classList.remove('open')
+  }
+})
+
+window.openAddModal = openAddModal
+window.closeAddModal = closeAddModal
+window.addMember = addMember
+window.editMember = editMember
+window.toggleStatus = toggleStatus
+window.promptDelete = promptDelete
+window.closeDeleteModal = closeDeleteModal
+window.toggleKebab = toggleKebab
+window.copyPin = copyPin
+window.closePinModal = closePinModal
+window.toggleMobileNav = toggleMobileNav
+
+loadUsers()
 </script>
 </body>
 </html>
