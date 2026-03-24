@@ -403,7 +403,7 @@ async function addMember() {
 
     if (error) {
       console.error('Error adding tech:', error)
-      alert('Error adding tech.')
+      alert(JSON.stringify(error))
       return
     }
 
