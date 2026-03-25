@@ -134,7 +134,10 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
   text-transform: uppercase;
   color: var(--tv-text-muted);
   max-width: 480px;
+  width: 100%;
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
   text-align: center;
 }
 
