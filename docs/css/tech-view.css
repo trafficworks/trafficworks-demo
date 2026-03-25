@@ -7,24 +7,43 @@
    THEME: LIGHT (default, 7am–7pm)
    ============================================================ */
 :root {
-  --tv-bg: var(--bg);
-  --tv-surface: var(--white);
-  --tv-text: var(--text-primary);
-  --tv-text-secondary: var(--text-secondary);
-  --tv-text-muted: var(--text-muted);
-  --tv-border: var(--border);
-  --tv-header-bg: var(--white);
-  --tv-header-text: var(--text-primary);
-  --tv-card-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  --tv-divider: rgba(0,0,0,0.08);
+  --tv-bg: #F4F3F0;
+  --tv-surface: #FFFFFF;
+  --tv-text: #1A1D21;
+  --tv-text-secondary: #5A5F66;
+  --tv-text-muted: #9CA0A6;
+  --tv-border: #E5E3DD;
+  --tv-header-bg: #FFFFFF;
+  --tv-header-text: #1A1D21;
+  --tv-card-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  --tv-divider: rgba(0,0,0,0.07);
   --tv-surface-hover: #F0EFEB;
-  --tv-note-bg: #F5F6F8;
+  --tv-note-bg: #F5F4F1;
+  --tv-pending-text: #8B6914;
+  --tv-infield-text: #1D6644;
+  --tv-complete-text: #2A7D50;
 }
 
 /* ============================================================
    THEME: DARK (7pm–7am)
    ============================================================ */
-html.tv-dark { --tv-bg: #1E2024; --tv-surface: #2A2D32; --tv-text: #EAEDF0; --tv-text-secondary: #9CA0A6; --tv-text-muted: rgba(255,255,255,0.4); --tv-border: rgba(255,255,255,0.08); --tv-header-bg: #181A1E; --tv-header-text: #EAEDF0; --tv-card-shadow: 0 1px 3px rgba(0,0,0,0.3); --tv-divider: rgba(255,255,255,0.08); --tv-surface-hover: #32353A; --tv-note-bg: #32353A; }
+html.tv-dark {
+  --tv-bg: #1A1C20;
+  --tv-surface: #262930;
+  --tv-text: #E8EAED;
+  --tv-text-secondary: #A0A4AB;
+  --tv-text-muted: rgba(255,255,255,0.38);
+  --tv-border: rgba(255,255,255,0.07);
+  --tv-header-bg: #1A1C20;
+  --tv-header-text: #E8EAED;
+  --tv-card-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  --tv-divider: rgba(255,255,255,0.07);
+  --tv-surface-hover: #30333A;
+  --tv-note-bg: #30333A;
+  --tv-pending-text: #E0B84A;
+  --tv-infield-text: #6FD4A0;
+  --tv-complete-text: #6FD4A0;
+}
 
 /* ============================================================
    BASE OVERRIDES
@@ -67,7 +86,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 
 .tv-stat-value { font-size: 20px; font-weight: 700; color: var(--tv-header-text); line-height: 1; }
 
-.tv-stat-label { font-size: 16px; font-weight: 500; color: var(--tv-text-muted); }
+.tv-stat-label { font-size: 15px; font-weight: 500; color: var(--tv-text-muted); }
 
 .tv-stat-divider { width: 1px; height: 20px; background: var(--tv-border); }
 
@@ -98,7 +117,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 /* ============================================================
    PROJECT CARDS
    ============================================================ */
-.tv-project-card { background: var(--tv-surface); border: 1px solid var(--tv-border); border-radius: 12px; padding: 18px 18px; margin-bottom: 11px; cursor: pointer; transition: all .15s ease; -webkit-tap-highlight-color: transparent; position: relative; box-shadow: var(--tv-card-shadow); }
+.tv-project-card { background: var(--tv-surface); border: 1px solid var(--tv-border); border-radius: 14px; padding: 16px 18px; margin-bottom: 10px; cursor: pointer; transition: all .15s ease; -webkit-tap-highlight-color: transparent; position: relative; box-shadow: var(--tv-card-shadow); }
 .tv-project-card:active { transform: scale(0.985); background: var(--tv-surface-hover); }
 
 /* Completed card — grayed out */
@@ -107,17 +126,19 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 
 .tv-card-name { font-size: 16px; font-weight: 700; color: var(--tv-text); line-height: 1.35; padding-right: 24px; }
 
-.tv-card-location { font-size: 16px; font-weight: 500; color: var(--tv-text-muted); margin-top: 10px; line-height: 1.35; }
+.tv-card-location { font-size: 14px; font-weight: 500; color: var(--tv-text-secondary); margin-top: 3px; line-height: 1.35; }
 
-.tv-card-tasks { font-size: 16px; font-weight: 600; color: var(--tv-text-secondary); margin-top: 10px; display: flex; align-items: center; gap: 6px; line-height: 1.35; }
+.tv-card-tasks { font-size: 15px; font-weight: 600; color: var(--tv-text-secondary); margin-top: 8px; display: flex; align-items: center; gap: 6px; line-height: 1.35; }
+.tv-card-tasks .pending-text { color: var(--tv-pending-text); }
+.tv-card-tasks .infield-text { color: var(--tv-infield-text); }
 
 .tv-card-tasks .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--tv-text-muted); flex-shrink: 0; }
 
-.tv-card-arrow { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--tv-text-muted); }
+.tv-card-arrow { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--tv-text-secondary); opacity: 0.5; }
 .tv-card-arrow svg { width: 16px; height: 16px }
 
 /* Tech instructions link on card */
-.tv-card-notes { font-size: var(--text-sm); color: #B87A00; font-weight: 600; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--tv-border); display: flex; align-items: center; gap: 5px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tv-card-notes { font-size: 13px; color: var(--tv-pending-text); font-weight: 600; margin-top: 12px; padding: 11px 0 2px; border-top: 1px solid var(--tv-border); display: flex; align-items: center; gap: 6px; cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 42px; }
 .tv-card-notes svg { width: 13px; height: 13px }
 .tv-card-notes-body { font-size: var(--text-sm); color: var(--tv-text); line-height: 1.6; margin-top: 8px; padding: 10px 12px; background: var(--tv-note-bg); border-radius: 6px; display: none; }
 .tv-card-notes-body.open { display: block }
@@ -125,7 +146,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 /* ============================================================
    TASK CARDS
    ============================================================ */
-.tv-task-card { background: var(--tv-surface); border: none; border-radius: 12px; margin-bottom: 11px; overflow: hidden; transition: all .2s ease; -webkit-tap-highlight-color: transparent; box-shadow: var(--tv-card-shadow); }
+.tv-task-card { background: var(--tv-surface); border: 1px solid var(--tv-border); border-radius: 14px; margin-bottom: 10px; overflow: hidden; transition: all .2s ease; -webkit-tap-highlight-color: transparent; box-shadow: var(--tv-card-shadow); }
 .tv-task-card.complete-card { opacity: 0.45 }
 
 .tv-task-inner { display: flex; align-items: stretch; gap: 0; }
