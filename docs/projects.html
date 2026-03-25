@@ -58,7 +58,7 @@
 
   <!-- Mobile view -->
   <div class="mobile-only">
-    <div class="m-page-sub" id="mobilePageSub"></div>
+    <div class="m-card-section" id="mobilePageSub"></div>
     <div id="mobileProjectList"></div>
   </div>
 
@@ -349,28 +349,36 @@ function renderProjects(list) {
   var active = projects.filter(function(p){ return p.status !== 'Complete' });
   var openTasks = active.reduce(function(s,p){ return s + p.openTasks }, 0);
 
-  if (mSub) mSub.textContent = active.length + ' active · ' + openTasks + ' open tasks';
+  if (mSub) mSub.textContent = active.length + ' active project' + (active.length !== 1 ? 's' : '');
 
   if (mList) {
-    var mHtml = '';
+    var cardClassMap = {
+      'In Progress': 'card-inprogress',
+      'Pending': 'card-pending',
+      'On Hold': 'card-onhold',
+      'Complete': 'card-complete'
+    };
+
+    var mHtml = '<div class="card-list">';
     list.forEach(function(p) {
       var done = p.totalTasks - p.openTasks;
-      var isComplete = p.status === 'Complete';
-      mHtml += '<div class="m-project-row' + (isComplete?' complete':'') + '">';
-      mHtml += '<div class="m-project-left" data-action="open-project" data-id="' + p.id + '">';
-      mHtml += '<div class="m-project-name">' + p.name + '</div>';
-      mHtml += '<div class="m-project-detail">' + p.location + (isComplete ? '' : ' · ' + p.openTasks + ' open') + '</div>';
-      mHtml += '<div class="m-project-js" data-action="jobsheet" data-id="' + p.id + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</div>';
+      var cardClass = cardClassMap[p.status] || 'card-inprogress';
+      var pct = p.pct || 0;
+
+      mHtml += '<div class="proj-card ' + cardClass + '" data-action="open-project" data-id="' + p.id + '">';
+      mHtml += '<span class="card-badge">' + p.status + '</span>';
+      mHtml += '<div class="card-name">' + p.name + '</div>';
+      mHtml += '<div class="card-city">' + (p.location || '') + '</div>';
+      mHtml += '<div class="card-divider"></div>';
+      mHtml += '<div class="counter-num"><span class="done">' + done + '</span><span class="slash">/</span><span class="total">' + p.totalTasks + '</span></div>';
+      mHtml += '<div class="counter-label">Tasks Complete</div>';
+      mHtml += '<button class="job-pill" data-action="jobsheet" data-id="' + p.id + '">';
+      mHtml += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+      mHtml += 'Download Job Sheet</button>';
+      mHtml += '<div class="card-prog"><div class="card-prog-fill" style="width:' + pct + '%"></div></div>';
       mHtml += '</div>';
-      mHtml += '<div class="m-project-right">';
-      if (isComplete) {
-        mHtml += '<div class="m-project-tasks" style="color:var(--accent)">Complete</div>';
-      } else {
-        mHtml += '<div class="m-progress-mini"><div class="m-progress-mini-fill" style="width:' + p.pct + '%"></div></div>';
-        mHtml += '<div class="m-project-tasks">' + done + '/' + p.totalTasks + '</div>';
-      }
-      mHtml += '</div></div>';
     });
+    mHtml += '</div>';
     mList.innerHTML = mHtml;
   }
 
