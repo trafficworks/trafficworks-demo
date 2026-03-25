@@ -14,17 +14,78 @@
 .tv-task-card.row-success-complete{background:rgba(42,181,126,.12);box-shadow:0 0 0 1px rgba(42,181,126,.20) inset}
 .tv-task-card.row-exit{opacity:0;transform:translateY(-6px)}
 .tv-note-indicator,.tv-note-save-btn{position:relative;z-index:3}
+
+/* ── PAGE SUB ── */
+.tv-page-sub{padding:0 6px 12px;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tv-text-secondary,#888);margin-top:4px}
+
+/* ── MC CARD LIST ── */
+#projectCards{display:flex;flex-direction:column;gap:10px;padding:0 6px 40px}
+
+/* ── MC BASE CARD ── */
+.mc{border-radius:20px;padding:14px 18px 14px;display:flex;flex-direction:column;position:relative;width:100%;box-sizing:border-box;cursor:pointer;transition:opacity .15s}
+.mc:active{opacity:.88}
+.mc.mc-no-topbar{padding-top:16px}
+.mc-pending   {background:#F5EDD6;color:#6B4A08}
+.mc-inprogress{background:#DCEAF8;color:#1C4A7A}
+.mc-complete  {background:#D4EDDF;color:#1A5C35}
+
+/* top bar */
+.mc-top-bar{display:flex;align-items:center;width:100%;margin-bottom:10px;min-height:26px}
+.mc-top-left{flex-shrink:0}
+.mc-top-mid{flex:1;display:flex;justify-content:center}
+.mc-top-right{flex-shrink:0}
+
+/* pills */
+.mc-pill-sm{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:4px 10px;border-radius:100px;display:inline-flex;align-items:center;gap:5px}
+.mc-infield-pill{background:rgba(58,166,106,.15);color:#1A5C35}
+.mc-inprogress .mc-infield-pill{color:#1C4A7A;background:rgba(28,74,122,.1)}
+.mc-pending-pill{background:rgba(212,168,67,.22);color:#6B4A08}
+.mc-blink{width:6px;height:6px;border-radius:50%;background:#3AA66A;flex-shrink:0;animation:mcblink 1.8s ease-in-out infinite}
+.mc-pd-dot{width:6px;height:6px;border-radius:50%;background:#D4A843;flex-shrink:0}
+@keyframes mcblink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* name row */
+.mc-name-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:2px}
+.mc-check{flex-shrink:0;width:20px;height:20px;border-radius:50%;background:rgba(26,92,53,.15);display:flex;align-items:center;justify-content:center}
+.mc-name{font-size:16px;font-weight:700;letter-spacing:-.025em;line-height:1.25;margin-bottom:2px;color:inherit}
+.mc-city{font-size:12.5px;opacity:.55;margin-bottom:12px}
+
+/* divider */
+.mc-divider{width:100%;height:1px;margin-bottom:12px}
+.mc-pending   .mc-divider{background:rgba(107,74,8,.12)}
+.mc-inprogress.mc-divider{background:rgba(28,74,122,.12)}
+.mc-inprogress .mc-divider{background:rgba(28,74,122,.12)}
+.mc-complete  .mc-divider{background:rgba(26,92,53,.12)}
+
+/* counter */
+.mc-counter{font-size:54px;font-weight:700;letter-spacing:-.05em;line-height:1;margin-bottom:3px;align-self:center}
+.mc-slash,.mc-total{opacity:.28;font-weight:400}
+.mc-complete .mc-done{color:#3AA66A}
+.mc-counter-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.45;margin-bottom:14px;align-self:center}
+
+/* view job sheet pill */
+.mc-pill{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px;border-radius:100px;border:none;font-family:inherit;font-size:13px;font-weight:600;letter-spacing:-.01em;cursor:pointer;transition:opacity .15s}
+.mc-pill:active{opacity:.75}
+.mc-pending   .mc-pill{background:rgba(107,74,8,.11);color:#6B4A08}
+.mc-inprogress .mc-pill{background:rgba(28,74,122,.11);color:#1C4A7A}
+.mc-complete  .mc-pill{background:rgba(26,92,53,.12);color:#1A5C35}
+
+/* progress bar */
+.mc-prog{width:100%;height:3px;border-radius:99px;margin-top:12px;overflow:hidden}
+.mc-pending   .mc-prog{background:rgba(107,74,8,.12)}
+.mc-inprogress .mc-prog{background:rgba(28,74,122,.12)}
+.mc-complete  .mc-prog{background:rgba(26,92,53,.12)}
+.mc-prog-fill{height:100%;border-radius:99px}
+.mc-pending   .mc-prog-fill{background:#D4A843}
+.mc-inprogress .mc-prog-fill{background:#4A7FBF}
+.mc-complete  .mc-prog-fill{background:#3AA66A}
 </style>
 
 </head>
 <body>
 <div class="tv-header">
   <div class="tv-header-left">
-    <button class="tv-back-btn" id="backBtn" onclick="showProjects()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
-    <div class="tv-brand" id="greeting">
-      <img src="../images/logo.png" class="tv-brand-logo" alt="">
-      <span class="tv-brand-name">The Count Company</span>
-    </div>
+    <button class="tv-back-btn" id="backBtn" onclick="showProjects()" style="display:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
     <div class="tv-project-info" id="barProjectInfo">
       <span class="tv-project-name-bar" id="barProjectName"></span>
     </div>
@@ -33,11 +94,7 @@
     <button class="tv-undo-btn" id="undoBtn" onclick="undoLastAction()" style="display:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg></button>
   </div>
 </div>
-<div class="tv-stats" id="projectStatsBar">
-  <div class="tv-stat"><span class="tv-stat-value" id="statProjects">0</span><span class="tv-stat-label">jobs need attention</span></div>
-  <div class="tv-stat-divider"></div>
-  <div class="tv-stat"><span class="tv-stat-value" id="statOpenTasks">0</span><span class="tv-stat-label">open tasks</span></div>
-</div>
+<div class="tv-page-sub" id="projectStatsBar"></div>
 <div class="tv-filter-bar" id="taskFilterBar">
   <div class="tv-filter-pill active" id="filterAll" onclick="toggleFilter('all')"><span class="tv-filter-value" id="filterAllVal">0</span><span class="tv-filter-label">Total</span></div>
   <div class="tv-filter-pill" id="filterPending" onclick="toggleFilter('Pending')"><span class="tv-filter-value" id="filterPendingVal">0</span><span class="tv-filter-label">Pending</span></div>
@@ -260,23 +317,44 @@ async function loadAll(){
 function renderProjectStats(){
   var active=state.projects.filter(function(p){return p.tasks.some(function(t){return t.status!==STATUS.COMPLETE})});
   var openTasks=active.reduce(function(sum,p){return sum+p.tasks.filter(function(t){return t.status!==STATUS.COMPLETE}).length},0);
-  document.getElementById('statProjects').textContent=active.length;
-  document.getElementById('statOpenTasks').textContent=openTasks;
+  var el=document.getElementById('projectStatsBar');
+  if(el) el.textContent=active.length+' jobs need attention · '+openTasks+' open tasks';
 }
 
 function renderProjectCards(){
   var container=document.getElementById('projectCards');
   if(!container) return;
   container.innerHTML=state.projects.map(function(p){
-    var counts=taskCounts(p.tasks), done=counts.complete===counts.total;
-    var parts=[];
-    if(counts.pending)parts.push('<span class="pending-text">'+counts.pending+' Pending</span>');
-    if(counts.infield)parts.push('<span class="infield-text">'+counts.infield+' In Field</span>');
-    if(counts.complete&&done)parts.push('All complete');
-    if(!parts.length)parts.push('No tasks');
-    var taskLine=parts.join('<span class="dot"></span>');
-    var jobSheetLink='<div class="tv-card-notes" onclick="event.stopPropagation();openJobSheet(\''+p.id+'\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Job Sheet</div>';
-    return '<div class="tv-project-card'+(done?' card-complete':'')+'" onclick="openProject(\''+p.id+'\')"><div class="tv-card-name">'+escapeHtml(p.name)+'</div><div class="tv-card-location">'+escapeHtml(p.location)+'</div><div class="tv-card-tasks">'+taskLine+'</div>'+jobSheetLink+'<div class="tv-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div></div>';
+    var counts=taskCounts(p.tasks);
+    var done=counts.complete;
+    var total=counts.total;
+    var isAllDone=total>0&&done===total;
+    var hasInfield=counts.infield>0;
+    var hasPending=counts.pending>0;
+    var cardClass=isAllDone?'mc-complete':hasInfield?'mc-inprogress':'mc-pending';
+    var leftBadge='',rightBadge='';
+    if(!isAllDone){
+      if(hasInfield){
+        leftBadge='<span class="mc-pill-sm mc-infield-pill"><span class="mc-blink"></span>'+counts.infield+' In Field</span>';
+        if(hasPending) rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';
+      } else if(hasPending){
+        rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';
+      }
+    }
+    var showTopBar=leftBadge||rightBadge;
+    var checkmark=isAllDone?'<div class="mc-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1A5C35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>':'';
+    var pctVal=total>0?Math.round((done/total)*100):0;
+    var html='<div class="mc '+cardClass+(showTopBar?'':' mc-no-topbar')+'" onclick="openProject(\''+p.id+'\')">';
+    if(showTopBar) html+='<div class="mc-top-bar"><div class="mc-top-left">'+leftBadge+'</div><div class="mc-top-mid"></div><div class="mc-top-right">'+rightBadge+'</div></div>';
+    html+='<div class="mc-name-row"><div class="mc-name">'+escapeHtml(p.name)+'</div>'+checkmark+'</div>';
+    html+='<div class="mc-city">'+escapeHtml(p.location)+'</div>';
+    html+='<div class="mc-divider"></div>';
+    html+='<div class="mc-counter"><span class="mc-done">'+done+'</span><span class="mc-slash">/</span><span class="mc-total">'+total+'</span></div>';
+    html+='<div class="mc-counter-label">Tasks Complete</div>';
+    html+='<button class="mc-pill" onclick="event.stopPropagation();openJobSheet(\''+p.id+'\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Job Sheet</button>';
+    html+='<div class="mc-prog"><div class="mc-prog-fill" style="width:'+pctVal+'%"></div></div>';
+    html+='</div>';
+    return html;
   }).join('');
 }
 
@@ -290,13 +368,12 @@ function showProjects(){
   document.getElementById('undoBtn').style.display='none';
   document.getElementById('projectView').classList.add('active');
   document.getElementById('taskView').classList.remove('active');
-  document.getElementById('projectStatsBar').style.display='flex';
+  document.getElementById('projectStatsBar').style.display='';
   document.getElementById('taskFilterBar').style.display='none';
   document.getElementById('taskProgressWrap').style.display='none';
   document.getElementById('backBtn').style.display='none';
   document.getElementById('barProjectInfo').classList.remove('visible');
   document.getElementById('barProjectName').textContent='';
-  document.getElementById('greeting').style.display='flex';
   renderProjectStats();
   renderProjectCards();
 }
@@ -312,7 +389,6 @@ function openProject(id){
   document.getElementById('backBtn').style.display='flex';
   document.getElementById('barProjectInfo').classList.add('visible');
   document.getElementById('barProjectName').textContent=state.currentProject.name;
-  document.getElementById('greeting').style.display='none';
   document.getElementById('holdHint').style.display=state.hintDismissed?'none':'flex';
   state.activeFilter='all';state.completedCollapsed=false;state.openNoteId=null;
   renderTaskView();startDurationTimer();
