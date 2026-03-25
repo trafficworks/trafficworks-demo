@@ -135,6 +135,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
   color: var(--tv-text-muted);
   max-width: 480px;
   margin: 0 auto;
+  text-align: center;
 }
 
 /* Task view stats — filter pills */
