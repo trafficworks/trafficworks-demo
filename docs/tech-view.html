@@ -285,7 +285,7 @@ function renderProjectCards(){
     var showTopBar=leftBadge||rightBadge;
     var checkmark=isAllDone?'<div class="mc-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1A5C35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>':'';
     var pctVal=total>0?Math.round((done/total)*100):0;
-    var html='<div class="mc '+cardClass+(showTopBar?'':' mc-no-topbar')+'" onclick="openProject(\''+p.id+'\')">';
+    var html='<div class="mc '+cardClass+(showTopBar?'':' mc-no-topbar')+'" data-action="open-project" data-id="'+p.id+'">';
     if(showTopBar) html+='<div class="mc-top-bar"><div class="mc-top-left">'+leftBadge+'</div><div class="mc-top-mid"></div><div class="mc-top-right">'+rightBadge+'</div></div>';
     html+='<div class="mc-name-row"><div class="mc-name">'+escapeHtml(p.name)+'</div>'+checkmark+'</div>';
     html+='<div class="mc-city">'+escapeHtml(p.location)+'</div>';
@@ -634,6 +634,11 @@ document.addEventListener('click',function(e){
     e.preventDefault();
     e.stopPropagation();
     openJobSheet(jsBtn.dataset.id);
+    return;
+  }
+  var cardBtn=e.target.closest('[data-action="open-project"]');
+  if(cardBtn){
+    openProject(cardBtn.dataset.id);
     return;
   }
   var noteBtn=e.target.closest('[data-action="toggle-note"]');
