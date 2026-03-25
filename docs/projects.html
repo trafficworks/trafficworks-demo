@@ -155,6 +155,25 @@
     flex-shrink: 0;
   }
 
+  /* ── NAME ROW — with optional right-aligned checkmark ── */
+  .mc-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 2px;
+  }
+  .mc-check {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: rgba(26,92,53,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mc-check svg { display: block; }
+
   /* ── NAME + CITY ── */
   .mc-name {
     font-size: 16px;
@@ -464,8 +483,8 @@
   font-weight: 700;
   padding: 3px 7px;
   border-radius: 6px;
-  background: #1A1D21;
-  color: #fff;
+  background: #E8E6E0;
+  color: #6B7178;
   letter-spacing: 0.02em;
 }
 
@@ -867,18 +886,19 @@ function renderProjects(list) {
       var hasInfield  = p.infieldTasks > 0;
       var hasPending  = p.pendingTasks > 0;
       var hasActivity = hasInfield || done > 0;
+      var isAllDone   = p.totalTasks > 0 && done === p.totalTasks;
 
-      var cardClass = s === 'Complete'                          ? 'mc-complete'
-                    : s === 'On Hold'                           ? 'mc-hold'
-                    : s === 'In Progress' && hasInfield         ? 'mc-inprogress'
-                    :                                             'mc-pending';
+      var cardClass = isAllDone || s === 'Complete' ? 'mc-complete'
+                    : s === 'On Hold'               ? 'mc-hold'
+                    : s === 'In Progress' && hasInfield ? 'mc-inprogress'
+                    :                                  'mc-pending';
 
       var leftBadge   = '';
       var centerBadge = '';
       var rightBadge  = '';
 
-      if (s === 'Complete') {
-        leftBadge = '<span class="mc-pill-sm mc-badge-complete">Complete</span>';
+      if (isAllDone || s === 'Complete') {
+        // all done — no badges, clean card
       } else if (s === 'On Hold') {
         leftBadge = '<span class="mc-pill-sm mc-badge-hold">On Hold</span>';
       } else if (s === 'In Progress' && hasInfield) {
@@ -893,6 +913,10 @@ function renderProjects(list) {
 
       var showTopBar = leftBadge || centerBadge || rightBadge;
 
+      var checkmark = isAllDone
+        ? '<div class="mc-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1A5C35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'
+        : '';
+
       mHtml += '<div class="mc ' + cardClass + (showTopBar ? '' : ' mc-no-topbar') + '">';
 
       if (showTopBar) {
@@ -903,7 +927,7 @@ function renderProjects(list) {
         mHtml += '</div>';
       }
 
-      mHtml += '<div class="mc-name">' + p.name + '</div>';
+      mHtml += '<div class="mc-name-row"><div class="mc-name">' + p.name + '</div>' + checkmark + '</div>';
       mHtml += '<div class="mc-city">' + (p.location || '') + '</div>';
       mHtml += '<div class="mc-divider"></div>';
 
@@ -1303,7 +1327,7 @@ async function openJobSheet(id) {
 
   const { data: projectData, error: projectError } = await supabase
     .from('projects')
-    .select('id, name, client, location, notes')
+    .select('id, name, client, location, notes, project_num')
     .eq('id', id)
     .single()
 
@@ -1428,7 +1452,6 @@ async function openJobSheet(id) {
   if (projectData.project_num) {
     html += '<div class="js-project-num">Project #' + projectData.project_num + '</div>'
   }
-  html += '<div class="js-project-date">Generated ' + dateStr + '</div>'
   html += '</div>'
 
   // instructions
