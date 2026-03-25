@@ -64,6 +64,8 @@
     position: relative;
     width: 100%;
   }
+  /* no badge row — tighter top */
+  .mc.mc-no-topbar { padding-top: 16px; }
 
   /* ── CARD COLORS ──
      Pending (no infield activity) = amber
@@ -81,7 +83,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    margin-bottom: 11px;
+    margin-bottom: 10px;
     min-height: 26px;
   }
   .mc-top-left  { flex-shrink: 0; }
@@ -592,54 +594,48 @@ function renderProjects(list) {
     var mHtml = '';
     list.forEach(function(p) {
       var done = p.totalTasks - p.openTasks;
-      var s = p.status; // 'Pending', 'In Progress', 'On Hold', 'Complete'
+      var s = p.status;
 
-      // Card color:
-      // - Project status Pending OR In Progress with ONLY pending tasks → amber (pending card)
-      // - In Progress with any infield tasks → blue
-      // - On Hold → red, Complete → green
       var hasInfield  = p.infieldTasks > 0;
       var hasPending  = p.pendingTasks > 0;
-      var cardClass   = s === 'Complete'    ? 'mc-complete'
-                      : s === 'On Hold'     ? 'mc-hold'
-                      : s === 'In Progress' && hasInfield ? 'mc-inprogress'
-                      :                       'mc-pending'; // Pending status OR In Progress with no infield
+      var hasActivity = hasInfield || done > 0;
 
-      // --- TOP BAR SLOTS ---
-      // LEFT: "● In Progress" blinking badge — only when infield tasks exist
-      // CENTER: "● X In Field" — only when infield > 0
-      // RIGHT: "● X Pending" amber — only when pending tasks > 0 AND there's infield activity
-      //        OR just "Pending" amber pill when status is Pending (no left badge)
-      //        On Hold / Complete: just status badge on left, nothing else
+      var cardClass = s === 'Complete'                          ? 'mc-complete'
+                    : s === 'On Hold'                           ? 'mc-hold'
+                    : s === 'In Progress' && hasInfield         ? 'mc-inprogress'
+                    :                                             'mc-pending';
 
-      var leftBadge = '';
+      var leftBadge   = '';
       var centerBadge = '';
-      var rightBadge = '';
+      var rightBadge  = '';
 
       if (s === 'Complete') {
         leftBadge = '<span class="mc-pill-sm mc-badge-complete">Complete</span>';
       } else if (s === 'On Hold') {
         leftBadge = '<span class="mc-pill-sm mc-badge-hold">On Hold</span>';
       } else if (s === 'In Progress' && hasInfield) {
-        // Active job: blink dot left, in-field center, pending right
-        leftBadge = '<span class="mc-pill-sm mc-badge-inprogress"><span class="mc-blink"></span>In Progress</span>';
+        leftBadge   = '<span class="mc-pill-sm mc-badge-inprogress"><span class="mc-blink"></span>In Progress</span>';
         centerBadge = '<span class="mc-pill-sm mc-infield-pill"><span class="mc-if-dot"></span>' + p.infieldTasks + ' In Field</span>';
         if (hasPending) {
           rightBadge = '<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>' + p.pendingTasks + ' Pending</span>';
         }
-      } else {
-        // Pure pending — no left badge, pending pill on right only
-        if (hasPending) {
-          rightBadge = '<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>' + p.pendingTasks + ' Pending</span>';
-        }
+      } else if (hasActivity && hasPending) {
+        // some done but some still pending
+        rightBadge = '<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>' + p.pendingTasks + ' Pending</span>';
       }
+      // else: no activity at all — no badges, top bar omitted
 
-      mHtml += '<div class="mc ' + cardClass + '">';
-      mHtml += '<div class="mc-top-bar">';
-      mHtml += '<div class="mc-top-left">'  + leftBadge   + '</div>';
-      mHtml += '<div class="mc-top-mid">'   + centerBadge + '</div>';
-      mHtml += '<div class="mc-top-right">' + rightBadge  + '</div>';
-      mHtml += '</div>';
+      var showTopBar = leftBadge || centerBadge || rightBadge;
+
+      mHtml += '<div class="mc ' + cardClass + (showTopBar ? '' : ' mc-no-topbar') + '">';
+
+      if (showTopBar) {
+        mHtml += '<div class="mc-top-bar">';
+        mHtml += '<div class="mc-top-left">'  + leftBadge   + '</div>';
+        mHtml += '<div class="mc-top-mid">'   + centerBadge + '</div>';
+        mHtml += '<div class="mc-top-right">' + rightBadge  + '</div>';
+        mHtml += '</div>';
+      }
 
       mHtml += '<div class="mc-name">' + p.name + '</div>';
       mHtml += '<div class="mc-city">' + (p.location || '') + '</div>';
