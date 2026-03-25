@@ -6,6 +6,158 @@
 <title>The Count Company — Team</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* ── MOBILE TEAM NAV + CARDS ── */
+.mc-topnav { display: none; }
+
+@media (max-width: 768px) {
+  /* hide desktop chrome */
+  .container > .nav,
+  .container > .nav-line,
+  .mobile-nav-menu,
+  .container.main > .page-header,
+  .team-section { display: none !important; }
+
+  .mobile-only { display: block !important; }
+
+  /* top nav */
+  .mc-topnav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 28px 0 20px;
+  }
+  .mc-topnav a {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-3);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .mc-topnav a.active { color: var(--text); }
+  .mc-topnav-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+
+  /* section labels */
+  .mt-section {
+    padding: 0 14px 10px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mt-section + .mt-section { padding-top: 8px; }
+  .mt-add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-2);
+    background: none;
+    border: 1.5px solid var(--line);
+    border-radius: 100px;
+    padding: 4px 11px;
+    font-family: var(--font);
+    cursor: pointer;
+  }
+
+  /* card list */
+  .mt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 14px 24px;
+  }
+
+  /* member card */
+  .mt-card {
+    border-radius: 20px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+  }
+  .mt-card-manager { background: #E8F0FA; }
+  .mt-card-tech    { background: #E6F5EE; }
+  .mt-card-inactive { opacity: 0.55; }
+
+  /* avatar circle */
+  .mt-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+  }
+  .mt-card-manager .mt-avatar { background: rgba(44,95,138,0.18); color: #2C5F8A; }
+  .mt-card-tech    .mt-avatar { background: rgba(29,102,68,0.18);  color: #1D6644; }
+
+  /* text */
+  .mt-card-body { flex: 1; min-width: 0; }
+  .mt-card-name {
+    font-size: 15px; font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .mt-card-sub {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-top: 2px;
+  }
+
+  /* right side */
+  .mt-card-right {
+    display: flex; flex-direction: column;
+    align-items: flex-end; gap: 6px;
+    flex-shrink: 0;
+  }
+  .mt-role-pill {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 100px;
+  }
+  .mt-card-manager .mt-role-pill { background: rgba(44,95,138,0.14); color: #2C5F8A; }
+  .mt-card-tech    .mt-role-pill { background: rgba(29,102,68,0.14);  color: #1D6644; }
+
+  .mt-pin {
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #1D6644;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mt-status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .mt-status-dot.off { background: var(--line); }
+
+  /* kebab on card */
+  .mt-kebab {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: none; border: none;
+    color: var(--text-3);
+    cursor: pointer; padding: 4px;
+    display: flex; align-items: center;
+  }
+  .mt-kebab svg { width: 16px; height: 16px; }
+}
+</style>
 </head>
 <body>
 
@@ -29,6 +181,13 @@
   <a href="projects.html">Projects</a>
   <a class="active" href="team.html">Team</a>
   <a href="archive.html">Archive</a>
+</div>
+
+<!-- Mobile-only top nav -->
+<div class="mc-topnav">
+  <a href="projects.html">Projects</a>
+  <span class="mc-topnav-dot"></span>
+  <a href="team.html" class="active">Team</a>
 </div>
 
 <div class="container main">
@@ -249,34 +408,69 @@ function renderMobile() {
   const el = document.getElementById('mobileTeam')
   if (!el) return
 
-  let html = ''
-  html += '<div class="m-section" style="padding-top:0">Managers <span class="count">' + managers.length + '</span></div>'
-  managers.forEach(function(m) {
-    html += '<div class="m-team-row">' +
-      '<div class="m-team-left">' +
-      '<div class="m-team-name">' + escapeHtml(fullName(m)) + '</div>' +
-      '<div class="m-team-detail">' + escapeHtml(formatPhone(m.phone || '')) + '</div>' +
-      '</div>' +
-      '<div class="m-team-right">' +
-      '<span class="m-task-badge m-team-pill-' + escapeHtml(m.role || 'manager') + '">' + escapeHtml(displayRole(m.role || 'manager')) + '</span>' +
-      '<div class="m-team-dot' + (m.status !== 'active' ? ' off' : '') + '"></div>' +
-      '</div>' +
-      '</div>'
-  })
+  function initials(person) {
+    const f = (person.first_name || '')[0] || ''
+    const l = (person.last_name || '')[0] || ''
+    return (f + l).toUpperCase() || '?'
+  }
 
-  html += '<div class="m-section">Technicians <span class="count">' + techs.length + '</span></div>'
-  techs.forEach(function(t) {
-    html += '<div class="m-team-row">' +
-      '<div class="m-team-left">' +
-      '<div class="m-team-name">' + escapeHtml(fullName(t)) + '</div>' +
-      '<div class="m-team-detail">' + escapeHtml(formatPhone(t.phone || '')) + '</div>' +
+  function managerCard(m) {
+    const locked = m.role === 'owner' || m.role === 'admin'
+    const kebab = locked ? '' :
+      '<button class="mt-kebab" onclick="toggleKebab(\'m\',\'' + m.id + '\',event)">' +
+      '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>' +
+      '</button>' +
+      '<div class="kebab-menu" id="kebab-m-' + m.id + '">' +
+      '<button class="kebab-menu-item" onclick="editMember(\'manager\',\'' + m.id + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
+      '<button class="kebab-menu-item danger" onclick="promptDelete(\'manager\',\'' + m.id + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+      '</div>'
+    return '<div class="mt-card mt-card-manager' + (m.status !== 'active' ? ' mt-card-inactive' : '') + '">' +
+      kebab +
+      '<div class="mt-avatar">' + escapeHtml(initials(m)) + '</div>' +
+      '<div class="mt-card-body">' +
+        '<div class="mt-card-name">' + escapeHtml(fullName(m)) + '</div>' +
+        '<div class="mt-card-sub">' + escapeHtml(formatPhone(m.phone || '')) + '</div>' +
       '</div>' +
-      '<div class="m-team-right">' +
-      '<span class="m-team-pin">' + escapeHtml(t.pin || '—') + '</span>' +
-      '<div class="m-team-dot' + (t.status !== 'active' ? ' off' : '') + '"></div>' +
+      '<div class="mt-card-right">' +
+        '<span class="mt-role-pill">' + escapeHtml(displayRole(m.role || 'manager')) + '</span>' +
+        '<div class="mt-status-dot' + (m.status !== 'active' ? ' off' : '') + '"></div>' +
       '</div>' +
       '</div>'
-  })
+  }
+
+  function techCard(t) {
+    return '<div class="mt-card mt-card-tech' + (t.status !== 'active' ? ' mt-card-inactive' : '') + '">' +
+      '<button class="mt-kebab" onclick="toggleKebab(\'t\',\'' + t.id + '\',event)">' +
+      '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>' +
+      '</button>' +
+      '<div class="kebab-menu" id="kebab-t-' + t.id + '">' +
+      '<button class="kebab-menu-item" onclick="editMember(\'tech\',\'' + t.id + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
+      '<button class="kebab-menu-item" onclick="toggleStatus(\'' + t.id + '\')">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>' +
+      (t.status === 'active' ? 'Deactivate' : 'Activate') + '</button>' +
+      '<button class="kebab-menu-item danger" onclick="promptDelete(\'tech\',\'' + t.id + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+      '</div>' +
+      '<div class="mt-avatar">' + escapeHtml(initials(t)) + '</div>' +
+      '<div class="mt-card-body">' +
+        '<div class="mt-card-name">' + escapeHtml(fullName(t)) + '</div>' +
+        '<div class="mt-card-sub">' + escapeHtml(formatPhone(t.phone || '')) + '</div>' +
+      '</div>' +
+      '<div class="mt-card-right">' +
+        '<span class="mt-pin">' + escapeHtml(t.pin || '—') + '</span>' +
+        '<div class="mt-status-dot' + (t.status !== 'active' ? ' off' : '') + '"></div>' +
+      '</div>' +
+      '</div>'
+  }
+
+  let html = ''
+
+  html += '<div class="mt-section"><span>Managers <span class="count">' + managers.length + '</span></span>' +
+    '<button class="mt-add-btn" onclick="openAddModal(\'manager\')">+ Add Manager</button></div>'
+  html += '<div class="mt-list">' + managers.map(managerCard).join('') + '</div>'
+
+  html += '<div class="mt-section"><span>Technicians <span class="count">' + techs.length + '</span></span>' +
+    '<button class="mt-add-btn" onclick="openAddModal(\'tech\')">+ Add Tech</button></div>'
+  html += '<div class="mt-list">' + techs.map(techCard).join('') + '</div>'
 
   el.innerHTML = html
 }
