@@ -518,15 +518,32 @@
 }
 
 @media print {
+  /* hide entire page by default */
+  body > * { display: none !important; }
+  /* when jobsheet is open, show only it */
+  .jobsheet-overlay {
+    display: block !important;
+    position: static !important;
+    overflow: visible !important;
+    background: #fff !important;
+    height: auto !important;
+    z-index: auto !important;
+  }
   .jobsheet-header { display: none !important; }
-  .jobsheet-overlay { position: static; overflow: visible; background: #fff; }
-  .jobsheet-body { overflow: visible; padding: 20px; }
+  .jobsheet-body {
+    display: block !important;
+    overflow: visible !important;
+    padding: 20px !important;
+  }
+  /* preserve colored section backgrounds */
+  .js-section-header-pending,
+  .js-section-header-infield,
+  .js-section-header-complete,
+  .js-instructions-header {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
-</style>
-</head>
-<body>
-
-<!-- NAV -->
 <div class="container">
   <div class="nav">
     <a class="nav-brand" href="projects.html">
@@ -1514,7 +1531,11 @@ async function openJobSheet(id) {
 }
 
 function closeJobSheet() { document.getElementById('jobsheetOverlay').classList.remove('visible'); document.body.style.overflow = ''; }
-function printJobSheet() { window.print(); }
+function printJobSheet() {
+  document.body.classList.add('printing-jobsheet');
+  window.print();
+  document.body.classList.remove('printing-jobsheet');
+}
 
 
 // ═══════════════════════════════════════
