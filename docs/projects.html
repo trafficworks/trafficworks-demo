@@ -77,6 +77,13 @@
   .mc-hold       { background: #FDECEA; color: #8B3030; }
   .mc-complete   { background: #1A1D21; color: #ffffff; }
 
+  .mc-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
   .mc-badge {
     font-size: 10px;
     font-weight: 700;
@@ -84,7 +91,6 @@
     text-transform: uppercase;
     padding: 4px 10px;
     border-radius: 100px;
-    margin-bottom: 14px;
     display: inline-flex;
     align-items: center;
     gap: 5px;
@@ -93,6 +99,27 @@
   .mc-pending    .mc-badge { background: rgba(122,90,16,0.14);  color: #7A5A10; }
   .mc-hold       .mc-badge { background: rgba(139,48,48,0.14);  color: #8B3030; }
   .mc-complete   .mc-badge { background: rgba(58,166,106,0.2);  color: #3AA66A; }
+
+  .mc-pending-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #7A5A10;
+    background: rgba(212,168,67,0.18);
+    border-radius: 100px;
+    padding: 4px 10px;
+  }
+  .mc-pending-dot::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #D4A843;
+    flex-shrink: 0;
+  }
 
   .mc-livedot {
     width: 6px; height: 6px;
@@ -392,6 +419,7 @@ async function loadProjects() {
     status: mapStatus(p.status),
     pct: p.pct_complete,
     openTasks: (p.pending_tasks || 0) + (p.infield_tasks || 0),
+    pendingTasks: p.pending_tasks || 0,
     totalTasks: p.total_tasks || 0,
     updated: '',
     created: ''
@@ -552,10 +580,14 @@ function renderProjects(list) {
                     : s === 'Pending'     ? 'mc-pending'
                     : s === 'On Hold'     ? 'mc-hold'
                     :                       'mc-complete';
-      var livedot = s === 'In Progress' ? '<span class="mc-livedot"></span>' : '';
+      // pending dot — only on In Progress cards with unset tasks
+      var pendingDot = '';
+      if (s === 'In Progress' && p.pendingTasks > 0) {
+        pendingDot = '<span class="mc-pending-dot">' + p.pendingTasks + ' pending</span>';
+      }
       mHtml += '<div class="mc ' + cardClass + '">';
-      // badge
-      mHtml += '<span class="mc-badge">' + livedog(s) + s + '</span>';
+      // badge row: status badge + pending dot inline
+      mHtml += '<div class="mc-badge-row"><span class="mc-badge">' + livedog(s) + s + '</span>' + pendingDot + '</div>';
       // name + city
       mHtml += '<div class="mc-name">' + p.name + '</div>';
       mHtml += '<div class="mc-city">' + (p.location || '') + '</div>';
