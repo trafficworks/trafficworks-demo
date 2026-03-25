@@ -4,45 +4,83 @@
    ============================================================ */
 
 /* ============================================================
-   THEME: LIGHT (default, 7am–7pm)
+   TOKENS — LIGHT (default, 7am–7pm)
    ============================================================ */
 :root {
-  --tv-bg: #F4F3F0;
-  --tv-surface: #FFFFFF;
-  --tv-text: #1A1D21;
-  --tv-text-secondary: #5A5F66;
-  --tv-text-muted: #9CA0A6;
-  --tv-border: #E5E3DD;
-  --tv-header-bg: #FFFFFF;
-  --tv-header-text: #1A1D21;
-  --tv-card-shadow: 0 1px 2px rgba(0,0,0,0.04);
-  --tv-divider: rgba(0,0,0,0.07);
-  --tv-surface-hover: #F0EFEB;
-  --tv-note-bg: #F5F4F1;
-  --tv-pending-text: #8B6914;
-  --tv-infield-text: #1D6644;
-  --tv-complete-text: #2A7D50;
+  /* Surfaces */
+  --tv-bg:              #F4F3F0;
+  --tv-surface:         #FFFFFF;
+  --tv-surface-raised:  #FFFFFF;
+  --tv-surface-hover:   #F0EFEB;
+
+  /* Borders */
+  --tv-border:          #E5E3DD;
+  --tv-border-subtle:   #EDEBE7;
+  --tv-divider:         rgba(0,0,0,0.07);
+
+  /* Text */
+  --tv-text:            #1A1D21;
+  --tv-text-secondary:  #5A5F66;
+  --tv-text-muted:      #9CA0A6;
+
+  /* Header */
+  --tv-header-bg:       #FFFFFF;
+  --tv-header-text:     #1A1D21;
+
+  /* Status — light */
+  --tv-pending-bg:      #F5EDD6;
+  --tv-pending-text:    #7A5210;
+  --tv-pending-accent:  #C49A2E;
+  --tv-infield-bg:      #DCEAF8;
+  --tv-infield-text:    #1C4A7A;
+  --tv-infield-accent:  #4A7FBF;
+  --tv-complete-bg:     #D4EDDF;
+  --tv-complete-text:   #1A5C35;
+  --tv-complete-accent: #3AA66A;
+
+  /* Misc */
+  --tv-card-shadow:     0 1px 2px rgba(0,0,0,0.04);
+  --tv-note-bg:         #F5F4F1;
 }
 
 /* ============================================================
-   THEME: DARK (7pm–7am)
+   TOKENS — DARK (7pm–7am)
    ============================================================ */
 html.tv-dark {
-  --tv-bg: #1A1C20;
-  --tv-surface: #262930;
-  --tv-text: #E8EAED;
-  --tv-text-secondary: #A0A4AB;
-  --tv-text-muted: rgba(255,255,255,0.38);
-  --tv-border: rgba(255,255,255,0.07);
-  --tv-header-bg: #1A1C20;
-  --tv-header-text: #E8EAED;
-  --tv-card-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  --tv-divider: rgba(255,255,255,0.07);
-  --tv-surface-hover: #30333A;
-  --tv-note-bg: #30333A;
-  --tv-pending-text: #E0B84A;
-  --tv-infield-text: #6FD4A0;
-  --tv-complete-text: #6FD4A0;
+  /* Surfaces */
+  --tv-bg:              #1C1E22;
+  --tv-surface:         #272B32;
+  --tv-surface-raised:  #2E3239;
+  --tv-surface-hover:   #32363E;
+
+  /* Borders */
+  --tv-border:          rgba(255,255,255,0.09);
+  --tv-border-subtle:   rgba(255,255,255,0.06);
+  --tv-divider:         rgba(255,255,255,0.07);
+
+  /* Text */
+  --tv-text:            #E6E8EC;
+  --tv-text-secondary:  #9AA0AA;
+  --tv-text-muted:      #676D76;
+
+  /* Header */
+  --tv-header-bg:       #1C1E22;
+  --tv-header-text:     #E6E8EC;
+
+  /* Status — dark: muted, readable, not neon */
+  --tv-pending-bg:      #2E2718;
+  --tv-pending-text:    #D4A84A;
+  --tv-pending-accent:  #C49A2E;
+  --tv-infield-bg:      #182030;
+  --tv-infield-text:    #7AAED4;
+  --tv-infield-accent:  #4A7FBF;
+  --tv-complete-bg:     #182820;
+  --tv-complete-text:   #5EC48A;
+  --tv-complete-accent: #3AA66A;
+
+  /* Misc */
+  --tv-card-shadow:     0 1px 4px rgba(0,0,0,0.35);
+  --tv-note-bg:         #30343C;
 }
 
 /* ============================================================
@@ -53,42 +91,51 @@ body { background: var(--tv-bg); color: var(--tv-text); min-height: 100%; overfl
 input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; }
 
 /* ============================================================
-   HEADER
+   TOPNAV — project list view (matches projects page)
+   ============================================================ */
+.tv-topnav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 28px 0 18px;
+}
+.tv-topnav-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--tv-text);
+}
+
+/* ============================================================
+   HEADER — task view only
    ============================================================ */
 .tv-header { background: var(--tv-header-bg); border-bottom: 1px solid var(--tv-border); padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-.tv-brand { display: flex; align-items: center; gap: 8px; }
-.tv-brand-logo { width: 24px; height: 24px; object-fit: contain; }
-.tv-brand-name { font-size: 17px; font-weight: 600; color: var(--tv-header-text); letter-spacing: -0.3px; }
-.tv-greeting { font-size: 16px; font-weight: 600; color: var(--tv-header-text); line-height: 1.3; letter-spacing: -0.3px; }
-
+.tv-header-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
 .tv-header-right { display: flex; align-items: center; gap: 8px; }
 
-.tv-logout { display: none; }
-.tv-back-btn { width: 28px; height: 28px; background: none; border: 2px solid #1E8C5A; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; color: #1E8C5A; flex-shrink: 0; }
-
-.tv-back-btn svg { width: 15px; height: 15px; }
+.tv-back-btn { width: 28px; height: 28px; background: none; border: 2px solid #1E8C5A; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #1E8C5A; flex-shrink: 0; }
 .tv-back-btn svg { width: 14px; height: 14px; }
-
-.tv-header-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
 
 /* Project info in header (task view) */
 .tv-project-info { display: none; flex-direction: column; line-height: 1.15; min-width: 0; flex: 1; }
-.tv-project-info.visible { display: flex }
+.tv-project-info.visible { display: flex; }
 .tv-project-name-bar { font-size: 17px; font-weight: 600; color: var(--tv-header-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.3px; }
-.tv-project-loc-bar { font-size: 14px; color: var(--tv-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.tv-logout { display: none; }
 
 /* ============================================================
-   STATS BAR
+   PAGE SUB — stats line above project cards
    ============================================================ */
-.tv-stats { background: var(--tv-header-bg); border-bottom: 1px solid var(--tv-border); padding: 10px 16px; display: flex; align-items: center; gap: 20px; position: sticky; top: 56px; z-index: 90; }
-
-.tv-stat { display: flex; align-items: center; gap: 6px; }
-
-.tv-stat-value { font-size: 20px; font-weight: 700; color: var(--tv-header-text); line-height: 1; }
-
-.tv-stat-label { font-size: 15px; font-weight: 500; color: var(--tv-text-muted); }
-
-.tv-stat-divider { width: 1px; height: 20px; background: var(--tv-border); }
+.tv-page-sub {
+  padding: 0 12px 12px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tv-text-muted);
+  max-width: 480px;
+  margin: 0 auto;
+}
 
 /* Task view stats — filter pills */
 .tv-filter-bar { background: var(--tv-header-bg); border-bottom: 1px solid var(--tv-border); padding: 8px 16px; display: none; align-items: center; justify-content: space-between; gap: 4px; position: sticky; top: 56px; z-index: 90; }
@@ -115,33 +162,127 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 .tv-content { padding: 12px 16px 100px; max-width: 480px; margin: 0 auto; }
 
 /* ============================================================
-   PROJECT CARDS
+   PROJECT CARDS — mc card system
    ============================================================ */
-.tv-project-card { background: var(--tv-surface); border: 1px solid var(--tv-border); border-radius: 14px; padding: 16px 18px; margin-bottom: 10px; cursor: pointer; transition: all .15s ease; -webkit-tap-highlight-color: transparent; position: relative; box-shadow: var(--tv-card-shadow); }
-.tv-project-card:active { transform: scale(0.985); background: var(--tv-surface-hover); }
+#projectCards { display: flex; flex-direction: column; gap: 10px; padding: 0 6px 40px; max-width: 480px; margin: 0 auto; }
 
-/* Completed card — grayed out */
-.tv-project-card.card-complete { opacity: 0.45; }
-.tv-project-card.card-complete:active { opacity: 0.55; }
+.mc {
+  border-radius: 20px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: opacity .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mc:active { opacity: .88; }
+.mc.mc-no-topbar { padding-top: 16px; }
 
-.tv-card-name { font-size: 16px; font-weight: 700; color: var(--tv-text); line-height: 1.35; padding-right: 24px; }
+/* Card color states — use tokens */
+.mc-pending    { background: var(--tv-pending-bg);  color: var(--tv-pending-text); }
+.mc-inprogress { background: var(--tv-infield-bg);  color: var(--tv-infield-text); }
+.mc-complete   { background: var(--tv-complete-bg); color: var(--tv-complete-text); }
 
-.tv-card-location { font-size: 14px; font-weight: 500; color: var(--tv-text-secondary); margin-top: 3px; line-height: 1.35; }
+/* Top badge bar */
+.mc-top-bar { display: flex; align-items: center; width: 100%; margin-bottom: 10px; min-height: 26px; }
+.mc-top-left  { flex-shrink: 0; }
+.mc-top-mid   { flex: 1; display: flex; justify-content: center; }
+.mc-top-right { flex-shrink: 0; }
 
-.tv-card-tasks { font-size: 15px; font-weight: 600; color: var(--tv-text-secondary); margin-top: 8px; display: flex; align-items: center; gap: 6px; line-height: 1.35; }
-.tv-card-tasks .pending-text { color: var(--tv-pending-text); }
-.tv-card-tasks .infield-text { color: var(--tv-infield-text); }
+/* Status pills */
+.mc-pill-sm {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.mc-infield-pill  { background: rgba(58,166,106,.15); color: var(--tv-complete-text); }
+.mc-inprogress .mc-infield-pill { background: rgba(28,74,122,.12); color: var(--tv-infield-text); }
+.mc-pending-pill  { background: rgba(196,154,46,.18);  color: var(--tv-pending-text); }
 
-.tv-card-tasks .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--tv-text-muted); flex-shrink: 0; }
+.mc-blink { width: 6px; height: 6px; border-radius: 50%; background: var(--tv-complete-accent); flex-shrink: 0; animation: mcblink 1.8s ease-in-out infinite; }
+.mc-pd-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tv-pending-accent); flex-shrink: 0; }
+@keyframes mcblink { 0%,100% { opacity: 1 } 50% { opacity: .2 } }
 
-.tv-card-arrow { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--tv-text-secondary); opacity: 0.5; }
-.tv-card-arrow svg { width: 16px; height: 16px }
+/* Name row */
+.mc-name-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 2px; }
+.mc-check { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: rgba(26,92,53,.15); display: flex; align-items: center; justify-content: center; }
+.mc-name { font-size: 16px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.3; margin-bottom: 2px; color: inherit; }
+.mc-city { font-size: 13px; font-weight: 500; opacity: .6; margin-bottom: 12px; line-height: 1.3; }
 
-/* Tech instructions link on card */
-.tv-card-notes { font-size: 13px; color: var(--tv-pending-text); font-weight: 600; margin-top: 12px; padding: 11px 0 2px; border-top: 1px solid var(--tv-border); display: flex; align-items: center; gap: 6px; cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 42px; }
-.tv-card-notes svg { width: 13px; height: 13px }
-.tv-card-notes-body { font-size: var(--text-sm); color: var(--tv-text); line-height: 1.6; margin-top: 8px; padding: 10px 12px; background: var(--tv-note-bg); border-radius: 6px; display: none; }
-.tv-card-notes-body.open { display: block }
+/* Divider */
+.mc-divider { width: 100%; height: 1px; margin-bottom: 12px; }
+.mc-pending    .mc-divider { background: rgba(122,82,16,.12); }
+.mc-inprogress .mc-divider { background: rgba(28,74,122,.12); }
+.mc-complete   .mc-divider { background: rgba(26,92,53,.12); }
+
+/* Counter */
+.mc-counter { font-size: 54px; font-weight: 700; letter-spacing: -0.05em; line-height: 1; margin-bottom: 3px; align-self: center; }
+.mc-slash, .mc-total { opacity: .28; font-weight: 400; }
+.mc-complete .mc-done { color: var(--tv-complete-accent); }
+.mc-counter-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; opacity: .45; margin-bottom: 14px; align-self: center; }
+
+/* View Job Sheet pill button */
+.mc-pill {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 12px;
+  border-radius: 100px;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: opacity .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mc-pill:active { opacity: .75; }
+.mc-pending    .mc-pill { background: rgba(122,82,16,.10);  color: var(--tv-pending-text); }
+.mc-inprogress .mc-pill { background: rgba(28,74,122,.10);  color: var(--tv-infield-text); }
+.mc-complete   .mc-pill { background: rgba(26,92,53,.12);   color: var(--tv-complete-text); }
+
+/* Progress bar */
+.mc-prog { width: 100%; height: 3px; border-radius: 99px; margin-top: 12px; overflow: hidden; }
+.mc-pending    .mc-prog { background: rgba(122,82,16,.12); }
+.mc-inprogress .mc-prog { background: rgba(28,74,122,.12); }
+.mc-complete   .mc-prog { background: rgba(26,92,53,.12); }
+.mc-prog-fill { height: 100%; border-radius: 99px; }
+.mc-pending    .mc-prog-fill { background: var(--tv-pending-accent); }
+.mc-inprogress .mc-prog-fill { background: var(--tv-infield-accent); }
+.mc-complete   .mc-prog-fill { background: var(--tv-complete-accent); }
+
+/* Dark mode — card overrides */
+html.tv-dark .mc-pending    { background: var(--tv-pending-bg);  color: var(--tv-pending-text); }
+html.tv-dark .mc-inprogress { background: var(--tv-infield-bg);  color: var(--tv-infield-text); }
+html.tv-dark .mc-complete   { background: var(--tv-complete-bg); color: var(--tv-complete-text); }
+html.tv-dark .mc-check { background: rgba(94,196,138,.15); }
+html.tv-dark .mc-complete .mc-done { color: var(--tv-complete-accent); }
+html.tv-dark .mc-pending    .mc-divider { background: rgba(212,168,74,.12); }
+html.tv-dark .mc-inprogress .mc-divider { background: rgba(122,174,212,.12); }
+html.tv-dark .mc-complete   .mc-divider { background: rgba(94,196,138,.12); }
+html.tv-dark .mc-pending    .mc-prog    { background: rgba(212,168,74,.15); }
+html.tv-dark .mc-inprogress .mc-prog    { background: rgba(122,174,212,.15); }
+html.tv-dark .mc-complete   .mc-prog    { background: rgba(94,196,138,.15); }
+html.tv-dark .mc-infield-pill { background: rgba(94,196,138,.15); }
+html.tv-dark .mc-inprogress .mc-infield-pill { background: rgba(122,174,212,.12); }
+html.tv-dark .mc-pending-pill { background: rgba(212,168,74,.18); }
+html.tv-dark .mc-blink { background: var(--tv-complete-accent); }
+html.tv-dark .mc-pd-dot { background: var(--tv-pending-accent); }
+html.tv-dark .mc-pending    .mc-pill { background: rgba(212,168,74,.12);  color: var(--tv-pending-text); }
+html.tv-dark .mc-inprogress .mc-pill { background: rgba(122,174,212,.12); color: var(--tv-infield-text); }
+html.tv-dark .mc-complete   .mc-pill { background: rgba(94,196,138,.12);  color: var(--tv-complete-text); }
 
 /* ============================================================
    TASK CARDS
@@ -180,7 +321,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 
 /* Row 3: reopen reason */
 .tv-task-reopen-row { margin-top: 6px; }
-.tv-task-reopen-reason { font-size: var(--text-sm); color: #B87A00; font-weight: 500; }
+.tv-task-reopen-reason { font-size: var(--text-sm); color: var(--tv-pending-text); font-weight: 500; }
 
 /* Right: action button column */
 .tv-task-action { display: flex; align-items: center; justify-content: center; padding: 14px 14px 14px 12px; flex-shrink: 0; }
@@ -328,9 +469,15 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 .tv-undo-circle { width: 90px; height: 90px; background: var(--green); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 4px 20px rgba(42,181,126,0.4); transition: opacity 0.25s ease, transform 0.25s ease; }
 .tv-undo-text { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 0.3px; }
 
+/* Dark mode — topnav */
+html.tv-dark .tv-topnav-title { color: var(--tv-text); }
+
 /* Dark mode — back button and undo button */
 html.tv-dark .tv-back-btn { border-color: var(--tv-text-secondary); color: var(--tv-text-secondary); background: none; }
 html.tv-dark .tv-undo-btn { color: var(--tv-text-secondary); }
 
 /* Dark mode — filter pill active state */
 html.tv-dark .tv-filter-pill.active { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); }
+
+/* Dark mode — note save button */
+html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: var(--tv-text); border: 1px solid var(--tv-border); }
