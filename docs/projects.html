@@ -111,7 +111,7 @@
   .mc-blink {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: #4A7FBF;
+    background: #3AA66A;
     flex-shrink: 0;
     animation: mcblink 1.8s ease-in-out infinite;
   }
@@ -614,13 +614,11 @@ function renderProjects(list) {
       } else if (s === 'On Hold') {
         leftBadge = '<span class="mc-pill-sm mc-badge-hold">On Hold</span>';
       } else if (s === 'In Progress' && hasInfield) {
-        leftBadge   = '<span class="mc-pill-sm mc-badge-inprogress"><span class="mc-blink"></span>In Progress</span>';
-        centerBadge = '<span class="mc-pill-sm mc-infield-pill"><span class="mc-if-dot"></span>' + p.infieldTasks + ' In Field</span>';
+        leftBadge   = '<span class="mc-pill-sm mc-infield-pill"><span class="mc-blink"></span>' + p.infieldTasks + ' In Field</span>';
         if (hasPending) {
           rightBadge = '<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>' + p.pendingTasks + ' Pending</span>';
         }
       } else if (hasActivity && hasPending) {
-        // some done but some still pending
         rightBadge = '<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>' + p.pendingTasks + ' Pending</span>';
       }
       // else: no activity at all — no badges, top bar omitted
