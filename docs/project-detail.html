@@ -271,9 +271,31 @@
 }
 
 @media print {
+  /* hide entire page by default */
+  body > * { display: none !important; }
+  /* when jobsheet is open, show only it */
+  .jobsheet-overlay {
+    display: block !important;
+    position: static !important;
+    overflow: visible !important;
+    background: #fff !important;
+    height: auto !important;
+    z-index: auto !important;
+  }
   .jobsheet-header { display: none !important; }
-  .jobsheet-overlay { position: static; overflow: visible; background: #fff; }
-  .jobsheet-body { overflow: visible; padding: 20px; }
+  .jobsheet-body {
+    display: block !important;
+    overflow: visible !important;
+    padding: 20px !important;
+  }
+  /* preserve colored section backgrounds */
+  .js-section-header-pending,
+  .js-section-header-infield,
+  .js-section-header-complete,
+  .js-instructions-header {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
 
 </style>
@@ -1123,7 +1145,9 @@ function closeJobSheet() {
 }
 
 function printJobSheet() {
-  window.print()
+  document.body.classList.add('printing-jobsheet');
+  window.print();
+  document.body.classList.remove('printing-jobsheet');
 }
 
 function toggleMobileNav() {
