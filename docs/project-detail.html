@@ -6,6 +6,277 @@
 <title>The Count Company — Project Detail</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+
+<style>
+/* ═══════════════════════════════════
+   JOB SHEET OVERLAY
+   ═══════════════════════════════════ */
+.jobsheet-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #F4F3F0;
+  z-index: 500;
+  flex-direction: column;
+  overflow: hidden;
+}
+.jobsheet-overlay.visible { display: flex; }
+
+/* header bar */
+.jobsheet-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  background: #F4F3F0;
+  border-bottom: 1px solid #DEDBD5;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.jobsheet-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6B7178;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  flex-shrink: 0;
+}
+.jobsheet-title {
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  color: #1A1D21;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 1;
+}
+.jobsheet-title svg { color: #3AA66A; flex-shrink: 0; }
+.jobsheet-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  background: #1A1D21;
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* scrollable body */
+.jobsheet-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 14px 40px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* project header block */
+.js-project {
+  margin-bottom: 18px;
+}
+.js-project-name {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #1A1D21;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.js-project-meta {
+  font-size: 13px;
+  color: #6B7178;
+  margin-bottom: 2px;
+}
+.js-project-num {
+  font-size: 12px;
+  color: #7D838A;
+  margin-bottom: 2px;
+}
+.js-project-date {
+  font-size: 11px;
+  color: #9DA3AA;
+}
+
+/* instructions card */
+.js-instructions-card {
+  background: #fff;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.js-instructions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #4A7A5E;
+  padding: 9px 14px;
+  border-radius: 14px 14px 0 0;
+}
+.js-instructions-title {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.js-instructions-body {
+  padding: 12px 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2A2D31;
+  line-height: 1.5;
+}
+
+/* section cards — pending / in field / complete */
+.js-section {
+  background: #fff;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.js-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  border-radius: 14px 14px 0 0;
+}
+.js-section-header-pending  { background: #F5EDD6; }
+.js-section-header-infield  { background: #DCEAF8; }
+.js-section-header-complete { background: #D4EDDF; }
+
+.js-section-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.js-section-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.js-section-dot-pending  { background: #D4A843; }
+.js-section-dot-infield  { background: #4A7FBF; }
+.js-section-dot-complete { background: #3AA66A; }
+
+.js-section-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.js-section-header-pending  .js-section-label { color: #6B4A08; }
+.js-section-header-infield  .js-section-label { color: #1C4A7A; }
+.js-section-header-complete .js-section-label { color: #1A5C35; }
+
+.js-section-count {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+.js-section-header-pending  .js-section-count { background: rgba(107,74,8,0.14);  color: #6B4A08; }
+.js-section-header-infield  .js-section-count { background: rgba(28,74,122,0.14); color: #1C4A7A; }
+.js-section-header-complete .js-section-count { background: rgba(26,92,53,0.16);  color: #1A5C35; }
+
+/* site rows */
+.js-site-list { padding: 4px 0; }
+.js-site {
+  padding: 10px 14px;
+  border-bottom: 1px solid #F0EEE9;
+}
+.js-site:last-child { border-bottom: none; }
+
+.js-site-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+.js-site-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: #9DA3AA;
+  flex-shrink: 0;
+  min-width: 24px;
+}
+.js-site-desc {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1A1D21;
+  flex: 1;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.js-site-tags {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.js-site-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: #ECEAE4;
+  color: #4A4F55;
+}
+.js-site-tech-init {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: #E8E6E0;
+  color: #6B7178;
+  letter-spacing: 0.02em;
+}
+
+.js-site-times {
+  font-size: 11.5px;
+  color: #7D838A;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.js-site-note {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4A4F55;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* footer */
+.js-footer {
+  margin-top: 24px;
+  padding-top: 14px;
+  border-top: 1px solid #DEDBD5;
+  text-align: center;
+  font-size: 11px;
+  color: #9DA3AA;
+  letter-spacing: 0.02em;
+}
+.js-footer-brand {
+  font-weight: 700;
+  color: #6B7178;
+}
+
+@media print {
+  .jobsheet-header { display: none !important; }
+  .jobsheet-overlay { position: static; overflow: visible; background: #fff; }
+  .jobsheet-body { overflow: visible; padding: 20px; }
+}
+
+</style>
 </head>
 <body>
 
@@ -120,8 +391,8 @@
 <div class="jobsheet-overlay" id="jobsheetOverlay">
   <div class="jobsheet-header">
     <button class="jobsheet-close" id="closeJobSheetBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-    <span class="jobsheet-title">Job Sheet</span>
-    <button class="jobsheet-download" id="printJobSheetBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
+    <span class="jobsheet-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Job Sheet</span>
+    <button class="jobsheet-download" id="printJobSheetBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
   </div>
   <div class="jobsheet-body" id="jobsheetBody"></div>
 </div>
@@ -195,6 +466,12 @@ function fmtTime(d) {
 
 function fmtDur(ms) {
   if (!ms || ms < 0) return ''
+  const totalHours = ms / 3600000
+  if (totalHours >= 24) {
+    const d = Math.floor(totalHours / 24)
+    const h = Math.floor(totalHours % 24)
+    return d + 'd ' + h + 'h'
+  }
   const h = Math.floor(ms / 3600000)
   const m = Math.floor((ms % 3600000) / 60000)
   return h + 'h ' + m + 'm'
@@ -772,37 +1049,68 @@ async function confirmReopen() {
 }
 
 function openJobSheet() {
-  const pending = state.tasks.filter(t => t.statusLabel === STATUS.PENDING)
-  const infield = state.tasks.filter(t => t.statusLabel === STATUS.INFIELD)
+  const pending  = state.tasks.filter(t => t.statusLabel === STATUS.PENDING)
+  const infield  = state.tasks.filter(t => t.statusLabel === STATUS.INFIELD)
   const complete = state.tasks.filter(t => t.statusLabel === STATUS.COMPLETE)
-  const now = new Date()
-  const dateStr = (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear()
   const meta = [state.project?.client || '', state.project?.location || ''].filter(Boolean).join(' · ')
 
-  let html = '<div class="js-project"><div class="js-project-name">' + escapeHtml(state.project?.name || 'Project') + '</div><div class="js-project-meta">' + escapeHtml(meta) + '</div><div class="js-project-date">Generated ' + dateStr + '</div></div>'
-  if (state.project?.notes) html += '<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">' + escapeHtml(state.project.notes) + '</div></div>'
+  // project header
+  let html = '<div class="js-project">'
+  html += '<div class="js-project-name">' + escapeHtml(state.project?.name || 'Project') + '</div>'
+  if (meta) html += '<div class="js-project-meta">' + escapeHtml(meta) + '</div>'
+  if (state.project?.project_num) html += '<div class="js-project-num">Project #' + escapeHtml(state.project.project_num) + '</div>'
+  html += '</div>'
 
-  function renderGroup(title, list) {
+  // instructions
+  if (state.project?.notes) {
+    html += '<div class="js-instructions-card">'
+    html += '<div class="js-instructions-header"><span class="js-instructions-title">Instructions</span></div>'
+    html += '<div class="js-instructions-body">' + escapeHtml(state.project.notes) + '</div>'
+    html += '</div>'
+  }
+
+  function renderGroup(title, list, headerClass, dotClass) {
     if (!list.length) return ''
-    let s = '<div class="js-section"><div class="js-section-title">' + title + ' <span class="js-count">' + list.length + '</span></div><div class="js-site-list">'
+    let s = '<div class="js-section">'
+    s += '<div class="js-section-header ' + headerClass + '">'
+    s += '<div class="js-section-left">'
+    s += '<span class="js-section-dot ' + dotClass + '"></span>'
+    s += '<span class="js-section-label">' + title + '</span>'
+    s += '</div>'
+    s += '<span class="js-section-count">' + list.length + '</span>'
+    s += '</div>'
+    s += '<div class="js-site-list">'
     list.forEach(t => {
       const cycle = getLatestCycle(t.id)
-      s += '<div class="js-site"><div class="js-site-header"><span class="js-site-num">#' + t.site + '</span><span class="js-site-desc">' + escapeHtml(t.desc) + '</span><span class="js-site-type">' + escapeHtml(t.type) + '</span><span class="js-site-tech">' + getInitials(t.tech) + '</span></div>'
+      s += '<div class="js-site">'
+      s += '<div class="js-site-header">'
+      s += '<span class="js-site-num">#' + t.site + '</span>'
+      s += '<span class="js-site-desc">' + escapeHtml(t.desc) + '</span>'
+      s += '<div class="js-site-tags">'
+      s += '<span class="js-site-tag">' + escapeHtml(t.type) + '</span>'
+      if (t.tech) s += '<span class="js-site-tech-init">' + getInitials(t.tech) + '</span>'
+      s += '</div></div>'
       const times = []
       if (cycle?.deployed_at) times.push('Set: ' + fmtTime(cycle.deployed_at))
-      if (cycle?.completed_at) times.push('Picked: ' + fmtTime(cycle.completed_at))
+      if (cycle?.completed_at) times.push('Pickup: ' + fmtTime(cycle.completed_at))
       if (cycle?.deployed_at && cycle?.completed_at) times.push('Duration: ' + fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at)))
-      else if (cycle?.deployed_at && !cycle?.completed_at) times.push('In field: ' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime()))
+      else if (cycle?.deployed_at && !cycle?.completed_at) times.push('Duration: ' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime()))
       if (times.length) s += '<div class="js-site-times">' + times.join(' · ') + '</div>'
       if (t.note) s += '<div class="js-site-note">' + escapeHtml(t.note) + '</div>'
       s += '</div>'
     })
-    return s + '</div></div>'
+    s += '</div></div>'
+    return s
   }
 
-  html += renderGroup('Pending', pending)
-  html += renderGroup('In Field', infield)
-  html += renderGroup('Complete', complete)
+  html += renderGroup('Pending',  pending,  'js-section-header-pending',  'js-section-dot-pending')
+  html += renderGroup('In Field', infield,  'js-section-header-infield',  'js-section-dot-infield')
+  html += renderGroup('Complete', complete, 'js-section-header-complete', 'js-section-dot-complete')
+
+  // footer
+  const now = new Date()
+  const dateStr = (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear()
+  html += '<div class="js-footer">Report generated ' + dateStr + ' · <span class="js-footer-brand">The Count Company</span></div>'
 
   document.getElementById('jobsheetBody').innerHTML = html
   openModal('jobsheetOverlay')
