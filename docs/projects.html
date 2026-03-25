@@ -39,7 +39,7 @@
   .mobile-only { display: block !important; }
 
   .m-page-sub {
-    padding: 0 12px 12px;
+    padding: 0 6px 12px;
     font-size: 10.5px;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -47,99 +47,106 @@
     color: var(--text-3);
   }
 
-  /* ── CARD LIST ── */
+  /* ── CARD LIST — 6px sides = max width ── */
   #mobileProjectList {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 0 10px 40px;
+    padding: 0 6px 40px;
   }
 
   /* ── BASE CARD ── */
   .mc {
     border-radius: 20px;
-    padding: 14px 16px 14px;
+    padding: 14px 18px 14px;
     display: flex;
     flex-direction: column;
     position: relative;
     width: 100%;
   }
 
-  /* ── COLOR THEMES — status drives card color ── */
+  /* ── CARD COLORS ──
+     Pending (no infield activity) = amber
+     In Progress (has infield)     = blue
+     On Hold                       = red
+     Complete                      = green
+  */
   .mc-pending    { background: #F5EDD6; color: #6B4A08; }
   .mc-inprogress { background: #DCEAF8; color: #1C4A7A; }
   .mc-hold       { background: #F5E0E0; color: #7A2020; }
   .mc-complete   { background: #D4EDDF; color: #1A5C35; }
 
-  /* ── TOP BAR: [status badge] [in-field pill?] [pending pill?] ── */
+  /* ── TOP BAR: left | center | right — all inline ── */
   .mc-top-bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 100%;
     margin-bottom: 11px;
-    gap: 6px;
+    min-height: 26px;
   }
   .mc-top-left  { flex-shrink: 0; }
   .mc-top-mid   { flex: 1; display: flex; justify-content: center; }
   .mc-top-right { flex-shrink: 0; }
 
-  /* status badge — always upper left */
-  .mc-badge {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 100px;
-    display: inline-flex;
-    align-items: center;
-  }
-  .mc-pending    .mc-badge { background: rgba(107,74,8,0.14);   color: #6B4A08; }
-  .mc-inprogress .mc-badge { background: rgba(28,74,122,0.14);  color: #1C4A7A; }
-  .mc-hold       .mc-badge { background: rgba(122,32,32,0.14);  color: #7A2020; }
-  .mc-complete   .mc-badge { background: rgba(26,92,53,0.16);   color: #1A5C35; }
-
-  /* in-field pill — center, only when infield_tasks > 0 */
-  .mc-infield-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+  /* shared pill base */
+  .mc-pill-sm {
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.07em;
     text-transform: uppercase;
     padding: 4px 10px;
     border-radius: 100px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
   }
-  .mc-infield-pill::before {
-    content: '';
+
+  /* In Progress badge — blue, blinking dot */
+  .mc-badge-inprogress {
+    background: rgba(28,74,122,0.14);
+    color: #1C4A7A;
+  }
+  .mc-blink {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4A7FBF;
+    flex-shrink: 0;
+    animation: mcblink 1.8s ease-in-out infinite;
+  }
+  @keyframes mcblink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* On Hold badge */
+  .mc-badge-hold {
+    background: rgba(122,32,32,0.14);
+    color: #7A2020;
+  }
+
+  /* Complete badge */
+  .mc-badge-complete {
+    background: rgba(26,92,53,0.16);
+    color: #1A5C35;
+  }
+
+  /* In Field pill — center, green dot, tinted to card color */
+  .mc-infield-pill {
+    background: rgba(58,166,106,0.15);
+    color: #1A5C35;
+  }
+  .mc-inprogress .mc-infield-pill { color: #1C4A7A; background: rgba(28,74,122,0.1); }
+  .mc-hold       .mc-infield-pill { color: #7A2020; background: rgba(122,32,32,0.1); }
+  .mc-if-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
     background: #3AA66A;
     flex-shrink: 0;
   }
-  .mc-pending    .mc-infield-pill { background: rgba(107,74,8,0.1);   color: #6B4A08; }
-  .mc-inprogress .mc-infield-pill { background: rgba(28,74,122,0.1);  color: #1C4A7A; }
-  .mc-hold       .mc-infield-pill { background: rgba(122,32,32,0.1);  color: #7A2020; }
-  .mc-complete   .mc-infield-pill { background: rgba(26,92,53,0.1);   color: #1A5C35; }
 
-  /* pending count pill — upper right, amber always, only on In Progress/On Hold when pendingTasks > 0 */
+  /* Pending pill — upper right, amber always */
   .mc-pending-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: #6B4A08;
     background: rgba(212,168,67,0.22);
-    border-radius: 100px;
-    padding: 4px 10px;
+    color: #6B4A08;
   }
-  .mc-pending-pill::before {
-    content: '';
+  .mc-pd-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
     background: #D4A843;
@@ -587,44 +594,61 @@ function renderProjects(list) {
       var done = p.totalTasks - p.openTasks;
       var s = p.status; // 'Pending', 'In Progress', 'On Hold', 'Complete'
 
-      var cardClass = s === 'Pending'     ? 'mc-pending'
-                    : s === 'In Progress' ? 'mc-inprogress'
-                    : s === 'On Hold'     ? 'mc-hold'
-                    :                       'mc-complete';
+      // Card color:
+      // - Project status Pending OR In Progress with ONLY pending tasks → amber (pending card)
+      // - In Progress with any infield tasks → blue
+      // - On Hold → red, Complete → green
+      var hasInfield  = p.infieldTasks > 0;
+      var hasPending  = p.pendingTasks > 0;
+      var cardClass   = s === 'Complete'    ? 'mc-complete'
+                      : s === 'On Hold'     ? 'mc-hold'
+                      : s === 'In Progress' && hasInfield ? 'mc-inprogress'
+                      :                       'mc-pending'; // Pending status OR In Progress with no infield
 
-      // top-bar: [status left] [in-field center if > 0] [pending right if in-progress/hold and > 0]
-      var infieldPill = '';
-      if (p.infieldTasks > 0) {
-        infieldPill = '<span class="mc-infield-pill">' + p.infieldTasks + ' In Field</span>';
-      }
+      // --- TOP BAR SLOTS ---
+      // LEFT: "● In Progress" blinking badge — only when infield tasks exist
+      // CENTER: "● X In Field" — only when infield > 0
+      // RIGHT: "● X Pending" amber — only when pending tasks > 0 AND there's infield activity
+      //        OR just "Pending" amber pill when status is Pending (no left badge)
+      //        On Hold / Complete: just status badge on left, nothing else
 
-      var pendingPill = '';
-      if ((s === 'In Progress' || s === 'On Hold') && p.pendingTasks > 0) {
-        pendingPill = '<span class="mc-pending-pill">' + p.pendingTasks + ' Pending</span>';
+      var leftBadge = '';
+      var centerBadge = '';
+      var rightBadge = '';
+
+      if (s === 'Complete') {
+        leftBadge = '<span class="mc-pill-sm mc-badge-complete">Complete</span>';
+      } else if (s === 'On Hold') {
+        leftBadge = '<span class="mc-pill-sm mc-badge-hold">On Hold</span>';
+      } else if (s === 'In Progress' && hasInfield) {
+        // Active job: blink dot left, in-field center, pending right
+        leftBadge = '<span class="mc-pill-sm mc-badge-inprogress"><span class="mc-blink"></span>In Progress</span>';
+        centerBadge = '<span class="mc-pill-sm mc-infield-pill"><span class="mc-if-dot"></span>' + p.infieldTasks + ' In Field</span>';
+        if (hasPending) {
+          rightBadge = '<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>' + p.pendingTasks + ' Pending</span>';
+        }
+      } else {
+        // Pure pending — no left badge, pending pill on right only
+        if (hasPending) {
+          rightBadge = '<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>' + p.pendingTasks + ' Pending</span>';
+        }
       }
 
       mHtml += '<div class="mc ' + cardClass + '">';
-
-      // top bar — status | infield (center) | pending (right)
       mHtml += '<div class="mc-top-bar">';
-      mHtml += '<div class="mc-top-left"><span class="mc-badge">' + s + '</span></div>';
-      mHtml += '<div class="mc-top-mid">' + infieldPill + '</div>';
-      mHtml += '<div class="mc-top-right">' + pendingPill + '</div>';
+      mHtml += '<div class="mc-top-left">'  + leftBadge   + '</div>';
+      mHtml += '<div class="mc-top-mid">'   + centerBadge + '</div>';
+      mHtml += '<div class="mc-top-right">' + rightBadge  + '</div>';
       mHtml += '</div>';
 
-      // name + city
       mHtml += '<div class="mc-name">' + p.name + '</div>';
       mHtml += '<div class="mc-city">' + (p.location || '') + '</div>';
       mHtml += '<div class="mc-divider"></div>';
 
-      // counter
       mHtml += '<div class="mc-counter"><span class="mc-done">' + done + '</span><span class="mc-slash">/</span><span class="mc-total">' + p.totalTasks + '</span></div>';
       mHtml += '<div class="mc-counter-label">Tasks Complete</div>';
 
-      // view job sheet pill
       mHtml += '<button class="mc-pill" data-action="jobsheet" data-id="' + p.id + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Job Sheet</button>';
-
-      // progress bar
       mHtml += '<div class="mc-prog"><div class="mc-prog-fill" style="width:' + p.pct + '%"></div></div>';
       mHtml += '</div>';
     });
