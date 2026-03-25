@@ -993,12 +993,16 @@ function getStatusOptions(p) {
   if (p.status === 'On Hold') {
     allowed = p.pct === 0 ? ['Pending'] : ['In Progress'];
   } else {
-    var map = {'Pending':['On Hold'],'In Progress':['On Hold','Complete'],'Complete':[]};
+    var map = {
+      'Pending': ['On Hold'],
+      'In Progress': ['On Hold', 'Complete'],
+      'Complete': []
+    };
     allowed = map[p.status] || [];
   }
+
   return allowed.map(function(s) {
-    return '<button class="status-dropdown-item" onclick="setProjectStatus(\'' + p.id + '\', \''
-      + s + '\'); event.stopPropagation();"><span class="sd-dot '+dotClasses[s]+'"></span>'+s+'</button>';
+    return '<button class="status-dropdown-item" data-action="set-status" data-id="' + p.id + '" data-status="' + s + '"><span class="sd-dot ' + dotClasses[s] + '"></span>' + s + '</button>';
   }).join('');
 }
 
@@ -1014,7 +1018,6 @@ async function setProjectStatus(id, status) {
     .from('projects')
     .update({ status: dbStatusMap[status] || 'active' })
     .eq('id', id)
-    .eq('company_id', COMPANY_ID)
     .select('id')
 
   if (error) {
