@@ -49,9 +49,9 @@
 </div>
 <div class="jobsheet-overlay" id="printOverlay">
   <div class="jobsheet-header">
-    <button class="jobsheet-close" onclick="closePrintView()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <button class="jobsheet-close" id="closeJobSheetBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <span class="jobsheet-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Job Sheet</span>
-    <button class="jobsheet-download" onclick="window.print()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
+    <button class="jobsheet-download" id="printJobSheetBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
   </div>
   <div class="jobsheet-body" id="printContent"></div>
 </div>
@@ -628,29 +628,21 @@ function openJobSheet(projectId){
 function closePrintView(){document.getElementById('printOverlay').classList.remove('visible');document.body.style.overflow=''}
 
 
-document.addEventListener('touchend',function(e){
-  var jsBtn=e.target.closest('[data-action="jobsheet"]');
-  if(jsBtn){
-    e.preventDefault();
+document.getElementById('projectCards').addEventListener('click',function(e){
+  var actionEl=e.target.closest('[data-action]');
+  if(!actionEl) return;
+  var action=actionEl.dataset.action;
+  var id=actionEl.dataset.id;
+  if(action==='jobsheet'){
     e.stopPropagation();
-    openJobSheet(jsBtn.dataset.id);
+    return openJobSheet(id);
   }
-},{passive:false});
+  if(action==='open-project'){
+    return openProject(id);
+  }
+});
 
 document.addEventListener('click',function(e){
-  var jsBtn=e.target.closest('[data-action="jobsheet"]');
-  if(jsBtn){
-    e.preventDefault();
-    e.stopPropagation();
-    openJobSheet(jsBtn.dataset.id);
-    return;
-  }
-  var cardBtn=e.target.closest('[data-action="open-project"]');
-  if(cardBtn){
-    openProject(cardBtn.dataset.id);
-    return;
-  }
-  var noteBtn=e.target.closest('[data-action="toggle-note"]');
   if(noteBtn){
     e.preventDefault();
     e.stopPropagation();
@@ -664,6 +656,9 @@ document.addEventListener('click',function(e){
     saveNote(saveBtn.dataset.taskId);
   }
 });
+
+document.getElementById('closeJobSheetBtn')?.addEventListener('click', closePrintView);
+document.getElementById('printJobSheetBtn')?.addEventListener('click', function(){ window.print(); });
 
 Object.assign(window,{showProjects,openProject,dismissHint,toggleFilter,toggleCompleted,toggleNote,updateCharCount,saveNote,undoLastAction,promptReopen,closeReopenModal,confirmReopen,openJobSheet,closePrintView,cycleTaskStatus});
 loadAll();
