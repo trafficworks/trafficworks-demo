@@ -292,7 +292,7 @@ function renderProjectCards(){
     html+='<div class="mc-divider"></div>';
     html+='<div class="mc-counter"><span class="mc-done">'+done+'</span><span class="mc-slash">/</span><span class="mc-total">'+total+'</span></div>';
     html+='<div class="mc-counter-label">Tasks Complete</div>';
-    html+='<button class="mc-pill" onclick="event.stopPropagation();openJobSheet(\''+p.id+'\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Job Sheet</button>';
+    html+='<button class="mc-pill" data-action="jobsheet" data-id="'+p.id+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Job Sheet</button>';
     html+='<div class="mc-prog"><div class="mc-prog-fill" style="width:'+pctVal+'%"></div></div>';
     html+='</div>';
     return html;
@@ -629,6 +629,13 @@ function closePrintView(){document.getElementById('printOverlay').classList.remo
 
 
 document.addEventListener('click',function(e){
+  var jsBtn=e.target.closest('[data-action="jobsheet"]');
+  if(jsBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    openJobSheet(jsBtn.dataset.id);
+    return;
+  }
   var noteBtn=e.target.closest('[data-action="toggle-note"]');
   if(noteBtn){
     e.preventDefault();
