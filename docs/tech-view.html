@@ -9,83 +9,24 @@
 <link rel="stylesheet" href="css/tech-view.css">
 
 <style>
-.tv-task-card{transition:background-color .22s ease, opacity .28s ease, transform .28s ease, box-shadow .22s ease}
+/* Animation overrides — applied by JS */
+.tv-task-card{transition:background-color .22s ease,opacity .28s ease,transform .28s ease,box-shadow .22s ease}
 .tv-task-card.row-success-infield{background:rgba(141,183,219,.14);box-shadow:0 0 0 1px rgba(141,183,219,.20) inset}
 .tv-task-card.row-success-complete{background:rgba(42,181,126,.12);box-shadow:0 0 0 1px rgba(42,181,126,.20) inset}
 .tv-task-card.row-exit{opacity:0;transform:translateY(-6px)}
 .tv-note-indicator,.tv-note-save-btn{position:relative;z-index:3}
-
-/* ── PAGE SUB ── */
-.tv-page-sub{padding:0 6px 12px;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tv-text-secondary,#888);margin-top:4px}
-
-/* ── MC CARD LIST ── */
-#projectCards{display:flex;flex-direction:column;gap:10px;padding:0 6px 40px}
-
-/* ── MC BASE CARD ── */
-.mc{border-radius:20px;padding:14px 18px 14px;display:flex;flex-direction:column;position:relative;width:100%;box-sizing:border-box;cursor:pointer;transition:opacity .15s}
-.mc:active{opacity:.88}
-.mc.mc-no-topbar{padding-top:16px}
-.mc-pending   {background:#F5EDD6;color:#6B4A08}
-.mc-inprogress{background:#DCEAF8;color:#1C4A7A}
-.mc-complete  {background:#D4EDDF;color:#1A5C35}
-
-/* top bar */
-.mc-top-bar{display:flex;align-items:center;width:100%;margin-bottom:10px;min-height:26px}
-.mc-top-left{flex-shrink:0}
-.mc-top-mid{flex:1;display:flex;justify-content:center}
-.mc-top-right{flex-shrink:0}
-
-/* pills */
-.mc-pill-sm{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:4px 10px;border-radius:100px;display:inline-flex;align-items:center;gap:5px}
-.mc-infield-pill{background:rgba(58,166,106,.15);color:#1A5C35}
-.mc-inprogress .mc-infield-pill{color:#1C4A7A;background:rgba(28,74,122,.1)}
-.mc-pending-pill{background:rgba(212,168,67,.22);color:#6B4A08}
-.mc-blink{width:6px;height:6px;border-radius:50%;background:#3AA66A;flex-shrink:0;animation:mcblink 1.8s ease-in-out infinite}
-.mc-pd-dot{width:6px;height:6px;border-radius:50%;background:#D4A843;flex-shrink:0}
-@keyframes mcblink{0%,100%{opacity:1}50%{opacity:.2}}
-
-/* name row */
-.mc-name-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:2px}
-.mc-check{flex-shrink:0;width:20px;height:20px;border-radius:50%;background:rgba(26,92,53,.15);display:flex;align-items:center;justify-content:center}
-.mc-name{font-size:16px;font-weight:700;letter-spacing:-.025em;line-height:1.25;margin-bottom:2px;color:inherit}
-.mc-city{font-size:12.5px;opacity:.55;margin-bottom:12px}
-
-/* divider */
-.mc-divider{width:100%;height:1px;margin-bottom:12px}
-.mc-pending   .mc-divider{background:rgba(107,74,8,.12)}
-.mc-inprogress.mc-divider{background:rgba(28,74,122,.12)}
-.mc-inprogress .mc-divider{background:rgba(28,74,122,.12)}
-.mc-complete  .mc-divider{background:rgba(26,92,53,.12)}
-
-/* counter */
-.mc-counter{font-size:54px;font-weight:700;letter-spacing:-.05em;line-height:1;margin-bottom:3px;align-self:center}
-.mc-slash,.mc-total{opacity:.28;font-weight:400}
-.mc-complete .mc-done{color:#3AA66A}
-.mc-counter-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.45;margin-bottom:14px;align-self:center}
-
-/* view job sheet pill */
-.mc-pill{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px;border-radius:100px;border:none;font-family:inherit;font-size:13px;font-weight:600;letter-spacing:-.01em;cursor:pointer;transition:opacity .15s}
-.mc-pill:active{opacity:.75}
-.mc-pending   .mc-pill{background:rgba(107,74,8,.11);color:#6B4A08}
-.mc-inprogress .mc-pill{background:rgba(28,74,122,.11);color:#1C4A7A}
-.mc-complete  .mc-pill{background:rgba(26,92,53,.12);color:#1A5C35}
-
-/* progress bar */
-.mc-prog{width:100%;height:3px;border-radius:99px;margin-top:12px;overflow:hidden}
-.mc-pending   .mc-prog{background:rgba(107,74,8,.12)}
-.mc-inprogress .mc-prog{background:rgba(28,74,122,.12)}
-.mc-complete  .mc-prog{background:rgba(26,92,53,.12)}
-.mc-prog-fill{height:100%;border-radius:99px}
-.mc-pending   .mc-prog-fill{background:#D4A843}
-.mc-inprogress .mc-prog-fill{background:#4A7FBF}
-.mc-complete  .mc-prog-fill{background:#3AA66A}
 </style>
 
 </head>
 <body>
-<div class="tv-header">
+<!-- Project list header — matches projects page style -->
+<div class="tv-topnav" id="tvTopnav">
+  <span class="tv-topnav-title">Projects</span>
+</div>
+<!-- Task view header — shown when inside a job -->
+<div class="tv-header" id="tvTaskHeader" style="display:none">
   <div class="tv-header-left">
-    <button class="tv-back-btn" id="backBtn" onclick="showProjects()" style="display:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+    <button class="tv-back-btn" id="backBtn" onclick="showProjects()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
     <div class="tv-project-info" id="barProjectInfo">
       <span class="tv-project-name-bar" id="barProjectName"></span>
     </div>
@@ -371,7 +312,8 @@ function showProjects(){
   document.getElementById('projectStatsBar').style.display='';
   document.getElementById('taskFilterBar').style.display='none';
   document.getElementById('taskProgressWrap').style.display='none';
-  document.getElementById('backBtn').style.display='none';
+  document.getElementById('tvTopnav').style.display='';
+  document.getElementById('tvTaskHeader').style.display='none';
   document.getElementById('barProjectInfo').classList.remove('visible');
   document.getElementById('barProjectName').textContent='';
   renderProjectStats();
@@ -386,7 +328,8 @@ function openProject(id){
   document.getElementById('projectStatsBar').style.display='none';
   document.getElementById('taskFilterBar').style.display='flex';
   document.getElementById('taskProgressWrap').style.display='';
-  document.getElementById('backBtn').style.display='flex';
+  document.getElementById('tvTopnav').style.display='none';
+  document.getElementById('tvTaskHeader').style.display='flex';
   document.getElementById('barProjectInfo').classList.add('visible');
   document.getElementById('barProjectName').textContent=state.currentProject.name;
   document.getElementById('holdHint').style.display=state.hintDismissed?'none':'flex';
