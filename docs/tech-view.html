@@ -643,6 +643,7 @@ document.getElementById('projectCards').addEventListener('click',function(e){
 });
 
 document.addEventListener('click',function(e){
+  var noteBtn=e.target.closest('[data-action="toggle-note"]');
   if(noteBtn){
     e.preventDefault();
     e.stopPropagation();
