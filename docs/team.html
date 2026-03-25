@@ -324,7 +324,7 @@
   <div class="team-section">
     <div class="section-header">
       <span class="section-label" style="padding-top:0">Managers <span class="count" id="managerCount">0</span></span>
-      <button class="btn-action" onclick="openAddModal('manager')"><span class="plus">+</span> Add Manager</button>
+      <button class="btn-action" onclick="openAddModal(\'manager\')"><span class="plus">+</span> Add Manager</button>
     </div>
     <table>
       <thead><tr><th style="width:24%">Name</th><th style="width:24%">Email</th><th style="width:18%">Phone</th><th style="width:12%">Role</th><th style="width:12%">Status</th><th style="width:4%"></th></tr></thead>
@@ -336,7 +336,7 @@
   <div class="team-section">
     <div class="section-header">
       <span class="section-label" style="padding-top:0">Field Technicians <span class="count" id="techCount">0</span></span>
-      <button class="btn-action" onclick="openAddModal('tech')"><span class="plus">+</span> Add Tech</button>
+      <button class="btn-action" onclick="openAddModal(\'tech\')"><span class="plus">+</span> Add Tech</button>
     </div>
     <table>
       <thead><tr><th style="width:24%">Name</th><th style="width:24%">Email</th><th style="width:18%">Phone</th><th style="width:12%">PIN</th><th style="width:12%">Status</th><th style="width:4%"></th></tr></thead>
@@ -557,11 +557,13 @@ function renderMobile() {
   window.copyTechPin = copyTechPin
 
   function kebabMenu(prefix, id, isTech, isActive) {
-    const editBtn = '<button class="kebab-menu-item" onclick="editMember('' + (isTech ? 'tech' : 'manager') + '','' + id + '')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'
-    const toggleBtn = isTech ? '<button class="kebab-menu-item" onclick="toggleStatus('' + id + '')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>' + (isActive ? 'Deactivate' : 'Activate') + '</button>' : ''
-    const removeBtn = '<button class="kebab-menu-item danger" onclick="promptDelete('' + (isTech ? 'tech' : 'manager') + '','' + id + '')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>'
-    return '<button class="mt-kebab" onclick="toggleKebab('' + prefix + '','' + id + '',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>' +
-           '<div class="kebab-menu" id="kebab-' + prefix + '-' + id + '">' + editBtn + toggleBtn + removeBtn + '</div>'
+    const type = isTech ? 'tech' : 'manager'
+    const editBtn = '<button class="kebab-menu-item" onclick="editMember(\''+type+'\',\''+id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'
+    const toggleBtn = isTech ? '<button class="kebab-menu-item" onclick="toggleStatus(\''+id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>'+(isActive ? 'Deactivate' : 'Activate')+'</button>' : ''
+    const removeBtn = '<button class="kebab-menu-item danger" onclick="promptDelete(\''+type+'\',\''+id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>'
+    const triggerBtn = '<button class="mt-kebab" onclick="toggleKebab(\''+prefix+'\',\''+id+'\',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>'
+    const menuDiv = '<div class="kebab-menu" id="kebab-'+prefix+'-'+id+'">'+editBtn+toggleBtn+removeBtn+'</div>'
+    return triggerBtn + menuDiv
   }
 
   function managerCard(m) {
@@ -608,7 +610,7 @@ function renderMobile() {
       '<div class="mt-divider"></div>' +
       '<div class="mt-pin-row">' +
         '<span class="mt-pin-label">PIN: <strong>' + pin + '</strong></span>' +
-        '<button class="mt-copy-btn" onclick="copyTechPin('' + (t.pin || '') + '')">' +
+        '<button class="mt-copy-btn" onclick="copyTechPin(\'' + (t.pin || '') + '\')">' +
           '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
           'Copy' +
         '</button>' +
@@ -619,11 +621,11 @@ function renderMobile() {
   let html = ''
 
   // Managers section
-  html += '<div class="mt-section"><span>Managers</span><button class="mt-add-btn" onclick="openAddModal('manager')">+ Add Manager</button></div>'
+  html += '<div class="mt-section"><span>Managers</span><button class="mt-add-btn" onclick="openAddModal(\'manager\')">+ Add Manager</button></div>'
   if (managers.length === 0) {
     html += '<div class="mt-list"><div class="mt-empty-card">' +
       '<span class="mt-empty-text">No managers yet</span>' +
-      '<button class="mt-empty-btn" onclick="openAddModal('manager')">' +
+      '<button class="mt-empty-btn" onclick="openAddModal(\'manager\')">' +
         '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
         'Add Manager' +
       '</button>' +
@@ -633,11 +635,11 @@ function renderMobile() {
   }
 
   // Technicians section
-  html += '<div class="mt-section mt-section-spacer"><span>Technicians</span><button class="mt-add-btn" onclick="openAddModal('tech')">+ Add Tech</button></div>'
+  html += '<div class="mt-section mt-section-spacer"><span>Technicians</span><button class="mt-add-btn" onclick="openAddModal(\'tech\')">+ Add Tech</button></div>'
   if (techs.length === 0) {
     html += '<div class="mt-list"><div class="mt-empty-card">' +
       '<span class="mt-empty-text">No technicians yet</span>' +
-      '<button class="mt-empty-btn" onclick="openAddModal('tech')">' +
+      '<button class="mt-empty-btn" onclick="openAddModal(\'tech\')">' +
         '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
         'Add Tech' +
       '</button>' +
