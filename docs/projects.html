@@ -73,6 +73,7 @@
 
   /* status colors */
   .mc-inprogress { background: #E8F0FA; color: #2C5F8A; }
+  .mc-infield    { background: #E6F5EE; color: #1D6644; }
   .mc-pending    { background: #FDF6E3; color: #7A5A10; }
   .mc-hold       { background: #FDECEA; color: #8B3030; }
   .mc-complete   { background: #1A1D21; color: #ffffff; }
@@ -96,6 +97,7 @@
     gap: 5px;
   }
   .mc-inprogress .mc-badge { background: rgba(44,95,138,0.14);  color: #2C5F8A; }
+  .mc-infield    .mc-badge { background: rgba(29,102,68,0.14);   color: #1D6644; }
   .mc-pending    .mc-badge { background: rgba(122,90,16,0.14);  color: #7A5A10; }
   .mc-hold       .mc-badge { background: rgba(139,48,48,0.14);  color: #8B3030; }
   .mc-complete   .mc-badge { background: rgba(58,166,106,0.2);  color: #3AA66A; }
@@ -124,7 +126,7 @@
   .mc-livedot {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: #6A9BB8;
+    background: #3AA66A;
     display: inline-block;
     animation: mclive 1.8s ease-in-out infinite;
   }
@@ -149,6 +151,7 @@
     margin-bottom: 16px;
   }
   .mc-inprogress .mc-divider { background: rgba(44,95,138,0.15); }
+  .mc-infield    .mc-divider { background: rgba(29,102,68,0.15); }
   .mc-pending    .mc-divider { background: rgba(122,90,16,0.15); }
   .mc-hold       .mc-divider { background: rgba(139,48,48,0.15); }
   .mc-complete   .mc-divider { background: rgba(255,255,255,0.1); }
@@ -192,6 +195,7 @@
   }
   .mc-pill:active { opacity: 0.75; }
   .mc-inprogress .mc-pill { background: rgba(44,95,138,0.13);  color: #2C5F8A; }
+  .mc-infield    .mc-pill { background: rgba(29,102,68,0.13);   color: #1D6644; }
   .mc-pending    .mc-pill { background: rgba(122,90,16,0.13);  color: #7A5A10; }
   .mc-hold       .mc-pill { background: rgba(139,48,48,0.13);  color: #8B3030; }
   .mc-complete   .mc-pill { background: rgba(255,255,255,0.1); color: #ffffff; }
@@ -204,6 +208,7 @@
     overflow: hidden;
   }
   .mc-inprogress .mc-prog { background: rgba(44,95,138,0.15); }
+  .mc-infield    .mc-prog { background: rgba(29,102,68,0.15); }
   .mc-pending    .mc-prog { background: rgba(122,90,16,0.15); }
   .mc-hold       .mc-prog { background: rgba(139,48,48,0.15); }
   .mc-complete   .mc-prog { background: rgba(255,255,255,0.08); }
@@ -213,6 +218,7 @@
     border-radius: 99px;
   }
   .mc-inprogress .mc-prog-fill { background: #6A9BB8; }
+  .mc-infield    .mc-prog-fill { background: #3AA66A; }
   .mc-pending    .mc-prog-fill { background: #D4A843; }
   .mc-hold       .mc-prog-fill { background: #C45C5C; }
   .mc-complete   .mc-prog-fill { background: #3AA66A; }
@@ -420,6 +426,7 @@ async function loadProjects() {
     pct: p.pct_complete,
     openTasks: (p.pending_tasks || 0) + (p.infield_tasks || 0),
     pendingTasks: p.pending_tasks || 0,
+    infieldTasks: p.infield_tasks || 0,
     totalTasks: p.total_tasks || 0,
     updated: '',
     created: ''
@@ -576,18 +583,32 @@ function renderProjects(list) {
     list.forEach(function(p) {
       var done = p.totalTasks - p.openTasks;
       var s = p.status; // 'In Progress', 'Pending', 'On Hold', 'Complete'
-      var cardClass = s === 'In Progress' ? 'mc-inprogress'
-                    : s === 'Pending'     ? 'mc-pending'
-                    : s === 'On Hold'     ? 'mc-hold'
-                    :                       'mc-complete';
-      // pending dot — only on In Progress cards with unset tasks
+
+      // Derive display status from task breakdown:
+      // - has infield tasks → In Field
+      // - has only pending tasks (or no tasks started) → Pending
+      // - project status is In Progress with no open tasks → In Progress
+      var displayStatus = s;
+      if (s === 'In Progress') {
+        if (p.infieldTasks > 0) displayStatus = 'In Field';
+        else if (p.infieldTasks === 0 && p.pendingTasks > 0) displayStatus = 'Pending';
+      }
+
+      var cardClass = displayStatus === 'In Field'   ? 'mc-infield'
+                    : displayStatus === 'In Progress' ? 'mc-inprogress'
+                    : s === 'Pending'                 ? 'mc-pending'
+                    : s === 'On Hold'                 ? 'mc-hold'
+                    :                                   'mc-complete';
+
+      // pending dot — on In Field or In Progress cards with unset tasks
       var pendingDot = '';
-      if (s === 'In Progress' && p.pendingTasks > 0) {
+      if ((displayStatus === 'In Field' || displayStatus === 'In Progress') && p.pendingTasks > 0) {
         pendingDot = '<span class="mc-pending-dot">' + p.pendingTasks + ' pending</span>';
       }
+
       mHtml += '<div class="mc ' + cardClass + '">';
       // badge row: status badge + pending dot inline
-      mHtml += '<div class="mc-badge-row"><span class="mc-badge">' + livedog(s) + s + '</span>' + pendingDot + '</div>';
+      mHtml += '<div class="mc-badge-row"><span class="mc-badge">' + livedot(displayStatus) + displayStatus + '</span>' + pendingDot + '</div>';
       // name + city
       mHtml += '<div class="mc-name">' + p.name + '</div>';
       mHtml += '<div class="mc-city">' + (p.location || '') + '</div>';
@@ -604,8 +625,8 @@ function renderProjects(list) {
     mList.innerHTML = mHtml;
   }
 
-  function livedog(status) {
-    return status === 'In Progress' ? '<span class="mc-livedot"></span>' : '';
+  function livedot(status) {
+    return status === 'In Field' ? '<span class="mc-livedot"></span>' : '';
   }
 
   document.getElementById('projectCount').textContent = active.length + ' active';
