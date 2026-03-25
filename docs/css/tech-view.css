@@ -181,6 +181,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
   cursor: pointer;
   transition: opacity .15s;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .mc:active { opacity: .88; }
 .mc.mc-no-topbar { padding-top: 16px; }
@@ -251,6 +252,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
   cursor: pointer;
   transition: opacity .15s;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .mc-pill:active { opacity: .75; }
 .mc-pending    .mc-pill { background: rgba(122,82,16,.10);  color: var(--tv-pending-text); }
