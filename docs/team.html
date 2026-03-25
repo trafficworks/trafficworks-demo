@@ -7,11 +7,15 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
-/* ── MOBILE TEAM NAV + CARDS ── */
+/* ══════════════════════════════════════
+   TEAM PAGE — MOBILE CARD SYSTEM
+   Mirrors projects.html design tokens
+   ══════════════════════════════════════ */
 .mc-topnav { display: none; }
 
 @media (max-width: 768px) {
-  /* hide desktop chrome */
+
+  /* ── hide desktop chrome ── */
   .container > .nav,
   .container > .nav-line,
   .mobile-nav-menu,
@@ -20,7 +24,7 @@
 
   .mobile-only { display: block !important; }
 
-  /* top nav */
+  /* ── top nav: same as projects ── */
   .mc-topnav {
     display: flex;
     justify-content: center;
@@ -34,6 +38,7 @@
     color: var(--text-3);
     text-decoration: none;
     letter-spacing: -0.02em;
+    transition: color 0.15s;
   }
   .mc-topnav a.active { color: var(--text); }
   .mc-topnav-dot {
@@ -42,118 +47,234 @@
     background: var(--line);
   }
 
-  /* section labels */
+  /* ── section header row ── */
   .mt-section {
-    padding: 0 14px 10px;
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-3);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 6px 12px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
   }
-  .mt-section + .mt-section { padding-top: 8px; }
+  .mt-section-spacer { margin-top: 24px; }
+
   .mt-add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-2);
+    background: none;
+    border: 1.5px solid var(--line);
+    border-radius: 100px;
+    padding: 5px 13px;
+    font-family: var(--font);
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    transition: background 0.15s;
+  }
+  .mt-add-btn:active { background: var(--line-light); }
+
+  /* ── card list ── */
+  .mt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 6px 8px;
+  }
+
+  /* ── empty state card ── */
+  .mt-empty-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .mt-empty-text {
+    font-size: 14px;
+    color: var(--text-3);
+    font-weight: 500;
+  }
+  .mt-empty-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px;
+    background: var(--bg);
+    border: none;
+    border-radius: 100px;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-2);
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    transition: background 0.15s;
+  }
+  .mt-empty-btn:active { background: var(--line-light); }
+
+  /* ── base card — matches project card radius/padding ── */
+  .mt-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 16px 18px 14px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+  }
+  .mt-card-inactive { opacity: 0.5; }
+
+  /* ── top row: avatar + name/phone + status pill ── */
+  .mt-top-row {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 12px;
+  }
+
+  /* avatar */
+  .mt-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+  }
+  .mt-card-manager .mt-avatar { background: #D4EDDF; color: #1A5C35; }
+  .mt-card-tech    .mt-avatar { background: #D4EDDF; color: #1A5C35; }
+
+  /* name + phone block */
+  .mt-identity { flex: 1; min-width: 0; }
+  .mt-name {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+  .mt-phone {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-top: 2px;
+  }
+  .mt-last-active {
+    font-size: 11.5px;
+    color: var(--text-3);
+    margin-top: 1px;
+    opacity: 0.75;
+  }
+
+  /* status pill — right of avatar row */
+  .mt-status-pill {
     display: inline-flex;
     align-items: center;
     gap: 5px;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: var(--text-2);
-    background: none;
-    border: 1.5px solid var(--line);
+    padding: 4px 10px;
     border-radius: 100px;
-    padding: 4px 11px;
-    font-family: var(--font);
-    cursor: pointer;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+  .mt-status-pill-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .mt-status-active {
+    background: rgba(26,92,53,0.13);
+    color: #1A5C35;
+  }
+  .mt-status-active .mt-status-pill-dot { background: #3AA66A; }
+  .mt-status-inactive {
+    background: rgba(0,0,0,0.06);
+    color: var(--text-3);
+  }
+  .mt-status-inactive .mt-status-pill-dot { background: var(--line); }
+
+  /* ── divider ── */
+  .mt-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--line-light);
+    margin-bottom: 12px;
   }
 
-  /* card list */
-  .mt-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 0 14px 24px;
+  /* ── role pill (manager role label) ── */
+  .mt-role-pill {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 12px;
   }
 
-  /* member card */
-  .mt-card {
-    border-radius: 20px;
-    padding: 16px 18px;
+  /* ── PIN row ── */
+  .mt-pin-row {
     display: flex;
     align-items: center;
-    gap: 14px;
-    position: relative;
+    justify-content: space-between;
   }
-  .mt-card-manager { background: #E8F0FA; }
-  .mt-card-tech    { background: #E6F5EE; }
-  .mt-card-inactive { opacity: 0.55; }
-
-  /* avatar circle */
-  .mt-avatar {
-    width: 42px; height: 42px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; font-weight: 700;
-    flex-shrink: 0;
-    letter-spacing: -0.02em;
+  .mt-pin-label {
+    font-size: 13.5px;
+    color: var(--text-2);
+    letter-spacing: -0.01em;
   }
-  .mt-card-manager .mt-avatar { background: rgba(44,95,138,0.18); color: #2C5F8A; }
-  .mt-card-tech    .mt-avatar { background: rgba(29,102,68,0.18);  color: #1D6644; }
-
-  /* text */
-  .mt-card-body { flex: 1; min-width: 0; }
-  .mt-card-name {
-    font-size: 15px; font-weight: 700;
-    letter-spacing: -0.02em;
+  .mt-pin-label strong {
+    font-weight: 700;
     color: var(--text);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .mt-card-sub {
-    font-size: 12px;
-    color: var(--text-3);
-    margin-top: 2px;
-  }
-
-  /* right side */
-  .mt-card-right {
-    display: flex; flex-direction: column;
-    align-items: flex-end; gap: 6px;
-    flex-shrink: 0;
-  }
-  .mt-role-pill {
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.07em; text-transform: uppercase;
-    padding: 3px 9px; border-radius: 100px;
-  }
-  .mt-card-manager .mt-role-pill { background: rgba(44,95,138,0.14); color: #2C5F8A; }
-  .mt-card-tech    .mt-role-pill { background: rgba(29,102,68,0.14);  color: #1D6644; }
-
-  .mt-pin {
-    font-size: 13px; font-weight: 600;
-    letter-spacing: 0.08em;
-    color: #1D6644;
+    letter-spacing: 0.06em;
     font-variant-numeric: tabular-nums;
   }
-
-  .mt-status-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--accent);
+  .mt-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-2);
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    border-radius: 100px;
+    padding: 5px 12px;
+    font-family: var(--font);
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    transition: background 0.15s;
   }
-  .mt-status-dot.off { background: var(--line); }
+  .mt-copy-btn:active { background: var(--line); }
 
-  /* kebab on card */
+  /* kebab — top right of card */
   .mt-kebab {
     position: absolute;
-    top: 12px; right: 12px;
+    top: 14px; right: 14px;
     background: none; border: none;
     color: var(--text-3);
-    cursor: pointer; padding: 4px;
-    display: flex; align-items: center;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
   }
   .mt-kebab svg { width: 16px; height: 16px; }
 }
@@ -414,63 +535,116 @@ function renderMobile() {
     return (f + l).toUpperCase() || '?'
   }
 
+  function timeAgo(dateStr) {
+    if (!dateStr) return ''
+    const diff = Date.now() - new Date(dateStr).getTime()
+    const mins = Math.floor(diff / 60000)
+    if (mins < 1)   return 'just now'
+    if (mins < 60)  return mins + 'm ago'
+    const hrs = Math.floor(mins / 60)
+    if (hrs < 24)   return hrs + 'h ago'
+    if (hrs < 48)   return 'yesterday'
+    return Math.floor(hrs / 24) + 'd ago'
+  }
+
+  function copyTechPin(pin) {
+    navigator.clipboard.writeText(pin).then(function() {
+      showToast('PIN copied')
+    }).catch(function() {
+      showToast('PIN: ' + pin)
+    })
+  }
+  window.copyTechPin = copyTechPin
+
+  function kebabMenu(prefix, id, isTech, isActive) {
+    const editBtn = '<button class="kebab-menu-item" onclick="editMember('' + (isTech ? 'tech' : 'manager') + '','' + id + '')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'
+    const toggleBtn = isTech ? '<button class="kebab-menu-item" onclick="toggleStatus('' + id + '')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>' + (isActive ? 'Deactivate' : 'Activate') + '</button>' : ''
+    const removeBtn = '<button class="kebab-menu-item danger" onclick="promptDelete('' + (isTech ? 'tech' : 'manager') + '','' + id + '')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>'
+    return '<button class="mt-kebab" onclick="toggleKebab('' + prefix + '','' + id + '',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>' +
+           '<div class="kebab-menu" id="kebab-' + prefix + '-' + id + '">' + editBtn + toggleBtn + removeBtn + '</div>'
+  }
+
   function managerCard(m) {
     const locked = m.role === 'owner' || m.role === 'admin'
-    const kebab = locked ? '' :
-      '<button class="mt-kebab" onclick="toggleKebab(\'m\',\'' + m.id + '\',event)">' +
-      '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>' +
-      '</button>' +
-      '<div class="kebab-menu" id="kebab-m-' + m.id + '">' +
-      '<button class="kebab-menu-item" onclick="editMember(\'manager\',\'' + m.id + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
-      '<button class="kebab-menu-item danger" onclick="promptDelete(\'manager\',\'' + m.id + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
-      '</div>'
-    return '<div class="mt-card mt-card-manager' + (m.status !== 'active' ? ' mt-card-inactive' : '') + '">' +
-      kebab +
-      '<div class="mt-avatar">' + escapeHtml(initials(m)) + '</div>' +
-      '<div class="mt-card-body">' +
-        '<div class="mt-card-name">' + escapeHtml(fullName(m)) + '</div>' +
-        '<div class="mt-card-sub">' + escapeHtml(formatPhone(m.phone || '')) + '</div>' +
+    const isActive = m.status === 'active'
+    const statusClass = isActive ? 'mt-status-active' : 'mt-status-inactive'
+    const statusLabel = isActive ? 'Active' : 'Offline'
+    const lastActive = m.last_active_at ? 'Last active: ' + timeAgo(m.last_active_at) : ''
+
+    return '<div class="mt-card mt-card-manager' + (!isActive ? ' mt-card-inactive' : '') + '">' +
+      (!locked ? kebabMenu('m', m.id, false, isActive) : '') +
+      '<div class="mt-top-row">' +
+        '<div class="mt-avatar">' + escapeHtml(initials(m)) + '</div>' +
+        '<div class="mt-identity">' +
+          '<div class="mt-name">' + escapeHtml(fullName(m)) + '</div>' +
+          '<div class="mt-phone">' + escapeHtml(formatPhone(m.phone || '')) + '</div>' +
+          (lastActive ? '<div class="mt-last-active">' + lastActive + '</div>' : '') +
+        '</div>' +
+        '<span class="mt-status-pill ' + statusClass + '"><span class="mt-status-pill-dot"></span>' + statusLabel + '</span>' +
       '</div>' +
-      '<div class="mt-card-right">' +
-        '<span class="mt-role-pill">' + escapeHtml(displayRole(m.role || 'manager')) + '</span>' +
-        '<div class="mt-status-dot' + (m.status !== 'active' ? ' off' : '') + '"></div>' +
-      '</div>' +
+      '<div class="mt-divider"></div>' +
+      '<div class="mt-role-pill">' + escapeHtml(displayRole(m.role || 'manager')) + '</div>' +
       '</div>'
   }
 
   function techCard(t) {
-    return '<div class="mt-card mt-card-tech' + (t.status !== 'active' ? ' mt-card-inactive' : '') + '">' +
-      '<button class="mt-kebab" onclick="toggleKebab(\'t\',\'' + t.id + '\',event)">' +
-      '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>' +
-      '</button>' +
-      '<div class="kebab-menu" id="kebab-t-' + t.id + '">' +
-      '<button class="kebab-menu-item" onclick="editMember(\'tech\',\'' + t.id + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
-      '<button class="kebab-menu-item" onclick="toggleStatus(\'' + t.id + '\')">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>' +
-      (t.status === 'active' ? 'Deactivate' : 'Activate') + '</button>' +
-      '<button class="kebab-menu-item danger" onclick="promptDelete(\'tech\',\'' + t.id + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+    const isActive = t.status === 'active'
+    const statusClass = isActive ? 'mt-status-active' : 'mt-status-inactive'
+    const statusLabel = isActive ? 'Active' : 'Offline'
+    const lastActive = t.last_active_at ? 'Last active: ' + timeAgo(t.last_active_at) : ''
+    const pin = escapeHtml(t.pin || '—')
+
+    return '<div class="mt-card mt-card-tech' + (!isActive ? ' mt-card-inactive' : '') + '">' +
+      kebabMenu('t', t.id, true, isActive) +
+      '<div class="mt-top-row">' +
+        '<div class="mt-avatar">' + escapeHtml(initials(t)) + '</div>' +
+        '<div class="mt-identity">' +
+          '<div class="mt-name">' + escapeHtml(fullName(t)) + '</div>' +
+          '<div class="mt-phone">' + escapeHtml(formatPhone(t.phone || '')) + '</div>' +
+          (lastActive ? '<div class="mt-last-active">' + lastActive + '</div>' : '') +
+        '</div>' +
+        '<span class="mt-status-pill ' + statusClass + '"><span class="mt-status-pill-dot"></span>' + statusLabel + '</span>' +
       '</div>' +
-      '<div class="mt-avatar">' + escapeHtml(initials(t)) + '</div>' +
-      '<div class="mt-card-body">' +
-        '<div class="mt-card-name">' + escapeHtml(fullName(t)) + '</div>' +
-        '<div class="mt-card-sub">' + escapeHtml(formatPhone(t.phone || '')) + '</div>' +
-      '</div>' +
-      '<div class="mt-card-right">' +
-        '<span class="mt-pin">' + escapeHtml(t.pin || '—') + '</span>' +
-        '<div class="mt-status-dot' + (t.status !== 'active' ? ' off' : '') + '"></div>' +
+      '<div class="mt-divider"></div>' +
+      '<div class="mt-pin-row">' +
+        '<span class="mt-pin-label">PIN: <strong>' + pin + '</strong></span>' +
+        '<button class="mt-copy-btn" onclick="copyTechPin('' + (t.pin || '') + '')">' +
+          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+          'Copy' +
+        '</button>' +
       '</div>' +
       '</div>'
   }
 
   let html = ''
 
-  html += '<div class="mt-section"><span>Managers <span class="count">' + managers.length + '</span></span>' +
-    '<button class="mt-add-btn" onclick="openAddModal(\'manager\')">+ Add Manager</button></div>'
-  html += '<div class="mt-list">' + managers.map(managerCard).join('') + '</div>'
+  // Managers section
+  html += '<div class="mt-section"><span>Managers</span><button class="mt-add-btn" onclick="openAddModal('manager')">+ Add Manager</button></div>'
+  if (managers.length === 0) {
+    html += '<div class="mt-list"><div class="mt-empty-card">' +
+      '<span class="mt-empty-text">No managers yet</span>' +
+      '<button class="mt-empty-btn" onclick="openAddModal('manager')">' +
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+        'Add Manager' +
+      '</button>' +
+      '</div></div>'
+  } else {
+    html += '<div class="mt-list">' + managers.map(managerCard).join('') + '</div>'
+  }
 
-  html += '<div class="mt-section"><span>Technicians <span class="count">' + techs.length + '</span></span>' +
-    '<button class="mt-add-btn" onclick="openAddModal(\'tech\')">+ Add Tech</button></div>'
-  html += '<div class="mt-list">' + techs.map(techCard).join('') + '</div>'
+  // Technicians section
+  html += '<div class="mt-section mt-section-spacer"><span>Technicians</span><button class="mt-add-btn" onclick="openAddModal('tech')">+ Add Tech</button></div>'
+  if (techs.length === 0) {
+    html += '<div class="mt-list"><div class="mt-empty-card">' +
+      '<span class="mt-empty-text">No technicians yet</span>' +
+      '<button class="mt-empty-btn" onclick="openAddModal('tech')">' +
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+        'Add Tech' +
+      '</button>' +
+      '</div></div>'
+  } else {
+    html += '<div class="mt-list">' + techs.map(techCard).join('') + '</div>'
+  }
 
   el.innerHTML = html
 }
