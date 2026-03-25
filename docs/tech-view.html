@@ -48,12 +48,12 @@
   </div>
 </div>
 <div class="jobsheet-overlay" id="printOverlay">
-  <div class="jobsheet-header" style="background:var(--tv-surface);border-color:var(--tv-border)">
-    <button class="jobsheet-close" onclick="closePrintView()" style="color:var(--tv-text-secondary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-    <span class="jobsheet-title" style="color:var(--tv-text)">Job Sheet</span>
-    <button class="jobsheet-download" onclick="window.print()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
+  <div class="jobsheet-header">
+    <button class="jobsheet-close" onclick="closePrintView()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="jobsheet-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Job Sheet</span>
+    <button class="jobsheet-download" onclick="window.print()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
   </div>
-  <div class="jobsheet-body" id="printContent" style="background:var(--tv-bg)"></div>
+  <div class="jobsheet-body" id="printContent"></div>
 </div>
 <div class="tv-reopen-overlay" id="reopenOverlay">
   <div class="tv-reopen-modal">
@@ -563,30 +563,64 @@ function openJobSheet(projectId){
   var complete=tks.filter(function(t){return t.status===STATUS.COMPLETE});
   var now=new Date();
   var dateStr=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
-  var meta=[p.client||'',p.location||''].filter(Boolean).join(' · ')
-  var html='<div class="js-project"><div class="js-project-name">'+escapeHtml(p.name)+'</div><div class="js-project-meta">'+escapeHtml(meta)+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>';
-  if(p.notes){html+='<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+escapeHtml(p.notes)+'</div></div>'}
-  function renderGroup(title,list){
+
+  // project header
+  var html='<div class="js-project">';
+  html+='<div class="js-project-name">'+escapeHtml(p.name)+'</div>';
+  var meta=[p.client||'',p.location||''].filter(Boolean).join(' · ');
+  if(meta) html+='<div class="js-project-meta">'+escapeHtml(meta)+'</div>';
+  html+='</div>';
+
+  // instructions
+  if(p.notes){
+    html+='<div class="js-instructions-card">';
+    html+='<div class="js-instructions-header"><span class="js-instructions-title">Instructions</span></div>';
+    html+='<div class="js-instructions-body">'+escapeHtml(p.notes)+'</div>';
+    html+='</div>';
+  }
+
+  function renderGroup(title,list,headerClass,dotClass){
     if(list.length===0)return'';
-    var s='<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">';
+    var s='<div class="js-section">';
+    s+='<div class="js-section-header '+headerClass+'">';
+    s+='<div class="js-section-left">';
+    s+='<span class="js-section-dot '+dotClass+'"></span>';
+    s+='<span class="js-section-label">'+title+'</span>';
+    s+='</div>';
+    s+='<span class="js-section-count">'+list.length+'</span>';
+    s+='</div>';
+    s+='<div class="js-site-list">';
     list.forEach(function(t){
       var ini=getInitials(t.tech||state.techName);
-      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+escapeHtml(t.desc)+'</span><span class="js-site-type">'+escapeHtml(t.type||'')+'</span><span class="js-site-tech">'+ini+'</span></div>';
+      s+='<div class="js-site">';
+      s+='<div class="js-site-header">';
+      s+='<span class="js-site-num">#'+t.site+'</span>';
+      s+='<span class="js-site-desc">'+escapeHtml(t.desc)+'</span>';
+      s+='<div class="js-site-tags">';
+      if(t.type) s+='<span class="js-site-tag">'+escapeHtml(t.type)+'</span>';
+      if(ini)    s+='<span class="js-site-tech-init">'+ini+'</span>';
+      s+='</div></div>';
       var times=[];
-      if(t.currentCycle&&t.currentCycle.deployedAt)times.push('Set: '+fmtTimeTV(t.currentCycle.deployedAt));
-      if(t.currentCycle&&t.currentCycle.completedAt)times.push('Picked: '+fmtTimeTV(t.currentCycle.completedAt));
-      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)times.push('Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime()));
-      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt)times.push('In field: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime()));
-      if(times.length>0)s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
-      if(t.reopenReason)s+='<div class="js-site-note">Reopened: '+escapeHtml(t.reopenReason)+'</div>';
-      if(t.note)s+='<div class="js-site-note">Note: '+escapeHtml(t.note)+'</div>';
+      if(t.currentCycle&&t.currentCycle.deployedAt) times.push('Set: '+fmtTimeTV(t.currentCycle.deployedAt));
+      if(t.currentCycle&&t.currentCycle.completedAt) times.push('Pickup: '+fmtTimeTV(t.currentCycle.completedAt));
+      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) times.push('Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime()));
+      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt) times.push('Duration: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime()));
+      if(times.length) s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
+      if(t.reopenReason) s+='<div class="js-site-note">Reopened: '+escapeHtml(t.reopenReason)+'</div>';
+      if(t.note) s+='<div class="js-site-note">'+escapeHtml(t.note)+'</div>';
       s+='</div>';
     });
-    return s+'</div></div>';
+    s+='</div></div>';
+    return s;
   }
-  html+=renderGroup('Pending',pending);
-  html+=renderGroup('In Field',infield);
-  html+=renderGroup('Complete',complete);
+
+  html+=renderGroup('Pending',  pending,  'js-section-header-pending',  'js-section-dot-pending');
+  html+=renderGroup('In Field', infield,  'js-section-header-infield',  'js-section-dot-infield');
+  html+=renderGroup('Complete', complete, 'js-section-header-complete', 'js-section-dot-complete');
+
+  // footer
+  html+='<div class="js-footer">Report generated '+dateStr+' · <span class="js-footer-brand">The Count Company</span></div>';
+
   document.getElementById('printContent').innerHTML=html;
   document.getElementById('printOverlay').classList.add('visible');
   document.body.style.overflow='hidden';
