@@ -15,7 +15,7 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: #F4F3F0;
+  background: rgba(0, 0, 0, 0.42);
   z-index: 500;
   flex-direction: column;
   overflow: hidden;
@@ -77,11 +77,16 @@
   overflow-y: auto;
   padding: 20px 14px 40px;
   -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-@media (min-width: 900px) {
-  .jobsheet-overlay { background: rgba(26,29,33,0.28); }
-  .jobsheet-body { padding: 26px 24px 48px; }
-  .jobsheet-body > * { width: 100%; max-width: 760px; margin-left: auto; margin-right: auto; }
+.jobsheet-body > * {
+  width: 100%;
+  max-width: 760px;
+}
+@media (max-width: 840px) {
+  .jobsheet-body > * { max-width: none; }
 }
 
 /* project header block */
@@ -252,12 +257,6 @@
   margin-top: 3px;
   line-height: 1.4;
 }
-.js-site-duration {
-  font-size: 11.5px;
-  color: #7D838A;
-  margin-top: 2px;
-  line-height: 1.4;
-}
 .js-site-note {
   font-size: 12px;
   font-weight: 600;
@@ -298,8 +297,9 @@
     display: block !important;
     overflow: visible !important;
     padding: 20px !important;
+    display: block !important;
   }
-  .jobsheet-body > * { max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; }
+  .jobsheet-body > * { max-width: 100% !important; }
   /* preserve colored section backgrounds */
   .js-section-header-pending,
   .js-section-header-infield,
@@ -1125,13 +1125,11 @@ function openJobSheet() {
       if (t.tech) s += '<span class="js-site-tech-init">' + getInitials(t.tech) + '</span>'
       s += '</div></div>'
       const times = []
-      let durationLine = ''
       if (cycle?.deployed_at) times.push('Set: ' + fmtTime(cycle.deployed_at))
       if (cycle?.completed_at) times.push('Pickup: ' + fmtTime(cycle.completed_at))
-      if (cycle?.deployed_at && cycle?.completed_at) durationLine = 'Duration: ' + fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at))
-      else if (cycle?.deployed_at && !cycle?.completed_at) durationLine = 'Duration: ' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime())
       if (times.length) s += '<div class="js-site-times">' + times.join(' · ') + '</div>'
-      if (durationLine) s += '<div class="js-site-duration">' + durationLine + '</div>'
+      if (cycle?.deployed_at && cycle?.completed_at) s += '<div class="js-site-times">Duration: ' + fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at)) + '</div>'
+      else if (cycle?.deployed_at && !cycle?.completed_at) s += '<div class="js-site-times">Duration: ' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime()) + '</div>'
       if (t.note) s += '<div class="js-site-note">' + escapeHtml(t.note) + '</div>'
       s += '</div>'
     })
