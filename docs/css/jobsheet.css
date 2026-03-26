@@ -336,3 +336,24 @@
 .jobsheet-overlay .js-section {
   box-shadow: none !important;
 }
+   
+/* ===== FINAL FORCE FIX (PROJECTS + MOBILE) ===== */
+
+.jobsheet-overlay {
+  background: #F4F3F0 !important;
+}
+
+.jobsheet-body {
+  background: #F4F3F0 !important;
+}
+
+.jobsheet-container {
+  background: #F4F3F0 !important;
+  box-shadow: none !important;
+}
+
+/* kill inner card shadows (mobile culprit) */
+.js-instructions-card,
+.js-section {
+  box-shadow: none !important;
+}
