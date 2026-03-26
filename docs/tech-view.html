@@ -7,27 +7,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css">
-<link rel="stylesheet" href="css/jobsheet.css">
-
-<style>
-/* Animation overrides — applied by JS */
-.tv-task-card{transition:background-color .22s ease,opacity .28s ease,transform .28s ease,box-shadow .22s ease}
-.tv-task-card.row-success-infield{background:rgba(141,183,219,.14);box-shadow:0 0 0 1px rgba(141,183,219,.20) inset}
-.tv-task-card.row-success-complete{background:rgba(42,181,126,.12);box-shadow:0 0 0 1px rgba(42,181,126,.20) inset}
-.tv-task-card.row-exit{opacity:0;transform:translateY(-6px)}
-.tv-note-indicator,.tv-note-save-btn{position:relative;z-index:3}
-</style>
-
 </head>
 <body>
-<!-- Project list header — matches projects page style -->
-<div class="tv-topnav" id="tvTopnav">
-  <span class="tv-topnav-title">Projects</span>
-</div>
-<!-- Task view header — shown when inside a job -->
-<div class="tv-header" id="tvTaskHeader" style="display:none">
+<div class="tv-header">
   <div class="tv-header-left">
     <button class="tv-back-btn" id="backBtn" onclick="showProjects()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+    <div class="tv-brand" id="greeting">
+      <img src="../images/logo.png" class="tv-brand-logo" alt="">
+      <span class="tv-brand-name">The Count Company</span>
+    </div>
     <div class="tv-project-info" id="barProjectInfo">
       <span class="tv-project-name-bar" id="barProjectName"></span>
     </div>
@@ -36,7 +24,11 @@
     <button class="tv-undo-btn" id="undoBtn" onclick="undoLastAction()" style="display:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg></button>
   </div>
 </div>
-<div class="tv-page-sub" id="projectStatsBar" style="text-align:center;display:block;width:100%;padding:0 12px 12px;"></div>
+<div class="tv-stats" id="projectStatsBar">
+  <div class="tv-stat"><span class="tv-stat-value" id="statProjects">0</span><span class="tv-stat-label">jobs need attention</span></div>
+  <div class="tv-stat-divider"></div>
+  <div class="tv-stat"><span class="tv-stat-value" id="statOpenTasks">0</span><span class="tv-stat-label">open tasks</span></div>
+</div>
 <div class="tv-filter-bar" id="taskFilterBar">
   <div class="tv-filter-pill active" id="filterAll" onclick="toggleFilter('all')"><span class="tv-filter-value" id="filterAllVal">0</span><span class="tv-filter-label">Total</span></div>
   <div class="tv-filter-pill" id="filterPending" onclick="toggleFilter('Pending')"><span class="tv-filter-value" id="filterPendingVal">0</span><span class="tv-filter-label">Pending</span></div>
@@ -49,12 +41,12 @@
   </div>
 </div>
 <div class="jobsheet-overlay" id="printOverlay">
-  <div class="jobsheet-header">
-    <button class="jobsheet-close" id="closeJobSheetBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-    <span class="jobsheet-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Job Sheet</span>
-    <button class="jobsheet-download" id="printJobSheetBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
+  <div class="jobsheet-header" style="background:var(--tv-surface);border-color:var(--tv-border)">
+    <button class="jobsheet-close" onclick="closePrintView()" style="color:var(--tv-text-secondary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="jobsheet-title" style="color:var(--tv-text)">Job Sheet</span>
+    <button class="jobsheet-download" onclick="window.print()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
   </div>
-  <div class="jobsheet-body" id="printContent"></div>
+  <div class="jobsheet-body" id="printContent" style="background:var(--tv-bg)"></div>
 </div>
 <div class="tv-reopen-overlay" id="reopenOverlay">
   <div class="tv-reopen-modal">
@@ -259,44 +251,23 @@ async function loadAll(){
 function renderProjectStats(){
   var active=state.projects.filter(function(p){return p.tasks.some(function(t){return t.status!==STATUS.COMPLETE})});
   var openTasks=active.reduce(function(sum,p){return sum+p.tasks.filter(function(t){return t.status!==STATUS.COMPLETE}).length},0);
-  var el=document.getElementById('projectStatsBar');
-  if(el) el.textContent=active.length+' jobs need attention · '+openTasks+' open tasks';
+  document.getElementById('statProjects').textContent=active.length;
+  document.getElementById('statOpenTasks').textContent=openTasks;
 }
 
 function renderProjectCards(){
   var container=document.getElementById('projectCards');
   if(!container) return;
   container.innerHTML=state.projects.map(function(p){
-    var counts=taskCounts(p.tasks);
-    var done=counts.complete;
-    var total=counts.total;
-    var isAllDone=total>0&&done===total;
-    var hasInfield=counts.infield>0;
-    var hasPending=counts.pending>0;
-    var cardClass=isAllDone?'mc-complete':hasInfield?'mc-inprogress':'mc-pending';
-    var leftBadge='',rightBadge='';
-    if(!isAllDone){
-      if(hasInfield){
-        leftBadge='<span class="mc-pill-sm mc-infield-pill"><span class="mc-blink"></span>'+counts.infield+' In Field</span>';
-        if(hasPending) rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';
-      } else if(hasPending){
-        rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';
-      }
-    }
-    var showTopBar=leftBadge||rightBadge;
-    var checkmark=isAllDone?'<div class="mc-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1A5C35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>':'';
-    var pctVal=total>0?Math.round((done/total)*100):0;
-    var html='<div class="mc '+cardClass+(showTopBar?'':' mc-no-topbar')+'" data-action="open-project" data-id="'+p.id+'">';
-    if(showTopBar) html+='<div class="mc-top-bar"><div class="mc-top-left">'+leftBadge+'</div><div class="mc-top-mid"></div><div class="mc-top-right">'+rightBadge+'</div></div>';
-    html+='<div class="mc-name-row"><div class="mc-name">'+escapeHtml(p.name)+'</div>'+checkmark+'</div>';
-    html+='<div class="mc-city">'+escapeHtml(p.location)+'</div>';
-    html+='<div class="mc-divider"></div>';
-    html+='<div class="mc-counter"><span class="mc-done">'+done+'</span><span class="mc-slash">/</span><span class="mc-total">'+total+'</span></div>';
-    html+='<div class="mc-counter-label">Tasks Complete</div>';
-    html+='<button class="mc-pill" data-action="jobsheet" data-id="'+p.id+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Job Sheet</button>';
-    html+='<div class="mc-prog"><div class="mc-prog-fill" style="width:'+pctVal+'%"></div></div>';
-    html+='</div>';
-    return html;
+    var counts=taskCounts(p.tasks), done=counts.complete===counts.total;
+    var parts=[];
+    if(counts.pending)parts.push('<span class="pending-text">'+counts.pending+' Pending</span>');
+    if(counts.infield)parts.push('<span class="infield-text">'+counts.infield+' In Field</span>');
+    if(counts.complete&&done)parts.push('All complete');
+    if(!parts.length)parts.push('No tasks');
+    var taskLine=parts.join('<span class="dot"></span>');
+    var jobSheetLink='<div class="tv-card-notes" onclick="event.stopPropagation();openJobSheet(\''+p.id+'\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Job Sheet</div>';
+    return '<div class="tv-project-card'+(done?' card-complete':'')+'" onclick="openProject(\''+p.id+'\')"><div class="tv-card-name">'+escapeHtml(p.name)+'</div><div class="tv-card-location">'+escapeHtml(p.location)+'</div><div class="tv-card-tasks">'+taskLine+'</div>'+jobSheetLink+'<div class="tv-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div></div>';
   }).join('');
 }
 
@@ -310,13 +281,13 @@ function showProjects(){
   document.getElementById('undoBtn').style.display='none';
   document.getElementById('projectView').classList.add('active');
   document.getElementById('taskView').classList.remove('active');
-  document.getElementById('projectStatsBar').style.display='';
+  document.getElementById('projectStatsBar').style.display='flex';
   document.getElementById('taskFilterBar').style.display='none';
   document.getElementById('taskProgressWrap').style.display='none';
-  document.getElementById('tvTopnav').style.display='';
-  document.getElementById('tvTaskHeader').style.display='none';
+  document.getElementById('backBtn').style.display='none';
   document.getElementById('barProjectInfo').classList.remove('visible');
   document.getElementById('barProjectName').textContent='';
+  document.getElementById('greeting').style.display='flex';
   renderProjectStats();
   renderProjectCards();
 }
@@ -329,10 +300,10 @@ function openProject(id){
   document.getElementById('projectStatsBar').style.display='none';
   document.getElementById('taskFilterBar').style.display='flex';
   document.getElementById('taskProgressWrap').style.display='';
-  document.getElementById('tvTopnav').style.display='none';
-  document.getElementById('tvTaskHeader').style.display='flex';
+  document.getElementById('backBtn').style.display='flex';
   document.getElementById('barProjectInfo').classList.add('visible');
   document.getElementById('barProjectName').textContent=state.currentProject.name;
+  document.getElementById('greeting').style.display='none';
   document.getElementById('holdHint').style.display=state.hintDismissed?'none':'flex';
   state.activeFilter='all';state.completedCollapsed=false;state.openNoteId=null;
   renderTaskView();startDurationTimer();
@@ -390,35 +361,26 @@ function taskCardHTML(t,isComplete){
   } else {
     actionHTML='<button class="toggle-btn '+toggleBtnClass(t.status)+'" data-task-id="'+t.id+'"><div class="toggle-fill"></div><span class="toggle-label">'+actionLabel(t.status)+'</span></button>';
   }
-  var notePanel='<div class="tv-note-panel'+(state.openNoteId===t.id?' open':'')+'" id="note-panel-'+t.id+'"><div class="tv-note-panel-inner"><input class="tv-note-input" maxlength="'+MAX_NOTE+'" placeholder="Add a quick note…" value="'+escapeAttr(t.note||'')+'" oninput="updateCharCount('+JSON.stringify(String(t.id))+',this)" onkeydown="if(event.key===\'Enter\')saveNote('+JSON.stringify(String(t.id))+')"><span class="tv-note-char-count" id="char-count-'+t.id+'">'+(MAX_NOTE-(t.note||'').length)+'</span><button type="button" class="tv-note-save-btn" data-action="save-note" data-task-id="'+t.id+'" onclick="saveNote('+JSON.stringify(String(t.id))+')">Save</button></div></div>';
-  return '<div class="tv-task-card '+cc+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'"><div class="tv-task-inner"><div class="tv-task-content"><div class="tv-task-desc-row"><div class="tv-task-desc">'+escapeHtml(t.desc)+'</div><button type="button" class="'+noteClass+'" data-action="toggle-note" data-task-id="'+t.id+'" onclick="toggleNote('+JSON.stringify(String(t.id))+',event)">'+noteIconSvg+'</button></div><div class="tv-task-divider"></div><div class="tv-task-detail-row">'+detailHTML+'</div>'+reopenHTML+'</div><div class="tv-task-action">'+actionHTML+'</div></div>'+notePanel+'</div>';
+  var notePanel='<div class="tv-note-panel'+(state.openNoteId===t.id?' open':'')+'" id="note-panel-'+t.id+'"><div class="tv-note-panel-inner"><input class="tv-note-input" maxlength="'+MAX_NOTE+'" placeholder="Add a quick note…" value="'+escapeAttr(t.note||'')+'" oninput="updateCharCount('+JSON.stringify(String(t.id))+',this)" onkeydown="if(event.key===\'Enter\')saveNote('+JSON.stringify(String(t.id))+')"><span class="tv-note-char-count" id="char-count-'+t.id+'">'+(MAX_NOTE-(t.note||'').length)+'</span><button class="tv-note-save-btn" onclick="saveNote('+JSON.stringify(String(t.id))+')">Save</button></div></div>';
+  return '<div class="tv-task-card '+cc+'"><div class="tv-task-inner"><div class="tv-task-content"><div class="tv-task-desc-row"><div class="tv-task-desc">'+escapeHtml(t.desc)+'</div><button class="'+noteClass+'" onclick="toggleNote('+JSON.stringify(String(t.id))+',event)">'+noteIconSvg+'</button></div><div class="tv-task-divider"></div><div class="tv-task-detail-row">'+detailHTML+'</div>'+reopenHTML+'</div><div class="tv-task-action">'+actionHTML+'</div></div>'+notePanel+'</div>';
 }
 function toggleCompleted(){state.completedCollapsed=!state.completedCollapsed;renderTaskCards()}
-function toggleNote(id,e){e.stopPropagation();state.openNoteId=state.openNoteId===id?null:id;renderTaskCards();if(state.openNoteId===id){var input=document.querySelector('#note-panel-'+String(id)+' .tv-note-input');if(input)setTimeout(function(){input.focus()},80)}}
+function toggleNote(id,e){e.stopPropagation();state.openNoteId=state.openNoteId===id?null:id;renderTaskCards();if(state.openNoteId===id){var input=document.querySelector('#note-panel-'+CSS.escape(String(id))+' .tv-note-input');if(input)setTimeout(function(){input.focus()},250)}}
 function updateCharCount(id,input){var r=MAX_NOTE-input.value.length;var el=document.getElementById('char-count-'+id);if(el){el.textContent=r;el.classList.toggle('warn',r<15)}}
 async function saveNote(id){
-  var input=document.querySelector('#note-panel-'+String(id)+' .tv-note-input');if(!input||!state.currentProject)return;
+  var input=document.querySelector('#note-panel-'+CSS.escape(String(id))+' .tv-note-input');if(!input||!state.currentProject)return;
   var task=state.currentProject.tasks.find(function(t){return String(t.id)===String(id)});if(!task)return;
   var note=input.value.trim();
   const {error}=await supabase.from('tasks').update({notes:note}).eq('id',id);
   if(error){showError('Could not save note.', error);return;}
-  task.note=note;
-  state.openNoteId=null;
-  await refreshCurrentProject(state.currentProject.id);
-  renderTaskView();renderProjectCards();
-  showToast(note ? 'Note saved' : 'Note cleared');
+  task.note=note; state.openNoteId=null; renderTaskCards();
 }
 function setupHoldButton(btn,duration,callback){var timer=null;function start(e){e.preventDefault();btn.classList.add('holding');timer=setTimeout(function(){btn.classList.remove('holding');if(navigator.vibrate)navigator.vibrate(30);callback(btn.dataset.taskId)},duration)}function end(){clearTimeout(timer);btn.classList.remove('holding')}btn.addEventListener('pointerdown',start,{passive:false});btn.addEventListener('pointerup',end);btn.addEventListener('pointerleave',end);btn.addEventListener('pointercancel',end)}
 
 async function getCoords(){
-  if(qp('geo')!=='1') return null;
   if(!navigator.geolocation) return null;
   return new Promise(function(resolve){
-    navigator.geolocation.getCurrentPosition(
-      function(pos){resolve({lat:pos.coords.latitude,lng:pos.coords.longitude})},
-      function(){resolve(null)},
-      {enableHighAccuracy:true,timeout:3000,maximumAge:300000}
-    )
+    navigator.geolocation.getCurrentPosition(function(pos){resolve({lat:pos.coords.latitude,lng:pos.coords.longitude})},function(){resolve(null)},{enableHighAccuracy:true,timeout:5000,maximumAge:60000})
   })
 }
 async function getLatestCycleRow(taskId){
@@ -426,28 +388,8 @@ async function getLatestCycleRow(taskId){
   if(error) throw error;
   return data || null;
 }
-async function getCycleRowById(cycleId){
-  if(!cycleId) return null;
-  const {data,error}=await supabase.from('cycles').select('*').eq('id',cycleId).maybeSingle();
-  if(error) throw error;
-  return data || null;
-}
-async function refreshCurrentProject(projectId){
-  await loadProjectsAndTasks();
-  if(projectId){
-    state.currentProject=state.projects.find(function(p){return String(p.id)===String(projectId)}) || null;
-  }
-}
-function markTaskSuccess(taskId, kind){
-  var row=document.getElementById('task-card-'+String(taskId));
-  if(!row) return;
-  row.classList.add(kind==='complete' ? 'row-success-complete' : 'row-success-infield');
-  setTimeout(function(){ row.classList.add('row-exit'); }, 420);
-}
-function delay(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
 async function cycleTaskStatus(taskId){
   if(!state.currentProject)return;
-  var projectId=state.currentProject.id;
   var task=state.currentProject.tasks.find(function(t){return String(t.id)===String(taskId)});if(!task)return;
   try{
     if(task.status===STATUS.PENDING){
@@ -466,21 +408,8 @@ async function cycleTaskStatus(taskId){
       task.reopenReason='';
       task.currentCycle={deployedAt:new Date(newCycle.deployed_at),completedAt:null,pickedUpAt:null,cycleId:newCycle.id,cycleNum:newCycle.cycle_num};
       task.cycles.unshift({id:newCycle.id,cycle_num:newCycle.cycle_num,deployedAt:new Date(newCycle.deployed_at),completedAt:null,pickedUpAt:null,reopenReason:'',reopenedBy:''});
-      document.getElementById('undoBtn').style.display='flex';
-      showStatusConfirm();
-      markTaskSuccess(taskId,'infield');
-      await delay(760);
-      await refreshCurrentProject(projectId);
     } else if(task.status===STATUS.INFIELD){
-      const inMemoryCycleId=task.currentCycle&&task.currentCycle.cycleId?task.currentCycle.cycleId:null;
-      let latest=inMemoryCycleId ? await getCycleRowById(inMemoryCycleId) : null;
-      if(!latest) latest=await getLatestCycleRow(taskId);
-      if(!latest){
-        await refreshCurrentProject(projectId);
-        task=state.currentProject?state.currentProject.tasks.find(function(t){return String(t.id)===String(taskId)}):null;
-        const refreshedCycleId=task&&task.currentCycle&&task.currentCycle.cycleId?task.currentCycle.cycleId:null;
-        latest=refreshedCycleId ? await getCycleRowById(refreshedCycleId) : await getLatestCycleRow(taskId);
-      }
+      const latest=await getLatestCycleRow(taskId);
       if(!latest) throw new Error('No cycle found for this task.');
       const now=new Date().toISOString();
       const coords=await getCoords();
@@ -494,12 +423,9 @@ async function cycleTaskStatus(taskId){
       task.status=STATUS.COMPLETE;
       task.currentCycle={deployedAt:latest.deployed_at?new Date(latest.deployed_at):null,completedAt:new Date(now),pickedUpAt:new Date(now),cycleId:latest.id,cycleNum:latest.cycle_num};
       if(task.cycles.length){task.cycles[0].completedAt=new Date(now);task.cycles[0].pickedUpAt=new Date(now)}
-      document.getElementById('undoBtn').style.display='flex';
-      showStatusConfirm();
-      markTaskSuccess(taskId,'complete');
-      await delay(860);
-      await refreshCurrentProject(projectId);
     }
+    document.getElementById('undoBtn').style.display='flex';
+    showStatusConfirm();
     renderTaskView();renderProjectStats();renderProjectCards();
   }catch(error){ showError('Could not update task status.', error); }
 }
@@ -525,7 +451,6 @@ async function undoLastAction(){
       task.currentCycle.completedAt=null; task.currentCycle.pickedUpAt=null;
       if(task.cycles.length){task.cycles[0].completedAt=null;task.cycles[0].pickedUpAt=null;}
     }
-    await refreshCurrentProject(state.currentProject.id);
     state.lastAction=null;
     document.getElementById('undoBtn').style.display='none';
     showUndoConfirm();
@@ -551,7 +476,6 @@ async function confirmReopen(){
     task.status=STATUS.PENDING;
     task.reopenReason=reason;
     task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
-    await refreshCurrentProject(state.currentProject.id);
     closeReopenModal();renderTaskView();renderProjectStats();renderProjectCards();
   }catch(error){ showError('Could not reopen task.', error); }
 }
@@ -564,103 +488,34 @@ function openJobSheet(projectId){
   var complete=tks.filter(function(t){return t.status===STATUS.COMPLETE});
   var now=new Date();
   var dateStr=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
-
-  // project header
-  var html='<div class="js-project">';
-  html+='<div class="js-project-name">'+escapeHtml(p.name)+'</div>';
-  var meta=[p.client||'',p.location||''].filter(Boolean).join(' · ');
-  if(meta) html+='<div class="js-project-meta">'+escapeHtml(meta)+'</div>';
-  html+='</div>';
-
-  // instructions
-  if(p.notes){
-    html+='<div class="js-instructions-card">';
-    html+='<div class="js-instructions-header"><span class="js-instructions-title">Instructions</span></div>';
-    html+='<div class="js-instructions-body">'+escapeHtml(p.notes)+'</div>';
-    html+='</div>';
-  }
-
-  function renderGroup(title,list,headerClass,dotClass){
+  var meta=[p.client||'',p.location||''].filter(Boolean).join(' · ')
+  var html='<div class="js-project"><div class="js-project-name">'+escapeHtml(p.name)+'</div><div class="js-project-meta">'+escapeHtml(meta)+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>';
+  if(p.notes){html+='<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+escapeHtml(p.notes)+'</div></div>'}
+  function renderGroup(title,list){
     if(list.length===0)return'';
-    var s='<div class="js-section">';
-    s+='<div class="js-section-header '+headerClass+'">';
-    s+='<div class="js-section-left">';
-    s+='<span class="js-section-dot '+dotClass+'"></span>';
-    s+='<span class="js-section-label">'+title+'</span>';
-    s+='</div>';
-    s+='<span class="js-section-count">'+list.length+'</span>';
-    s+='</div>';
-    s+='<div class="js-site-list">';
+    var s='<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">';
     list.forEach(function(t){
       var ini=getInitials(t.tech||state.techName);
-      s+='<div class="js-site">';
-      s+='<div class="js-site-header">';
-      s+='<span class="js-site-num">#'+t.site+'</span>';
-      s+='<span class="js-site-desc">'+escapeHtml(t.desc)+'</span>';
-      s+='<div class="js-site-tags">';
-      if(t.type) s+='<span class="js-site-tag">'+escapeHtml(t.type)+'</span>';
-      if(ini)    s+='<span class="js-site-tech-init">'+ini+'</span>';
-      s+='</div></div>';
+      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+escapeHtml(t.desc)+'</span><span class="js-site-type">'+escapeHtml(t.type||'')+'</span><span class="js-site-tech">'+ini+'</span></div>';
       var times=[];
-      if(t.currentCycle&&t.currentCycle.deployedAt) times.push('Set: '+fmtTimeTV(t.currentCycle.deployedAt));
-      if(t.currentCycle&&t.currentCycle.completedAt) times.push('Pickup: '+fmtTimeTV(t.currentCycle.completedAt));
-      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) times.push('Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime()));
-      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt) times.push('Duration: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime()));
-      if(times.length) s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
-      if(t.reopenReason) s+='<div class="js-site-note">Reopened: '+escapeHtml(t.reopenReason)+'</div>';
-      if(t.note) s+='<div class="js-site-note">'+escapeHtml(t.note)+'</div>';
+      if(t.currentCycle&&t.currentCycle.deployedAt)times.push('Set: '+fmtTimeTV(t.currentCycle.deployedAt));
+      if(t.currentCycle&&t.currentCycle.completedAt)times.push('Picked: '+fmtTimeTV(t.currentCycle.completedAt));
+      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)times.push('Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime()));
+      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt)times.push('In field: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime()));
+      if(times.length>0)s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
+      if(t.note)s+='<div class="js-site-note">'+escapeHtml(t.note)+'</div>';
       s+='</div>';
     });
-    s+='</div></div>';
-    return s;
+    return s+'</div></div>';
   }
-
-  html+=renderGroup('Pending',  pending,  'js-section-header-pending',  'js-section-dot-pending');
-  html+=renderGroup('In Field', infield,  'js-section-header-infield',  'js-section-dot-infield');
-  html+=renderGroup('Complete', complete, 'js-section-header-complete', 'js-section-dot-complete');
-
-  // footer
-  html+='<div class="js-footer">Report generated '+dateStr+' · <span class="js-footer-brand">The Count Company</span></div>';
-
+  html+=renderGroup('Pending',pending);
+  html+=renderGroup('In Field',infield);
+  html+=renderGroup('Complete',complete);
   document.getElementById('printContent').innerHTML=html;
   document.getElementById('printOverlay').classList.add('visible');
   document.body.style.overflow='hidden';
 }
 function closePrintView(){document.getElementById('printOverlay').classList.remove('visible');document.body.style.overflow=''}
-
-
-document.getElementById('projectCards').addEventListener('click',function(e){
-  var actionEl=e.target.closest('[data-action]');
-  if(!actionEl) return;
-  var action=actionEl.dataset.action;
-  var id=actionEl.dataset.id;
-  if(action==='jobsheet'){
-    e.stopPropagation();
-    return openJobSheet(id);
-  }
-  if(action==='open-project'){
-    return openProject(id);
-  }
-});
-
-document.addEventListener('click',function(e){
-  var noteBtn=e.target.closest('[data-action="toggle-note"]');
-  if(noteBtn){
-    e.preventDefault();
-    e.stopPropagation();
-    toggleNote(noteBtn.dataset.taskId,e);
-    return;
-  }
-  var saveBtn=e.target.closest('[data-action="save-note"]');
-  if(saveBtn){
-    e.preventDefault();
-    e.stopPropagation();
-    saveNote(saveBtn.dataset.taskId);
-  }
-});
-
-document.getElementById('closeJobSheetBtn')?.addEventListener('click', closePrintView);
-document.getElementById('printJobSheetBtn')?.addEventListener('click', function(){ window.print(); });
 
 Object.assign(window,{showProjects,openProject,dismissHint,toggleFilter,toggleCompleted,toggleNote,updateCharCount,saveNote,undoLastAction,promptReopen,closeReopenModal,confirmReopen,openJobSheet,closePrintView,cycleTaskStatus});
 loadAll();
