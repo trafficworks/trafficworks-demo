@@ -325,3 +325,14 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
+
+/* job sheet cleanup */
+.jobsheet-container {
+  box-shadow: none !important;
+}
+
+.jobsheet-overlay .js-instructions-card,
+.jobsheet-overlay .js-section {
+  box-shadow: none !important;
+}
