@@ -561,3 +561,21 @@ html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: va
 .js-section {
   box-shadow: none !important;
 }
+
+/* ===== ISOLATE JOB SHEET FROM GLOBAL MODALS ===== */
+
+.jobsheet-overlay {
+  background: #F4F3F0 !important;
+}
+
+.jobsheet-overlay * {
+  box-shadow: none !important;
+}
+
+/* override any modal bleed */
+.jobsheet-overlay,
+.jobsheet-container,
+.jobsheet-body {
+  box-shadow: none !important;
+  background: #F4F3F0 !important;
+}
