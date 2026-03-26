@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css">
-<link rel="stylesheet" href="css/jobsheet.css">
 
 <style>
 /* Animation overrides — applied by JS */
@@ -602,13 +601,13 @@ function openJobSheet(projectId){
       if(ini)    s+='<span class="js-site-tech-init">'+ini+'</span>';
       s+='</div></div>';
       var times=[];
+      var durationLine='';
       if(t.currentCycle&&t.currentCycle.deployedAt) times.push('Set: '+fmtTimeTV(t.currentCycle.deployedAt));
       if(t.currentCycle&&t.currentCycle.completedAt) times.push('Pickup: '+fmtTimeTV(t.currentCycle.completedAt));
-      var durationText='';
-      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) durationText='Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime());
-      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt) durationText='Duration: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime());
+      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) durationLine='Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime());
+      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt) durationLine='Duration: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime());
       if(times.length) s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
-      if(durationText) s+='<div class="js-site-duration">'+durationText+'</div>';
+      if(durationLine) s+='<div class="js-site-duration">'+durationLine+'</div>';
       if(t.reopenReason) s+='<div class="js-site-note">Reopened: '+escapeHtml(t.reopenReason)+'</div>';
       if(t.note) s+='<div class="js-site-note">'+escapeHtml(t.note)+'</div>';
       s+='</div>';
