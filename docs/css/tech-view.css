@@ -87,7 +87,8 @@ html.tv-dark {
    BASE OVERRIDES
    ============================================================ */
 html { height: 100% }
-body { background: var(--tv-bg); color: var(--tv-text); min-height: 100%; overflow-x: hidden; -webkit-text-size-adjust: 100%; -webkit-user-select: none; user-select: none; }
+body { background: var(--tv-bg); color: var(--tv-text); min-height: 100%; -webkit-text-size-adjust: 100%; -webkit-user-select: none; user-select: none; }
+html { overflow-x: hidden; } /* overflow-x on html doesn't break position:fixed, body does */
 input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; }
 
 /* ============================================================
