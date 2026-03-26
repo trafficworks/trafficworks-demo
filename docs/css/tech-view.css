@@ -562,28 +562,35 @@ html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: va
   box-shadow: none !important;
 }
 
-/* MOBILE JOB SHEET FIX — append to bottom of tech-view.css */
 
+/* ===== FINAL TECH VIEW MOBILE JOB SHEET FIX ===== */
 .jobsheet-overlay {
-  width: 100% !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  min-height: 100vh !important;
   height: 100dvh !important;
-  min-height: -webkit-fill-available !important;
+  background: #F4F3F0 !important;
+  overflow: hidden !important;
   align-items: stretch !important;
   justify-content: flex-start !important;
-  overflow: hidden !important;
-  background: #F4F3F0 !important;
+  z-index: 9999 !important;
 }
 
 .jobsheet-header {
   width: 100% !important;
+  flex: 0 0 auto !important;
 }
 
 .jobsheet-body {
   width: 100% !important;
   flex: 1 1 auto !important;
   min-height: 0 !important;
-  padding: 20px 16px calc(40px + env(safe-area-inset-bottom, 0px)) !important;
+  padding: 20px 16px calc(110px + env(safe-area-inset-bottom, 0px)) !important;
   background: #F4F3F0 !important;
+  display: block !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 .jobsheet-body > * {
@@ -595,22 +602,24 @@ html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: va
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
-  box-shadow: none !important;
   background: #F4F3F0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
 }
 
+.js-instructions-card,
+.js-section {
+  width: 100% !important;
+  box-shadow: none !important;
+}
+
+/* Match projects-page viewer feel on phones */
 @media (max-width: 768px) {
-  .jobsheet-body {
-    display: block !important;
+  .jobsheet-header {
+    padding: 14px 16px !important;
   }
 
-  .jobsheet-container {
-    border-radius: 0 !important;
-  }
-
-  .js-instructions-card,
-  .js-section {
-    width: 100% !important;
-    box-shadow: none !important;
+  .jobsheet-download {
+    flex-shrink: 0 !important;
   }
 }
