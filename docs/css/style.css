@@ -1007,7 +1007,9 @@ textarea.form-input {
 /* ═══════════════════════════════════════════════════════════════
    KEBAB MENU (dropdown)
    ═══════════════════════════════════════════════════════════════ */
-.kebab-cell { position: relative; }
+.kebab-cell { }
+
+.kebab-wrap { position: relative; display: inline-flex; }
 
 .kebab-menu {
   display: none;
