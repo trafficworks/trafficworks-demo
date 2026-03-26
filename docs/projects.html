@@ -6,548 +6,10 @@
 <title>The Count Company — Projects</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<style>
-/* ── MOBILE CARD NAV ── */
-.mc-topnav { display: none; }
-
-@media (max-width: 768px) {
-  .container > .nav,
-  .container > .nav-line,
-  .mobile-nav-menu,
-  .container > .page-header,
-  .container > .search-row,
-  #projectSections,
-  .table-footer { display: none !important; }
-
-  .mc-topnav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    padding: 28px 0 18px;
-  }
-  .mc-topnav a {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text-3);
-    text-decoration: none;
-    letter-spacing: -0.02em;
-  }
-  .mc-topnav a.active { color: var(--text); }
-  .mc-topnav-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--line); }
-
-  .mobile-only { display: block !important; }
-
-  .m-page-sub {
-    padding: 0 6px 12px;
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-3);
-  }
-
-  /* ── CARD LIST — 6px sides = max width ── */
-  #mobileProjectList {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 0 6px 40px;
-  }
-
-  /* ── BASE CARD ── */
-  .mc {
-    border-radius: 20px;
-    padding: 14px 18px 14px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    width: 100%;
-  }
-  /* no badge row — tighter top */
-  .mc.mc-no-topbar { padding-top: 16px; }
-
-  /* ── CARD COLORS ──
-     Pending (no infield activity) = amber
-     In Progress (has infield)     = blue
-     On Hold                       = red
-     Complete                      = green
-  */
-  .mc-pending    { background: #F5EDD6; color: #6B4A08; }
-  .mc-inprogress { background: #DCEAF8; color: #1C4A7A; }
-  .mc-hold       { background: #F5E0E0; color: #7A2020; }
-  .mc-complete   { background: #D4EDDF; color: #1A5C35; }
-
-  /* ── TOP BAR: left | center | right — all inline ── */
-  .mc-top-bar {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 10px;
-    min-height: 26px;
-  }
-  .mc-top-left  { flex-shrink: 0; }
-  .mc-top-mid   { flex: 1; display: flex; justify-content: center; }
-  .mc-top-right { flex-shrink: 0; }
-
-  /* shared pill base */
-  .mc-pill-sm {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 100px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  /* In Progress badge — blue, blinking dot */
-  .mc-badge-inprogress {
-    background: rgba(28,74,122,0.14);
-    color: #1C4A7A;
-  }
-  .mc-blink {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #3AA66A;
-    flex-shrink: 0;
-    animation: mcblink 1.8s ease-in-out infinite;
-  }
-  @keyframes mcblink { 0%,100%{opacity:1} 50%{opacity:0.2} }
-
-  /* On Hold badge */
-  .mc-badge-hold {
-    background: rgba(122,32,32,0.14);
-    color: #7A2020;
-  }
-
-  /* Complete badge */
-  .mc-badge-complete {
-    background: rgba(26,92,53,0.16);
-    color: #1A5C35;
-  }
-
-  /* In Field pill — center, green dot, tinted to card color */
-  .mc-infield-pill {
-    background: rgba(58,166,106,0.15);
-    color: #1A5C35;
-  }
-  .mc-inprogress .mc-infield-pill { color: #1C4A7A; background: rgba(28,74,122,0.1); }
-  .mc-hold       .mc-infield-pill { color: #7A2020; background: rgba(122,32,32,0.1); }
-  .mc-if-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #3AA66A;
-    flex-shrink: 0;
-  }
-
-  /* Pending pill — upper right, amber always */
-  .mc-pending-pill {
-    background: rgba(212,168,67,0.22);
-    color: #6B4A08;
-  }
-  .mc-pd-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #D4A843;
-    flex-shrink: 0;
-  }
-
-  /* ── NAME ROW — with optional right-aligned checkmark ── */
-  .mc-name-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 2px;
-  }
-  .mc-check {
-    flex-shrink: 0;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: rgba(26,92,53,0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .mc-check svg { display: block; }
-
-  /* ── NAME + CITY ── */
-  .mc-name {
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.25;
-    margin-bottom: 2px;
-    color: inherit;
-  }
-  .mc-city {
-    font-size: 12.5px;
-    opacity: 0.55;
-    margin-bottom: 12px;
-  }
-
-  /* ── DIVIDER ── */
-  .mc-divider { width: 100%; height: 1px; margin-bottom: 12px; }
-  .mc-pending    .mc-divider { background: rgba(107,74,8,0.12); }
-  .mc-inprogress .mc-divider { background: rgba(28,74,122,0.12); }
-  .mc-hold       .mc-divider { background: rgba(122,32,32,0.12); }
-  .mc-complete   .mc-divider { background: rgba(26,92,53,0.12); }
-
-  /* ── COUNTER ── */
-  .mc-counter {
-    font-size: 54px;
-    font-weight: 700;
-    letter-spacing: -0.05em;
-    line-height: 1;
-    margin-bottom: 3px;
-    align-self: center;
-  }
-  .mc-slash, .mc-total { opacity: 0.28; font-weight: 400; }
-  .mc-complete .mc-done { color: #3AA66A; }
-
-  .mc-counter-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0.45;
-    margin-bottom: 14px;
-    align-self: center;
-  }
-
-  /* ── VIEW JOB SHEET PILL ── */
-  .mc-pill {
-    width: 100%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    padding: 12px;
-    border-radius: 100px;
-    border: none;
-    font-family: var(--font);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-  .mc-pill:active { opacity: 0.75; }
-  .mc-pending    .mc-pill { background: rgba(107,74,8,0.11);   color: #6B4A08; }
-  .mc-inprogress .mc-pill { background: rgba(28,74,122,0.11);  color: #1C4A7A; }
-  .mc-hold       .mc-pill { background: rgba(122,32,32,0.11);  color: #7A2020; }
-  .mc-complete   .mc-pill { background: rgba(26,92,53,0.12);   color: #1A5C35; }
-
-  /* ── PROGRESS BAR ── */
-  .mc-prog { width: 100%; height: 3px; border-radius: 99px; margin-top: 12px; overflow: hidden; }
-  .mc-pending    .mc-prog { background: rgba(107,74,8,0.12); }
-  .mc-inprogress .mc-prog { background: rgba(28,74,122,0.12); }
-  .mc-hold       .mc-prog { background: rgba(122,32,32,0.12); }
-  .mc-complete   .mc-prog { background: rgba(26,92,53,0.12); }
-
-  .mc-prog-fill { height: 100%; border-radius: 99px; }
-  .mc-pending    .mc-prog-fill { background: #D4A843; }
-  .mc-inprogress .mc-prog-fill { background: #4A7FBF; }
-  .mc-hold       .mc-prog-fill { background: #C45C5C; }
-  .mc-complete   .mc-prog-fill { background: #3AA66A; }
-}
-
-/* ═══════════════════════════════════
-   JOB SHEET OVERLAY
-   ═══════════════════════════════════ */
-.jobsheet-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #F4F3F0;
-  z-index: 500;
-  flex-direction: column;
-  overflow: hidden;
-}
-.jobsheet-overlay.visible { display: flex; }
-
-/* header bar */
-.jobsheet-header {
-  display: flex;
-  align-items: center;
-  padding: 14px 16px;
-  background: #F4F3F0;
-  border-bottom: 1px solid #DEDBD5;
-  gap: 12px;
-  flex-shrink: 0;
-}
-.jobsheet-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #6B7178;
-  display: flex;
-  align-items: center;
-  padding: 4px;
-  flex-shrink: 0;
-}
-.jobsheet-title {
-  font-family: var(--font);
-  font-size: 15px;
-  font-weight: 700;
-  color: #1A1D21;
-  letter-spacing: -0.02em;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex: 1;
-}
-.jobsheet-title svg { color: #3AA66A; flex-shrink: 0; }
-.jobsheet-download {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 16px;
-  background: #1A1D21;
-  color: #fff;
-  border: none;
-  border-radius: 100px;
-  font-family: var(--font);
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-/* scrollable body */
-.jobsheet-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px 14px 40px;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* project header block */
-.js-project {
-  margin-bottom: 18px;
-}
-.js-project-name {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: #1A1D21;
-  line-height: 1.2;
-  margin-bottom: 4px;
-}
-.js-project-meta {
-  font-size: 13px;
-  color: #6B7178;
-  margin-bottom: 2px;
-}
-.js-project-num {
-  font-size: 12px;
-  color: #7D838A;
-  margin-bottom: 2px;
-}
-.js-project-date {
-  font-size: 11px;
-  color: #9DA3AA;
-}
-
-/* instructions card */
-.js-instructions-card {
-  background: #fff;
-  border-radius: 14px;
-  margin-bottom: 14px;
-  overflow: hidden;
-}
-.js-instructions-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #4A7A5E;
-  padding: 9px 14px;
-  border-radius: 14px 14px 0 0;
-}
-.js-instructions-title {
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #fff;
-}
-.js-instructions-body {
-  padding: 12px 14px;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #2A2D31;
-  line-height: 1.5;
-}
-
-/* section cards — pending / in field / complete */
-.js-section {
-  background: #fff;
-  border-radius: 14px;
-  margin-bottom: 12px;
-  overflow: hidden;
-}
-.js-section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9px 14px;
-  border-radius: 14px 14px 0 0;
-}
-.js-section-header-pending  { background: #F5EDD6; }
-.js-section-header-infield  { background: #DCEAF8; }
-.js-section-header-complete { background: #D4EDDF; }
-
-.js-section-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.js-section-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.js-section-dot-pending  { background: #D4A843; }
-.js-section-dot-infield  { background: #4A7FBF; }
-.js-section-dot-complete { background: #3AA66A; }
-
-.js-section-label {
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.js-section-header-pending  .js-section-label { color: #6B4A08; }
-.js-section-header-infield  .js-section-label { color: #1C4A7A; }
-.js-section-header-complete .js-section-label { color: #1A5C35; }
-
-.js-section-count {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 100px;
-}
-.js-section-header-pending  .js-section-count { background: rgba(107,74,8,0.14);  color: #6B4A08; }
-.js-section-header-infield  .js-section-count { background: rgba(28,74,122,0.14); color: #1C4A7A; }
-.js-section-header-complete .js-section-count { background: rgba(26,92,53,0.16);  color: #1A5C35; }
-
-/* site rows */
-.js-site-list { padding: 4px 0; }
-.js-site {
-  padding: 10px 14px;
-  border-bottom: 1px solid #F0EEE9;
-}
-.js-site:last-child { border-bottom: none; }
-
-.js-site-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 3px;
-}
-.js-site-num {
-  font-size: 12px;
-  font-weight: 700;
-  color: #9DA3AA;
-  flex-shrink: 0;
-  min-width: 24px;
-}
-.js-site-desc {
-  font-size: 14px;
-  font-weight: 700;
-  color: #1A1D21;
-  flex: 1;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-}
-.js-site-tags {
-  display: flex;
-  gap: 4px;
-  flex-shrink: 0;
-}
-.js-site-tag {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  padding: 3px 7px;
-  border-radius: 6px;
-  background: #ECEAE4;
-  color: #4A4F55;
-}
-.js-site-tech-init {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 3px 7px;
-  border-radius: 6px;
-  background: #E8E6E0;
-  color: #6B7178;
-  letter-spacing: 0.02em;
-}
-
-.js-site-times {
-  font-size: 11.5px;
-  color: #7D838A;
-  margin-top: 3px;
-  line-height: 1.4;
-}
-.js-site-note {
-  font-size: 12px;
-  font-weight: 600;
-  color: #4A4F55;
-  margin-top: 4px;
-  font-style: italic;
-}
-
-/* footer */
-.js-footer {
-  margin-top: 24px;
-  padding-top: 14px;
-  border-top: 1px solid #DEDBD5;
-  text-align: center;
-  font-size: 11px;
-  color: #9DA3AA;
-  letter-spacing: 0.02em;
-}
-.js-footer-brand {
-  font-weight: 700;
-  color: #6B7178;
-}
-
-@media print {
-  /* hide entire page by default */
-  body > * { display: none !important; }
-  /* when jobsheet is open, show only it */
-  .jobsheet-overlay {
-    display: block !important;
-    position: static !important;
-    overflow: visible !important;
-    background: #fff !important;
-    height: auto !important;
-    z-index: auto !important;
-  }
-  .jobsheet-header { display: none !important; }
-  .jobsheet-body {
-    display: block !important;
-    overflow: visible !important;
-    padding: 20px !important;
-  }
-  /* preserve colored section backgrounds */
-  .js-section-header-pending,
-  .js-section-header-infield,
-  .js-section-header-complete,
-  .js-instructions-header {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-}
-</style>
 </head>
 <body>
 
+<!-- NAV -->
 <div class="container">
   <div class="nav">
     <a class="nav-brand" href="projects.html">
@@ -569,13 +31,6 @@
   <a class="active" href="projects.html">Projects</a>
   <a href="team.html">Team</a>
   <a href="archive.html">Archive</a>
-</div>
-
-<!-- Mobile-only simple top nav -->
-<div class="mc-topnav">
-  <a href="projects.html" class="active">Projects</a>
-  <span class="mc-topnav-dot"></span>
-  <a href="team.html">Team</a>
 </div>
 
 <!-- MAIN -->
@@ -712,8 +167,8 @@
 <div class="jobsheet-overlay" id="jobsheetOverlay">
   <div class="jobsheet-header">
     <button class="jobsheet-close" id="closeJobSheetBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-    <span class="jobsheet-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Job Sheet</span>
-    <button class="jobsheet-download" id="printJobSheetBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
+    <span class="jobsheet-title">Job Sheet</span>
+    <button class="jobsheet-download" id="printJobSheetBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button>
   </div>
   <div class="jobsheet-body" id="jobsheetBody"></div>
 </div>
@@ -745,8 +200,6 @@ async function loadProjects() {
     status: mapStatus(p.status),
     pct: p.pct_complete,
     openTasks: (p.pending_tasks || 0) + (p.infield_tasks || 0),
-    pendingTasks: p.pending_tasks || 0,
-    infieldTasks: p.infield_tasks || 0,
     totalTasks: p.total_tasks || 0,
     updated: '',
     created: ''
@@ -902,62 +355,21 @@ function renderProjects(list) {
     var mHtml = '';
     list.forEach(function(p) {
       var done = p.totalTasks - p.openTasks;
-      var s = p.status;
-
-      var hasInfield  = p.infieldTasks > 0;
-      var hasPending  = p.pendingTasks > 0;
-      var hasActivity = hasInfield || done > 0;
-      var isAllDone   = p.totalTasks > 0 && done === p.totalTasks;
-
-      var cardClass = isAllDone || s === 'Complete' ? 'mc-complete'
-                    : s === 'On Hold'               ? 'mc-hold'
-                    : s === 'In Progress' && hasInfield ? 'mc-inprogress'
-                    :                                  'mc-pending';
-
-      var leftBadge   = '';
-      var centerBadge = '';
-      var rightBadge  = '';
-
-      if (isAllDone || s === 'Complete') {
-        // all done — no badges, clean card
-      } else if (s === 'On Hold') {
-        leftBadge = '<span class="mc-pill-sm mc-badge-hold">On Hold</span>';
-      } else if (s === 'In Progress' && hasInfield) {
-        leftBadge   = '<span class="mc-pill-sm mc-infield-pill"><span class="mc-blink"></span>' + p.infieldTasks + ' In Field</span>';
-        if (hasPending) {
-          rightBadge = '<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>' + p.pendingTasks + ' Pending</span>';
-        }
-      } else if (hasActivity && hasPending) {
-        rightBadge = '<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>' + p.pendingTasks + ' Pending</span>';
-      }
-      // else: no activity at all — no badges, top bar omitted
-
-      var showTopBar = leftBadge || centerBadge || rightBadge;
-
-      var checkmark = isAllDone
-        ? '<div class="mc-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1A5C35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'
-        : '';
-
-      mHtml += '<div class="mc ' + cardClass + (showTopBar ? '' : ' mc-no-topbar') + '">';
-
-      if (showTopBar) {
-        mHtml += '<div class="mc-top-bar">';
-        mHtml += '<div class="mc-top-left">'  + leftBadge   + '</div>';
-        mHtml += '<div class="mc-top-mid">'   + centerBadge + '</div>';
-        mHtml += '<div class="mc-top-right">' + rightBadge  + '</div>';
-        mHtml += '</div>';
-      }
-
-      mHtml += '<div class="mc-name-row"><div class="mc-name">' + p.name + '</div>' + checkmark + '</div>';
-      mHtml += '<div class="mc-city">' + (p.location || '') + '</div>';
-      mHtml += '<div class="mc-divider"></div>';
-
-      mHtml += '<div class="mc-counter"><span class="mc-done">' + done + '</span><span class="mc-slash">/</span><span class="mc-total">' + p.totalTasks + '</span></div>';
-      mHtml += '<div class="mc-counter-label">Tasks Complete</div>';
-
-      mHtml += '<button class="mc-pill" data-action="jobsheet" data-id="' + p.id + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Job Sheet</button>';
-      mHtml += '<div class="mc-prog"><div class="mc-prog-fill" style="width:' + p.pct + '%"></div></div>';
+      var isComplete = p.status === 'Complete';
+      mHtml += '<div class="m-project-row' + (isComplete?' complete':'') + '">';
+      mHtml += '<div class="m-project-left" data-action="open-project" data-id="' + p.id + '">';
+      mHtml += '<div class="m-project-name">' + p.name + '</div>';
+      mHtml += '<div class="m-project-detail">' + p.location + (isComplete ? '' : ' · ' + p.openTasks + ' open') + '</div>';
+      mHtml += '<div class="m-project-js" data-action="jobsheet" data-id="' + p.id + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Job Sheet</div>';
       mHtml += '</div>';
+      mHtml += '<div class="m-project-right">';
+      if (isComplete) {
+        mHtml += '<div class="m-project-tasks" style="color:var(--accent)">Complete</div>';
+      } else {
+        mHtml += '<div class="m-progress-mini"><div class="m-progress-mini-fill" style="width:' + p.pct + '%"></div></div>';
+        mHtml += '<div class="m-project-tasks">' + done + '/' + p.totalTasks + '</div>';
+      }
+      mHtml += '</div></div>';
     });
     mList.innerHTML = mHtml;
   }
@@ -1348,7 +760,7 @@ async function openJobSheet(id) {
 
   const { data: projectData, error: projectError } = await supabase
     .from('projects')
-    .select('id, name, client, location, notes, project_num')
+    .select('id, name, client, location, notes')
     .eq('id', id)
     .single()
 
@@ -1426,12 +838,6 @@ async function openJobSheet(id) {
 
   function fmtDur(ms) {
     if (!ms || ms < 0) return ''
-    var totalHours = ms / 3600000
-    if (totalHours >= 24) {
-      var d = Math.floor(totalHours / 24)
-      var h = Math.floor(totalHours % 24)
-      return d + 'd ' + h + 'h'
-    }
     var h = Math.floor(ms / 3600000)
     var m = Math.floor((ms % 3600000) / 60000)
     return h + 'h ' + m + 'm'
@@ -1464,70 +870,35 @@ async function openJobSheet(id) {
   var now = new Date()
   var dateStr = (now.getMonth()+1) + '/' + now.getDate() + '/' + now.getFullYear()
 
-  // project header
-  var html = '<div class="js-project">'
-  html += '<div class="js-project-name">' + projectData.name + '</div>'
-  if (projectData.client || projectData.location) {
-    html += '<div class="js-project-meta">' + [projectData.client, projectData.location].filter(Boolean).join(' · ') + '</div>'
-  }
-  if (projectData.project_num) {
-    html += '<div class="js-project-num">Project #' + projectData.project_num + '</div>'
-  }
-  html += '</div>'
+  var html = '<div class="js-project"><div class="js-project-name">'+projectData.name+'</div><div class="js-project-meta">'+(projectData.client || '')+' · '+(projectData.location || '')+'</div><div class="js-project-date">Generated '+dateStr+'</div></div>'
 
-  // instructions
   if (projectData.notes) {
-    html += '<div class="js-instructions-card">'
-    html += '<div class="js-instructions-header"><span class="js-instructions-title">Instructions</span></div>'
-    html += '<div class="js-instructions-body">' + projectData.notes + '</div>'
-    html += '</div>'
+    html += '<div class="js-section"><div class="js-section-title">Instructions</div><div class="js-instructions">'+projectData.notes+'</div></div>'
   }
 
-  var pending  = tasks.filter(function(t){ return t.status === 'Pending' })
-  var infield  = tasks.filter(function(t){ return t.status === 'In Field' })
+  var pending = tasks.filter(function(t){ return t.status === 'Pending' })
+  var infield = tasks.filter(function(t){ return t.status === 'In Field' })
   var complete = tasks.filter(function(t){ return t.status === 'Complete' })
 
-  function renderGroup(title, list, headerClass, dotClass, labelClass) {
+  function renderGroup(title, list) {
     if (list.length === 0) return ''
-    var s = '<div class="js-section">'
-    s += '<div class="js-section-header ' + headerClass + '">'
-    s += '<div class="js-section-left">'
-    s += '<span class="js-section-dot ' + dotClass + '"></span>'
-    s += '<span class="js-section-label">' + title + '</span>'
-    s += '</div>'
-    s += '<span class="js-section-count">' + list.length + '</span>'
-    s += '</div>'
-    s += '<div class="js-site-list">'
+    var s = '<div class="js-section"><div class="js-section-title">'+title+' <span class="js-count">'+list.length+'</span></div><div class="js-site-list">'
     list.forEach(function(t) {
-      s += '<div class="js-site">'
-      s += '<div class="js-site-header">'
-      s += '<span class="js-site-num">#' + t.site + '</span>'
-      s += '<span class="js-site-desc">' + t.desc + '</span>'
-      s += '<div class="js-site-tags">'
-      s += '<span class="js-site-tag">' + t.type + '</span>'
-      if (t.tech) s += '<span class="js-site-tech-init">' + getInitials(t.tech) + '</span>'
-      s += '</div>'
-      s += '</div>'
+      s += '<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+t.desc+'</span><span class="js-site-type">'+t.type+'</span><span class="js-site-tech">'+getInitials(t.tech)+'</span></div>'
       var times = []
       if (t.deployed) times.push('Set: ' + t.deployed)
-      if (t.picked)   times.push('Pickup: ' + t.picked)
-      if (t.dur)      times.push('Duration: ' + t.dur)
+      if (t.picked) times.push('Picked: ' + t.picked)
+      if (t.dur) times.push('Duration: ' + t.dur)
       if (times.length) s += '<div class="js-site-times">' + times.join(' · ') + '</div>'
       if (t.note) s += '<div class="js-site-note">' + t.note + '</div>'
       s += '</div>'
     })
-    s += '</div></div>'
-    return s
+    return s + '</div></div>'
   }
 
-  html += renderGroup('Pending',   pending,  'js-section-header-pending',  'js-section-dot-pending',  '')
-  html += renderGroup('In Field',  infield,  'js-section-header-infield',  'js-section-dot-infield',  '')
-  html += renderGroup('Complete',  complete, 'js-section-header-complete', 'js-section-dot-complete', '')
-
-  // footer
-  html += '<div class="js-footer">'
-  html += 'Report generated ' + dateStr + ' · <span class="js-footer-brand">The Count Company</span>'
-  html += '</div>'
+  html += renderGroup('Pending', pending)
+  html += renderGroup('In Field', infield)
+  html += renderGroup('Complete', complete)
 
   document.getElementById('jobsheetBody').innerHTML = html
   document.getElementById('jobsheetOverlay').classList.add('visible')
@@ -1535,11 +906,7 @@ async function openJobSheet(id) {
 }
 
 function closeJobSheet() { document.getElementById('jobsheetOverlay').classList.remove('visible'); document.body.style.overflow = ''; }
-function printJobSheet() {
-  document.body.classList.add('printing-jobsheet');
-  window.print();
-  document.body.classList.remove('printing-jobsheet');
-}
+function printJobSheet() { window.print(); }
 
 
 // ═══════════════════════════════════════
