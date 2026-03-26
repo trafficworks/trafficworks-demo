@@ -523,3 +523,23 @@ html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: va
 .jobsheet-overlay .js-section {
   box-shadow: none !important;
 }
+
+/* ===== FINAL FORCE FIX (TECH VIEW) ===== */
+
+.jobsheet-overlay {
+  background: #F4F3F0 !important;
+}
+
+.jobsheet-body {
+  background: #F4F3F0 !important;
+}
+
+.jobsheet-container {
+  background: #F4F3F0 !important;
+  box-shadow: none !important;
+}
+
+.js-instructions-card,
+.js-section {
+  box-shadow: none !important;
+}
