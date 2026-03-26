@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>TrafficWorks — Tech View</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<link rel="stylesheet" href="css/tech-view.css">
+
+<style>
+/* Animation overrides — applied by JS */
+.tv-task-card{transition:background-color .22s ease,opacity .28s ease,transform .28s ease,box-shadow .22s ease}
+.tv-task-card.row-success-infield{background:rgba(141,183,219,.14);box-shadow:0 0 0 1px rgba(141,183,219,.20) inset}
+.tv-task-card.row-success-complete{background:rgba(42,181,126,.12);box-shadow:0 0 0 1px rgba(42,181,126,.20) inset}
+.tv-task-card.row-exit{opacity:0;transform:translateY(-6px)}
+.tv-note-indicator,.tv-note-save-btn{position:relative;z-index:3}
+</style>
+
+</head>
+<body>
+<!-- Project list header — matches projects page style -->
+<div class="tv-topnav" id="tvTopnav">
+  <span class="tv-topnav-title">Projects</span>
+</div>
+<!-- Task view header — shown when inside a job -->
+<div class="tv-header" id="tvTaskHeader" style="display:none">
+  <div class="tv-header-left">
+    <button class="tv-back-btn" id="backBtn" onclick="showProjects()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+    <div class="tv-project-info" id="barProjectInfo">
+      <span class="tv-project-name-bar" id="barProjectName"></span>
+    </div>
+  </div>
+  <div class="tv-header-right">
+    <button class="tv-undo-btn" id="undoBtn" onclick="undoLastAction()" style="display:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg></button>
+  </div>
+</div>
+<div class="tv-page-sub" id="projectStatsBar" style="text-align:center;display:block;width:100%;padding:0 12px 12px;"></div>
+<div class="tv-filter-bar" id="taskFilterBar">
+  <div class="tv-filter-pill active" id="filterAll" onclick="toggleFilter('all')"><span class="tv-filter-value" id="filterAllVal">0</span><span class="tv-filter-label">Total</span></div>
+  <div class="tv-filter-pill" id="filterPending" onclick="toggleFilter('Pending')"><span class="tv-filter-value" id="filterPendingVal">0</span><span class="tv-filter-label">Pending</span></div>
+  <div class="tv-filter-pill" id="filterInfield" onclick="toggleFilter('In Field')"><span class="tv-filter-value" id="filterInfieldVal">0</span><span class="tv-filter-label">In Field</span></div>
+</div>
+<div id="taskProgressWrap" style="display:none">
+  <div class="tv-task-progress">
+    <div class="tv-task-progress-bar"><div class="tv-task-progress-fill" id="taskProgressFill" style="width:0%"></div></div>
+    <span class="tv-task-progress-pct" id="taskProgressPct">0%</span>
+  </div>
+</div>
+<div class="jobsheet-overlay" id="printOverlay">
+  <div class="jobsheet-header">
+    <button class="jobsheet-close" id="closeJobSheetBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="jobsheet-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Job Sheet</span>
+    <button class="jobsheet-download" id="printJobSheetBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
+  </div>
+  <div class="jobsheet-body" id="printContent"></div>
+</div>
+<div class="tv-reopen-overlay" id="reopenOverlay">
+  <div class="tv-reopen-modal">
+    <div class="tv-reopen-title">Reopen Task</div>
+    <div class="tv-reopen-sub" id="reopenTaskName"></div>
+    <textarea class="tv-reopen-input" id="reopenReason" placeholder="Why are you reopening this task?"></textarea>
+    <div class="tv-reopen-actions">
+      <button class="tv-reopen-cancel" onclick="closeReopenModal()">Cancel</button>
+      <button class="tv-reopen-confirm" onclick="confirmReopen()">Reopen</button>
+    </div>
+  </div>
+</div>
+<!-- Status change confirmation -->
+<div class="tv-confirm-overlay" id="statusConfirm">
+  <div class="tv-confirm-circle">
+    <svg class="tv-confirm-check" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+</div>
+<div class="tv-confirm-overlay" id="undoConfirm">
+  <div class="tv-undo-circle">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>
+    <span class="tv-undo-text">Undone</span>
+  </div>
+</div>
+<div class="tv-content">
+  <div class="tv-view active" id="projectView"><div id="projectCards"></div></div>
+  <div class="tv-view" id="taskView">
+    <div class="tv-hold-hint" id="holdHint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 16"/></svg>
+      Hold button to update status
+      <button class="tv-hold-hint-dismiss" onclick="dismissHint()">Got it</button>
+    </div>
+    <div id="taskCards"></div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase } from './js/supabase.js'
+
+(function(){var h=new Date().getHours();if(h<7||h>=19)document.documentElement.classList.add('tv-dark')})();
+
+const STATUS={PENDING:'Pending',INFIELD:'In Field',COMPLETE:'Complete'};
+const MAX_NOTE=100;
+const state={
+  techId:null,
+  companyId:null,
+  techName:'Tech',
+  projects:[],
+  currentProject:null,
+  activeFilter:'all',
+  completedCollapsed:false,
+  hintDismissed:false,
+  openNoteId:null,
+  lastAction:null,
+  reopenTargetId:null,
+  durationInterval:null,
+  loading:false
+};
+
+function qp(name){return new URLSearchParams(window.location.search).get(name)}
+function escapeHtml(str){return String(str ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+function escapeAttr(str){return escapeHtml(str).replaceAll('"','&quot;')}
+function getInitials(n){if(!n)return'—';return n.split(' ').map(function(p){return p[0]}).join('').toUpperCase()}
+function fmtTimeTV(d){if(!d)return'';var dt=(d instanceof Date)?d:new Date(d);var m=dt.getMonth()+1;var day=dt.getDate();var h=dt.getHours();var min=dt.getMinutes();var ap=h>=12?'p':'a';h=h%12||12;return m+'/'+day+' '+h+':'+(min<10?'0':'')+min+ap}
+function fmtDurTV(ms){if(!ms||ms<0)return'';var h=Math.floor(ms/3600000);var m=Math.floor((ms%3600000)/60000);return h+'h '+m+'m'}
+function fmtDuration(ms){if(ms<0)ms=0;var m=Math.floor(ms/60000),h=Math.floor(m/60),mn=m%60;if(h>=24){return Math.floor(h/24)+'d '+(h%24)+'h'}return h+'h '+mn+'m'}
+function mapTaskStatus(status){if(status==='pending')return STATUS.PENDING;if(status==='complete')return STATUS.COMPLETE;return STATUS.INFIELD}
+function dbTaskStatus(label){if(label===STATUS.PENDING)return'pending';if(label===STATUS.COMPLETE)return'complete';return'in-field'}
+function getTechName(user){if(!user)return'';const first=user.first_name||'';const last=user.last_name||'';return [first,last?last[0]+'.':''].filter(Boolean).join(' ').trim()}
+function getStudyTypeCode(studyType){if(!studyType)return'OTH';return studyType.code||'OTH'}
+function getLiveDuration(t){if(t.status!==STATUS.INFIELD||!t.currentCycle.deployedAt)return'';return fmtDuration(Date.now()-new Date(t.currentCycle.deployedAt).getTime())}
+function actionLabel(status){return status===STATUS.PENDING?'Set in field':'Mark complete'}
+function toggleBtnClass(status){return status===STATUS.PENDING?'toggle-pending':'toggle-infield'}
+function taskCounts(t){return{total:t.length,pending:t.filter(function(x){return x.status===STATUS.PENDING}).length,infield:t.filter(function(x){return x.status===STATUS.INFIELD}).length,complete:t.filter(function(x){return x.status===STATUS.COMPLETE}).length}}
+function pct(c){return c.total>0?Math.round((c.complete/c.total)*100):0}
+function currentTasks(){return state.currentProject?state.currentProject.tasks:[]}
+function showError(msg,error){console.error(msg,error); alert(msg + (error && error.message ? '\n\n' + error.message : ''))}
+function setLoading(v){state.loading=v;document.body.classList.toggle('tv-loading',!!v)}
+function stopDurationTimer(){if(state.durationInterval){clearInterval(state.durationInterval);state.durationInterval=null}}
+function startDurationTimer(){stopDurationTimer();state.durationInterval=setInterval(function(){document.querySelectorAll('.live-duration').forEach(function(el){var taskId=el.getAttribute('data-task-id');var task=currentTasks().find(function(t){return String(t.id)===String(taskId)});if(task)el.textContent=getLiveDuration(task)})},30000)}
+function showUndoConfirm(){var el=document.getElementById('undoConfirm');el.className='tv-confirm-overlay show';var circle=el.querySelector('.tv-undo-circle');circle.style.opacity='0';circle.style.transform='scale(0.5)';void circle.offsetWidth;circle.style.opacity='1';circle.style.transform='scale(1)';setTimeout(function(){circle.style.opacity='0';circle.style.transform='scale(0.8)';setTimeout(function(){el.className='tv-confirm-overlay';circle.style.cssText=''},400)},1200)}
+function showStatusConfirm(){var el=document.getElementById('statusConfirm');el.className='tv-confirm-overlay show';var circle=el.querySelector('.tv-confirm-circle');circle.style.opacity='0';circle.style.transform='scale(0.5)';void circle.offsetWidth;circle.style.opacity='1';circle.style.transform='scale(1)';setTimeout(function(){circle.style.opacity='0';circle.style.transform='scale(0.8)';setTimeout(function(){el.className='tv-confirm-overlay';circle.style.cssText=''},300)},700)}
+
+async function touchLastActive(){
+  if(!state.techId) return;
+  const {error}=await supabase
+    .from('users')
+    .update({last_active_at:new Date().toISOString()})
+    .eq('id', state.techId);
+  if(error) console.error('Could not update last active.', error);
+}
+
+function normalizeTask(row, cyclesByTask){
+  const taskCycles=(cyclesByTask[row.id]||[]).slice().sort((a,b)=>(b.cycle_num||0)-(a.cycle_num||0));
+  const latest=taskCycles[0]||null;
+  return {
+    id: row.id,
+    site: row.site,
+    desc: row.description || row.desc || '',
+    type: getStudyTypeCode(row.study_types),
+    tech: getTechName(row.users),
+    techId: row.tech_id || null,
+    status: mapTaskStatus(row.status),
+    note: row.notes || '',
+    reopenReason: row.reopen_reason || '',
+    cycles: taskCycles.map(function(c){return {
+      id:c.id,
+      cycle_num:c.cycle_num,
+      deployedAt:c.deployed_at?new Date(c.deployed_at):null,
+      completedAt:c.completed_at?new Date(c.completed_at):null,
+      pickedUpAt:c.picked_up_at?new Date(c.picked_up_at):null,
+      reopenReason:c.notes || '',
+      reopenedBy:c.reopened_by || ''
+    }}),
+    currentCycle: (row.status==='pending' || !latest) ? {deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null} : {
+      deployedAt: latest.deployed_at ? new Date(latest.deployed_at) : null,
+      completedAt: latest.completed_at ? new Date(latest.completed_at) : null,
+      pickedUpAt: latest.picked_up_at ? new Date(latest.picked_up_at) : null,
+      cycleId: latest.id,
+      cycleNum: latest.cycle_num
+    }
+  }
+}
+
+async function loadTech(){
+  const techId=qp('tech');
+  const pin=qp('pin');
+  const companyId=qp('company');
+  let query=supabase.from('users').select('id, company_id, first_name, last_name, pin, role, status');
+  if(techId) query=query.eq('id', techId);
+  else if(pin){ query=query.eq('pin', pin); if(companyId) query=query.eq('company_id', companyId); }
+  else throw new Error('Missing tech or pin in URL');
+  const {data,error}=await query.eq('role','tech').eq('status','active').maybeSingle();
+  if(error) throw error;
+  if(!data) throw new Error('Tech not found');
+  state.techId=data.id;
+  state.companyId=data.company_id;
+  state.techName=getTechName(data)||'Tech';
+}
+
+async function loadProjectsAndTasks(){
+  const {data: projectRows, error: projectsError}=await supabase
+    .from('projects')
+    .select('id, company_id, name, location, status, notes, client')
+    .eq('company_id', state.companyId)
+    .order('created_at',{ascending:false});
+  if(projectsError) throw projectsError;
+
+  const projectIds=(projectRows||[]).map(p=>p.id);
+  if(!projectIds.length){ state.projects=[]; return; }
+
+  const {data: taskRows, error: tasksError}=await supabase
+    .from('tasks')
+    .select(`
+      *,
+      study_types:study_type_id ( id, code, name ),
+      users:tech_id ( id, first_name, last_name )
+    `)
+    .in('project_id', projectIds)
+    .eq('tech_id', state.techId)
+    .order('site',{ascending:true});
+  if(tasksError) throw tasksError;
+
+  const taskIds=(taskRows||[]).map(t=>t.id);
+  const cyclesByTask={};
+  if(taskIds.length){
+    const {data: cycles, error: cyclesError}=await supabase
+      .from('cycles')
+      .select('*')
+      .in('task_id', taskIds)
+      .order('cycle_num',{ascending:false});
+    if(cyclesError) throw cyclesError;
+    (cycles||[]).forEach(function(c){ if(!cyclesByTask[c.task_id]) cyclesByTask[c.task_id]=[]; cyclesByTask[c.task_id].push(c); });
+  }
+
+  state.projects=(projectRows||[]).map(function(p){
+    const tasks=(taskRows||[]).filter(function(t){return t.project_id===p.id}).map(function(row){return normalizeTask(row, cyclesByTask)});
+    const count=taskCounts(tasks);
+    return {
+      id:p.id,
+      name:p.name,
+      location:p.location||'',
+      client:p.client||'',
+      status:p.status||'active',
+      notes:p.notes||'',
+      tasks:tasks,
+      counts:count,
+      pct:pct(count)
+    };
+  }).filter(function(p){return p.tasks.length>0});
+}
+
+async function loadAll(){
+  setLoading(true);
+  try{
+    await loadTech();
+    await touchLastActive();
+    await loadProjectsAndTasks();
+    const btn=document.getElementById('undoBtn');
+    if(btn) btn.style.display='none';
+    renderProjectStats();
+    renderProjectCards();
+    if(!state.projects.length){
+      document.getElementById('projectCards').innerHTML='<div class="tv-empty-state">No assigned jobs right now</div>';
+    }
+  }catch(error){
+    showError('Could not load tech view.', error);
+    document.getElementById('projectCards').innerHTML='<div class="tv-empty-state">Could not load assigned jobs</div>';
+  }finally{ setLoading(false); }
+}
+
+function renderProjectStats(){
+  var active=state.projects.filter(function(p){return p.tasks.some(function(t){return t.status!==STATUS.COMPLETE})});
+  var openTasks=active.reduce(function(sum,p){return sum+p.tasks.filter(function(t){return t.status!==STATUS.COMPLETE}).length},0);
+  var el=document.getElementById('projectStatsBar');
+  if(el) el.textContent=active.length+' jobs need attention · '+openTasks+' open tasks';
+}
+
+function renderProjectCards(){
+  var container=document.getElementById('projectCards');
+  if(!container) return;
+  container.innerHTML=state.projects.map(function(p){
+    var counts=taskCounts(p.tasks);
+    var done=counts.complete;
+    var total=counts.total;
+    var isAllDone=total>0&&done===total;
+    var hasInfield=counts.infield>0;
+    var hasPending=counts.pending>0;
+    var cardClass=isAllDone?'mc-complete':hasInfield?'mc-inprogress':'mc-pending';
+    var leftBadge='',rightBadge='';
+    if(!isAllDone){
+      if(hasInfield){
+        leftBadge='<span class="mc-pill-sm mc-infield-pill"><span class="mc-blink"></span>'+counts.infield+' In Field</span>';
+        if(hasPending) rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';
+      } else if(hasPending){
+        rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';
+      }
+    }
+    var showTopBar=leftBadge||rightBadge;
+    var checkmark=isAllDone?'<div class="mc-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1A5C35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>':'';
+    var pctVal=total>0?Math.round((done/total)*100):0;
+    var html='<div class="mc '+cardClass+(showTopBar?'':' mc-no-topbar')+'" data-action="open-project" data-id="'+p.id+'">';
+    if(showTopBar) html+='<div class="mc-top-bar"><div class="mc-top-left">'+leftBadge+'</div><div class="mc-top-mid"></div><div class="mc-top-right">'+rightBadge+'</div></div>';
+    html+='<div class="mc-name-row"><div class="mc-name">'+escapeHtml(p.name)+'</div>'+checkmark+'</div>';
+    html+='<div class="mc-city">'+escapeHtml(p.location)+'</div>';
+    html+='<div class="mc-divider"></div>';
+    html+='<div class="mc-counter"><span class="mc-done">'+done+'</span><span class="mc-slash">/</span><span class="mc-total">'+total+'</span></div>';
+    html+='<div class="mc-counter-label">Tasks Complete</div>';
+    html+='<button class="mc-pill" data-action="jobsheet" data-id="'+p.id+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Job Sheet</button>';
+    html+='<div class="mc-prog"><div class="mc-prog-fill" style="width:'+pctVal+'%"></div></div>';
+    html+='</div>';
+    return html;
+  }).join('');
+}
+
+function showProjects(){
+  stopDurationTimer();
+  state.currentProject=null;
+  state.activeFilter='all';
+  state.completedCollapsed=false;
+  state.openNoteId=null;
+  state.lastAction=null;
+  document.getElementById('undoBtn').style.display='none';
+  document.getElementById('projectView').classList.add('active');
+  document.getElementById('taskView').classList.remove('active');
+  document.getElementById('projectStatsBar').style.display='';
+  document.getElementById('taskFilterBar').style.display='none';
+  document.getElementById('taskProgressWrap').style.display='none';
+  document.getElementById('tvTopnav').style.display='';
+  document.getElementById('tvTaskHeader').style.display='none';
+  document.getElementById('barProjectInfo').classList.remove('visible');
+  document.getElementById('barProjectName').textContent='';
+  renderProjectStats();
+  renderProjectCards();
+}
+
+function openProject(id){
+  state.currentProject=state.projects.find(function(p){return p.id===id});if(!state.currentProject)return;
+  state.lastAction=null;document.getElementById('undoBtn').style.display='none';
+  document.getElementById('projectView').classList.remove('active');
+  document.getElementById('taskView').classList.add('active');
+  document.getElementById('projectStatsBar').style.display='none';
+  document.getElementById('taskFilterBar').style.display='flex';
+  document.getElementById('taskProgressWrap').style.display='';
+  document.getElementById('tvTopnav').style.display='none';
+  document.getElementById('tvTaskHeader').style.display='flex';
+  document.getElementById('barProjectInfo').classList.add('visible');
+  document.getElementById('barProjectName').textContent=state.currentProject.name;
+  document.getElementById('holdHint').style.display=state.hintDismissed?'none':'flex';
+  state.activeFilter='all';state.completedCollapsed=false;state.openNoteId=null;
+  renderTaskView();startDurationTimer();
+}
+function dismissHint(){state.hintDismissed=true;document.getElementById('holdHint').style.display='none'}
+function renderTaskView(){if(!state.currentProject)return;renderTaskSummary();renderTaskCards()}
+function renderTaskSummary(){
+  var c=taskCounts(state.currentProject.tasks),percentage=pct(c);
+  document.getElementById('filterAllVal').textContent=c.total;
+  document.getElementById('filterPendingVal').textContent=c.pending;
+  document.getElementById('filterInfieldVal').textContent=c.infield;
+  document.getElementById('filterAll').className='tv-filter-pill'+(state.activeFilter==='all'?' active':'');
+  document.getElementById('filterPending').className='tv-filter-pill'+(state.activeFilter===STATUS.PENDING?' active':'');
+  document.getElementById('filterInfield').className='tv-filter-pill'+(state.activeFilter===STATUS.INFIELD?' active':'');
+  document.getElementById('taskProgressFill').style.width=percentage+'%';
+  document.getElementById('taskProgressPct').textContent=percentage+'%';
+}
+function toggleFilter(key){state.activeFilter=state.activeFilter===key?'all':key;if(key==='all')state.activeFilter='all';renderTaskView()}
+function renderTaskCards(){
+  var container=document.getElementById('taskCards'),tasks=state.currentProject.tasks,openTasks,completedTasks;
+  var statusOrder={};statusOrder[STATUS.PENDING]=0;statusOrder[STATUS.INFIELD]=1;statusOrder[STATUS.COMPLETE]=2;
+  if(state.activeFilter==='all'){openTasks=tasks.filter(function(t){return t.status!==STATUS.COMPLETE});completedTasks=tasks.filter(function(t){return t.status===STATUS.COMPLETE})}
+  else if(state.activeFilter===STATUS.COMPLETE){openTasks=[];completedTasks=tasks.filter(function(t){return t.status===STATUS.COMPLETE})}
+  else{openTasks=tasks.filter(function(t){return t.status===state.activeFilter});completedTasks=[]}
+  openTasks.sort(function(a,b){return (statusOrder[a.status]||0)-(statusOrder[b.status]||0) || a.site-b.site});
+  completedTasks.sort(function(a,b){return a.site-b.site});
+  var html='';
+  openTasks.forEach(function(t){html+=taskCardHTML(t,false)});
+  if(completedTasks.length>0){
+    html+='<div class="tv-completed-divider '+(state.completedCollapsed?'collapsed':'')+'" onclick="toggleCompleted()"><div class="tv-completed-divider-line"></div><span class="tv-completed-divider-text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>Complete ('+completedTasks.length+')</span><div class="tv-completed-divider-line"></div></div>';
+    if(!state.completedCollapsed)completedTasks.forEach(function(t){html+=taskCardHTML(t,true)});
+  }
+  if(openTasks.length===0&&completedTasks.length===0)html='<div class="tv-empty-state">No tasks match this filter</div>';
+  container.innerHTML=html;
+  container.querySelectorAll('.toggle-btn').forEach(function(btn){if(btn.dataset.action==='reopen')setupHoldButton(btn,800,promptReopen);else setupHoldButton(btn,600,cycleTaskStatus)});
+}
+function taskCardHTML(t,isComplete){
+  var cc=isComplete?'complete-card':'';
+  var noteClass=t.note?'tv-note-indicator has-note':'tv-note-indicator empty';
+  var noteIconSvg=t.note
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+  var details=[];
+  details.push('<span class="tv-task-site">#'+t.site+'</span>');
+  if(t.type)details.push('<span class="tv-task-type">'+escapeHtml(t.type)+'</span>');
+  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)details.push('<span class="tv-task-duration live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>');
+  else if(t.status===STATUS.COMPLETE&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)details.push('<span class="tv-task-duration">'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>');
+  var detailHTML=details.join('<span class="tv-detail-dot"></span>');
+  var reopenHTML='';
+  var reopenText=t.reopenReason || (t.cycles.length>0 ? (t.cycles[0].reopenReason||'') : '');
+  if(reopenText&&t.status===STATUS.PENDING){reopenHTML='<div class="tv-task-reopen-row"><span class="tv-task-reopen-reason">Reopened: '+escapeHtml(reopenText)+'</span></div>'}
+  var actionHTML='';
+  if(isComplete){
+    actionHTML='<button class="toggle-btn toggle-complete" data-task-id="'+t.id+'" data-action="reopen"><div class="toggle-fill"></div><span class="toggle-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg> Reopen</span></button>';
+  } else {
+    actionHTML='<button class="toggle-btn '+toggleBtnClass(t.status)+'" data-task-id="'+t.id+'"><div class="toggle-fill"></div><span class="toggle-label">'+actionLabel(t.status)+'</span></button>';
+  }
+  var notePanel='<div class="tv-note-panel'+(state.openNoteId===t.id?' open':'')+'" id="note-panel-'+t.id+'"><div class="tv-note-panel-inner"><input class="tv-note-input" maxlength="'+MAX_NOTE+'" placeholder="Add a quick note…" value="'+escapeAttr(t.note||'')+'" oninput="updateCharCount('+JSON.stringify(String(t.id))+',this)" onkeydown="if(event.key===\'Enter\')saveNote('+JSON.stringify(String(t.id))+')"><span class="tv-note-char-count" id="char-count-'+t.id+'">'+(MAX_NOTE-(t.note||'').length)+'</span><button type="button" class="tv-note-save-btn" data-action="save-note" data-task-id="'+t.id+'" onclick="saveNote('+JSON.stringify(String(t.id))+')">Save</button></div></div>';
+  return '<div class="tv-task-card '+cc+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'"><div class="tv-task-inner"><div class="tv-task-content"><div class="tv-task-desc-row"><div class="tv-task-desc">'+escapeHtml(t.desc)+'</div><button type="button" class="'+noteClass+'" data-action="toggle-note" data-task-id="'+t.id+'" onclick="toggleNote('+JSON.stringify(String(t.id))+',event)">'+noteIconSvg+'</button></div><div class="tv-task-divider"></div><div class="tv-task-detail-row">'+detailHTML+'</div>'+reopenHTML+'</div><div class="tv-task-action">'+actionHTML+'</div></div>'+notePanel+'</div>';
+}
+function toggleCompleted(){state.completedCollapsed=!state.completedCollapsed;renderTaskCards()}
+function toggleNote(id,e){e.stopPropagation();state.openNoteId=state.openNoteId===id?null:id;renderTaskCards();if(state.openNoteId===id){var input=document.querySelector('#note-panel-'+String(id)+' .tv-note-input');if(input)setTimeout(function(){input.focus()},80)}}
+function updateCharCount(id,input){var r=MAX_NOTE-input.value.length;var el=document.getElementById('char-count-'+id);if(el){el.textContent=r;el.classList.toggle('warn',r<15)}}
+async function saveNote(id){
+  var input=document.querySelector('#note-panel-'+String(id)+' .tv-note-input');if(!input||!state.currentProject)return;
+  var task=state.currentProject.tasks.find(function(t){return String(t.id)===String(id)});if(!task)return;
+  var note=input.value.trim();
+  const {error}=await supabase.from('tasks').update({notes:note}).eq('id',id);
+  if(error){showError('Could not save note.', error);return;}
+  await touchLastActive();
+  task.note=note;
+  state.openNoteId=null;
+  await refreshCurrentProject(state.currentProject.id);
+  renderTaskView();renderProjectCards();
+  showToast(note ? 'Note saved' : 'Note cleared');
+}
+function setupHoldButton(btn,duration,callback){var timer=null;function start(e){e.preventDefault();btn.classList.add('holding');timer=setTimeout(function(){btn.classList.remove('holding');if(navigator.vibrate)navigator.vibrate(30);callback(btn.dataset.taskId)},duration)}function end(){clearTimeout(timer);btn.classList.remove('holding')}btn.addEventListener('pointerdown',start,{passive:false});btn.addEventListener('pointerup',end);btn.addEventListener('pointerleave',end);btn.addEventListener('pointercancel',end)}
+
+async function getCoords(){
+  if(qp('geo')!=='1') return null;
+  if(!navigator.geolocation) return null;
+  return new Promise(function(resolve){
+    navigator.geolocation.getCurrentPosition(
+      function(pos){resolve({lat:pos.coords.latitude,lng:pos.coords.longitude})},
+      function(){resolve(null)},
+      {enableHighAccuracy:true,timeout:3000,maximumAge:300000}
+    )
+  })
+}
+async function getLatestCycleRow(taskId){
+  const {data,error}=await supabase.from('cycles').select('*').eq('task_id',taskId).order('cycle_num',{ascending:false}).limit(1).maybeSingle();
+  if(error) throw error;
+  return data || null;
+}
+async function getCycleRowById(cycleId){
+  if(!cycleId) return null;
+  const {data,error}=await supabase.from('cycles').select('*').eq('id',cycleId).maybeSingle();
+  if(error) throw error;
+  return data || null;
+}
+async function refreshCurrentProject(projectId){
+  await loadProjectsAndTasks();
+  if(projectId){
+    state.currentProject=state.projects.find(function(p){return String(p.id)===String(projectId)}) || null;
+  }
+}
+function markTaskSuccess(taskId, kind){
+  var row=document.getElementById('task-card-'+String(taskId));
+  if(!row) return;
+  row.classList.add(kind==='complete' ? 'row-success-complete' : 'row-success-infield');
+  setTimeout(function(){ row.classList.add('row-exit'); }, 420);
+}
+function delay(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
+async function cycleTaskStatus(taskId){
+  if(!state.currentProject)return;
+  var projectId=state.currentProject.id;
+  var task=state.currentProject.tasks.find(function(t){return String(t.id)===String(taskId)});if(!task)return;
+  try{
+    if(task.status===STATUS.PENDING){
+      const latest=await getLatestCycleRow(taskId);
+      const nextCycleNum=(latest?.cycle_num||0)+1;
+      const now=new Date().toISOString();
+      const coords=await getCoords();
+      const insertPayload={task_id:taskId,cycle_num:nextCycleNum,deployed_at:now,deployed_by:state.techId};
+      if(coords){insertPayload.deploy_lat=coords.lat;insertPayload.deploy_lng=coords.lng;}
+      const {data:newCycle,error:cycleError}=await supabase.from('cycles').insert([insertPayload]).select('*').single();
+      if(cycleError) throw cycleError;
+      const {error:taskError}=await supabase.from('tasks').update({status:'in-field',reopen_reason:null}).eq('id',taskId);
+      if(taskError) throw taskError;
+      await touchLastActive();
+      state.lastAction={kind:'deploy',taskId:taskId,cycleId:newCycle.id};
+      task.status=STATUS.INFIELD;
+      task.reopenReason='';
+      task.currentCycle={deployedAt:new Date(newCycle.deployed_at),completedAt:null,pickedUpAt:null,cycleId:newCycle.id,cycleNum:newCycle.cycle_num};
+      task.cycles.unshift({id:newCycle.id,cycle_num:newCycle.cycle_num,deployedAt:new Date(newCycle.deployed_at),completedAt:null,pickedUpAt:null,reopenReason:'',reopenedBy:''});
+      document.getElementById('undoBtn').style.display='flex';
+      showStatusConfirm();
+      markTaskSuccess(taskId,'infield');
+      await delay(760);
+      await refreshCurrentProject(projectId);
+    } else if(task.status===STATUS.INFIELD){
+      const inMemoryCycleId=task.currentCycle&&task.currentCycle.cycleId?task.currentCycle.cycleId:null;
+      let latest=inMemoryCycleId ? await getCycleRowById(inMemoryCycleId) : null;
+      if(!latest) latest=await getLatestCycleRow(taskId);
+      if(!latest){
+        await refreshCurrentProject(projectId);
+        task=state.currentProject?state.currentProject.tasks.find(function(t){return String(t.id)===String(taskId)}):null;
+        const refreshedCycleId=task&&task.currentCycle&&task.currentCycle.cycleId?task.currentCycle.cycleId:null;
+        latest=refreshedCycleId ? await getCycleRowById(refreshedCycleId) : await getLatestCycleRow(taskId);
+      }
+      if(!latest) throw new Error('No cycle found for this task.');
+      const now=new Date().toISOString();
+      const coords=await getCoords();
+      const cyclePatch={picked_up_at:now,picked_up_by:state.techId,completed_at:now,completed_by:state.techId};
+      if(coords){cyclePatch.pickup_lat=coords.lat;cyclePatch.pickup_lng=coords.lng;}
+      const {error:cycleError}=await supabase.from('cycles').update(cyclePatch).eq('id', latest.id);
+      if(cycleError) throw cycleError;
+      const {error:taskError}=await supabase.from('tasks').update({status:'complete'}).eq('id',taskId);
+      if(taskError) throw taskError;
+      await touchLastActive();
+      state.lastAction={kind:'complete',taskId:taskId,cycleId:latest.id};
+      task.status=STATUS.COMPLETE;
+      task.currentCycle={deployedAt:latest.deployed_at?new Date(latest.deployed_at):null,completedAt:new Date(now),pickedUpAt:new Date(now),cycleId:latest.id,cycleNum:latest.cycle_num};
+      if(task.cycles.length){task.cycles[0].completedAt=new Date(now);task.cycles[0].pickedUpAt=new Date(now)}
+      document.getElementById('undoBtn').style.display='flex';
+      showStatusConfirm();
+      markTaskSuccess(taskId,'complete');
+      await delay(860);
+      await refreshCurrentProject(projectId);
+    }
+    renderTaskView();renderProjectStats();renderProjectCards();
+  }catch(error){ showError('Could not update task status.', error); }
+}
+async function undoLastAction(){
+  if(!state.lastAction||!state.currentProject)return;
+  var task=state.currentProject.tasks.find(function(t){return String(t.id)===String(state.lastAction.taskId)});
+  if(!task)return;
+  try{
+    if(state.lastAction.kind==='deploy'){
+      const {error:deleteErr}=await supabase.from('cycles').delete().eq('id', state.lastAction.cycleId);
+      if(deleteErr) throw deleteErr;
+      const {error:taskErr}=await supabase.from('tasks').update({status:'pending'}).eq('id', state.lastAction.taskId);
+      if(taskErr) throw taskErr;
+      task.status=STATUS.PENDING;
+      task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+      task.cycles=task.cycles.filter(function(c){return c.id!==state.lastAction.cycleId});
+    } else if(state.lastAction.kind==='complete'){
+      const {error:cycleErr}=await supabase.from('cycles').update({picked_up_at:null,picked_up_by:null,pickup_lat:null,pickup_lng:null,completed_at:null,completed_by:null}).eq('id', state.lastAction.cycleId);
+      if(cycleErr) throw cycleErr;
+      const {error:taskErr}=await supabase.from('tasks').update({status:'in-field'}).eq('id', state.lastAction.taskId);
+      if(taskErr) throw taskErr;
+      task.status=STATUS.INFIELD;
+      task.currentCycle.completedAt=null; task.currentCycle.pickedUpAt=null;
+      if(task.cycles.length){task.cycles[0].completedAt=null;task.cycles[0].pickedUpAt=null;}
+    }
+    await refreshCurrentProject(state.currentProject.id);
+    state.lastAction=null;
+    document.getElementById('undoBtn').style.display='none';
+    showUndoConfirm();
+    renderTaskView();renderProjectStats();renderProjectCards();
+  }catch(error){ showError('Could not undo the last action.', error); }
+}
+function promptReopen(taskId){
+  var task=state.currentProject.tasks.find(function(t){return String(t.id)===String(taskId)});if(!task)return;
+  state.reopenTargetId=taskId;
+  document.getElementById('reopenTaskName').textContent='"'+task.desc+'"';
+  document.getElementById('reopenReason').value='';
+  document.getElementById('reopenOverlay').classList.add('visible');
+  setTimeout(function(){document.getElementById('reopenReason').focus()},200);
+}
+function closeReopenModal(){document.getElementById('reopenOverlay').classList.remove('visible');state.reopenTargetId=null}
+async function confirmReopen(){
+  if(state.reopenTargetId===null||!state.currentProject)return;
+  var task=state.currentProject.tasks.find(function(t){return String(t.id)===String(state.reopenTargetId)});if(!task)return;
+  var reason=document.getElementById('reopenReason').value.trim()||'Reopened by tech';
+  try{
+    const {error}=await supabase.from('tasks').update({status:'pending',reopen_reason:reason}).eq('id', state.reopenTargetId);
+    if(error) throw error;
+    await touchLastActive();
+    task.status=STATUS.PENDING;
+    task.reopenReason=reason;
+    task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+    await refreshCurrentProject(state.currentProject.id);
+    closeReopenModal();renderTaskView();renderProjectStats();renderProjectCards();
+  }catch(error){ showError('Could not reopen task.', error); }
+}
+document.getElementById('reopenOverlay').addEventListener('click',function(e){if(e.target===this)closeReopenModal()});
+function openJobSheet(projectId){
+  var p=state.projects.find(function(x){return x.id===projectId});if(!p)return;
+  var tks=p.tasks||[];
+  var pending=tks.filter(function(t){return t.status===STATUS.PENDING});
+  var infield=tks.filter(function(t){return t.status===STATUS.INFIELD});
+  var complete=tks.filter(function(t){return t.status===STATUS.COMPLETE});
+  var now=new Date();
+  var dateStr=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
+
+  // project header
+  var html='<div class="js-project">';
+  html+='<div class="js-project-name">'+escapeHtml(p.name)+'</div>';
+  var meta=[p.client||'',p.location||''].filter(Boolean).join(' · ');
+  if(meta) html+='<div class="js-project-meta">'+escapeHtml(meta)+'</div>';
+  html+='</div>';
+
+  // instructions
+  if(p.notes){
+    html+='<div class="js-instructions-card">';
+    html+='<div class="js-instructions-header"><span class="js-instructions-title">Instructions</span></div>';
+    html+='<div class="js-instructions-body">'+escapeHtml(p.notes)+'</div>';
+    html+='</div>';
+  }
+
+  function renderGroup(title,list,headerClass,dotClass){
+    if(list.length===0)return'';
+    var s='<div class="js-section">';
+    s+='<div class="js-section-header '+headerClass+'">';
+    s+='<div class="js-section-left">';
+    s+='<span class="js-section-dot '+dotClass+'"></span>';
+    s+='<span class="js-section-label">'+title+'</span>';
+    s+='</div>';
+    s+='<span class="js-section-count">'+list.length+'</span>';
+    s+='</div>';
+    s+='<div class="js-site-list">';
+    list.forEach(function(t){
+      var ini=getInitials(t.tech||state.techName);
+      s+='<div class="js-site">';
+      s+='<div class="js-site-header">';
+      s+='<span class="js-site-num">#'+t.site+'</span>';
+      s+='<span class="js-site-desc">'+escapeHtml(t.desc)+'</span>';
+      s+='<div class="js-site-tags">';
+      if(t.type) s+='<span class="js-site-tag">'+escapeHtml(t.type)+'</span>';
+      if(ini)    s+='<span class="js-site-tech-init">'+ini+'</span>';
+      s+='</div></div>';
+      var times=[];
+      if(t.currentCycle&&t.currentCycle.deployedAt) times.push('Set: '+fmtTimeTV(t.currentCycle.deployedAt));
+      if(t.currentCycle&&t.currentCycle.completedAt) times.push('Pickup: '+fmtTimeTV(t.currentCycle.completedAt));
+      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) times.push('Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime()));
+      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt) times.push('Duration: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime()));
+      if(times.length) s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
+      if(t.reopenReason) s+='<div class="js-site-note">Reopened: '+escapeHtml(t.reopenReason)+'</div>';
+      if(t.note) s+='<div class="js-site-note">'+escapeHtml(t.note)+'</div>';
+      s+='</div>';
+    });
+    s+='</div></div>';
+    return s;
+  }
+
+  html+=renderGroup('Pending',  pending,  'js-section-header-pending',  'js-section-dot-pending');
+  html+=renderGroup('In Field', infield,  'js-section-header-infield',  'js-section-dot-infield');
+  html+=renderGroup('Complete', complete, 'js-section-header-complete', 'js-section-dot-complete');
+
+  // footer
+  html+='<div class="js-footer">Report generated '+dateStr+' · <span class="js-footer-brand">The Count Company</span></div>';
+
+  document.getElementById('printContent').innerHTML=html;
+  document.getElementById('printOverlay').classList.add('visible');
+  document.body.style.overflow='hidden';
+}
+function closePrintView(){document.getElementById('printOverlay').classList.remove('visible');document.body.style.overflow=''}
+
+
+document.getElementById('projectCards').addEventListener('click',function(e){
+  var actionEl=e.target.closest('[data-action]');
+  if(!actionEl) return;
+  var action=actionEl.dataset.action;
+  var id=actionEl.dataset.id;
+  if(action==='jobsheet'){
+    e.stopPropagation();
+    return openJobSheet(id);
+  }
+  if(action==='open-project'){
+    return openProject(id);
+  }
+});
+
+document.addEventListener('click',function(e){
+  var noteBtn=e.target.closest('[data-action="toggle-note"]');
+  if(noteBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    toggleNote(noteBtn.dataset.taskId,e);
+    return;
+  }
+  var saveBtn=e.target.closest('[data-action="save-note"]');
+  if(saveBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    saveNote(saveBtn.dataset.taskId);
+  }
+});
+
+document.getElementById('closeJobSheetBtn')?.addEventListener('click', closePrintView);
+document.getElementById('printJobSheetBtn')?.addEventListener('click', function(){ window.print(); });
+
+Object.assign(window,{showProjects,openProject,dismissHint,toggleFilter,toggleCompleted,toggleNote,updateCharCount,saveNote,undoLastAction,promptReopen,closeReopenModal,confirmReopen,openJobSheet,closePrintView,cycleTaskStatus});
+loadAll();
+</script>
+</body>
+</html>
