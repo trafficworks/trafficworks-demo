@@ -7,8 +7,12 @@
   inset: 0;
   background: rgba(20, 25, 30, 0.55);
   z-index: 500;
-  flex-direction: column;
-  overflow: hidden;
+
+  display: flex;
+  align-items: center;   /* 👈 THIS */
+  justify-content: center; /* 👈 THIS */
+
+  overflow: auto;
 }
 
 .jobsheet-overlay.visible { display: flex; }
