@@ -8,14 +8,15 @@
   background: rgba(20, 25, 30, 0.55);
   z-index: 500;
 
-  display: flex;
-  align-items: center;   /* 👈 THIS */
-  justify-content: center; /* 👈 THIS */
+  align-items: center;
+  justify-content: center;
 
   overflow: auto;
 }
 
-.jobsheet-overlay.visible { display: flex; }
+.jobsheet-overlay.visible {
+  display: flex;
+}
 
 .jobsheet-container {
   background: #F4F3F0;
