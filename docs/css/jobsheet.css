@@ -264,6 +264,19 @@
    DESKTOP DOCUMENT WIDTH
    =============================== */
 
+.jobsheet-container {
+  width: 100%;
+  max-width: 820px;
+  margin: 40px auto;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+}
+
+/* overlay backdrop */
+.jobsheet-overlay {
+  background: rgba(0,0,0,0.5);
+}
+
 /* print stays full width */
 @media print {
   .jobsheet-container {
