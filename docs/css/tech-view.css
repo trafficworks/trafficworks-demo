@@ -410,7 +410,7 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 /* ============================================================
    JOB SHEET OVERLAY
    ============================================================ */
-.jobsheet-overlay { display:none; position:fixed; inset:0; background:#F4F3F0; z-index:500; flex-direction:column; overflow:hidden; }
+.jobsheet-overlay { display:none; position:fixed; inset:0; background:rgba(0, 0, 0, 0.42); z-index:500; flex-direction:column; overflow:hidden; }
 .jobsheet-overlay.visible { display:flex; }
 
 .jobsheet-header { display:flex; align-items:center; padding:14px 16px; background:#F4F3F0; border-bottom:1px solid #DEDBD5; gap:12px; flex-shrink:0; }
@@ -419,12 +419,9 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 .jobsheet-title svg { color:#3AA66A; flex-shrink:0; }
 .jobsheet-download { display:inline-flex; align-items:center; gap:6px; padding:9px 16px; background:#1A1D21; color:#fff; border:none; border-radius:100px; font-family:inherit; font-size:12.5px; font-weight:700; letter-spacing:-0.01em; cursor:pointer; flex-shrink:0; }
 
-.jobsheet-body { flex:1; overflow-y:auto; padding:20px 14px 40px; -webkit-overflow-scrolling:touch; }
-@media (min-width: 900px) {
-  .jobsheet-overlay { background: rgba(26,29,33,0.28); }
-  .jobsheet-body { padding: 26px 24px 48px; }
-  .jobsheet-body > * { width:100%; max-width:760px; margin-left:auto; margin-right:auto; }
-}
+.jobsheet-body { flex:1; overflow-y:auto; padding:20px 14px 40px; -webkit-overflow-scrolling:touch; display:flex; flex-direction:column; align-items:center; }
+.jobsheet-body > * { width:100%; max-width:760px; }
+@media (max-width: 840px) { .jobsheet-body > * { max-width:none; } }
 
 /* project header */
 .jobsheet-overlay .js-project { margin-bottom:18px; }
@@ -470,7 +467,6 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 .jobsheet-overlay .js-site-tag { font-size:10px; font-weight:700; letter-spacing:0.04em; padding:3px 7px; border-radius:6px; background:#ECEAE4; color:#4A4F55; }
 .jobsheet-overlay .js-site-tech-init { font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; background:#E8E6E0; color:#6B7178; letter-spacing:0.02em; }
 .jobsheet-overlay .js-site-times { font-size:11.5px; color:#7D838A; margin-top:3px; line-height:1.4; }
-.jobsheet-overlay .js-site-duration { font-size:11.5px; color:#7D838A; margin-top:2px; line-height:1.4; }
 .jobsheet-overlay .js-site-note { font-size:12px; font-weight:600; color:#4A4F55; margin-top:4px; font-style:italic; }
 
 /* footer */
@@ -482,8 +478,8 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
   body > * { display:none !important; }
   .jobsheet-overlay { display:block !important; position:static !important; overflow:visible !important; background:#fff !important; height:auto !important; z-index:auto !important; }
   .jobsheet-header { display:none !important; }
-  .jobsheet-body { display:block !important; overflow:visible !important; padding:20px !important; }
-  .jobsheet-body > * { max-width:none !important; margin-left:0 !important; margin-right:0 !important; }
+  .jobsheet-body { display:block !important; overflow:visible !important; padding:20px !important; display:block !important; }
+  .jobsheet-body > * { max-width:100% !important; }
   .js-section-header-pending, .js-section-header-infield, .js-section-header-complete, .js-instructions-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 }
 
