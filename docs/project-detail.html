@@ -844,7 +844,7 @@ function openJobSheet() {
   const dateStr = (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear()
   html += '<div class="js-footer">Report generated ' + dateStr + ' · <span class="js-footer-brand">The Count Company</span></div>'
 
-  document.getElementById('jobsheetBody').innerHTML = html
+  document.getElementById('jobsheetBody').innerHTML = '<div class="jobsheet-container">' + html + '</div>'
   openModal('jobsheetOverlay')
   document.body.style.overflow = 'hidden'
 }
