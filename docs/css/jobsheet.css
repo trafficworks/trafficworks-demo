@@ -337,22 +337,39 @@
   box-shadow: none !important;
 }
    
-/* ===== FINAL FORCE FIX (PROJECTS + MOBILE) ===== */
+/* ===== HARD OVERLAY FIX ===== */
 
 .jobsheet-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+
   background: #F4F3F0 !important;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999 !important;
 }
 
-.jobsheet-body {
-  background: #F4F3F0 !important;
+/* when visible */
+.jobsheet-overlay.visible {
+  display: flex !important;
 }
 
+/* container (the sheet itself) */
 .jobsheet-container {
+  width: 100%;
+  max-width: 820px;
+  margin: 20px;
   background: #F4F3F0 !important;
+
   box-shadow: none !important;
 }
 
-/* kill inner card shadows (mobile culprit) */
+/* kill ALL inner shadows */
 .js-instructions-card,
 .js-section {
   box-shadow: none !important;
