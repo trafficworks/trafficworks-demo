@@ -4,61 +4,378 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Count Company — Team</title>
-
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-
 <style>
-.kebab-menu.open { display:block; }
+/* ══════════════════════════════════════
+   TEAM PAGE — MOBILE CARD SYSTEM
+   Mirrors projects.html design tokens
+   ══════════════════════════════════════ */
+.mc-topnav { display: none; }
+
+@media (max-width: 768px) {
+
+  /* ── hide desktop chrome ── */
+  .container > .nav,
+  .container > .nav-line,
+  .mobile-nav-menu,
+  .container.main > .page-header,
+  .team-section { display: none !important; }
+
+  .mobile-only { display: block !important; }
+
+  /* ── top nav: same as projects ── */
+  .mc-topnav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 28px 0 20px;
+  }
+  .mc-topnav a {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-3);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    transition: color 0.15s;
+  }
+  .mc-topnav a.active { color: var(--text); }
+  .mc-topnav-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+
+  /* ── section header row ── */
+  .mt-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px 12px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .mt-section-spacer { margin-top: 24px; }
+
+  .mt-add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-2);
+    background: none;
+    border: 1.5px solid var(--line);
+    border-radius: 100px;
+    padding: 5px 13px;
+    font-family: var(--font);
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    transition: background 0.15s;
+  }
+  .mt-add-btn:active { background: var(--line-light); }
+
+  /* ── card list ── */
+  .mt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 6px 8px;
+  }
+
+  /* ── empty state card ── */
+  .mt-empty-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .mt-empty-text {
+    font-size: 14px;
+    color: var(--text-3);
+    font-weight: 500;
+  }
+  .mt-empty-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px;
+    background: var(--bg);
+    border: none;
+    border-radius: 100px;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-2);
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    transition: background 0.15s;
+  }
+  .mt-empty-btn:active { background: var(--line-light); }
+
+  /* ── base card — matches project card radius/padding ── */
+  .mt-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 16px 18px 14px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+  }
+  .mt-card-inactive { opacity: 0.5; }
+
+  /* ── top row: avatar + name/phone + status pill ── */
+  .mt-top-row {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 12px;
+  }
+
+  /* avatar */
+  .mt-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+  }
+  .mt-card-manager .mt-avatar { background: #D4EDDF; color: #1A5C35; }
+  .mt-card-tech    .mt-avatar { background: #D4EDDF; color: #1A5C35; }
+
+  /* name + phone block */
+  .mt-identity { flex: 1; min-width: 0; }
+  .mt-name {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+  .mt-phone {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-top: 2px;
+  }
+  .mt-last-active {
+    font-size: 11.5px;
+    color: var(--text-3);
+    margin-top: 1px;
+    opacity: 0.75;
+  }
+
+  /* status pill — right of avatar row */
+  .mt-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    border-radius: 100px;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+  .mt-status-pill-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .mt-status-active {
+    background: rgba(26,92,53,0.13);
+    color: #1A5C35;
+  }
+  .mt-status-active .mt-status-pill-dot { background: #3AA66A; }
+  .mt-status-inactive {
+    background: rgba(0,0,0,0.06);
+    color: var(--text-3);
+  }
+  .mt-status-inactive .mt-status-pill-dot { background: var(--line); }
+
+  /* ── divider ── */
+  .mt-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--line-light);
+    margin-bottom: 12px;
+  }
+
+  /* ── role pill (manager role label) ── */
+  .mt-role-pill {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 12px;
+  }
+
+  /* ── PIN row ── */
+  .mt-pin-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mt-pin-label {
+    font-size: 13.5px;
+    color: var(--text-2);
+    letter-spacing: -0.01em;
+  }
+  .mt-pin-label strong {
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+  }
+  .mt-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-2);
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    border-radius: 100px;
+    padding: 5px 12px;
+    font-family: var(--font);
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    transition: background 0.15s;
+  }
+  .mt-copy-btn:active { background: var(--line); }
+
+  /* kebab — top right of card */
+  .mt-kebab {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: none; border: none;
+    color: var(--text-3);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+  }
+  .mt-kebab svg { width: 16px; height: 16px; }
+}
 </style>
 </head>
-
 <body>
+
+<div class="container">
+  <div class="nav">
+    <a class="nav-brand" href="projects.html">
+      <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <span class="nav-name">The Count Company</span>
+    </a>
+    <div class="nav-links">
+      <a href="projects.html">Projects</a>
+      <a href="team.html" class="active">Team</a>
+      <a href="archive.html">Archive</a>
+    </div>
+    <button class="m-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+  <div class="nav-line"></div>
+</div>
+
+<div class="mobile-nav-menu" id="mobileNavMenu">
+  <a href="projects.html">Projects</a>
+  <a class="active" href="team.html">Team</a>
+  <a href="archive.html">Archive</a>
+</div>
+
+<!-- Mobile-only top nav -->
+<div class="mc-topnav">
+  <a href="projects.html">Projects</a>
+  <span class="mc-topnav-dot"></span>
+  <a href="team.html" class="active">Team</a>
+</div>
 
 <div class="container main">
 
-  <!-- MANAGERS -->
+  <div class="page-header">
+    <span class="page-title">Team</span>
+  </div>
+
+  <!-- MOBILE -->
+  <div class="mobile-only" id="mobileTeam"></div>
+
+  <!-- DESKTOP MANAGERS -->
   <div class="team-section">
     <div class="section-header">
-      <span class="section-label">Managers <span id="managerCount">0</span></span>
-      <button class="btn-action" onclick="openAddModal('manager')">+ Add Manager</button>
+      <span class="section-label" style="padding-top:0">Managers <span class="count" id="managerCount">0</span></span>
+      <button class="btn-action" onclick="openAddModal(\'manager\')"><span class="plus">+</span> Add Manager</button>
     </div>
     <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
+      <thead><tr><th style="width:24%">Name</th><th style="width:24%">Email</th><th style="width:18%">Phone</th><th style="width:12%">Role</th><th style="width:12%">Status</th><th style="width:4%"></th></tr></thead>
       <tbody id="managerTableBody"></tbody>
     </table>
   </div>
 
-  <!-- TECHS -->
+  <!-- DESKTOP TECHS -->
   <div class="team-section">
     <div class="section-header">
-      <span class="section-label">Field Technicians <span id="techCount">0</span></span>
-      <button class="btn-action" onclick="openAddModal('tech')">+ Add Tech</button>
+      <span class="section-label" style="padding-top:0">Field Technicians <span class="count" id="techCount">0</span></span>
+      <button class="btn-action" onclick="openAddModal(\'tech\')"><span class="plus">+</span> Add Tech</button>
     </div>
     <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>PIN</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
+      <thead><tr><th style="width:24%">Name</th><th style="width:24%">Email</th><th style="width:18%">Phone</th><th style="width:12%">PIN</th><th style="width:12%">Status</th><th style="width:4%"></th></tr></thead>
       <tbody id="techTableBody"></tbody>
     </table>
   </div>
 
 </div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="addModal"><div class="modal">
+  <div class="modal-title" id="addModalTitle">Add Team Member</div>
+  <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="addFirst" placeholder="First name"><div class="form-error" id="errFirst">First name is required</div></div>
+  <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="addLast" placeholder="Last name"><div class="form-error" id="errLast">Last name is required</div></div>
+  <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="addEmail" type="email" placeholder="email@example.com"><div class="form-error" id="errEmail">Enter a valid email address</div></div>
+  <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="addPhone" type="tel" placeholder="(555) 123-4567" maxlength="14"><div class="form-error" id="errPhone">Enter a complete 10-digit phone number</div></div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeAddModal()">Cancel</button><button class="btn-solid" id="addSubmitBtn" onclick="addMember()">Add Member</button></div>
+</div></div>
+
+<!-- DELETE MODAL -->
+<div class="modal-overlay" id="deleteModal"><div class="modal">
+  <div class="modal-title">Remove Team Member</div>
+  <div class="modal-body" id="deleteModalBody">Are you sure?</div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeDeleteModal()">Cancel</button><button class="btn-danger" id="confirmDeleteBtn">Remove</button></div>
+</div></div>
+
+<!-- PIN MODAL -->
+<div class="modal-overlay" id="pinModal"><div class="modal pin-modal">
+  <div class="pin-modal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <div class="modal-title" id="pinModalTitle">Tech Added</div>
+  <div class="pin-modal-subtitle" id="pinModalName">Field Technician</div>
+  <div class="pin-modal-label">Their PIN</div>
+  <div class="pin-modal-display" id="pinModalPin">318472</div>
+  <div class="pin-modal-copy"><button class="btn-ghost" onclick="copyPin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy PIN</button></div>
+  <div class="modal-actions" style="justify-content:center"><button class="btn-solid" onclick="closePinModal()">Done</button></div>
+  <div class="pin-modal-footnote">Share this PIN with the tech — they'll use it to log into the mobile field view.</div>
+</div></div>
+
+<div class="toast" id="toast"></div>
 
 <script type="module">
 import { supabase } from './js/supabase.js'
@@ -67,116 +384,615 @@ const COMPANY_ID = '4f365a63-e2d8-45ea-960a-67d35b5f95e1'
 
 let managers = []
 let techs = []
+let addType = 'tech'
+let editingId = null
+let deleteTarget = null
+let deleteType = null
+let openKebab = null
 
-function fullName(p) {
-  return [p.first_name, p.last_name].filter(Boolean).join(' ')
+function generatePinValue() {
+  let pin = ''
+  for (let i = 0; i < 6; i++) pin += Math.floor(Math.random() * 10)
+  return pin
+}
+
+async function generateUniquePin() {
+  for (let i = 0; i < 25; i++) {
+    const pin = generatePinValue()
+    const { data, error } = await supabase
+      .from('users')
+      .select('id')
+      .eq('company_id', COMPANY_ID)
+      .eq('pin', pin)
+      .limit(1)
+
+    if (error) throw error
+    if (!data || data.length === 0) return pin
+  }
+  throw new Error('Could not generate unique PIN')
+}
+
+function formatPhone(v) {
+  const d = String(v || '').replace(/\D/g, '').slice(0, 10)
+  if (!d.length) return ''
+  if (d.length <= 3) return '(' + d
+  if (d.length <= 6) return '(' + d.slice(0, 3) + ') ' + d.slice(3)
+  return '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6)
+}
+
+document.addEventListener('input', function(e) {
+  if (e.target.id === 'addPhone') {
+    const p = e.target.selectionStart || 0
+    const before = e.target.value.length
+    e.target.value = formatPhone(e.target.value)
+    const delta = e.target.value.length - before
+    e.target.selectionStart = e.target.selectionEnd = Math.max(0, p + delta)
+  }
+
+  if (e.target.classList.contains('form-input') && e.target.classList.contains('error')) {
+    e.target.classList.remove('error')
+    const err = document.getElementById('err' + e.target.id.replace('add', ''))
+    if (err) err.classList.remove('show')
+  }
+})
+
+function fullName(person) {
+  return [person.first_name, person.last_name].filter(Boolean).join(' ').trim()
+}
+
+function displayRole(role) {
+  if (!role) return ''
+  if (role === 'owner') return 'Owner'
+  if (role === 'admin') return 'Admin'
+  return role.charAt(0).toUpperCase() + role.slice(1)
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
 }
 
 async function loadUsers() {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('users')
     .select('*')
     .eq('company_id', COMPANY_ID)
+    .order('created_at', { ascending: false })
 
-  managers = data.filter(u => u.role !== 'tech')
-  techs = data.filter(u => u.role === 'tech')
+  if (error) {
+    console.error('Error loading users:', error)
+    alert('Error loading team.')
+    return
+  }
 
+  managers = (data || []).filter(u => ['owner', 'admin', 'manager'].includes(u.role))
+  techs = (data || []).filter(u => u.role === 'tech')
   render()
 }
 
 function render() {
   renderManagers()
   renderTechs()
+  renderMobile()
 }
 
 function renderManagers() {
   document.getElementById('managerCount').textContent = managers.length
 
-  document.getElementById('managerTableBody').innerHTML = managers.map(m => `
-    <tr>
-      <td>${fullName(m)}</td>
-      <td>${m.email || ''}</td>
-      <td>${m.phone || ''}</td>
-      <td>${m.status}</td>
-      <td class="kebab-cell">
-        <button class="kebab" onclick="toggleKebab('m','${m.id}',event)">•••</button>
-        <div class="kebab-menu" id="kebab-m-${m.id}">
-          <button class="kebab-menu-item" onclick="editMember('manager','${m.id}')">Edit</button>
-        </div>
-      </td>
-    </tr>
-  `).join('')
+  document.getElementById('managerTableBody').innerHTML = managers.map(function(m) {
+    const locked = m.role === 'owner' || m.role === 'admin'
+    const kebab = locked
+      ? '<span class="member-locked">Account owner</span>'
+      : '<button class="kebab" onclick="toggleKebab(\'m\',' + '\'' + m.id + '\'' + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>' +
+        '<div class="kebab-menu" id="kebab-m-' + m.id + '">' +
+        '<button class="kebab-menu-item" onclick="editMember(\'manager\',' + '\'' + m.id + '\'' + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
+        '<button class="kebab-menu-item danger" onclick="promptDelete(\'manager\',' + '\'' + m.id + '\'' + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+        '</div>'
+
+    return '<tr>' +
+      '<td><div class="cell-name">' + escapeHtml(fullName(m)) + '</div></td>' +
+      '<td><span class="cell-secondary">' + escapeHtml(m.email || '—') + '</span></td>' +
+      '<td><span class="cell-secondary">' + escapeHtml(formatPhone(m.phone || '')) + '</span></td>' +
+      '<td><span class="role-pill role-pill-' + escapeHtml(m.role || 'manager') + '">' + escapeHtml(displayRole(m.role || 'manager')) + '</span></td>' +
+      '<td><span class="status-dot' + (m.status !== 'active' ? ' inactive' : '') + '">' + escapeHtml(displayRole(m.status || 'inactive')) + '</span></td>' +
+      '<td class="r kebab-cell">' + kebab + '</td>' +
+      '</tr>'
+  }).join('')
 }
 
 function renderTechs() {
   document.getElementById('techCount').textContent = techs.length
 
-  document.getElementById('techTableBody').innerHTML = techs.map(t => `
-    <tr>
-      <td>${fullName(t)}</td>
-      <td>${t.email || ''}</td>
-      <td>${t.phone || ''}</td>
-      <td>${t.pin || ''}</td>
-      <td>${t.status}</td>
-      <td class="kebab-cell">
-        <button class="kebab" onclick="toggleKebab('t','${t.id}',event)">•••</button>
-        <div class="kebab-menu" id="kebab-t-${t.id}">
-          <button class="kebab-menu-item" onclick="toggleStatus('${t.id}')">
-            ${t.status === 'active' ? 'Deactivate' : 'Activate'}
-          </button>
-        </div>
-      </td>
-    </tr>
-  `).join('')
+  document.getElementById('techTableBody').innerHTML = techs.map(function(t) {
+    return '<tr>' +
+      '<td><div class="cell-name">' + escapeHtml(fullName(t)) + '</div></td>' +
+      '<td><span class="cell-secondary">' + escapeHtml(t.email || '—') + '</span></td>' +
+      '<td><span class="cell-secondary">' + escapeHtml(formatPhone(t.phone || '')) + '</span></td>' +
+      '<td><span class="cell-pin">' + escapeHtml(t.pin || '—') + '</span></td>' +
+      '<td><span class="status-dot' + (t.status !== 'active' ? ' inactive' : '') + '">' + escapeHtml(displayRole(t.status || 'inactive')) + '</span></td>' +
+      '<td class="r kebab-cell">' +
+      '<button class="kebab" onclick="toggleKebab(\'t\',' + '\'' + t.id + '\'' + ',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>' +
+      '<div class="kebab-menu" id="kebab-t-' + t.id + '">' +
+      '<button class="kebab-menu-item" onclick="editMember(\'tech\',' + '\'' + t.id + '\'' + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>' +
+      '<button class="kebab-menu-item" onclick="toggleStatus(' + '\'' + t.id + '\'' + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>' + (t.status === 'active' ? 'Deactivate' : 'Activate') + '</button>' +
+      '<button class="kebab-menu-item danger" onclick="promptDelete(\'tech\',' + '\'' + t.id + '\'' + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>' +
+      '</div>' +
+      '</td>' +
+      '</tr>'
+  }).join('')
 }
 
+function renderMobile() {
+  const el = document.getElementById('mobileTeam')
+  if (!el) return
 
-// ===============================
-// FIX: KEBAB MENU
-// ===============================
-window.toggleKebab = function(type, id, e) {
+  function initials(person) {
+    const f = (person.first_name || '')[0] || ''
+    const l = (person.last_name || '')[0] || ''
+    return (f + l).toUpperCase() || '?'
+  }
+
+  function timeAgo(dateStr) {
+    if (!dateStr) return ''
+    const diff = Date.now() - new Date(dateStr).getTime()
+    const mins = Math.floor(diff / 60000)
+    if (mins < 1)   return 'just now'
+    if (mins < 60)  return mins + 'm ago'
+    const hrs = Math.floor(mins / 60)
+    if (hrs < 24)   return hrs + 'h ago'
+    if (hrs < 48)   return 'yesterday'
+    return Math.floor(hrs / 24) + 'd ago'
+  }
+
+  function copyTechPin(pin) {
+    navigator.clipboard.writeText(pin).then(function() {
+      showToast('PIN copied')
+    }).catch(function() {
+      showToast('PIN: ' + pin)
+    })
+  }
+  window.copyTechPin = copyTechPin
+
+  function kebabMenu(prefix, id, isTech, isActive) {
+    const type = isTech ? 'tech' : 'manager'
+    const editBtn = '<button class="kebab-menu-item" onclick="editMember(\''+type+'\',\''+id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'
+    const toggleBtn = isTech ? '<button class="kebab-menu-item" onclick="toggleStatus(\''+id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>'+(isActive ? 'Deactivate' : 'Activate')+'</button>' : ''
+    const removeBtn = '<button class="kebab-menu-item danger" onclick="promptDelete(\''+type+'\',\''+id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Remove</button>'
+    const triggerBtn = '<button class="mt-kebab" onclick="toggleKebab(\''+prefix+'\',\''+id+'\',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>'
+    const menuDiv = '<div class="kebab-menu" id="kebab-'+prefix+'-'+id+'">'+editBtn+toggleBtn+removeBtn+'</div>'
+    return triggerBtn + menuDiv
+  }
+
+  function managerCard(m) {
+    const locked = m.role === 'owner' || m.role === 'admin'
+    const isActive = m.status === 'active'
+    const statusClass = isActive ? 'mt-status-active' : 'mt-status-inactive'
+    const statusLabel = isActive ? 'Active' : 'Offline'
+    const lastActive = m.last_active_at ? 'Last active: ' + timeAgo(m.last_active_at) : ''
+
+    return '<div class="mt-card mt-card-manager' + (!isActive ? ' mt-card-inactive' : '') + '">' +
+      (!locked ? kebabMenu('m', m.id, false, isActive) : '') +
+      '<div class="mt-top-row">' +
+        '<div class="mt-avatar">' + escapeHtml(initials(m)) + '</div>' +
+        '<div class="mt-identity">' +
+          '<div class="mt-name">' + escapeHtml(fullName(m)) + '</div>' +
+          '<div class="mt-phone">' + escapeHtml(formatPhone(m.phone || '')) + '</div>' +
+          (lastActive ? '<div class="mt-last-active">' + lastActive + '</div>' : '') +
+        '</div>' +
+        '<span class="mt-status-pill ' + statusClass + '"><span class="mt-status-pill-dot"></span>' + statusLabel + '</span>' +
+      '</div>' +
+      '<div class="mt-divider"></div>' +
+      '<div class="mt-role-pill">' + escapeHtml(displayRole(m.role || 'manager')) + '</div>' +
+      '</div>'
+  }
+
+  function techCard(t) {
+    const isActive = t.status === 'active'
+    const statusClass = isActive ? 'mt-status-active' : 'mt-status-inactive'
+    const statusLabel = isActive ? 'Active' : 'Offline'
+    const lastActive = t.last_active_at ? 'Last active: ' + timeAgo(t.last_active_at) : ''
+    const pin = escapeHtml(t.pin || '—')
+
+    return '<div class="mt-card mt-card-tech' + (!isActive ? ' mt-card-inactive' : '') + '">' +
+      kebabMenu('t', t.id, true, isActive) +
+      '<div class="mt-top-row">' +
+        '<div class="mt-avatar">' + escapeHtml(initials(t)) + '</div>' +
+        '<div class="mt-identity">' +
+          '<div class="mt-name">' + escapeHtml(fullName(t)) + '</div>' +
+          '<div class="mt-phone">' + escapeHtml(formatPhone(t.phone || '')) + '</div>' +
+          (lastActive ? '<div class="mt-last-active">' + lastActive + '</div>' : '') +
+        '</div>' +
+        '<span class="mt-status-pill ' + statusClass + '"><span class="mt-status-pill-dot"></span>' + statusLabel + '</span>' +
+      '</div>' +
+      '<div class="mt-divider"></div>' +
+      '<div class="mt-pin-row">' +
+        '<span class="mt-pin-label">PIN: <strong>' + pin + '</strong></span>' +
+        '<button class="mt-copy-btn" onclick="copyTechPin(\'' + (t.pin || '') + '\')">' +
+          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+          'Copy' +
+        '</button>' +
+      '</div>' +
+      '</div>'
+  }
+
+  let html = ''
+
+  // Managers section
+  html += '<div class="mt-section"><span>Managers</span><button class="mt-add-btn" onclick="openAddModal(\'manager\')">+ Add Manager</button></div>'
+  if (managers.length === 0) {
+    html += '<div class="mt-list"><div class="mt-empty-card">' +
+      '<span class="mt-empty-text">No managers yet</span>' +
+      '<button class="mt-empty-btn" onclick="openAddModal(\'manager\')">' +
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+        'Add Manager' +
+      '</button>' +
+      '</div></div>'
+  } else {
+    html += '<div class="mt-list">' + managers.map(managerCard).join('') + '</div>'
+  }
+
+  // Technicians section
+  html += '<div class="mt-section mt-section-spacer"><span>Technicians</span><button class="mt-add-btn" onclick="openAddModal(\'tech\')">+ Add Tech</button></div>'
+  if (techs.length === 0) {
+    html += '<div class="mt-list"><div class="mt-empty-card">' +
+      '<span class="mt-empty-text">No technicians yet</span>' +
+      '<button class="mt-empty-btn" onclick="openAddModal(\'tech\')">' +
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+        'Add Tech' +
+      '</button>' +
+      '</div></div>'
+  } else {
+    html += '<div class="mt-list">' + techs.map(techCard).join('') + '</div>'
+  }
+
+  el.innerHTML = html
+}
+
+function openAddModal(type) {
+  addType = type
+  editingId = null
+  clearErrors()
+  document.getElementById('addModalTitle').textContent = type === 'manager' ? 'Add Manager' : 'Add Technician'
+  ;['addFirst','addLast','addEmail','addPhone'].forEach(function(id) {
+    document.getElementById(id).value = ''
+  })
+  document.getElementById('addSubmitBtn').textContent = 'Add Member'
+  document.getElementById('addModal').classList.add('visible')
+  document.getElementById('addFirst').focus()
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('visible')
+}
+
+function clearErrors() {
+  ;['First','Last','Email','Phone'].forEach(function(f) {
+    document.getElementById('add' + f).classList.remove('error')
+    document.getElementById('err' + f).classList.remove('show')
+  })
+}
+
+function validateForm() {
+  clearErrors()
+
+  const first = document.getElementById('addFirst').value.trim()
+  const last = document.getElementById('addLast').value.trim()
+  const email = document.getElementById('addEmail').value.trim()
+  const phone = document.getElementById('addPhone').value.trim()
+  const digits = phone.replace(/\D/g, '')
+
+  let valid = true
+
+  if (!first) {
+    document.getElementById('addFirst').classList.add('error')
+    document.getElementById('errFirst').classList.add('show')
+    valid = false
+  }
+
+  if (!last) {
+    document.getElementById('addLast').classList.add('error')
+    document.getElementById('errLast').classList.add('show')
+    valid = false
+  }
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('addEmail').classList.add('error')
+    document.getElementById('errEmail').classList.add('show')
+    valid = false
+  }
+
+  if (digits.length !== 10) {
+    document.getElementById('addPhone').classList.add('error')
+    document.getElementById('errPhone').classList.add('show')
+    valid = false
+  }
+
+  return valid
+}
+
+async function addMember() {
+  if (!validateForm()) return
+
+  const first = document.getElementById('addFirst').value.trim()
+  const last = document.getElementById('addLast').value.trim()
+  const email = document.getElementById('addEmail').value.trim()
+  const phone = formatPhone(document.getElementById('addPhone').value.trim())
+
+  if (editingId !== null) {
+    const updates = {
+      first_name: first,
+      last_name: last,
+      email: email,
+      phone: phone
+    }
+
+    const { error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', editingId)
+      .eq('company_id', COMPANY_ID)
+
+    if (error) {
+      console.error('Error updating user:', error)
+      alert('Error saving changes.')
+      return
+    }
+
+    editingId = null
+    closeAddModal()
+    await loadUsers()
+    showToast('Changes saved')
+    return
+  }
+
+  if (addType === 'tech') {
+    let pin = ''
+    try {
+      pin = await generateUniquePin()
+    } catch (err) {
+      console.error(err)
+      alert('Could not generate PIN.')
+      return
+    }
+
+    const payload = {
+      company_id: COMPANY_ID,
+      first_name: first,
+      last_name: last,
+      email: email,
+      phone: phone,
+      role: 'tech',
+      status: 'active',
+      pin: pin
+    }
+
+    const { error } = await supabase.from('users').insert([payload])
+
+    if (error) {
+      console.error(error)
+      showToast('Could not add tech')
+    return
+    }
+
+    closeAddModal()
+    await loadUsers()
+    showPinModal({ first_name: first, last_name: last, pin: pin })
+    return
+  }
+
+  const payload = {
+    company_id: COMPANY_ID,
+    first_name: first,
+    last_name: last,
+    email: email,
+    phone: phone,
+    role: 'manager',
+    status: 'active',
+    pin: null
+  }
+
+  const { error } = await supabase.from('users').insert([payload])
+
+  if (error) {
+    console.error('Error adding manager:', error)
+    alert('Error adding manager.')
+    return
+  }
+
+  closeAddModal()
+  await loadUsers()
+  showToast('Manager added')
+}
+
+function editMember(type, id) {
+  closeKebabs()
+
+  const list = type === 'manager' ? managers : techs
+  const member = list.find(function(x) { return x.id === id })
+  if (!member) return
+
+  addType = type
+  editingId = id
+  clearErrors()
+  document.getElementById('addModalTitle').textContent = 'Edit ' + (type === 'manager' ? 'Manager' : 'Technician')
+  document.getElementById('addFirst').value = member.first_name || ''
+  document.getElementById('addLast').value = member.last_name || ''
+  document.getElementById('addEmail').value = member.email || ''
+  document.getElementById('addPhone').value = formatPhone(member.phone || '')
+  document.getElementById('addSubmitBtn').textContent = 'Save Changes'
+  document.getElementById('addModal').classList.add('visible')
+  document.getElementById('addFirst').focus()
+}
+
+async function toggleStatus(id) {
+  closeKebabs()
+
+  const tech = techs.find(function(x) { return x.id === id })
+  if (!tech) return
+
+  const nextStatus = tech.status === 'active' ? 'inactive' : 'active'
+
+  const { error } = await supabase
+    .from('users')
+    .update({ status: nextStatus })
+    .eq('id', id)
+    .eq('company_id', COMPANY_ID)
+
+  if (error) {
+    console.error('Error updating tech status:', error)
+    alert('Error updating status.')
+    return
+  }
+
+  await loadUsers()
+  showToast((tech.first_name || 'Tech') + ' ' + (nextStatus === 'active' ? 'activated' : 'deactivated'))
+}
+
+function promptDelete(type, id) {
+  closeKebabs()
+  deleteTarget = id
+  deleteType = type
+
+  const list = type === 'manager' ? managers : techs
+  const member = list.find(function(x) { return x.id === id })
+
+  document.getElementById('deleteModalBody').textContent =
+    'Remove ' + (member ? fullName(member) : 'this member') + '? This cannot be undone.'
+
+  document.getElementById('deleteModal').classList.add('visible')
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.remove('visible')
+}
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+  if (!deleteTarget) return
+
+  const { error } = await supabase
+    .from('users')
+    .delete()
+    .eq('id', deleteTarget)
+    .eq('company_id', COMPANY_ID)
+
+  if (error) {
+    console.error('Error deleting user:', error)
+    alert('Error removing member.')
+    return
+  }
+
+  deleteTarget = null
+  deleteType = null
+  closeDeleteModal()
+  await loadUsers()
+  showToast('Member removed')
+})
+
+function toggleKebab(prefix, id, e) {
   e.stopPropagation()
+  const key = prefix + '-' + id
 
-  const menu = document.getElementById(`kebab-${type}-${id}`)
+  if (openKebab && openKebab !== key) {
+    const old = document.getElementById('kebab-' + openKebab)
+    if (old) old.classList.remove('open', 'drop-up', 'drop-down')
+  }
+
+  const menu = document.getElementById('kebab-' + key)
   if (!menu) return
 
-  document.querySelectorAll('.kebab-menu.open').forEach(m => {
-    if (m !== menu) m.classList.remove('open')
-  })
+  const isOpen = menu.classList.contains('open')
+  menu.classList.remove('open', 'drop-up', 'drop-down')
 
-  menu.classList.toggle('open')
+  if (!isOpen) {
+    const rect = e.currentTarget.getBoundingClientRect()
+    menu.classList.add('open', (window.innerHeight - rect.bottom) < 160 ? 'drop-up' : 'drop-down')
+    openKebab = key
+  } else {
+    openKebab = null
+  }
 }
 
-document.addEventListener('click', () => {
-  document.querySelectorAll('.kebab-menu.open').forEach(m => {
-    m.classList.remove('open')
+function closeKebabs() {
+  if (openKebab) {
+    const el = document.getElementById('kebab-' + openKebab)
+    if (el) el.classList.remove('open', 'drop-up', 'drop-down')
+    openKebab = null
+  }
+}
+
+document.addEventListener('click', closeKebabs)
+
+function showPinModal(member) {
+  document.getElementById('pinModalTitle').textContent = fullName(member) + ' Added'
+  document.getElementById('pinModalName').textContent = 'Field Technician'
+  document.getElementById('pinModalPin').textContent = member.pin || ''
+  document.getElementById('pinModal').classList.add('visible')
+}
+
+function closePinModal() {
+  document.getElementById('pinModal').classList.remove('visible')
+}
+
+function copyPin() {
+  const pin = document.getElementById('pinModalPin').textContent
+  navigator.clipboard.writeText(pin).then(function() {
+    showToast('PIN copied')
+  }).catch(function() {
+    showToast('PIN: ' + pin)
+  })
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast')
+  el.textContent = msg
+  el.classList.add('visible')
+  clearTimeout(el._timer)
+  el._timer = setTimeout(function() {
+    el.classList.remove('visible')
+  }, 2500)
+}
+
+document.querySelectorAll('.modal-overlay').forEach(function(el) {
+  el.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible')
   })
 })
 
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeAddModal()
+    closeDeleteModal()
+    closePinModal()
+  }
+})
 
-// ===============================
-// FIX: STATUS TOGGLE
-// ===============================
-window.toggleStatus = async function(id) {
-  const tech = techs.find(t => t.id === id)
-  if (!tech) return
-
-  const newStatus = tech.status === 'active' ? 'inactive' : 'active'
-
-  await supabase
-    .from('users')
-    .update({ status: newStatus })
-    .eq('id', id)
-
-  tech.status = newStatus
-  render()
+function toggleMobileNav() {
+  document.getElementById('mobileNavMenu').classList.toggle('open')
 }
 
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.m-kebab,.mobile-nav-menu')) {
+    const menu = document.getElementById('mobileNavMenu')
+    if (menu) menu.classList.remove('open')
+  }
+})
 
-// init
+window.openAddModal = openAddModal
+window.closeAddModal = closeAddModal
+window.addMember = addMember
+window.editMember = editMember
+window.toggleStatus = toggleStatus
+window.promptDelete = promptDelete
+window.closeDeleteModal = closeDeleteModal
+window.toggleKebab = toggleKebab
+window.copyPin = copyPin
+window.closePinModal = closePinModal
+window.toggleMobileNav = toggleMobileNav
+
 loadUsers()
-
 </script>
-
 </body>
 </html>
