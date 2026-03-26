@@ -47,6 +47,19 @@
     <span class="tv-task-progress-pct" id="taskProgressPct">0%</span>
   </div>
 </div>
+<div class="tv-content">
+  <div class="tv-view active" id="projectView"><div id="projectCards"></div></div>
+  <div class="tv-view" id="taskView">
+    <div class="tv-hold-hint" id="holdHint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 16"/></svg>
+      Hold button to update status
+      <button class="tv-hold-hint-dismiss" onclick="dismissHint()">Got it</button>
+    </div>
+    <div id="taskCards"></div>
+  </div>
+</div>
+
+<!-- Overlays rendered last so position:fixed is never trapped by ancestor overflow/transform -->
 <div class="jobsheet-overlay" id="printOverlay">
   <div class="jobsheet-header">
     <button class="jobsheet-close" id="closeJobSheetBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
@@ -66,7 +79,6 @@
     </div>
   </div>
 </div>
-<!-- Status change confirmation -->
 <div class="tv-confirm-overlay" id="statusConfirm">
   <div class="tv-confirm-circle">
     <svg class="tv-confirm-check" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -76,17 +88,6 @@
   <div class="tv-undo-circle">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>
     <span class="tv-undo-text">Undone</span>
-  </div>
-</div>
-<div class="tv-content">
-  <div class="tv-view active" id="projectView"><div id="projectCards"></div></div>
-  <div class="tv-view" id="taskView">
-    <div class="tv-hold-hint" id="holdHint">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 16"/></svg>
-      Hold button to update status
-      <button class="tv-hold-hint-dismiss" onclick="dismissHint()">Got it</button>
-    </div>
-    <div id="taskCards"></div>
   </div>
 </div>
 
