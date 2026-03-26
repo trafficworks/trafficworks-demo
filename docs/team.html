@@ -160,6 +160,12 @@
     color: var(--text-3);
     margin-top: 2px;
   }
+  .mt-last-active {
+    font-size: 11.5px;
+    color: var(--text-3);
+    margin-top: 1px;
+    opacity: 0.75;
+  }
 
   /* status pill — right of avatar row */
   .mt-status-pill {
@@ -264,19 +270,6 @@
     transition: background 0.15s;
   }
   .mt-copy-btn:active { background: var(--line); }
-
-  /* simpler mobile team view */
-  .mt-add-row { display: none; }
-  .mt-top-row { align-items: center; }
-  .mt-status-pill { align-self: center; }
-  .mt-pin-caption { display: none; }
-  .mt-pin-value {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    font-variant-numeric: tabular-nums;
-    color: var(--text);
-  }
 
 }
 </style>
@@ -580,6 +573,7 @@ function renderMobile() {
     const isActive = t.status === 'active'
     const statusClass = isActive ? 'mt-status-active' : 'mt-status-inactive'
     const statusLabel = isActive ? 'Active' : 'Offline'
+    const lastField = t.last_active_at ? 'Last in field ' + timeAgo(t.last_active_at) : 'No field activity yet'
     const pin = escapeHtml(t.pin || '—')
 
     return '<div class="mt-card mt-card-tech' + (!isActive ? ' mt-card-inactive' : '') + '">' +
@@ -588,17 +582,19 @@ function renderMobile() {
         '<div class="mt-identity">' +
           '<div class="mt-name">' + escapeHtml(fullName(t)) + '</div>' +
           '<div class="mt-phone">' + escapeHtml(formatPhone(t.phone || '')) + '</div>' +
+          '<div class="mt-last-active">' + lastField + '</div>' +
         '</div>' +
         '<span class="mt-status-pill ' + statusClass + '"><span class="mt-status-pill-dot"></span>' + statusLabel + '</span>' +
       '</div>' +
       '<div class="mt-divider"></div>' +
       '<div class="mt-pin-row">' +
         '<div class="mt-pin-stack">' +
+          '<span class="mt-pin-caption">PIN</span>' +
           '<span class="mt-pin-value">' + pin + '</span>' +
         '</div>' +
         '<button class="mt-copy-btn" onclick="copyTechPin(\'' + (t.pin || '') + '\')">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
-          'Copy' +
+          'Copy PIN' +
         '</button>' +
       '</div>' +
       '</div>'
@@ -614,6 +610,9 @@ function renderMobile() {
   } else {
     html += '<div class="mt-list">' + managers.map(managerCard).join('') + '</div>'
   }
+  html += '<div class="mt-add-row"><button class="mt-add-btn" onclick="openAddModal(\'manager\')">' +
+    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+    'Add Manager</button></div>'
 
   html += '<div class="mt-section mt-section-spacer"><span>Technicians</span></div>'
   if (techs.length === 0) {
@@ -623,6 +622,9 @@ function renderMobile() {
   } else {
     html += '<div class="mt-list">' + techs.map(techCard).join('') + '</div>'
   }
+  html += '<div class="mt-add-row"><button class="mt-add-btn" onclick="openAddModal(\'tech\')">' +
+    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+    'Add Tech</button></div>'
 
   el.innerHTML = html
 }
