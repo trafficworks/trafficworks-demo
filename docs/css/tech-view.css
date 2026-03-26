@@ -410,8 +410,8 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 /* ============================================================
    JOB SHEET OVERLAY
    ============================================================ */
-.jobsheet-overlay { display:none; position:fixed; inset:0; background:rgba(0, 0, 0, 0.42); z-index:500; flex-direction:column; overflow:hidden; }
-.jobsheet-overlay.visible { display:flex; }
+.jobsheet-overlay { display:none !important; position:fixed; inset:0; background:rgba(0, 0, 0, 0.42); z-index:500; flex-direction:column; overflow:hidden; }
+.jobsheet-overlay.visible { display:flex !important; }
 
 .jobsheet-header { display:flex; align-items:center; padding:14px 16px; background:#F4F3F0; border-bottom:1px solid #DEDBD5; gap:12px; flex-shrink:0; }
 .jobsheet-close { background:none; border:none; cursor:pointer; color:#6B7178; display:flex; align-items:center; padding:4px; flex-shrink:0; }
