@@ -324,7 +324,7 @@
   <div class="team-section">
     <div class="section-header">
       <span class="section-label" style="padding-top:0">Managers <span class="count" id="managerCount">0</span></span>
-      <button class="btn-action" onclick="openAddModal('manager')"><span class="plus">+</span> Add Manager</button>
+      <button class="btn-action" onclick="openAddModal(\'manager\')"><span class="plus">+</span> Add Manager</button>
     </div>
     <table>
       <thead><tr><th style="width:24%">Name</th><th style="width:24%">Email</th><th style="width:18%">Phone</th><th style="width:12%">Role</th><th style="width:12%">Status</th><th style="width:4%"></th></tr></thead>
@@ -336,7 +336,7 @@
   <div class="team-section">
     <div class="section-header">
       <span class="section-label" style="padding-top:0">Field Technicians <span class="count" id="techCount">0</span></span>
-      <button class="btn-action" onclick="openAddModal('tech')"><span class="plus">+</span> Add Tech</button>
+      <button class="btn-action" onclick="openAddModal(\'tech\')"><span class="plus">+</span> Add Tech</button>
     </div>
     <table>
       <thead><tr><th style="width:24%">Name</th><th style="width:24%">Email</th><th style="width:18%">Phone</th><th style="width:12%">PIN</th><th style="width:12%">Status</th><th style="width:4%"></th></tr></thead>
@@ -839,15 +839,18 @@ async function toggleStatus(id) {
     .from('users')
     .update({ status: nextStatus })
     .eq('id', id)
+    .eq('company_id', COMPANY_ID)
 
   if (error) {
     console.error('Error updating tech status:', error)
-    alert('Error updating status.')
+    showToast('Error updating status')
     return
   }
 
+  tech.status = nextStatus
+  render()
   await loadUsers()
-  showToast((tech.first_name || 'Tech') + ' ' + (nextStatus === 'active' ? 'activated' : 'deactivated'))
+  showToast(nextStatus === 'active' ? 'Activated' : 'Deactivated')
 }
 
 function promptDelete(type, id) {
@@ -893,22 +896,20 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async func
 function toggleKebab(prefix, id, e) {
   e.stopPropagation()
   const key = prefix + '-' + id
-
-  if (openKebab && openKebab !== key) {
-    const old = document.getElementById('kebab-' + openKebab)
-    if (old) old.classList.remove('open', 'drop-up', 'drop-down')
-  }
-
   const menu = document.getElementById('kebab-' + key)
   if (!menu) return
+
+  document.querySelectorAll('.kebab-menu.open').forEach(function(m) {
+    if (m !== menu) m.classList.remove('open', 'drop-up', 'drop-down')
+  })
 
   const isOpen = menu.classList.contains('open')
   menu.classList.remove('open', 'drop-up', 'drop-down')
 
   if (!isOpen) {
-    const btn = e.currentTarget || e.target.closest('button') || e.target
-    const rect = btn.getBoundingClientRect()
-    menu.classList.add('open', (window.innerHeight - rect.bottom) < 160 ? 'drop-up' : 'drop-down')
+    const rect = e.currentTarget.getBoundingClientRect()
+    menu.classList.add('open')
+    menu.classList.add((window.innerHeight - rect.bottom) < 160 ? 'drop-up' : 'drop-down')
     openKebab = key
   } else {
     openKebab = null
@@ -916,11 +917,10 @@ function toggleKebab(prefix, id, e) {
 }
 
 function closeKebabs() {
-  if (openKebab) {
-    const el = document.getElementById('kebab-' + openKebab)
-    if (el) el.classList.remove('open', 'drop-up', 'drop-down')
-    openKebab = null
-  }
+  document.querySelectorAll('.kebab-menu.open').forEach(function(el) {
+    el.classList.remove('open', 'drop-up', 'drop-down')
+  })
+  openKebab = null
 }
 
 document.addEventListener('click', closeKebabs)
