@@ -907,8 +907,7 @@ function toggleKebab(prefix, id, e) {
   menu.classList.remove('open', 'drop-up', 'drop-down')
 
   if (!isOpen) {
-    const btn = e.currentTarget || e.target.closest('button') || e.target
-    const rect = btn.getBoundingClientRect()
+    const rect = e.currentTarget.getBoundingClientRect()
     menu.classList.add('open', (window.innerHeight - rect.bottom) < 160 ? 'drop-up' : 'drop-down')
     openKebab = key
   } else {
