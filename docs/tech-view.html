@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css">
+<link rel="stylesheet" href="css/jobsheet.css">
 
 <style>
 /* Animation overrides — applied by JS */
@@ -47,19 +48,6 @@
     <span class="tv-task-progress-pct" id="taskProgressPct">0%</span>
   </div>
 </div>
-<div class="tv-content">
-  <div class="tv-view active" id="projectView"><div id="projectCards"></div></div>
-  <div class="tv-view" id="taskView">
-    <div class="tv-hold-hint" id="holdHint">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 16"/></svg>
-      Hold button to update status
-      <button class="tv-hold-hint-dismiss" onclick="dismissHint()">Got it</button>
-    </div>
-    <div id="taskCards"></div>
-  </div>
-</div>
-
-<!-- Overlays rendered last so position:fixed is never trapped by ancestor overflow/transform -->
 <div class="jobsheet-overlay" id="printOverlay">
   <div class="jobsheet-header">
     <button class="jobsheet-close" id="closeJobSheetBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
@@ -79,6 +67,7 @@
     </div>
   </div>
 </div>
+<!-- Status change confirmation -->
 <div class="tv-confirm-overlay" id="statusConfirm">
   <div class="tv-confirm-circle">
     <svg class="tv-confirm-check" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -88,6 +77,17 @@
   <div class="tv-undo-circle">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>
     <span class="tv-undo-text">Undone</span>
+  </div>
+</div>
+<div class="tv-content">
+  <div class="tv-view active" id="projectView"><div id="projectCards"></div></div>
+  <div class="tv-view" id="taskView">
+    <div class="tv-hold-hint" id="holdHint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 16"/></svg>
+      Hold button to update status
+      <button class="tv-hold-hint-dismiss" onclick="dismissHint()">Got it</button>
+    </div>
+    <div id="taskCards"></div>
   </div>
 </div>
 
@@ -137,15 +137,6 @@ function stopDurationTimer(){if(state.durationInterval){clearInterval(state.dura
 function startDurationTimer(){stopDurationTimer();state.durationInterval=setInterval(function(){document.querySelectorAll('.live-duration').forEach(function(el){var taskId=el.getAttribute('data-task-id');var task=currentTasks().find(function(t){return String(t.id)===String(taskId)});if(task)el.textContent=getLiveDuration(task)})},30000)}
 function showUndoConfirm(){var el=document.getElementById('undoConfirm');el.className='tv-confirm-overlay show';var circle=el.querySelector('.tv-undo-circle');circle.style.opacity='0';circle.style.transform='scale(0.5)';void circle.offsetWidth;circle.style.opacity='1';circle.style.transform='scale(1)';setTimeout(function(){circle.style.opacity='0';circle.style.transform='scale(0.8)';setTimeout(function(){el.className='tv-confirm-overlay';circle.style.cssText=''},400)},1200)}
 function showStatusConfirm(){var el=document.getElementById('statusConfirm');el.className='tv-confirm-overlay show';var circle=el.querySelector('.tv-confirm-circle');circle.style.opacity='0';circle.style.transform='scale(0.5)';void circle.offsetWidth;circle.style.opacity='1';circle.style.transform='scale(1)';setTimeout(function(){circle.style.opacity='0';circle.style.transform='scale(0.8)';setTimeout(function(){el.className='tv-confirm-overlay';circle.style.cssText=''},300)},700)}
-
-async function touchLastActive(){
-  if(!state.techId) return;
-  const {error}=await supabase
-    .from('users')
-    .update({last_active_at:new Date().toISOString()})
-    .eq('id', state.techId);
-  if(error) console.error('Could not update last active.', error);
-}
 
 function normalizeTask(row, cyclesByTask){
   const taskCycles=(cyclesByTask[row.id]||[]).slice().sort((a,b)=>(b.cycle_num||0)-(a.cycle_num||0));
@@ -251,7 +242,6 @@ async function loadAll(){
   setLoading(true);
   try{
     await loadTech();
-    await touchLastActive();
     await loadProjectsAndTasks();
     const btn=document.getElementById('undoBtn');
     if(btn) btn.style.display='none';
@@ -412,7 +402,6 @@ async function saveNote(id){
   var note=input.value.trim();
   const {error}=await supabase.from('tasks').update({notes:note}).eq('id',id);
   if(error){showError('Could not save note.', error);return;}
-  await touchLastActive();
   task.note=note;
   state.openNoteId=null;
   await refreshCurrentProject(state.currentProject.id);
@@ -472,7 +461,6 @@ async function cycleTaskStatus(taskId){
       if(cycleError) throw cycleError;
       const {error:taskError}=await supabase.from('tasks').update({status:'in-field',reopen_reason:null}).eq('id',taskId);
       if(taskError) throw taskError;
-      await touchLastActive();
       state.lastAction={kind:'deploy',taskId:taskId,cycleId:newCycle.id};
       task.status=STATUS.INFIELD;
       task.reopenReason='';
@@ -502,7 +490,6 @@ async function cycleTaskStatus(taskId){
       if(cycleError) throw cycleError;
       const {error:taskError}=await supabase.from('tasks').update({status:'complete'}).eq('id',taskId);
       if(taskError) throw taskError;
-      await touchLastActive();
       state.lastAction={kind:'complete',taskId:taskId,cycleId:latest.id};
       task.status=STATUS.COMPLETE;
       task.currentCycle={deployedAt:latest.deployed_at?new Date(latest.deployed_at):null,completedAt:new Date(now),pickedUpAt:new Date(now),cycleId:latest.id,cycleNum:latest.cycle_num};
@@ -561,7 +548,6 @@ async function confirmReopen(){
   try{
     const {error}=await supabase.from('tasks').update({status:'pending',reopen_reason:reason}).eq('id', state.reopenTargetId);
     if(error) throw error;
-    await touchLastActive();
     task.status=STATUS.PENDING;
     task.reopenReason=reason;
     task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
