@@ -137,6 +137,15 @@ function startDurationTimer(){stopDurationTimer();state.durationInterval=setInte
 function showUndoConfirm(){var el=document.getElementById('undoConfirm');el.className='tv-confirm-overlay show';var circle=el.querySelector('.tv-undo-circle');circle.style.opacity='0';circle.style.transform='scale(0.5)';void circle.offsetWidth;circle.style.opacity='1';circle.style.transform='scale(1)';setTimeout(function(){circle.style.opacity='0';circle.style.transform='scale(0.8)';setTimeout(function(){el.className='tv-confirm-overlay';circle.style.cssText=''},400)},1200)}
 function showStatusConfirm(){var el=document.getElementById('statusConfirm');el.className='tv-confirm-overlay show';var circle=el.querySelector('.tv-confirm-circle');circle.style.opacity='0';circle.style.transform='scale(0.5)';void circle.offsetWidth;circle.style.opacity='1';circle.style.transform='scale(1)';setTimeout(function(){circle.style.opacity='0';circle.style.transform='scale(0.8)';setTimeout(function(){el.className='tv-confirm-overlay';circle.style.cssText=''},300)},700)}
 
+async function touchLastActive(){
+  if(!state.techId) return;
+  const {error}=await supabase
+    .from('users')
+    .update({last_active_at:new Date().toISOString()})
+    .eq('id', state.techId);
+  if(error) console.error('Could not update last active.', error);
+}
+
 function normalizeTask(row, cyclesByTask){
   const taskCycles=(cyclesByTask[row.id]||[]).slice().sort((a,b)=>(b.cycle_num||0)-(a.cycle_num||0));
   const latest=taskCycles[0]||null;
@@ -241,6 +250,7 @@ async function loadAll(){
   setLoading(true);
   try{
     await loadTech();
+    await touchLastActive();
     await loadProjectsAndTasks();
     const btn=document.getElementById('undoBtn');
     if(btn) btn.style.display='none';
@@ -401,6 +411,7 @@ async function saveNote(id){
   var note=input.value.trim();
   const {error}=await supabase.from('tasks').update({notes:note}).eq('id',id);
   if(error){showError('Could not save note.', error);return;}
+  await touchLastActive();
   task.note=note;
   state.openNoteId=null;
   await refreshCurrentProject(state.currentProject.id);
@@ -460,6 +471,7 @@ async function cycleTaskStatus(taskId){
       if(cycleError) throw cycleError;
       const {error:taskError}=await supabase.from('tasks').update({status:'in-field',reopen_reason:null}).eq('id',taskId);
       if(taskError) throw taskError;
+      await touchLastActive();
       state.lastAction={kind:'deploy',taskId:taskId,cycleId:newCycle.id};
       task.status=STATUS.INFIELD;
       task.reopenReason='';
@@ -489,6 +501,7 @@ async function cycleTaskStatus(taskId){
       if(cycleError) throw cycleError;
       const {error:taskError}=await supabase.from('tasks').update({status:'complete'}).eq('id',taskId);
       if(taskError) throw taskError;
+      await touchLastActive();
       state.lastAction={kind:'complete',taskId:taskId,cycleId:latest.id};
       task.status=STATUS.COMPLETE;
       task.currentCycle={deployedAt:latest.deployed_at?new Date(latest.deployed_at):null,completedAt:new Date(now),pickedUpAt:new Date(now),cycleId:latest.id,cycleNum:latest.cycle_num};
@@ -547,6 +560,7 @@ async function confirmReopen(){
   try{
     const {error}=await supabase.from('tasks').update({status:'pending',reopen_reason:reason}).eq('id', state.reopenTargetId);
     if(error) throw error;
+    await touchLastActive();
     task.status=STATUS.PENDING;
     task.reopenReason=reason;
     task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
@@ -603,9 +617,9 @@ function openJobSheet(projectId){
       var times=[];
       if(t.currentCycle&&t.currentCycle.deployedAt) times.push('Set: '+fmtTimeTV(t.currentCycle.deployedAt));
       if(t.currentCycle&&t.currentCycle.completedAt) times.push('Pickup: '+fmtTimeTV(t.currentCycle.completedAt));
+      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) times.push('Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime()));
+      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt) times.push('Duration: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime()));
       if(times.length) s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
-      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) s+='<div class="js-site-times">Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</div>';
-      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt) s+='<div class="js-site-times">Duration: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime())+'</div>';
       if(t.reopenReason) s+='<div class="js-site-note">Reopened: '+escapeHtml(t.reopenReason)+'</div>';
       if(t.note) s+='<div class="js-site-note">'+escapeHtml(t.note)+'</div>';
       s+='</div>';
