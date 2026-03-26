@@ -562,20 +562,55 @@ html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: va
   box-shadow: none !important;
 }
 
-/* ===== ISOLATE JOB SHEET FROM GLOBAL MODALS ===== */
+/* MOBILE JOB SHEET FIX — append to bottom of tech-view.css */
 
 .jobsheet-overlay {
+  width: 100% !important;
+  height: 100dvh !important;
+  min-height: -webkit-fill-available !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  overflow: hidden !important;
   background: #F4F3F0 !important;
 }
 
-.jobsheet-overlay * {
-  box-shadow: none !important;
+.jobsheet-header {
+  width: 100% !important;
 }
 
-/* override any modal bleed */
-.jobsheet-overlay,
-.jobsheet-container,
 .jobsheet-body {
+  width: 100% !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  padding: 20px 16px calc(40px + env(safe-area-inset-bottom, 0px)) !important;
+  background: #F4F3F0 !important;
+}
+
+.jobsheet-body > * {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.jobsheet-container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
   box-shadow: none !important;
   background: #F4F3F0 !important;
+}
+
+@media (max-width: 768px) {
+  .jobsheet-body {
+    display: block !important;
+  }
+
+  .jobsheet-container {
+    border-radius: 0 !important;
+  }
+
+  .js-instructions-card,
+  .js-section {
+    width: 100% !important;
+    box-shadow: none !important;
+  }
 }
