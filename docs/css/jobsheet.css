@@ -2,15 +2,18 @@
    JOB SHEET OVERLAY
    ═══════════════════════════════════ */
 .jobsheet-overlay {
-  display: none;
   position: fixed;
   inset: 0;
-  background: #F4F3F0;
-  z-index: 500;
-  flex-direction: column;
-  overflow: hidden;
+  background: rgba(0,0,0,0.5);
+  display: none;           /* 🔥 critical */
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
-.jobsheet-overlay.visible { display: flex; }
+
+.jobsheet-overlay.show {
+  display: flex;
+}
 
 /* header bar */
 .jobsheet-header {
