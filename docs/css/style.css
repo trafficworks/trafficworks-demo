@@ -1022,6 +1022,8 @@ textarea.form-input {
   z-index: 100;
 }
 
+.kebab-menu.open { display: block; }
+
 .kebab-menu.open.drop-down { display: block; top: 100%; margin-top: 4px; }
 .kebab-menu.open.drop-up { display: block; bottom: 100%; margin-bottom: 4px; }
 
