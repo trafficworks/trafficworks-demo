@@ -6,7 +6,7 @@
 <title>TrafficWorks — Tech View</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
-<link rel="stylesheet" href="css/tech-view.css">
+<link rel="stylesheet" href="css/tech-view.css?v=mobilefix4">
 
 <style>
 /* Animation overrides — applied by JS */
@@ -637,9 +637,27 @@ function openJobSheet(projectId){
 
   document.getElementById('printContent').innerHTML = '<div class="jobsheet-container">' + html + '</div>';
   document.getElementById('printOverlay').classList.add('visible');
-  document.body.style.overflow='hidden';
+  const lockY = window.scrollY || window.pageYOffset || 0;
+  document.body.dataset.lockY = String(lockY);
+  document.body.style.position = 'fixed';
+  document.body.style.top = '-' + lockY + 'px';
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+  document.body.style.overflow = 'hidden';
 }
-function closePrintView(){document.getElementById('printOverlay').classList.remove('visible');document.body.style.overflow=''}
+function closePrintView(){
+  document.getElementById('printOverlay').classList.remove('visible');
+  const lockY = parseInt(document.body.dataset.lockY || '0', 10) || 0;
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  document.body.style.overflow = '';
+  delete document.body.dataset.lockY;
+  window.scrollTo(0, lockY);
+}
 
 
 document.getElementById('projectCards').addEventListener('click',function(e){
