@@ -1244,7 +1244,7 @@ async function openJobSheet(id) {
   html += 'Report generated ' + dateStr + ' · <span class="js-footer-brand">The Count Company</span>'
   html += '</div>'
 
-  document.getElementById('jobsheetBody').innerHTML = html
+  document.getElementById('jobsheetBody').innerHTML = '<div class="jobsheet-container">' + html + '</div>'
   document.getElementById('jobsheetOverlay').classList.add('visible')
   document.body.style.overflow = 'hidden'
 }
