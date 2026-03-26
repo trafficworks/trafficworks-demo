@@ -635,7 +635,7 @@ function openJobSheet(projectId){
   // footer
   html+='<div class="js-footer">Report generated '+dateStr+' · <span class="js-footer-brand">The Count Company</span></div>';
 
-  document.getElementById('printContent').innerHTML=html;
+  document.getElementById('printContent').innerHTML = '<div class="jobsheet-container">' + html + '</div>';
   document.getElementById('printOverlay').classList.add('visible');
   document.body.style.overflow='hidden';
 }
