@@ -825,9 +825,11 @@ function openJobSheet() {
       const times = []
       if (cycle?.deployed_at) times.push('Set: ' + fmtTime(cycle.deployed_at))
       if (cycle?.completed_at) times.push('Pickup: ' + fmtTime(cycle.completed_at))
-      if (cycle?.deployed_at && cycle?.completed_at) times.push('Duration: ' + fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at)))
-      else if (cycle?.deployed_at && !cycle?.completed_at) times.push('Duration: ' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime()))
+      let durationText = ''
+      if (cycle?.deployed_at && cycle?.completed_at) durationText = 'Duration: ' + fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at))
+      else if (cycle?.deployed_at && !cycle?.completed_at) durationText = 'Duration: ' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime())
       if (times.length) s += '<div class="js-site-times">' + times.join(' · ') + '</div>'
+      if (durationText) s += '<div class="js-site-duration">' + durationText + '</div>'
       if (t.note) s += '<div class="js-site-note">' + escapeHtml(t.note) + '</div>'
       s += '</div>'
     })
