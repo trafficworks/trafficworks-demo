@@ -202,7 +202,11 @@ import { supabase } from './js/supabase.js'
 const STATUS={PENDING:'Pending',INFIELD:'In Field',COMPLETE:'Complete'};
 const state={techId:null,companyId:null,techName:'Tech',projects:[],currentProject:null,lastAction:null,reopenTargetId:null,activeNoteTaskId:null,durationInterval:null,loading:false};
 
-function qp(n){return new URLSearchParams(window.location.search).get(n)}
+function qp(n){
+  var params=new URLSearchParams(window.location.search);
+  if(n==='pin') return params.get('pin')||params.get('p');
+  return params.get(n);
+}
 function escapeHtml(s){return String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
 function getInitials(n){if(!n)return'—';return n.split(' ').map(p=>p[0]).join('').toUpperCase()}
 function fmtTimeTV(d){if(!d)return'';var dt=(d instanceof Date)?d:new Date(d);var m=dt.getMonth()+1;var day=dt.getDate();var h=dt.getHours();var min=dt.getMinutes();var ap=h>=12?'p':'a';h=h%12||12;return m+'/'+day+' '+h+':'+(min<10?'0':'')+min+ap}
@@ -608,6 +612,15 @@ document.getElementById('closeJobSheetBtn')?.addEventListener('click',closePrint
 document.getElementById('printJobSheetBtn')?.addEventListener('click',()=>window.print());
 
 Object.assign(window,{showProjects,openProject,undoLastAction,promptReopen,closeReopenModal,confirmReopen,openJobSheet,closePrintView,cycleTaskStatus,closeNoteSheet,saveNoteSheet});
+// Intercept browser back button
+window.addEventListener('popstate', function(e){
+  if(state.currentProject){
+    showProjects();
+    history.pushState(null,'',window.location.href);
+  }
+});
+// Push initial state so back button has something to popstate to
+history.pushState(null,'',window.location.href);
 loadAll();
 </script>
 </body>
