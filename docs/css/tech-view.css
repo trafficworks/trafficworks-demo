@@ -93,25 +93,12 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 /* ============================================================
    TOPNAV — project list view (matches projects page)
    ============================================================ */
-.tv-topnav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 28px 0 18px;
-}
-.tv-topnav-title {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--tv-text);
-}
+/* .tv-topnav and .tv-topnav-title replaced — see new rules below */
 
 /* ============================================================
    HEADER — task view only
    ============================================================ */
-.tv-header { background: var(--tv-header-bg); border-bottom: 1px solid var(--tv-border); padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-.tv-header-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-.tv-header-right { display: flex; align-items: center; gap: 8px; }
+/* .tv-header removed — replaced by .tv-task-toolbar */
 
 .tv-back-btn { width: 28px; height: 28px; background: none; border: 2px solid #1E8C5A; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #1E8C5A; flex-shrink: 0; }
 .tv-back-btn svg { width: 14px; height: 14px; }
@@ -367,25 +354,14 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 /* ============================================================
    TOGGLE BUTTONS (hold to change status)
    ============================================================ */
-.toggle-btn, .toggle-btn * { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-.toggle-btn { position: relative; min-width: 92px; height: 40px; border-radius: 8px; border: none; font-family: 'Inter', sans-serif; font-size: var(--text-sm); font-weight: 600; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; letter-spacing: 0.3px; flex-shrink: 0; text-transform: uppercase; transition: transform .1s ease; }
-.toggle-btn:active { transform: scale(0.96) }
-.toggle-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; opacity: 0.3; pointer-events: none; border-radius: 8px; }
-.toggle-btn.holding .toggle-fill { transition: width 0.6s linear; width: 100% }
-.toggle-label { position: relative; z-index: 1; display: flex; align-items: center; gap: 5px; }
-.toggle-label svg { width: 13px; height: 13px }
-@keyframes holdPulse { 0%,100% { opacity: 1 } 50% { opacity: 0.7 } } .toggle-btn.holding { animation: holdPulse .6s ease }  .toggle-pending { background: #F5C27A; color: var(--amber-light) } .toggle-pending .toggle-fill { background: #BFD7EA } .toggle-infield { background: #BFD7EA; color: #2C3034 } .toggle-infield .toggle-fill { background: #2AB57E } .toggle-complete { background: #2AB57E; color: var(--white) } .toggle-complete .toggle-fill { background: #22996A }  /* ============================================================ COMPLETED DIVIDER ============================================================ */ .tv-completed-divider { display: flex; align-items: center; gap: 8px; margin: 16px 0 8px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.tv-completed-divider-line { flex: 1; height: 1px; background: var(--tv-divider); }
-.tv-completed-divider-text { font-size: var(--text-sm); font-weight: 500; color: var(--tv-text-muted); display: flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
-.tv-completed-divider-text svg { width: 12px; height: 12px; transition: transform .2s }
-.tv-completed-divider.collapsed .tv-completed-divider-text svg { transform: rotate(-90deg) }
+/* toggle-btn removed — replaced by .tv-advance-btn */
+/* holdPulse + old toggle colors + old completed divider removed */
+/* old divider text removed — see new rules */
 
 /* ============================================================
    HOLD HINT
    ============================================================ */
-.tv-hold-hint { text-align: center; font-size: var(--text-sm); color: var(--tv-text-muted); padding: 8px 10px; margin-bottom: 8px; background: var(--tv-surface-hover); border: 1px solid var(--tv-border); border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px; }
-.tv-hold-hint svg { width: 12px; height: 12px; opacity: 0.5; flex-shrink: 0 }
-.tv-hold-hint-dismiss { margin-left: 4px; background: none; border: none; color: var(--tv-text-muted); cursor: pointer; font-size: 10px; font-weight: 600; padding: 2px 4px; border-radius: 3px; }
+/* tv-hold-hint removed */
 
 /* ============================================================
    DOWNLOAD LINK
@@ -501,7 +477,7 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 .tv-undo-text { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 0.3px; }
 
 /* Dark mode — topnav */
-html.tv-dark .tv-topnav-title { color: var(--tv-text); }
+/* tv-topnav-title dark mode removed */
 
 /* Dark mode — back button and undo button */
 html.tv-dark .tv-back-btn { border-color: var(--tv-text-secondary); color: var(--tv-text-secondary); background: none; }
@@ -624,6 +600,7 @@ html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: va
   }
 }
 
+
 /* ============================================================
    TOP NAV — Projects · Tech View / Project Name
    ============================================================ */
@@ -668,7 +645,7 @@ html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: va
   text-overflow: ellipsis;
   min-width: 0;
   max-width: 55vw;
-  transition: color .15s, font-weight .15s;
+  transition: color .15s;
 }
 .tv-topnav-section.is-active {
   font-weight: 700;
@@ -687,6 +664,7 @@ html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: va
   max-width: 480px;
   margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
 }
 .tv-toolbar-btn {
   display: inline-flex;
@@ -705,9 +683,9 @@ html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: va
   transition: opacity .15s, background .15s;
   -webkit-tap-highlight-color: transparent;
   white-space: nowrap;
+  touch-action: manipulation;
 }
 .tv-toolbar-btn:active { opacity: .75; }
-.tv-jobsheet-btn { }
 .tv-undo-btn {
   background: var(--tv-text);
   color: var(--tv-bg);
@@ -720,18 +698,11 @@ html.tv-dark .tv-undo-btn {
 }
 
 /* ============================================================
-   TASK CARDS — new single-tap state system
+   TASK CARDS — new state system
    ============================================================ */
+.tv-task-card.tv-card-complete { opacity: 0.5; }
 
-/* Card state backgrounds (replaces old .complete-card opacity hack) */
-.tv-task-card.tv-card-pending  { background: var(--tv-surface); }
-.tv-task-card.tv-card-infield  { background: var(--tv-surface); }
-.tv-task-card.tv-card-complete {
-  background: var(--tv-surface);
-  opacity: 0.5;
-}
-
-/* Advance button — single tap */
+/* Advance button — single tap, full-width column layout */
 .tv-advance-btn {
   display: flex;
   flex-direction: column;
@@ -739,7 +710,7 @@ html.tv-dark .tv-undo-btn {
   justify-content: center;
   gap: 5px;
   min-width: 84px;
-  padding: 10px 10px;
+  padding: 10px 8px;
   border-radius: 10px;
   border: none;
   font-family: 'Inter', sans-serif;
@@ -755,31 +726,26 @@ html.tv-dark .tv-undo-btn {
 }
 .tv-advance-btn:active { transform: scale(0.95); opacity: .8; }
 .tv-advance-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
 }
 
-/* Pending state → Set In Field */
 .tv-btn-pending {
   background: var(--tv-pending-bg);
   color: var(--tv-pending-text);
 }
-
-/* In Field state → Mark Complete */
 .tv-btn-infield {
   background: var(--tv-infield-bg);
   color: var(--tv-infield-text);
 }
-
-/* Complete state — locked, no cursor */
 .tv-btn-complete {
   background: var(--tv-complete-bg);
   color: var(--tv-complete-text);
   cursor: default;
-  opacity: 0.7;
+  opacity: 0.75;
 }
-.tv-btn-complete:active { transform: none; opacity: 0.7; }
+.tv-btn-complete:active { transform: none; opacity: 0.75; }
 
 /* Reopen link below complete button */
 .tv-action-wrap {
@@ -800,6 +766,7 @@ html.tv-dark .tv-undo-btn {
   text-decoration: underline;
   text-underline-offset: 2px;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .tv-reopen-link:active { color: var(--tv-text-secondary); }
 
@@ -897,14 +864,13 @@ html.tv-dark .tv-undo-btn {
   -webkit-tap-highlight-color: transparent;
 }
 .tv-sheet-save:active { opacity: .8; }
-
 html.tv-dark .tv-sheet-save {
   background: var(--tv-surface-raised);
   color: var(--tv-text);
   border: 1px solid var(--tv-border);
 }
 
-/* Completed section divider (no longer collapsible, simplified) */
+/* Completed section divider */
 .tv-completed-divider {
   display: flex;
   align-items: center;
