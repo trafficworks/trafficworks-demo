@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v18</title>
+<title>TrafficWorks — Tech View v19</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -1418,6 +1418,32 @@ function toastUndo(){
 }
 
 Object.assign(window,{showProjects,openProject,undoCardStatus,promptReopen,closeReopenModal,confirmReopen,openJobSheet,closePrintView,cycleTaskStatus,closeNoteSheet,saveNoteSheet,toastUndo,hideToast,rewireCard});
+// ── Background refresh every 45 seconds ──────────────────────
+setInterval(async function(){
+  if(state.loading) return;
+  try{
+    var hadProject=state.currentProject?state.currentProject.id:null;
+    await loadProjectsAndTasks();
+    // If on project list, re-render cards silently
+    if(!state.currentProject){
+      renderProjectStats();
+      renderProjectCards();
+    } else if(hadProject){
+      // Stay in task view but refresh project ref
+      state.currentProject=state.projects.find(p=>String(p.id)===String(hadProject))||state.currentProject;
+      // Only re-render task cards if not mid-interaction (no toast showing)
+      var toast=document.getElementById('actionToast');
+      var toastVisible=toast&&toast.style.transform&&!toast.style.transform.includes('100px');
+      if(!toastVisible){
+        renderTaskCards();
+      }
+      renderProjectCards();
+    }
+  }catch(e){
+    console.warn('Background refresh failed:',e);
+  }
+}, 45000);
+
 // Intercept browser back button
 window.addEventListener('popstate', function(e){
   if(state.currentProject){
