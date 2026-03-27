@@ -3,6 +3,1193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>TrafficWorks — Tech View v13</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<link rel="stylesheet" href="css/tech-view.css?v=v3x">
+<style>
+/* === TOKEN OVERRIDES (self-contained, no external CSS dependency) === */
+:root {
+  --tv-pending-bg:      #F5EDD6;
+  --tv-pending-text:    #7A5210;
+  --tv-pending-accent:  #C49A2E;
+  --tv-infield-bg:      #DCEAF8;
+  --tv-infield-text:    #1C4A7A;
+  --tv-infield-accent:  #4A7FBF;
+  --tv-complete-bg:     #D4EDDF;
+  --tv-complete-text:   #1A5C35;
+  --tv-complete-accent: #3AA66A;
+  --tv-bg:              #F4F3F0;
+  --tv-surface:         #FFFFFF;
+  --tv-surface-raised:  #FFFFFF;
+  --tv-border:          #E5E3DD;
+  --tv-divider:         rgba(0,0,0,0.07);
+  --tv-text:            #1A1D21;
+  --tv-text-secondary:  #5A5F66;
+  --tv-text-muted:      #9CA0A6;
+  --tv-note-bg:         #F5F4F1;
+  --tv-card-shadow:     0 1px 2px rgba(0,0,0,0.04);
+  --tv-header-bg:       #FFFFFF;
+  --tv-header-text:     #1A1D21;
+}
+html.tv-dark {
+  --tv-pending-bg:      #2E2718;
+  --tv-pending-text:    #D4A84A;
+  --tv-infield-bg:      #182030;
+  --tv-infield-text:    #7AAED4;
+  --tv-complete-bg:     #182820;
+  --tv-complete-text:   #5EC48A;
+  --tv-bg:              #1C1E22;
+  --tv-surface:         #272B32;
+  --tv-surface-raised:  #2E3239;
+  --tv-border:          rgba(255,255,255,0.09);
+  --tv-divider:         rgba(255,255,255,0.07);
+  --tv-text:            #E6E8EC;
+  --tv-text-secondary:  #9AA0AA;
+  --tv-text-muted:      #676D76;
+  --tv-note-bg:         #30343C;
+  --tv-header-bg:       #1C1E22;
+  --tv-header-text:     #E6E8EC;
+}
+
+/* === Transition animations === */
+.tv-task-card{transition:background-color .22s ease,opacity .28s ease,transform .28s ease,box-shadow .22s ease}
+.tv-task-card
+.tv-task-card
+.tv-task-card
+
+/* === TOP NAV === */
+.tv-topnav{display:flex;align-items:center;justify-content:center;gap:10px;padding:22px 20px 14px}
+.tv-topnav-projects{font-size:17px;font-weight:400;color:var(--tv-text-muted);letter-spacing:-.02em;white-space:nowrap;cursor:default;transition:color .15s}
+.tv-topnav-projects.is-active{font-weight:700;color:var(--tv-text)}
+.tv-topnav-projects.is-link{cursor:pointer;color:var(--tv-text-secondary)}
+.tv-topnav-projects.is-link:active{color:var(--tv-text)}
+.tv-topnav-dot{font-size:17px;color:var(--tv-text-muted);font-weight:400;flex-shrink:0}
+.tv-topnav-section{font-size:17px;font-weight:400;color:var(--tv-text-muted);letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:55vw;transition:color .15s}
+.tv-topnav-section.is-active{font-weight:700;color:var(--tv-text)}
+
+/* === TASK TOOLBAR — sticky === */
+.tv-task-toolbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;padding:10px 16px 10px;
+  background:var(--tv-bg);
+  border-bottom:1px solid var(--tv-border);
+  max-width:100%;box-sizing:border-box;
+}
+.tv-toolbar-left{
+  font-size:10.5px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--tv-text-muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  flex:1;min-width:0;
+}
+.tv-toolbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.tv-toolbar-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 12px;border-radius:100px;
+  font-family:'Inter',sans-serif;font-size:11.5px;font-weight:600;
+  cursor:pointer;letter-spacing:.01em;
+  transition:opacity .15s;-webkit-tap-highlight-color:transparent;
+  white-space:nowrap;touch-action:manipulation;
+}
+.tv-toolbar-btn:active{opacity:.75}
+.tv-jobsheet-btn{
+  background:#E8E3D8;color:#5a4a2a;border:none;
+}
+html.tv-dark .tv-jobsheet-btn{background:#2E2A22;color:#c4a96a;border:none;}
+.tv-undo-btn{
+  background:#1A1D21;color:#F4F3F0;border:none;
+}
+html.tv-dark .tv-undo-btn{background:var(--tv-surface-raised);color:var(--tv-text);border:1px solid var(--tv-border);}
+
+/* === TASK CARD STATES === */
+.tv-task-card.tv-card-complete{opacity:0.5}
+
+/* === ADVANCE BUTTON (single tap) === */
+.tv-advance-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:84px;padding:10px 8px;border-radius:10px;border:none;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:transform .1s ease,opacity .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;line-height:1.2}
+.tv-advance-btn:active{transform:scale(0.95);opacity:.8}
+.tv-advance-btn svg{width:20px;height:20px;flex-shrink:0}
+.tv-btn-pending{background:var(--tv-pending-bg);color:var(--tv-pending-text)}
+.tv-btn-infield{background:var(--tv-infield-bg);color:var(--tv-infield-text)}
+.tv-btn-complete{background:var(--tv-complete-bg);color:var(--tv-complete-text);cursor:default;opacity:.75}
+.tv-btn-complete:active{transform:none;opacity:.75}
+
+/* === REOPEN LINK === */
+.tv-action-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.tv-reopen-link{background:none;border:none;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;color:var(--tv-text-muted);cursor:pointer;padding:2px 4px;text-decoration:underline;text-underline-offset:2px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.tv-reopen-link:active{color:var(--tv-text-secondary)}
+
+/* === TASK ACTION COLUMN === */
+.tv-task-action{display:flex;align-items:center;justify-content:center;padding:12px 12px 12px 10px;flex-shrink:0}
+
+/* === NOTES BOTTOM SHEET === */
+.tv-sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);pointer-events:none;transition:background .25s ease;z-index:200}
+.tv-sheet-overlay.open{background:rgba(0,0,0,0.4);pointer-events:all}
+.tv-bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--tv-surface);border-radius:20px 20px 0 0;padding:0 20px calc(32px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .3s cubic-bezier(0.32,0.72,0,1);z-index:201;display:flex;flex-direction:column}
+.tv-bottom-sheet.open{transform:translateY(0)}
+.tv-sheet-handle{width:36px;height:4px;background:var(--tv-border);border-radius:2px;margin:12px auto 18px;flex-shrink:0}
+.tv-sheet-title{font-size:16px;font-weight:700;color:var(--tv-text);margin-bottom:2px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tv-sheet-sub{font-size:12px;color:var(--tv-text-muted);margin-bottom:14px;flex-shrink:0}
+.tv-sheet-textarea{border:1px solid var(--tv-border);border-radius:10px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:15px;color:var(--tv-text);background:var(--tv-note-bg);outline:none;resize:none;min-height:100px;line-height:1.5;transition:border-color .15s;-webkit-user-select:text;user-select:text}
+.tv-sheet-textarea:focus{border-color:var(--tv-text-secondary)}
+.tv-sheet-textarea::placeholder{color:var(--tv-text-muted)}
+.tv-sheet-char{font-size:11px;color:var(--tv-text-muted);text-align:right;margin-top:4px;margin-bottom:12px;flex-shrink:0}
+.tv-sheet-save{width:100%;border:none;border-radius:12px;height:50px;background:var(--tv-text);color:var(--tv-bg);font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;flex-shrink:0;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
+.tv-sheet-save:active{opacity:.8}
+html.tv-dark .tv-sheet-save{background:var(--tv-surface-raised);color:var(--tv-text);border:1px solid var(--tv-border)}
+
+/* === COMPLETED DIVIDER === */
+.tv-completed-divider{display:flex;align-items:center;gap:8px;margin:20px 0 10px}
+.tv-completed-divider-line{flex:1;height:1px;background:var(--tv-divider)}
+.tv-completed-divider-text{font-size:11px;font-weight:600;color:var(--tv-text-muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+
+/* === NEW CARD LAYOUT — vertical, full-width button === */
+.tv-task-card {
+  border-radius: 16px;
+  padding: 14px 14px 13px;
+  margin-bottom: 10px;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
+}
+.tv-task-card.tv-card-pending  { background: var(--tv-pending-bg);  }
+.tv-task-card.tv-card-infield  { background: var(--tv-infield-bg);  }
+.tv-task-card.tv-card-complete { background: var(--tv-complete-bg); opacity: 0.6; }
+
+.tv-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+.tv-card-name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  flex: 1;
+  min-width: 0;
+}
+.tv-card-pending  .tv-card-name { color: #3d3400; }
+.tv-card-infield  .tv-card-name { color: #1a2d45; }
+.tv-card-complete .tv-card-name { color: #0d3320; }
+
+/* Pills */
+.tv-card-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  margin-top: 6px;
+}
+.tv-pill {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 100px;
+  line-height: 1.5;
+}
+.tv-card-pending  .tv-pill-site { background: rgba(255,255,255,0.55); color: #5a4a00; }
+.tv-card-pending  .tv-pill-type { background: #ba7517; color: #faeeda; letter-spacing:.07em; }
+.tv-card-pending  .tv-pill-dur  { background: rgba(255,255,255,0.35); color: #7a6010; }
+.tv-card-infield  .tv-pill-site { background: rgba(255,255,255,0.55); color: #2a4a6a; }
+.tv-card-infield  .tv-pill-type { background: #185fa5; color: #b5d4f4; letter-spacing:.07em; }
+.tv-card-infield  .tv-pill-dur  { background: rgba(255,255,255,0.35); color: #3a5a7a; }
+.tv-card-complete .tv-pill-site { background: rgba(255,255,255,0.55); color: #0d3320; }
+.tv-card-complete .tv-pill-type { background: #0f6e56; color: #9fe1cb; letter-spacing:.07em; }
+.tv-card-complete .tv-pill-dur  { background: rgba(255,255,255,0.35); color: #1a5035; }
+
+/* Note indicator */
+/* removed */
+/* removed */
+.tv-card-pending  /* removed */
+.tv-card-infield  /* removed */
+.tv-card-complete /* removed */
+/* removed */
+/* removed */
+.tv-note-indicator.has-note::after {
+  content: '';
+  position: absolute;
+  top: 5px; right: 5px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+/* removed */
+/* removed */
+/* removed */
+
+/* Reopen reason */
+.tv-reopen-row {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--tv-pending-text);
+  margin-bottom: 8px;
+}
+
+/* Full-width action area */
+.tv-card-action {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+/* Full-width advance button */
+.tv-advance-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 12px;
+  border-radius: 12px;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .1s ease, opacity .15s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.tv-advance-btn:active { transform: scale(0.98); opacity: .85; }
+.tv-advance-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+.tv-btn-pending  { background: rgba(255,255,255,0.5); color: #7a5210; }
+.tv-btn-infield  { background: rgba(255,255,255,0.5); color: #1c4a7a; }
+.tv-btn-complete { background: rgba(255,255,255,0.35); color: #1a5c35; cursor: default; }
+.tv-btn-complete:active { transform: none; }
+
+/* Reopen link */
+.tv-reopen-link {
+  background: none;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--tv-complete-text);
+  cursor: pointer;
+  padding: 2px 0;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: 0.6;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Dark mode card overrides */
+html.tv-dark .tv-card-pending  { background: var(--tv-pending-bg); }
+html.tv-dark .tv-card-infield  { background: var(--tv-infield-bg); }
+html.tv-dark .tv-card-complete { background: var(--tv-complete-bg); }
+html.tv-dark .tv-card-pending  .tv-card-name { color: #d4a84a; }
+html.tv-dark .tv-card-infield  .tv-card-name { color: #7aaed4; }
+html.tv-dark .tv-card-complete .tv-card-name { color: #5ec48a; }
+
+
+/* ============================================================
+   CARD ACTION ROW — undo box + main button
+   ============================================================ */
+.tv-card-action {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  margin-top: 2px;
+}
+.tv-card-action-pending {
+  display: flex;
+}
+
+/* Undo box — small, square-ish, muted */
+.tv-undo-box {
+  flex-shrink: 0;
+  width: 48px;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(0,0,0,0.10);
+  color: rgba(0,0,0,0.35);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: opacity .15s, transform .1s;
+}
+.tv-undo-box:active { transform: scale(0.94); opacity: .7; }
+.tv-undo-box svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+.tv-card-pending  .tv-undo-box { background: rgba(122,82,16,.12); color: rgba(122,82,16,.5); }
+.tv-card-infield  .tv-undo-box { background: rgba(28,74,122,.12); color: rgba(28,74,122,.5); }
+.tv-card-complete .tv-undo-box { background: rgba(26,92,53,.12);  color: rgba(26,92,53,.5); }
+
+/* Main button — flex:1 fills remaining width */
+.tv-main-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 10px;
+  border-radius: 10px;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .1s ease, opacity .15s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.tv-main-btn:active { transform: scale(0.97); opacity: .85; }
+.tv-main-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* Pending → In Field */
+.tv-btn-pending  { background: rgba(255,255,255,0.55); color: #7a5210; }
+/* In Field → Complete */
+.tv-btn-infield  { background: rgba(255,255,255,0.55); color: #1c4a7a; }
+/* Complete → Reopen */
+.tv-btn-complete { background: rgba(255,255,255,0.35); color: #1a5c35; }
+
+/* Full width when no undo box (pending only) */
+.tv-card-action-pending .tv-main-btn { border-radius: 10px; }
+
+/* ============================================================
+   STICKY TOOLBAR — full-width job sheet
+   ============================================================ */
+.tv-task-toolbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100;
+  background: var(--tv-bg);
+  border-bottom: 1px solid var(--tv-border);
+  padding: 10px 16px;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+.tv-jobsheet-wide {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #E8E3D8;
+  color: #5a4a2a;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: opacity .15s;
+}
+.tv-jobsheet-wide:active { opacity: .75; }
+html.tv-dark .tv-jobsheet-wide { background: #2E2A22; color: #c4a96a; }
+
+/* ============================================================
+   CARD SPACING FIXES
+   ============================================================ */
+.tv-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.tv-card-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   NOTE INDICATOR — override external CSS with !important
+   ============================================================ */
+/* removed */
+/* removed */
+.tv-card-pending  /* removed */
+.tv-card-infield  /* removed */
+.tv-card-complete /* removed */
+/* removed */
+/* removed */
+.tv-note-indicator.has-note::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 5px !important; right: 5px !important;
+  width: 6px !important; height: 6px !important;
+  border-radius: 50% !important;
+}
+/* removed */
+/* removed */
+/* removed */
+
+/* Dark mode undo box */
+html.tv-dark .tv-undo-box { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); }
+
+/* ============================================================
+   NOTE INDICATOR — real span dot, !important overrides
+   ============================================================ */
+/* removed */
+/* removed */
+/* removed */
+/* removed */
+/* removed */
+
+/* Stroke colors per card state */
+.tv-card-pending  /* removed */
+.tv-card-infield  /* removed */
+.tv-card-complete /* removed */
+
+/* Dot — real span element, no pseudo */
+/* removed */
+.tv-card-pending  /* removed */
+.tv-card-infield  /* removed */
+.tv-card-complete /* removed */
+
+/* ============================================================
+   UNDO BOX + MAIN BUTTON — final layout
+   ============================================================ */
+.tv-card-action {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+  margin-top: 2px !important;
+}
+.tv-card-action-pending {
+  display: flex !important;
+}
+.tv-undo-box {
+  flex-shrink: 0 !important;
+  width: 48px !important;
+  border: none !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
+  transition: opacity .15s, transform .1s !important;
+  align-self: stretch !important;
+}
+.tv-undo-box:active { transform: scale(0.93) !important; opacity: .7 !important; }
+.tv-undo-box svg { width: 17px !important; height: 17px !important; stroke: currentColor !important; fill: none !important; stroke-width: 2.2 !important; }
+.tv-card-pending  .tv-undo-box { background: rgba(122,82,16,.13) !important; color: rgba(122,82,16,.55) !important; }
+.tv-card-infield  .tv-undo-box { background: rgba(28,74,122,.13) !important; color: rgba(28,74,122,.55) !important; }
+.tv-card-complete .tv-undo-box { background: rgba(26,92,53,.13) !important;  color: rgba(26,92,53,.55) !important; }
+html.tv-dark .tv-undo-box { background: rgba(255,255,255,0.09) !important; color: rgba(255,255,255,0.3) !important; }
+
+.tv-main-btn {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 15px 10px !important;
+  border-radius: 10px !important;
+  border: none !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: transform .1s ease, opacity .15s !important;
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
+}
+.tv-main-btn:active { transform: scale(0.97) !important; opacity: .85 !important; }
+.tv-main-btn svg { width: 16px !important; height: 16px !important; flex-shrink: 0 !important; stroke: currentColor !important; fill: none !important; stroke-width: 2.5 !important; }
+.tv-btn-pending  { background: rgba(255,255,255,0.55) !important; color: #7a5210 !important; }
+.tv-btn-infield  { background: rgba(255,255,255,0.55) !important; color: #1c4a7a !important; }
+.tv-btn-complete { background: rgba(255,255,255,0.35) !important; color: #1a5c35 !important; }
+
+/* === CRITICAL VIEW DISPLAY RULES (self-contained) === */
+.tv-view { display: none !important; }
+.tv-view.active { display: block !important; }
+body { background: var(--tv-bg); color: var(--tv-text); overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+#projectCards { display: flex; flex-direction: column; gap: 10px; padding: 12px 16px 40px; max-width: 480px; margin: 0 auto; }
+.tv-content { padding: 0; max-width: 100%; }
+#taskCards { padding: 12px 16px 100px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="tv-topnav" id="tvTopnav">
+  <span class="tv-topnav-projects" id="topnavProjects" onclick="showProjects()">Projects</span>
+  <span class="tv-topnav-dot">·</span>
+  <span class="tv-topnav-section" id="topnavSection">Tech View</span>
+</div>
+
+<!-- STATS BAR (project list only) -->
+<div class="tv-page-sub" id="projectStatsBar"></div>
+
+<!-- STICKY TASK TOOLBAR -->
+<div class="tv-task-toolbar" id="tvTaskToolbar" style="display:none">
+  <button class="tv-jobsheet-wide" id="toolbarJobSheetBtn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    View Job Sheet
+  </button>
+</div>
+
+
+<!-- JOB SHEET OVERLAY -->
+<div class="jobsheet-overlay" id="printOverlay">
+  <div class="jobsheet-header">
+    <button class="jobsheet-close" id="closeJobSheetBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="jobsheet-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Job Sheet</span>
+    <button class="jobsheet-download" id="printJobSheetBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
+  </div>
+  <div class="jobsheet-body" id="printContent"></div>
+</div>
+
+<!-- REOPEN MODAL -->
+<div class="tv-reopen-overlay" id="reopenOverlay">
+  <div class="tv-reopen-modal">
+    <div class="tv-reopen-title">Reopen Task</div>
+    <div class="tv-reopen-sub" id="reopenTaskName"></div>
+    <textarea class="tv-reopen-input" id="reopenReason" placeholder="Why are you reopening this task?"></textarea>
+    <div class="tv-reopen-actions">
+      <button class="tv-reopen-cancel" onclick="closeReopenModal()">Cancel</button>
+      <button class="tv-reopen-confirm" onclick="confirmReopen()">Reopen</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- NOTES BOTTOM SHEET -->
+<div class="tv-sheet-overlay" id="sheetOverlay" onclick="closeNoteSheet()"></div>
+<div class="tv-bottom-sheet" id="noteBottomSheet">
+  <div class="tv-sheet-handle"></div>
+  <div class="tv-sheet-title" id="sheetTitle">Note</div>
+  <div class="tv-sheet-sub" id="sheetSub"></div>
+  <textarea class="tv-sheet-textarea" id="sheetTextarea" placeholder="Add a note for this site…" maxlength="100"></textarea>
+  <div class="tv-sheet-char" id="sheetCharCount">100</div>
+  <button class="tv-sheet-save" onclick="saveNoteSheet()">Save Note</button>
+</div>
+
+<!-- TOAST -->
+<div id="actionToast" onclick="toastUndo()" style="
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:#1A1D21;color:#F4F3F0;padding:10px 18px;border-radius:100px;
+  font-family:Inter,sans-serif;font-size:13px;font-weight:600;
+  display:flex;align-items:center;gap:10px;z-index:500;
+  transition:transform .3s cubic-bezier(0.32,0.72,0,1);
+  white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.25);
+  cursor:pointer;-webkit-tap-highlight-color:transparent;">
+  <span id="toastLabel"></span>
+  <span style="opacity:0.5;font-size:11px;letter-spacing:.05em;text-transform:uppercase;">Undo</span>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="tv-content">
+  <div class="tv-view active" id="projectView"><div id="projectCards"></div></div>
+  <div class="tv-view" id="taskView"><div id="taskCards"></div></div>
+</div>
+
+<script type="module">
+import { supabase } from './js/supabase.js'
+
+(function(){var h=new Date().getHours();if(h<7||h>=19)document.documentElement.classList.add('tv-dark')})();
+
+const STATUS={PENDING:'Pending',INFIELD:'In Field',COMPLETE:'Complete'};
+const state={techId:null,companyId:null,techName:'Tech',projects:[],currentProject:null,lastAction:null,reopenTargetId:null,activeNoteTaskId:null,durationInterval:null,loading:false};
+
+function qp(n){
+  var params=new URLSearchParams(window.location.search);
+  if(n==='pin') return params.get('pin')||params.get('p');
+  return params.get(n);
+}
+function escapeHtml(s){return String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+function getInitials(n){if(!n)return'—';return n.split(' ').map(p=>p[0]).join('').toUpperCase()}
+function fmtTimeTV(d){if(!d)return'';var dt=(d instanceof Date)?d:new Date(d);var m=dt.getMonth()+1;var day=dt.getDate();var h=dt.getHours();var min=dt.getMinutes();var ap=h>=12?'p':'a';h=h%12||12;return m+'/'+day+' '+h+':'+(min<10?'0':'')+min+ap}
+function fmtDurTV(ms){if(!ms||ms<0)return'';var h=Math.floor(ms/3600000);var m=Math.floor((ms%3600000)/60000);return h+'h '+m+'m'}
+function fmtDuration(ms){if(ms<0)ms=0;var m=Math.floor(ms/60000),h=Math.floor(m/60),mn=m%60;if(h>=24)return Math.floor(h/24)+'d '+(h%24)+'h';return h+'h '+mn+'m'}
+function mapTaskStatus(s){if(s==='pending')return STATUS.PENDING;if(s==='complete')return STATUS.COMPLETE;return STATUS.INFIELD}
+function getTechName(u){if(!u)return'';return[u.first_name||'',u.last_name?u.last_name[0]+'.':''].filter(Boolean).join(' ').trim()}
+function getStudyTypeCode(st){if(!st)return'OTH';return st.code||'OTH'}
+function getLiveDuration(t){if(t.status!==STATUS.INFIELD||!t.currentCycle.deployedAt)return'';return fmtDuration(Date.now()-new Date(t.currentCycle.deployedAt).getTime())}
+function taskCounts(t){return{total:t.length,pending:t.filter(x=>x.status===STATUS.PENDING).length,infield:t.filter(x=>x.status===STATUS.INFIELD).length,complete:t.filter(x=>x.status===STATUS.COMPLETE).length}}
+function pct(c){return c.total>0?Math.round((c.complete/c.total)*100):0}
+function currentTasks(){return state.currentProject?state.currentProject.tasks:[]}
+function showError(msg,err){console.error(msg,err);alert(msg+(err&&err.message?'\n\n'+err.message:''))}
+function setLoading(v){state.loading=v;document.body.classList.toggle('tv-loading',!!v)}
+function stopDurationTimer(){if(state.durationInterval){clearInterval(state.durationInterval);state.durationInterval=null}}
+function startDurationTimer(){stopDurationTimer();state.durationInterval=setInterval(function(){document.querySelectorAll('.live-duration').forEach(function(el){var tid=el.getAttribute('data-task-id');var task=currentTasks().find(t=>String(t.id)===String(tid));if(task)el.textContent=getLiveDuration(task)})},30000)}
+
+function setTopNav(projectName){
+  var proj=document.getElementById('topnavProjects');
+  var section=document.getElementById('topnavSection');
+  if(projectName){
+    proj.classList.add('is-link');
+    proj.classList.remove('is-active');
+    section.textContent=projectName;
+    section.classList.add('is-active');
+  } else {
+    proj.classList.remove('is-link');
+    proj.classList.add('is-active');
+    section.textContent='Tech View';
+    section.classList.remove('is-active');
+  }
+}
+
+
+
+
+
+
+function normalizeTask(row,cyclesByTask){
+  const taskCycles=(cyclesByTask[row.id]||[]).slice().sort((a,b)=>(b.cycle_num||0)-(a.cycle_num||0));
+  const latest=taskCycles[0]||null;
+  return{id:row.id,site:row.site,desc:row.description||row.desc||'',type:getStudyTypeCode(row.study_types),tech:getTechName(row.users),techId:row.tech_id||null,status:mapTaskStatus(row.status),note:row.notes||'',reopenReason:row.reopen_reason||'',cycles:taskCycles.map(c=>({id:c.id,cycle_num:c.cycle_num,deployedAt:c.deployed_at?new Date(c.deployed_at):null,completedAt:c.completed_at?new Date(c.completed_at):null,pickedUpAt:c.picked_up_at?new Date(c.picked_up_at):null,reopenReason:c.notes||'',reopenedBy:c.reopened_by||''})),currentCycle:(row.status==='pending'||!latest)?{deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null}:{deployedAt:latest.deployed_at?new Date(latest.deployed_at):null,completedAt:latest.completed_at?new Date(latest.completed_at):null,pickedUpAt:latest.picked_up_at?new Date(latest.picked_up_at):null,cycleId:latest.id,cycleNum:latest.cycle_num}}
+}
+
+async function loadTech(){
+  const techId=qp('tech'),pin=qp('pin'),companyId=qp('company');
+  let query=supabase.from('users').select('id, company_id, first_name, last_name, pin, role, status');
+  if(techId)query=query.eq('id',techId);
+  else if(pin){query=query.eq('pin',pin);if(companyId)query=query.eq('company_id',companyId);}
+  else throw new Error('Missing tech or pin in URL');
+  const {data,error}=await query.eq('role','tech').eq('status','active').maybeSingle();
+  if(error)throw error;if(!data)throw new Error('Tech not found');
+  state.techId=data.id;state.companyId=data.company_id;state.techName=getTechName(data)||'Tech';
+}
+
+async function loadProjectsAndTasks(){
+  const {data:projectRows,error:pe}=await supabase.from('projects').select('id,company_id,name,location,status,notes,client').eq('company_id',state.companyId).order('created_at',{ascending:false});
+  if(pe)throw pe;
+  const projectIds=(projectRows||[]).map(p=>p.id);
+  if(!projectIds.length){state.projects=[];return;}
+  const {data:taskRows,error:te}=await supabase.from('tasks').select('*,study_types:study_type_id(id,code,name),users:tech_id(id,first_name,last_name)').in('project_id',projectIds).eq('tech_id',state.techId).order('site',{ascending:true});
+  if(te)throw te;
+  const taskIds=(taskRows||[]).map(t=>t.id);
+  const cyclesByTask={};
+  if(taskIds.length){
+    const {data:cycles,error:ce}=await supabase.from('cycles').select('*').in('task_id',taskIds).order('cycle_num',{ascending:false});
+    if(ce)throw ce;
+    (cycles||[]).forEach(c=>{if(!cyclesByTask[c.task_id])cyclesByTask[c.task_id]=[];cyclesByTask[c.task_id].push(c);});
+  }
+  state.projects=(projectRows||[]).map(p=>{
+    const tasks=(taskRows||[]).filter(t=>t.project_id===p.id).map(row=>normalizeTask(row,cyclesByTask));
+    const count=taskCounts(tasks);
+    return{id:p.id,name:p.name,location:p.location||'',client:p.client||'',status:p.status||'active',notes:p.notes||'',tasks,counts:count,pct:pct(count)};
+  }).filter(p=>p.tasks.length>0);
+}
+
+
+async function touchLastActive(){if(!state.techId)return;const {error}=await supabase.from('users').update({last_active_at:new Date().toISOString()}).eq('id',state.techId);if(error)console.error('Could not update last active.',error);}
+
+async function loadAll(){
+  setLoading(true);
+  try{
+    await loadTech();await touchLastActive();await loadProjectsAndTasks();
+    console.log('Projects loaded:',state.projects.length,'Tech:',state.techId);
+    renderProjectStats();renderProjectCards();
+    if(!state.projects.length)document.getElementById('projectCards').innerHTML='<div class="tv-empty-state" style="text-align:center;padding:40px 16px;color:var(--tv-text-muted);">No assigned jobs right now</div>';
+  }catch(err){
+    console.error('loadAll error:',err);
+    document.getElementById('projectCards').innerHTML='<div class="tv-empty-state" style="text-align:center;padding:40px 16px;color:red;">Error: '+err.message+'</div>';
+  }
+  finally{setLoading(false);}
+}
+
+function renderProjectStats(){
+  var active=state.projects.filter(p=>p.tasks.some(t=>t.status!==STATUS.COMPLETE));
+  var openTasks=active.reduce((sum,p)=>sum+p.tasks.filter(t=>t.status!==STATUS.COMPLETE).length,0);
+  var el=document.getElementById('projectStatsBar');
+  if(el)el.textContent=active.length+' jobs need attention · '+openTasks+' open tasks';
+}
+
+function renderProjectCards(){
+  var container=document.getElementById('projectCards');if(!container)return;
+  container.innerHTML=state.projects.map(p=>{
+    var counts=taskCounts(p.tasks),done=counts.complete,total=counts.total;
+    var isAllDone=total>0&&done===total,hasInfield=counts.infield>0,hasPending=counts.pending>0;
+    var cardClass=isAllDone?'mc-complete':hasInfield?'mc-inprogress':'mc-pending';
+    var leftBadge='',rightBadge='';
+    if(!isAllDone){if(hasInfield){leftBadge='<span class="mc-pill-sm mc-infield-pill"><span class="mc-blink"></span>'+counts.infield+' In Field</span>';if(hasPending)rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';}else if(hasPending){rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';}}
+    var showTopBar=leftBadge||rightBadge;
+    var checkmark=isAllDone?'<div class="mc-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1A5C35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>':'';
+    var pctVal=total>0?Math.round((done/total)*100):0;
+    var html='<div class="mc '+cardClass+(showTopBar?'':' mc-no-topbar')+'" data-action="open-project" data-id="'+p.id+'">';
+    if(showTopBar)html+='<div class="mc-top-bar"><div class="mc-top-left">'+leftBadge+'</div><div class="mc-top-mid"></div><div class="mc-top-right">'+rightBadge+'</div></div>';
+    html+='<div class="mc-name-row"><div class="mc-name">'+escapeHtml(p.name)+'</div>'+checkmark+'</div>';
+    html+='<div class="mc-city">'+escapeHtml(p.location)+'</div>';
+    html+='<div class="mc-divider"></div>';
+    html+='<div class="mc-counter"><span class="mc-done">'+done+'</span><span class="mc-slash">/</span><span class="mc-total">'+total+'</span></div>';
+    html+='<div class="mc-counter-label">Tasks Complete</div>';
+    html+='<button class="mc-pill" data-action="jobsheet" data-id="'+p.id+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Job Sheet</button>';
+    html+='<div class="mc-prog"><div class="mc-prog-fill" style="width:'+pctVal+'%"></div></div>';
+    html+='</div>';
+    return html;
+  }).join('');
+}
+
+function showProjects(){
+  stopDurationTimer();state.currentProject=null;state.lastAction=null;state.activeNoteTaskId=null;
+  document.getElementById('tvTaskToolbar').style.display='none';
+  document.getElementById('projectStatsBar').style.display='';
+  document.getElementById('projectView').classList.add('active');
+  document.getElementById('taskView').classList.remove('active');
+  setTopNav(null);renderProjectStats();renderProjectCards();
+}
+
+function openProject(id){
+  state.currentProject=state.projects.find(p=>p.id===id);if(!state.currentProject)return;
+  state.lastAction=null;state.activeNoteTaskId=null;
+  document.getElementById('projectView').classList.remove('active');
+  document.getElementById('taskView').classList.add('active');
+  document.getElementById('projectStatsBar').style.display='none';
+  document.getElementById('tvTaskToolbar').style.display='flex';
+  document.getElementById('toolbarJobSheetBtn').onclick=()=>openJobSheet(state.currentProject.id);
+  setTopNav(state.currentProject.name);
+  renderTaskCards();startDurationTimer();
+}
+
+function renderTaskCards(){
+  if(!state.currentProject)return;
+  var tasks=state.currentProject.tasks;
+  var statusOrder={};statusOrder[STATUS.PENDING]=0;statusOrder[STATUS.INFIELD]=1;statusOrder[STATUS.COMPLETE]=2;
+  var openTasks=tasks.filter(t=>t.status!==STATUS.COMPLETE);
+  var completedTasks=tasks.filter(t=>t.status===STATUS.COMPLETE);
+  openTasks.sort((a,b)=>(statusOrder[a.status]||0)-(statusOrder[b.status]||0)||a.site-b.site);
+  completedTasks.sort((a,b)=>a.site-b.site);
+  var html='';
+  openTasks.forEach(t=>{html+=taskCardHTML(t,false);});
+  if(completedTasks.length>0){
+    html+='<div class="tv-completed-divider"><div class="tv-completed-divider-line"></div><span class="tv-completed-divider-text">Complete ('+completedTasks.length+')</span><div class="tv-completed-divider-line"></div></div>';
+    completedTasks.forEach(t=>{html+=taskCardHTML(t,true);});
+  }
+  if(openTasks.length===0&&completedTasks.length===0)html='<div class="tv-empty-state">No tasks assigned</div>';
+  document.getElementById('taskCards').innerHTML=html;
+  // Wire all buttons
+  document.querySelectorAll('.tv-main-btn[data-task-id]').forEach(btn=>{
+    btn.addEventListener('click',()=>cycleTaskStatus(btn.dataset.taskId));
+  });
+  document.querySelectorAll('[data-undo][data-task-id]').forEach(btn=>{
+    btn.addEventListener('click',()=>undoCardStatus(btn.dataset.taskId,btn.dataset.undo));
+  });
+  document.querySelectorAll('[data-action="toggle-note"]').forEach(btn=>{
+    btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openNoteSheet(btn.dataset.taskId);});
+  });
+}
+
+function taskCardHTML(t,isComplete){
+  var stateClass=isComplete?'tv-card-complete':t.status===STATUS.INFIELD?'tv-card-infield':'tv-card-pending';
+  var nameColor=isComplete?'#0d3320':t.status===STATUS.INFIELD?'#1a2d45':'#3d3400';
+  var noteStroke=isComplete?'#1a5c35':t.status===STATUS.INFIELD?'#1c4a7a':'#7a5210';
+  var dotColor=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
+  var dotBorder=isComplete?'#ddf0e4':t.status===STATUS.INFIELD?'#d6e4f0':'#f5f0d8';
+  var borderColor=isComplete?'rgba(26,92,53,.25)':t.status===STATUS.INFIELD?'rgba(28,74,122,.25)':'rgba(122,82,16,.25)';
+  var undoColor=isComplete?'rgba(26,92,53,.55)':t.status===STATUS.INFIELD?'rgba(28,74,122,.55)':'rgba(122,82,16,.55)';
+
+  // Note button — small box, center dot, corner dot if has note
+  // Sits inline with pills row
+  var cornerDot=t.note
+    ?'<span style="position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;background:'+dotColor+';border:1.5px solid '+dotBorder+';display:block;pointer-events:none;"></span>'
+    :'';
+  var centerDot='<span style="width:4px;height:4px;border-radius:50%;background:'+noteStroke+';display:block;opacity:0.6;flex-shrink:0;"></span>';
+  var noteBtn='<button type="button" data-action="toggle-note" data-task-id="'+t.id+'" style="'
+    +'position:relative;background:transparent;'
+    +'border:1.5px solid '+borderColor+';border-radius:7px;'
+    +'width:26px;height:26px;min-width:26px;flex-shrink:0;'
+    +'display:flex;align-items:center;justify-content:center;'
+    +'cursor:pointer;padding:0;margin-left:auto;">'
+    +centerDot+cornerDot+'</button>';
+
+  // Pills row — site#, type, duration, note button all on same line
+  var typeBg=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
+  var typeColor=isComplete?'#9fe1cb':t.status===STATUS.INFIELD?'#b5d4f4':'#faeeda';
+  var pills='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.5);color:'+noteStroke+';">#'+t.site+'</span>';
+  if(t.type) pills+='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:'+typeBg+';color:'+typeColor+';letter-spacing:.05em;">'+escapeHtml(t.type)+'</span>';
+  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)
+    pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.35);color:'+noteStroke+';" class="live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
+  else if(isComplete&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)
+    pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.35);color:'+noteStroke+';">'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>';
+
+  var reopenHTML='';
+  var reopenText=t.reopenReason||(t.cycles.length>0?(t.cycles[0].reopenReason||''):'');
+  if(reopenText&&t.status===STATUS.PENDING)
+    reopenHTML='<div style="font-size:11px;color:'+noteStroke+';margin-bottom:8px;opacity:0.8;">Reopened: '+escapeHtml(reopenText)+'</div>';
+
+  // Undo SVG
+  var undoSvg='<svg viewBox="0 0 24 24" fill="none" stroke="'+undoColor+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:block;">'
+    +'<path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>';
+
+  // Undo box — only on In Field and Complete
+  var undoBoxHTML=t.status===STATUS.PENDING?'':
+    '<button data-task-id="'+t.id+'" data-undo="'+(isComplete?'complete':'infield')+'" style="'
+    +'flex-shrink:0;width:44px;align-self:stretch;'
+    +'border:1.5px solid '+borderColor+';border-radius:10px;'
+    +'background:transparent;'
+    +'display:flex;align-items:center;justify-content:center;'
+    +'cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
+    +undoSvg+'</button>';
+
+  // Main button
+  var mainLabel=isComplete?'Reopen':t.status===STATUS.INFIELD?'In Field':'Pending';
+  var mainIcon=t.status===STATUS.PENDING
+    ?'<svg viewBox="0 0 24 24" fill="none" stroke="'+noteStroke+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
+    :'<svg viewBox="0 0 24 24" fill="none" stroke="'+noteStroke+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  var actionHTML='<div style="display:flex;flex-direction:row;align-items:stretch;gap:8px;">'
+    +undoBoxHTML
+    +'<button class="tv-main-btn" data-task-id="'+t.id+'" style="'
+    +'flex:1;display:flex;align-items:center;justify-content:center;gap:7px;'
+    +'padding:13px 10px;border-radius:10px;border:none;'
+    +'background:rgba(255,255,255,0.5);color:'+noteStroke+';'
+    +'font-family:Inter,sans-serif;font-size:12px;font-weight:700;'
+    +'letter-spacing:.07em;text-transform:uppercase;cursor:pointer;'
+    +'-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
+    +mainIcon+mainLabel+'</button>'
+    +'</div>';
+
+  // Equal 8px gap: name → pills row → button
+  return '<div class="tv-task-card '+stateClass+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'" style="padding:13px 13px 12px;">'
+    +'<div class="tv-card-name" style="font-size:16px;font-weight:700;letter-spacing:-0.02em;color:'+nameColor+';margin-bottom:8px;">'+escapeHtml(t.desc)+'</div>'
+    +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;margin-bottom:8px;">'+pills+noteBtn+'</div>'
+    +reopenHTML
+    +actionHTML
+    +'</div>';
+}
+async function getCoords(){if(qp('geo')!=='1')return null;if(!navigator.geolocation)return null;return new Promise(resolve=>{navigator.geolocation.getCurrentPosition(pos=>resolve({lat:pos.coords.latitude,lng:pos.coords.longitude}),()=>resolve(null),{enableHighAccuracy:true,timeout:3000,maximumAge:300000})})}
+async function getLatestCycleRow(taskId){const {data,error}=await supabase.from('cycles').select('*').eq('task_id',taskId).order('cycle_num',{ascending:false}).limit(1).maybeSingle();if(error)throw error;return data||null;}
+async function getCycleRowById(cycleId){if(!cycleId)return null;const {data,error}=await supabase.from('cycles').select('*').eq('id',cycleId).maybeSingle();if(error)throw error;return data||null;}
+async function refreshCurrentProject(projectId){await loadProjectsAndTasks();if(projectId)state.currentProject=state.projects.find(p=>String(p.id)===String(projectId))||null;}
+
+async function cycleTaskStatus(taskId){
+  if(!state.currentProject)return;
+  var task=state.currentProject.tasks.find(t=>String(t.id)===String(taskId));
+  if(!task)return;
+  var prevStatus=task.status;
+  var prevCycle=Object.assign({},task.currentCycle);
+
+  var nextStatus;
+  if(task.status===STATUS.PENDING) nextStatus=STATUS.INFIELD;
+  else if(task.status===STATUS.INFIELD) nextStatus=STATUS.COMPLETE;
+  else if(task.status===STATUS.COMPLETE) nextStatus=STATUS.PENDING;
+  else return;
+
+  // Update in memory instantly
+  task.status=nextStatus;
+  if(nextStatus===STATUS.INFIELD){
+    task.currentCycle={deployedAt:new Date(),completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+  } else if(nextStatus===STATUS.COMPLETE){
+    task.currentCycle=Object.assign({},prevCycle,{completedAt:new Date(),pickedUpAt:new Date()});
+  } else {
+    task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+    task.reopenReason='Reopened by tech';
+  }
+
+  // Re-render card in place
+  var cardEl=document.getElementById('task-card-'+String(taskId));
+  if(cardEl){
+    var isNowComplete=nextStatus===STATUS.COMPLETE;
+    cardEl.outerHTML=taskCardHTML(task,isNowComplete);
+    rewireCard(taskId);
+    var newCard=document.getElementById('task-card-'+String(taskId));
+    if(newCard){
+      var flashColor=nextStatus===STATUS.COMPLETE?'rgba(26,92,53,0.5)':nextStatus===STATUS.INFIELD?'rgba(28,74,122,0.5)':'rgba(122,82,16,0.4)';
+      newCard.style.transition='box-shadow 0.1s ease';
+      newCard.style.boxShadow='0 0 0 2px '+flashColor;
+      setTimeout(function(){newCard.style.transition='box-shadow 0.6s ease';newCard.style.boxShadow='none';},100);
+    }
+  }
+
+  // Show toast
+  var arrow=nextStatus===STATUS.INFIELD?'In Field':nextStatus===STATUS.COMPLETE?'Complete':'Pending';
+  showToast('#'+task.site+' · '+task.desc+' → '+arrow, taskId, prevStatus, prevCycle);
+
+  // Write to Supabase in background
+  try{
+    if(prevStatus===STATUS.PENDING && nextStatus===STATUS.INFIELD){
+      const latest=await getLatestCycleRow(taskId);
+      const nextNum=(latest?.cycle_num||0)+1;
+      const now=new Date().toISOString();
+      const coords=await getCoords();
+      const payload={task_id:taskId,cycle_num:nextNum,deployed_at:now,deployed_by:state.techId};
+      if(coords){payload.deploy_lat=coords.lat;payload.deploy_lng=coords.lng;}
+      const {data:nc,error:ce}=await supabase.from('cycles').insert([payload]).select('*').single();
+      if(ce)throw ce;
+      const {error:te}=await supabase.from('tasks').update({status:'in-field',reopen_reason:null}).eq('id',taskId);
+      if(te)throw te;
+      task.currentCycle.cycleId=nc.id;task.currentCycle.cycleNum=nc.cycle_num;
+      task.cycles.unshift({id:nc.id,cycle_num:nc.cycle_num,deployedAt:new Date(nc.deployed_at),completedAt:null,pickedUpAt:null,reopenReason:'',reopenedBy:''});
+    } else if(prevStatus===STATUS.INFIELD && nextStatus===STATUS.COMPLETE){
+      const cid=prevCycle.cycleId||null;
+      let latest=cid?await getCycleRowById(cid):null;
+      if(!latest)latest=await getLatestCycleRow(taskId);
+      if(!latest)throw new Error('No cycle found.');
+      const now=new Date().toISOString();
+      const coords=await getCoords();
+      const patch={picked_up_at:now,picked_up_by:state.techId,completed_at:now,completed_by:state.techId};
+      if(coords){patch.pickup_lat=coords.lat;patch.pickup_lng=coords.lng;}
+      const {error:ce2}=await supabase.from('cycles').update(patch).eq('id',latest.id);if(ce2)throw ce2;
+      const {error:te2}=await supabase.from('tasks').update({status:'complete'}).eq('id',taskId);if(te2)throw te2;
+    } else if(nextStatus===STATUS.PENDING){
+      const {error:te3}=await supabase.from('tasks').update({status:'pending',reopen_reason:'Reopened by tech'}).eq('id',taskId);if(te3)throw te3;
+    }
+    await touchLastActive();
+    renderProjectCards();
+  }catch(err){
+    console.error('Supabase error:',err);
+    task.status=prevStatus;task.currentCycle=prevCycle;
+    var el2=document.getElementById('task-card-'+String(taskId));
+    if(el2){el2.outerHTML=taskCardHTML(task,prevStatus===STATUS.COMPLETE);rewireCard(taskId);}
+    showError('Could not update task status.',err);
+  }
+}
+
+
+async function undoCardStatus(taskId, fromState){
+  if(!state.currentProject)return;
+  var task=state.currentProject.tasks.find(t=>String(t.id)===String(taskId));
+  if(!task)return;
+  var prevStatus=task.status;
+
+  // One step back
+  if(fromState==='infield'){
+    task.status=STATUS.PENDING;
+    task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+    task.reopenReason='';
+  } else if(fromState==='complete'){
+    task.status=STATUS.INFIELD;
+    if(task.currentCycle){task.currentCycle.completedAt=null;task.currentCycle.pickedUpAt=null;}
+  }
+
+  // Re-render in place
+  var cardEl=document.getElementById('task-card-'+String(taskId));
+  if(cardEl){
+    cardEl.outerHTML=taskCardHTML(task,false);
+    rewireCard(taskId);
+    var newCard=document.getElementById('task-card-'+String(taskId));
+    if(newCard){
+      newCard.style.transition='box-shadow 0.1s ease';
+      newCard.style.boxShadow='0 0 0 2px rgba(122,82,16,0.4)';
+      setTimeout(()=>{newCard.style.transition='box-shadow 0.6s ease';newCard.style.boxShadow='none';},100);
+    }
+  }
+  hideToast();
+
+  // Write to Supabase
+  try{
+    if(fromState==='infield'){
+      var cycleId=task.cycles.length?task.cycles[0].id:null;
+      if(cycleId){const {error:de}=await supabase.from('cycles').delete().eq('id',cycleId);if(de)throw de;}
+      const {error:te}=await supabase.from('tasks').update({status:'pending',reopen_reason:null}).eq('id',taskId);if(te)throw te;
+      task.cycles=task.cycles.filter(c=>c.id!==cycleId);
+    } else if(fromState==='complete'){
+      var cycleId2=task.currentCycle&&task.currentCycle.cycleId?task.currentCycle.cycleId:null;
+      if(cycleId2){const {error:ce}=await supabase.from('cycles').update({picked_up_at:null,picked_up_by:null,pickup_lat:null,pickup_lng:null,completed_at:null,completed_by:null}).eq('id',cycleId2);if(ce)throw ce;}
+      const {error:te2}=await supabase.from('tasks').update({status:'in-field'}).eq('id',taskId);if(te2)throw te2;
+    }
+    await touchLastActive();
+    renderProjectCards();
+  }catch(err){showError('Could not undo.',err);}
+}
+
+function rewireCard(taskId){
+  var card=document.getElementById('task-card-'+String(taskId));
+  if(!card)return;
+  card.querySelectorAll('.tv-main-btn[data-task-id]').forEach(btn=>{
+    btn.addEventListener('click',()=>cycleTaskStatus(btn.dataset.taskId));
+  });
+  card.querySelectorAll('[data-undo][data-task-id]').forEach(btn=>{
+    btn.addEventListener('click',()=>undoCardStatus(btn.dataset.taskId,btn.dataset.undo));
+  });
+  card.querySelectorAll('[data-action="toggle-note"]').forEach(btn=>{
+    btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openNoteSheet(btn.dataset.taskId);});
+  });
+}
+
+
+function promptReopen(taskId){
+  var task=state.currentProject.tasks.find(t=>String(t.id)===String(taskId));if(!task)return;
+  state.reopenTargetId=taskId;
+  document.getElementById('reopenTaskName').textContent='"'+task.desc+'"';
+  document.getElementById('reopenReason').value='';
+  document.getElementById('reopenOverlay').classList.add('visible');
+  setTimeout(()=>document.getElementById('reopenReason').focus(),200);
+}
+function closeReopenModal(){document.getElementById('reopenOverlay').classList.remove('visible');state.reopenTargetId=null;}
+async function confirmReopen(){
+  if(state.reopenTargetId===null||!state.currentProject)return;
+  var task=state.currentProject.tasks.find(t=>String(t.id)===String(state.reopenTargetId));if(!task)return;
+  var reason=document.getElementById('reopenReason').value.trim()||'Reopened by tech';
+  try{
+    const {error}=await supabase.from('tasks').update({status:'pending',reopen_reason:reason}).eq('id',state.reopenTargetId);
+    if(error)throw error;
+    await touchLastActive();
+    task.status=STATUS.PENDING;task.reopenReason=reason;
+    task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+    await refreshCurrentProject(state.currentProject.id);
+    closeReopenModal();renderTaskCards();renderProjectStats();renderProjectCards();
+  }catch(err){showError('Could not reopen task.',err);}
+}
+
+// ── Job Sheet ──────────────────────────────────────────────
+function openJobSheet(projectId){
+  var p=state.projects.find(x=>x.id===projectId);if(!p)return;
+  var tks=p.tasks||[];
+  var pending=tks.filter(t=>t.status===STATUS.PENDING),infield=tks.filter(t=>t.status===STATUS.INFIELD),complete=tks.filter(t=>t.status===STATUS.COMPLETE);
+  var now=new Date(),dateStr=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
+  var html='<div class="js-project"><div class="js-project-name">'+escapeHtml(p.name)+'</div>';
+  var meta=[p.client||'',p.location||''].filter(Boolean).join(' · ');
+  if(meta)html+='<div class="js-project-meta">'+escapeHtml(meta)+'</div>';
+  html+='</div>';
+  if(p.notes)html+='<div class="js-instructions-card"><div class="js-instructions-header"><span class="js-instructions-title">Instructions</span></div><div class="js-instructions-body">'+escapeHtml(p.notes)+'</div></div>';
+  function renderGroup(title,list,hClass,dClass){
+    if(!list.length)return'';
+    var s='<div class="js-section"><div class="js-section-header '+hClass+'"><div class="js-section-left"><span class="js-section-dot '+dClass+'"></span><span class="js-section-label">'+title+'</span></div><span class="js-section-count">'+list.length+'</span></div><div class="js-site-list">';
+    list.forEach(t=>{
+      var ini=getInitials(t.tech||state.techName);
+      s+='<div class="js-site"><div class="js-site-header"><span class="js-site-num">#'+t.site+'</span><span class="js-site-desc">'+escapeHtml(t.desc)+'</span><div class="js-site-tags">';
+      if(t.type)s+='<span class="js-site-tag">'+escapeHtml(t.type)+'</span>';
+      if(ini)s+='<span class="js-site-tech-init">'+ini+'</span>';
+      s+='</div></div>';
+      var times=[];
+      if(t.currentCycle&&t.currentCycle.deployedAt)times.push('Set: '+fmtTimeTV(t.currentCycle.deployedAt));
+      if(t.currentCycle&&t.currentCycle.completedAt)times.push('Pickup: '+fmtTimeTV(t.currentCycle.completedAt));
+      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)times.push('Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime()));
+      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt)times.push('Duration: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime()));
+      if(times.length)s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
+      if(t.reopenReason)s+='<div class="js-site-note">Reopened: '+escapeHtml(t.reopenReason)+'</div>';
+      if(t.note)s+='<div class="js-site-note">'+escapeHtml(t.note)+'</div>';
+      s+='</div>';
+    });
+    s+='</div></div>';return s;
+  }
+  html+=renderGroup('Pending',pending,'js-section-header-pending','js-section-dot-pending');
+  html+=renderGroup('In Field',infield,'js-section-header-infield','js-section-dot-infield');
+  html+=renderGroup('Complete',complete,'js-section-header-complete','js-section-dot-complete');
+  html+='<div class="js-footer">Report generated '+dateStr+' · <span class="js-footer-brand">The Count Company</span></div>';
+  document.getElementById('printContent').innerHTML='<div class="jobsheet-container">'+html+'</div>';
+  document.getElementById('printOverlay').classList.add('visible');
+  const lockY=window.scrollY||window.pageYOffset||0;
+  document.body.dataset.lockY=String(lockY);
+  document.body.style.cssText='position:fixed;top:-'+lockY+'px;left:0;right:0;width:100%;overflow:hidden';
+}
+function closePrintView(){
+  document.getElementById('printOverlay').classList.remove('visible');
+  const lockY=parseInt(document.body.dataset.lockY||'0',10)||0;
+  document.body.style.cssText='';delete document.body.dataset.lockY;window.scrollTo(0,lockY);
+}
+
+// ── Event delegation ───────────────────────────────────────
+document.getElementById('projectCards').addEventListener('click',function(e){
+  var el=e.target.closest('[data-action]');if(!el)return;
+  if(el.dataset.action==='jobsheet'){e.stopPropagation();return openJobSheet(el.dataset.id);}
+  if(el.dataset.action==='open-project')return openProject(el.dataset.id);
+});
+document.addEventListener('click',function(e){
+  var noteBtn=e.target.closest('[data-action="toggle-note"]');
+  if(noteBtn){e.preventDefault();e.stopPropagation();openNoteSheet(noteBtn.dataset.taskId);}
+});
+document.getElementById('reopenOverlay').addEventListener('click',function(e){if(e.target===this)closeReopenModal();});
+document.getElementById('closeJobSheetBtn')?.addEventListener('click',closePrintView);
+document.getElementById('printJobSheetBtn')?.addEventListener('click',()=>window.print());
+
+
+// ── Notes bottom sheet ──────────────────────────────────────
+function openNoteSheet(taskId){
+  var task=currentTasks().find(t=>String(t.id)===String(taskId));if(!task)return;
+  state.activeNoteTaskId=taskId;
+  document.getElementById('sheetTitle').textContent=task.desc||'Note';
+  document.getElementById('sheetSub').textContent='#'+task.site+(task.type?' · '+task.type:'');
+  var ta=document.getElementById('sheetTextarea');
+  ta.value=task.note||'';
+  document.getElementById('sheetCharCount').textContent=100-(task.note||'').length;
+  document.getElementById('sheetOverlay').classList.add('open');
+  document.getElementById('noteBottomSheet').classList.add('open');
+  ta.addEventListener('input',function(){document.getElementById('sheetCharCount').textContent=100-this.value.length;},{once:false});
+  setTimeout(()=>ta.focus(),320);
+}
+function closeNoteSheet(){
+  document.getElementById('sheetOverlay').classList.remove('open');
+  document.getElementById('noteBottomSheet').classList.remove('open');
+  state.activeNoteTaskId=null;
+}
+// sheetTextarea listener wired inline
+async function saveNoteSheet(){
+  var id=state.activeNoteTaskId;if(!id)return;
+  var task=currentTasks().find(t=>String(t.id)===String(id));if(!task)return;
+  var note=document.getElementById('sheetTextarea').value.trim();
+  const {error}=await supabase.from('tasks').update({notes:note}).eq('id',id);
+  if(error){showError('Could not save note.',error);return;}
+  await touchLastActive();
+  task.note=note;closeNoteSheet();renderTaskCards();renderProjectCards();
+}
+
+
+// ── Toast ────────────────────────────────────────────────────
+var toastTimer=null;
+var toastUndoData=null;
+
+function showToast(msg, taskId, prevStatus, prevCycle){
+  var el=document.getElementById('actionToast');
+  var label=document.getElementById('toastLabel');
+  if(!el||!label)return;
+  // Truncate long site names
+  if(msg.length>40) msg=msg.substring(0,38)+'…';
+  label.textContent=msg;
+  toastUndoData={taskId,prevStatus,prevCycle};
+  el.style.transform='translateX(-50%) translateY(0)';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(hideToast,3500);
+}
+
+function hideToast(){
+  var el=document.getElementById('actionToast');
+  if(el) el.style.transform='translateX(-50%) translateY(100px)';
+  toastTimer=null;
+  toastUndoData=null;
+}
+
+function toastUndo(){
+  if(!toastUndoData||!state.currentProject)return;
+  var {taskId,prevStatus}=toastUndoData;
+  var task=state.currentProject.tasks.find(t=>String(t.id)===String(taskId));
+  if(!task)return;
+  // Determine fromState based on where we came FROM (prevStatus)
+  var fromState=prevStatus===STATUS.INFIELD?'complete':prevStatus===STATUS.PENDING?'infield':null;
+  if(fromState) undoCardStatus(taskId,fromState);
+  hideToast();
+}
+
+Object.assign(window,{showProjects,openProject,undoCardStatus,promptReopen,closeReopenModal,confirmReopen,openJobSheet,closePrintView,cycleTaskStatus,closeNoteSheet,saveNoteSheet,toastUndo,hideToast,rewireCard});
+// Intercept browser back button
+window.addEventListener('popstate', function(e){
+  if(state.currentProject){
+    showProjects();
+    history.pushState(null,'',window.location.href);
+  }
+});
+// Push initial state so back button has something to popstate to
+history.pushState(null,'',window.location.href);
+loadAll();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>TrafficWorks — Tech View v12</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
