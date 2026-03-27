@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v14</title>
+<title>TrafficWorks — Tech View v15</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -808,10 +808,9 @@ function taskCardHTML(t,isComplete){
   var cornerDot=t.note
     ?'<span style="position:absolute;top:1px;right:1px;width:6px;height:6px;border-radius:50%;background:'+dotColor+';border:1.5px solid '+dotBorder+';display:block;pointer-events:none;"></span>'
     :'';
-  // Thought bubble SVG — outline when empty, filled when has note
-  var bubbleFill=t.note?noteStroke:'none';
-  var bubbleOpacity=t.note?'1':'0.45';
-  var thoughtBubble='<svg viewBox="0 0 24 24" style="width:15px;height:15px;display:block;" fill="'+bubbleFill+'" stroke="'+noteStroke+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="'+bubbleOpacity+'">'
+  // Thought bubble SVG — always outline, opacity signals state
+  var bubbleOpacity=t.note?'1':'0.3';
+  var thoughtBubble='<svg viewBox="0 0 24 24" style="width:15px;height:15px;display:block;" fill="none" stroke="'+noteStroke+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="'+bubbleOpacity+'">'
     +'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
     +'</svg>';
   var noteBtn='<button type="button" data-action="toggle-note" data-task-id="'+t.id+'" style="'
