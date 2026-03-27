@@ -306,6 +306,176 @@ html.tv-dark .tv-card-pending  .tv-card-name { color: #d4a84a; }
 html.tv-dark .tv-card-infield  .tv-card-name { color: #7aaed4; }
 html.tv-dark .tv-card-complete .tv-card-name { color: #5ec48a; }
 
+
+/* ============================================================
+   CARD ACTION ROW — undo box + main button
+   ============================================================ */
+.tv-card-action {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  margin-top: 2px;
+}
+.tv-card-action-pending {
+  display: flex;
+}
+
+/* Undo box — small, square-ish, muted */
+.tv-undo-box {
+  flex-shrink: 0;
+  width: 48px;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(0,0,0,0.10);
+  color: rgba(0,0,0,0.35);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: opacity .15s, transform .1s;
+}
+.tv-undo-box:active { transform: scale(0.94); opacity: .7; }
+.tv-undo-box svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+.tv-card-pending  .tv-undo-box { background: rgba(122,82,16,.12); color: rgba(122,82,16,.5); }
+.tv-card-infield  .tv-undo-box { background: rgba(28,74,122,.12); color: rgba(28,74,122,.5); }
+.tv-card-complete .tv-undo-box { background: rgba(26,92,53,.12);  color: rgba(26,92,53,.5); }
+
+/* Main button — flex:1 fills remaining width */
+.tv-main-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 10px;
+  border-radius: 10px;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .1s ease, opacity .15s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.tv-main-btn:active { transform: scale(0.97); opacity: .85; }
+.tv-main-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* Pending → In Field */
+.tv-btn-pending  { background: rgba(255,255,255,0.55); color: #7a5210; }
+/* In Field → Complete */
+.tv-btn-infield  { background: rgba(255,255,255,0.55); color: #1c4a7a; }
+/* Complete → Reopen */
+.tv-btn-complete { background: rgba(255,255,255,0.35); color: #1a5c35; }
+
+/* Full width when no undo box (pending only) */
+.tv-card-action-pending .tv-main-btn { border-radius: 10px; }
+
+/* ============================================================
+   STICKY TOOLBAR — full-width job sheet
+   ============================================================ */
+.tv-task-toolbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100;
+  background: var(--tv-bg);
+  border-bottom: 1px solid var(--tv-border);
+  padding: 10px 16px;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+.tv-jobsheet-wide {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #E8E3D8;
+  color: #5a4a2a;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: opacity .15s;
+}
+.tv-jobsheet-wide:active { opacity: .75; }
+html.tv-dark .tv-jobsheet-wide { background: #2E2A22; color: #c4a96a; }
+
+/* ============================================================
+   CARD SPACING FIXES
+   ============================================================ */
+.tv-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.tv-card-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   NOTE INDICATOR — override external CSS with !important
+   ============================================================ */
+.tv-note-indicator {
+  background: rgba(255,255,255,0.45) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  width: 30px !important;
+  height: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  margin-left: 8px !important;
+  margin-top: -2px !important;
+  position: relative !important;
+  padding: 0 !important;
+  color: inherit !important;
+  opacity: 1 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+.tv-note-indicator svg {
+  width: 14px !important;
+  height: 14px !important;
+  display: block !important;
+}
+.tv-card-pending  .tv-note-indicator svg { stroke: #5a4a00 !important; }
+.tv-card-infield  .tv-note-indicator svg { stroke: #2a4a6a !important; }
+.tv-card-complete .tv-note-indicator svg { stroke: #0d3320 !important; }
+.tv-note-indicator.empty { opacity: 0.4 !important; }
+.tv-note-indicator.has-note { opacity: 1 !important; }
+.tv-note-indicator.has-note::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 5px !important; right: 5px !important;
+  width: 6px !important; height: 6px !important;
+  border-radius: 50% !important;
+}
+.tv-card-pending  .tv-note-indicator.has-note::after { background: #ba7517 !important; }
+.tv-card-infield  .tv-note-indicator.has-note::after { background: #185fa5 !important; }
+.tv-card-complete .tv-note-indicator.has-note::after { background: #0f6e56 !important; }
+
+/* Dark mode undo box */
+html.tv-dark .tv-undo-box { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); }
 </style>
 </head>
 <body>
@@ -322,18 +492,13 @@ html.tv-dark .tv-card-complete .tv-card-name { color: #5ec48a; }
 
 <!-- STICKY TASK TOOLBAR -->
 <div class="tv-task-toolbar" id="tvTaskToolbar" style="display:none">
-  <div class="tv-toolbar-left" id="tvStatsBar"></div>
-  <div class="tv-toolbar-right">
-    <button class="tv-toolbar-btn tv-undo-btn" id="undoBtn" onclick="undoLastAction()" style="display:none">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>
-      <span id="undoBtnLabel">Undo</span>
-    </button>
-    <button class="tv-toolbar-btn tv-jobsheet-btn" id="toolbarJobSheetBtn">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      Job Sheet
-    </button>
-  </div>
+  <button class="tv-jobsheet-wide" id="toolbarJobSheetBtn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    View Job Sheet
+  </button>
 </div>
+<!-- keep undoBtn in DOM for legacy undo logic but hidden -->
+<button id="undoBtn" style="display:none" onclick="undoLastAction()"></button>
 
 <!-- JOB SHEET OVERLAY -->
 <div class="jobsheet-overlay" id="printOverlay">
@@ -435,22 +600,11 @@ function setTopNav(projectName){
 }
 
 function updateToolbarStats(){
-  if(!state.currentProject) return;
-  var c=taskCounts(state.currentProject.tasks);
-  var parts=[c.total+' site'+(c.total!==1?'s':'')];
-  if(c.infield>0) parts.push(c.infield+' in field');
-  if(c.complete>0) parts.push(c.complete+' complete');
-  var el=document.getElementById('tvStatsBar');
-  if(el) el.textContent=parts.join(' · ');
+  // Stats now in page-sub bar on project list only
 }
 
 function setUndoLabel(taskId){
-  var task=state.currentProject&&state.currentProject.tasks.find(t=>String(t.id)===String(taskId));
-  var label=task?'Undo · '+task.desc:'Undo';
-  // truncate long names
-  if(label.length>22) label=label.substring(0,20)+'…';
-  var el=document.getElementById('undoBtnLabel');
-  if(el) el.textContent=label;
+  // Per-card undo now handles this — no global label needed
 }
 
 function showStatusConfirm(){var el=document.getElementById('statusConfirm');el.className='tv-confirm-overlay show';var c=el.querySelector('.tv-confirm-circle');c.style.opacity='0';c.style.transform='scale(0.5)';void c.offsetWidth;c.style.opacity='1';c.style.transform='scale(1)';setTimeout(function(){c.style.opacity='0';c.style.transform='scale(0.8)';setTimeout(function(){el.className='tv-confirm-overlay';c.style.cssText=''},300)},700)}
@@ -580,60 +734,74 @@ function renderTaskCards(){
   if(openTasks.length===0&&completedTasks.length===0)html='<div class="tv-empty-state">No tasks assigned</div>';
   document.getElementById('taskCards').innerHTML=html;
   updateToolbarStats();
-  // Wire advance buttons
-  document.querySelectorAll('.tv-advance-btn[data-task-id]').forEach(btn=>{
+  // Wire main buttons
+  document.querySelectorAll('.tv-main-btn[data-task-id]').forEach(btn=>{
     btn.addEventListener('click',()=>cycleTaskStatus(btn.dataset.taskId));
   });
-  // Wire reopen links
-  document.querySelectorAll('.tv-reopen-link[data-task-id]').forEach(btn=>{
-    btn.addEventListener('click',()=>promptReopen(btn.dataset.taskId));
+  // Wire undo boxes
+  document.querySelectorAll('.tv-undo-box[data-task-id]').forEach(btn=>{
+    btn.addEventListener('click',()=>undoCardStatus(btn.dataset.taskId, btn.dataset.undo));
   });
 }
 
 function taskCardHTML(t,isComplete){
+  var noteHasNote=t.note?'has-note':'empty';
   var noteIconSvg=t.note
     ?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
     :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
-  var noteClass=t.note?'tv-note-indicator has-note':'tv-note-indicator empty';
 
-  // Pills row
+  // Pills
   var pills='<span class="tv-pill tv-pill-site">#'+t.site+'</span>';
   if(t.type) pills+='<span class="tv-pill tv-pill-type">'+escapeHtml(t.type)+'</span>';
-  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt) pills+='<span class="tv-pill tv-pill-dur live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
-  else if(t.status===STATUS.COMPLETE&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) pills+='<span class="tv-pill tv-pill-dur">'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>';
+  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)
+    pills+='<span class="tv-pill tv-pill-dur live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
+  else if(isComplete&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)
+    pills+='<span class="tv-pill tv-pill-dur">'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>';
 
   var reopenHTML='';
   var reopenText=t.reopenReason||(t.cycles.length>0?(t.cycles[0].reopenReason||''):'');
-  if(reopenText&&t.status===STATUS.PENDING) reopenHTML='<div class="tv-reopen-row">Reopened: '+escapeHtml(reopenText)+'</div>';
+  if(reopenText&&t.status===STATUS.PENDING)
+    reopenHTML='<div class="tv-reopen-row">Reopened: '+escapeHtml(reopenText)+'</div>';
 
-  // Card state class — drives background color
+  // Card state class
   var stateClass=isComplete?'tv-card-complete':t.status===STATUS.INFIELD?'tv-card-infield':'tv-card-pending';
 
-  // Action button — full width at bottom
+  // Undo SVG
+  var undoSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>';
+
+  // Action row
   var actionHTML='';
   if(isComplete){
-    actionHTML='<button class="tv-advance-btn tv-btn-complete" disabled>'
+    // Complete: undo box (→ In Field) + Reopen main button (→ Pending)
+    actionHTML='<div class="tv-card-action">'
+      +'<button class="tv-undo-box" data-task-id="'+t.id+'" data-undo="complete" title="Back to In Field">'+undoSvg+'</button>'
+      +'<button class="tv-main-btn tv-btn-complete" data-task-id="'+t.id+'">Reopen</button>'
+      +'</div>';
+  } else if(t.status===STATUS.INFIELD){
+    // In Field: undo box (→ Pending) + Mark Complete main button
+    actionHTML='<div class="tv-card-action">'
+      +'<button class="tv-undo-box" data-task-id="'+t.id+'" data-undo="infield" title="Back to Pending">'+undoSvg+'</button>'
+      +'<button class="tv-main-btn tv-btn-infield" data-task-id="'+t.id+'">'
       +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
       +'Complete</button>'
-      +'<button class="tv-reopen-link" data-task-id="'+t.id+'">Reopen</button>';
-  } else if(t.status===STATUS.INFIELD){
-    actionHTML='<button class="tv-advance-btn tv-btn-infield" data-task-id="'+t.id+'">'
-      +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-      +'Mark Complete</button>';
+      +'</div>';
   } else {
-    actionHTML='<button class="tv-advance-btn tv-btn-pending" data-task-id="'+t.id+'">'
+    // Pending: full-width main button only
+    actionHTML='<div class="tv-card-action tv-card-action-pending">'
+      +'<button class="tv-main-btn tv-btn-pending" data-task-id="'+t.id+'">'
       +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
-      +'Set In Field</button>';
+      +'In Field</button>'
+      +'</div>';
   }
 
   return '<div class="tv-task-card '+stateClass+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'">'
     +'<div class="tv-card-top">'
     +'<div class="tv-card-name">'+escapeHtml(t.desc)+'</div>'
-    +'<button type="button" class="'+noteClass+'" data-action="toggle-note" data-task-id="'+t.id+'">'+noteIconSvg+'</button>'
+    +'<button type="button" class="tv-note-indicator '+noteHasNote+'" data-action="toggle-note" data-task-id="'+t.id+'">'+noteIconSvg+'</button>'
     +'</div>'
     +'<div class="tv-card-pills">'+pills+'</div>'
     +reopenHTML
-    +'<div class="tv-card-action">'+actionHTML+'</div>'
+    +actionHTML
     +'</div>';
 }
 
@@ -675,6 +843,47 @@ async function getCycleRowById(cycleId){if(!cycleId)return null;const {data,erro
 async function refreshCurrentProject(projectId){await loadProjectsAndTasks();if(projectId)state.currentProject=state.projects.find(p=>String(p.id)===String(projectId))||null;}
 function markTaskSuccess(taskId,kind){var row=document.getElementById('task-card-'+String(taskId));if(!row)return;row.classList.add(kind==='complete'?'row-success-complete':'row-success-infield');setTimeout(()=>row.classList.add('row-exit'),420);}
 function delay(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
+
+async function undoCardStatus(taskId, fromState){
+  if(!state.currentProject) return;
+  var projectId=state.currentProject.id;
+  var task=state.currentProject.tasks.find(t=>String(t.id)===String(taskId));
+  if(!task) return;
+  try{
+    if(fromState==='infield'){
+      // In Field → Pending: delete the current cycle
+      const cycleId=task.currentCycle&&task.currentCycle.cycleId?task.currentCycle.cycleId:null;
+      if(cycleId){
+        const {error:de}=await supabase.from('cycles').delete().eq('id',cycleId);
+        if(de) throw de;
+      }
+      const {error:te}=await supabase.from('tasks').update({status:'pending',reopen_reason:null}).eq('id',taskId);
+      if(te) throw te;
+      task.status=STATUS.PENDING;
+      task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+      if(cycleId) task.cycles=task.cycles.filter(c=>c.id!==cycleId);
+    } else if(fromState==='complete'){
+      // Complete → In Field: clear completion timestamps
+      const cycleId=task.currentCycle&&task.currentCycle.cycleId?task.currentCycle.cycleId:null;
+      if(cycleId){
+        const {error:ce}=await supabase.from('cycles').update({
+          picked_up_at:null,picked_up_by:null,pickup_lat:null,pickup_lng:null,
+          completed_at:null,completed_by:null
+        }).eq('id',cycleId);
+        if(ce) throw ce;
+      }
+      const {error:te}=await supabase.from('tasks').update({status:'in-field'}).eq('id',taskId);
+      if(te) throw te;
+      task.status=STATUS.INFIELD;
+      if(task.currentCycle){task.currentCycle.completedAt=null;task.currentCycle.pickedUpAt=null;}
+      if(task.cycles.length){task.cycles[0].completedAt=null;task.cycles[0].pickedUpAt=null;}
+    }
+    await touchLastActive();
+    showUndoConfirm();
+    await refreshCurrentProject(projectId);
+    renderTaskCards();renderProjectStats();renderProjectCards();
+  }catch(err){showError('Could not undo.',err);}
+}
 
 async function cycleTaskStatus(taskId){
   if(!state.currentProject)return;
@@ -720,6 +929,17 @@ async function cycleTaskStatus(taskId){
       setUndoLabel(taskId);
       showStatusConfirm();markTaskSuccess(taskId,'complete');
       await delay(860);await refreshCurrentProject(projectId);
+    }
+    } else if(task.status===STATUS.COMPLETE){
+      // Reopen: set back to pending
+      const {error:te}=await supabase.from('tasks').update({status:'pending',reopen_reason:'Reopened by tech'}).eq('id',taskId);
+      if(te) throw te;
+      await touchLastActive();
+      task.status=STATUS.PENDING;
+      task.reopenReason='Reopened by tech';
+      task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+      showStatusConfirm();
+      await refreshCurrentProject(projectId);
     }
     renderTaskCards();renderProjectStats();renderProjectCards();
   }catch(err){showError('Could not update task status.',err);}
@@ -832,7 +1052,7 @@ document.getElementById('reopenOverlay').addEventListener('click',function(e){if
 document.getElementById('closeJobSheetBtn')?.addEventListener('click',closePrintView);
 document.getElementById('printJobSheetBtn')?.addEventListener('click',()=>window.print());
 
-Object.assign(window,{showProjects,openProject,undoLastAction,promptReopen,closeReopenModal,confirmReopen,openJobSheet,closePrintView,cycleTaskStatus,closeNoteSheet,saveNoteSheet});
+Object.assign(window,{showProjects,openProject,undoLastAction,undoCardStatus,promptReopen,closeReopenModal,confirmReopen,openJobSheet,closePrintView,cycleTaskStatus,closeNoteSheet,saveNoteSheet});
 // Intercept browser back button
 window.addEventListener('popstate', function(e){
   if(state.currentProject){
