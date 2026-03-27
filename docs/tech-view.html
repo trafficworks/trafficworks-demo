@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v10</title>
+<title>TrafficWorks — Tech View v11</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -798,26 +798,28 @@ function renderTaskCards(){
 
 function taskCardHTML(t,isComplete){
   var stateClass=isComplete?'tv-card-complete':t.status===STATUS.INFIELD?'tv-card-infield':'tv-card-pending';
+  var nameColor=isComplete?'#0d3320':t.status===STATUS.INFIELD?'#1a2d45':'#3d3400';
   var noteStroke=isComplete?'#1a5c35':t.status===STATUS.INFIELD?'#1c4a7a':'#7a5210';
   var dotColor=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
   var dotBorder=isComplete?'#ddf0e4':t.status===STATUS.INFIELD?'#d6e4f0':'#f5f0d8';
-  var undoBorder=isComplete?'rgba(26,92,53,.3)':t.status===STATUS.INFIELD?'rgba(28,74,122,.3)':'rgba(122,82,16,.3)';
+  var borderColor=isComplete?'rgba(26,92,53,.25)':t.status===STATUS.INFIELD?'rgba(28,74,122,.25)':'rgba(122,82,16,.25)';
   var undoColor=isComplete?'rgba(26,92,53,.55)':t.status===STATUS.INFIELD?'rgba(28,74,122,.55)':'rgba(122,82,16,.55)';
 
-  // Note button — bordered box, center dot always, corner dot if has note
+  // Note button — small box, center dot, corner dot if has note
+  // Sits inline with pills row
   var cornerDot=t.note
-    ?'<span style="position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:'+dotColor+';border:1.5px solid '+dotBorder+';display:block;pointer-events:none;"></span>'
+    ?'<span style="position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;background:'+dotColor+';border:1.5px solid '+dotBorder+';display:block;pointer-events:none;"></span>'
     :'';
-  var centerDot='<span style="width:5px;height:5px;border-radius:50%;background:'+noteStroke+';display:block;opacity:0.5;"></span>';
+  var centerDot='<span style="width:4px;height:4px;border-radius:50%;background:'+noteStroke+';display:block;opacity:0.6;flex-shrink:0;"></span>';
   var noteBtn='<button type="button" data-action="toggle-note" data-task-id="'+t.id+'" style="'
     +'position:relative;background:transparent;'
-    +'border:1.5px solid '+undoBorder+';border-radius:8px;'
-    +'width:30px;height:30px;min-width:30px;flex-shrink:0;'
+    +'border:1.5px solid '+borderColor+';border-radius:7px;'
+    +'width:26px;height:26px;min-width:26px;flex-shrink:0;'
     +'display:flex;align-items:center;justify-content:center;'
-    +'cursor:pointer;margin-left:8px;padding:0;margin-top:1px;">'
+    +'cursor:pointer;padding:0;margin-left:auto;">'
     +centerDot+cornerDot+'</button>';
 
-  // Pills
+  // Pills row — site#, type, duration, note button all on same line
   var typeBg=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
   var typeColor=isComplete?'#9fe1cb':t.status===STATUS.INFIELD?'#b5d4f4':'#faeeda';
   var pills='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.5);color:'+noteStroke+';">#'+t.site+'</span>';
@@ -830,24 +832,23 @@ function taskCardHTML(t,isComplete){
   var reopenHTML='';
   var reopenText=t.reopenReason||(t.cycles.length>0?(t.cycles[0].reopenReason||''):'');
   if(reopenText&&t.status===STATUS.PENDING)
-    reopenHTML='<div style="font-size:11px;color:'+noteStroke+';margin-bottom:6px;opacity:0.8;">Reopened: '+escapeHtml(reopenText)+'</div>';
+    reopenHTML='<div style="font-size:11px;color:'+noteStroke+';margin-bottom:8px;opacity:0.8;">Reopened: '+escapeHtml(reopenText)+'</div>';
 
   // Undo SVG
   var undoSvg='<svg viewBox="0 0 24 24" fill="none" stroke="'+undoColor+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:block;">'
     +'<path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>';
 
-  // Undo box — transparent with border
+  // Undo box — only on In Field and Complete
   var undoBoxHTML=t.status===STATUS.PENDING?'':
     '<button data-task-id="'+t.id+'" data-undo="'+(isComplete?'complete':'infield')+'" style="'
     +'flex-shrink:0;width:44px;align-self:stretch;'
-    +'border:1.5px solid '+undoBorder+';border-radius:10px;'
+    +'border:1.5px solid '+borderColor+';border-radius:10px;'
     +'background:transparent;'
     +'display:flex;align-items:center;justify-content:center;'
     +'cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
     +undoSvg+'</button>';
 
   // Main button
-  var mainBg='rgba(255,255,255,0.5)';
   var mainLabel=isComplete?'Reopen':t.status===STATUS.INFIELD?'In Field':'Pending';
   var mainIcon=t.status===STATUS.PENDING
     ?'<svg viewBox="0 0 24 24" fill="none" stroke="'+noteStroke+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
@@ -858,20 +859,17 @@ function taskCardHTML(t,isComplete){
     +'<button class="tv-main-btn" data-task-id="'+t.id+'" style="'
     +'flex:1;display:flex;align-items:center;justify-content:center;gap:7px;'
     +'padding:13px 10px;border-radius:10px;border:none;'
-    +'background:'+mainBg+';color:'+noteStroke+';'
+    +'background:rgba(255,255,255,0.5);color:'+noteStroke+';'
     +'font-family:Inter,sans-serif;font-size:12px;font-weight:700;'
     +'letter-spacing:.07em;text-transform:uppercase;cursor:pointer;'
     +'-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
     +mainIcon+mainLabel+'</button>'
     +'</div>';
 
-  // Equal spacing: 6px between name/pills, 6px between pills/button
-  return '<div class="tv-task-card '+stateClass+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'" style="padding:14px 14px 13px;">'
-    +'<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">'
-    +'<div class="tv-card-name">'+escapeHtml(t.desc)+'</div>'
-    +noteBtn
-    +'</div>'
-    +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;">'+pills+'</div>'
+  // Equal 8px gap: name → pills row → button
+  return '<div class="tv-task-card '+stateClass+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'" style="padding:13px 13px 12px;">'
+    +'<div class="tv-card-name" style="font-size:16px;font-weight:700;letter-spacing:-0.02em;color:'+nameColor+';margin-bottom:8px;">'+escapeHtml(t.desc)+'</div>'
+    +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;margin-bottom:8px;">'+pills+noteBtn+'</div>'
     +reopenHTML
     +actionHTML
     +'</div>';
@@ -916,6 +914,14 @@ async function undoCardStatus(taskId, fromState){
     showUndoConfirm();
   }catch(err){showError('Could not undo.',err);}
 }
+
+
+async function getCoords(){if(qp('geo')!=='1')return null;if(!navigator.geolocation)return null;return new Promise(resolve=>{navigator.geolocation.getCurrentPosition(pos=>resolve({lat:pos.coords.latitude,lng:pos.coords.longitude}),()=>resolve(null),{enableHighAccuracy:true,timeout:3000,maximumAge:300000})})}
+async function getLatestCycleRow(taskId){const {data,error}=await supabase.from('cycles').select('*').eq('task_id',taskId).order('cycle_num',{ascending:false}).limit(1).maybeSingle();if(error)throw error;return data||null;}
+async function getCycleRowById(cycleId){if(!cycleId)return null;const {data,error}=await supabase.from('cycles').select('*').eq('id',cycleId).maybeSingle();if(error)throw error;return data||null;}
+async function refreshCurrentProject(projectId){await loadProjectsAndTasks();if(projectId)state.currentProject=state.projects.find(p=>String(p.id)===String(projectId))||null;}
+function markTaskSuccess(taskId,kind){var row=document.getElementById('task-card-'+String(taskId));if(!row)return;row.classList.add(kind==='complete'?'row-success-complete':'row-success-infield');setTimeout(()=>row.classList.add('row-exit'),420);}
+function delay(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
 
 async function cycleTaskStatus(taskId){
   if(!state.currentProject)return;
