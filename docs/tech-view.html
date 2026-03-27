@@ -929,7 +929,6 @@ async function cycleTaskStatus(taskId){
       setUndoLabel(taskId);
       showStatusConfirm();markTaskSuccess(taskId,'complete');
       await delay(860);await refreshCurrentProject(projectId);
-    }
     } else if(task.status===STATUS.COMPLETE){
       // Reopen: set back to pending
       const {error:te}=await supabase.from('tasks').update({status:'pending',reopen_reason:'Reopened by tech'}).eq('id',taskId);
