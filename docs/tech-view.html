@@ -115,6 +115,155 @@ html.tv-dark .tv-sheet-save{background:var(--tv-surface-raised);color:var(--tv-t
 .tv-completed-divider{display:flex;align-items:center;gap:8px;margin:20px 0 10px}
 .tv-completed-divider-line{flex:1;height:1px;background:var(--tv-divider)}
 .tv-completed-divider-text{font-size:11px;font-weight:600;color:var(--tv-text-muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+
+/* === NEW CARD LAYOUT — vertical, full-width button === */
+.tv-task-card {
+  border-radius: 16px;
+  padding: 13px 14px 12px;
+  margin-bottom: 10px;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
+}
+.tv-task-card.tv-card-pending  { background: var(--tv-pending-bg);  }
+.tv-task-card.tv-card-infield  { background: var(--tv-infield-bg);  }
+.tv-task-card.tv-card-complete { background: var(--tv-complete-bg); opacity: 0.6; }
+
+.tv-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+.tv-card-name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  flex: 1;
+  min-width: 0;
+}
+.tv-card-pending  .tv-card-name { color: #3d3400; }
+.tv-card-infield  .tv-card-name { color: #1a2d45; }
+.tv-card-complete .tv-card-name { color: #0d3320; }
+
+/* Pills */
+.tv-card-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.tv-pill {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 100px;
+  line-height: 1.5;
+}
+.tv-card-pending  .tv-pill-site { background: rgba(255,255,255,0.55); color: #5a4a00; }
+.tv-card-pending  .tv-pill-type { background: #ba7517; color: #faeeda; letter-spacing:.07em; }
+.tv-card-pending  .tv-pill-dur  { background: rgba(255,255,255,0.35); color: #7a6010; }
+.tv-card-infield  .tv-pill-site { background: rgba(255,255,255,0.55); color: #2a4a6a; }
+.tv-card-infield  .tv-pill-type { background: #185fa5; color: #b5d4f4; letter-spacing:.07em; }
+.tv-card-infield  .tv-pill-dur  { background: rgba(255,255,255,0.35); color: #3a5a7a; }
+.tv-card-complete .tv-pill-site { background: rgba(255,255,255,0.55); color: #0d3320; }
+.tv-card-complete .tv-pill-type { background: #0f6e56; color: #9fe1cb; letter-spacing:.07em; }
+.tv-card-complete .tv-pill-dur  { background: rgba(255,255,255,0.35); color: #1a5035; }
+
+/* Note indicator */
+.tv-note-indicator {
+  background: rgba(255,255,255,0.45);
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+.tv-note-indicator svg { width: 15px; height: 15px; }
+.tv-card-pending  .tv-note-indicator svg { stroke: #5a4a00; }
+.tv-card-infield  .tv-note-indicator svg { stroke: #2a4a6a; }
+.tv-card-complete .tv-note-indicator svg { stroke: #0d3320; }
+.tv-note-indicator.empty { opacity: 0.5; }
+.tv-note-indicator.has-note { opacity: 1; }
+
+/* Reopen reason */
+.tv-reopen-row {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--tv-pending-text);
+  margin-bottom: 8px;
+}
+
+/* Full-width action area */
+.tv-card-action {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+/* Full-width advance button */
+.tv-advance-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 12px;
+  border-radius: 12px;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .1s ease, opacity .15s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.tv-advance-btn:active { transform: scale(0.98); opacity: .85; }
+.tv-advance-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+.tv-btn-pending  { background: rgba(255,255,255,0.5); color: #7a5210; }
+.tv-btn-infield  { background: rgba(255,255,255,0.5); color: #1c4a7a; }
+.tv-btn-complete { background: rgba(255,255,255,0.35); color: #1a5c35; cursor: default; }
+.tv-btn-complete:active { transform: none; }
+
+/* Reopen link */
+.tv-reopen-link {
+  background: none;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--tv-complete-text);
+  cursor: pointer;
+  padding: 2px 0;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: 0.6;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Dark mode card overrides */
+html.tv-dark .tv-card-pending  { background: var(--tv-pending-bg); }
+html.tv-dark .tv-card-infield  { background: var(--tv-infield-bg); }
+html.tv-dark .tv-card-complete { background: var(--tv-complete-bg); }
+html.tv-dark .tv-card-pending  .tv-card-name { color: #d4a84a; }
+html.tv-dark .tv-card-infield  .tv-card-name { color: #7aaed4; }
+html.tv-dark .tv-card-complete .tv-card-name { color: #5ec48a; }
+
 </style>
 </head>
 <body>
@@ -380,41 +529,45 @@ function taskCardHTML(t,isComplete){
     ?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
     :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
   var noteClass=t.note?'tv-note-indicator has-note':'tv-note-indicator empty';
-  var details=['<span class="tv-task-site">#'+t.site+'</span>'];
-  if(t.type)details.push('<span class="tv-task-type">'+escapeHtml(t.type)+'</span>');
-  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)details.push('<span class="tv-task-duration live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>');
-  else if(t.status===STATUS.COMPLETE&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)details.push('<span class="tv-task-duration">'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>');
-  var detailHTML=details.join('<span class="tv-detail-dot"></span>');
+
+  // Pills row
+  var pills='<span class="tv-pill tv-pill-site">#'+t.site+'</span>';
+  if(t.type) pills+='<span class="tv-pill tv-pill-type">'+escapeHtml(t.type)+'</span>';
+  if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt) pills+='<span class="tv-pill tv-pill-dur live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
+  else if(t.status===STATUS.COMPLETE&&t.currentCycle.deployedAt&&t.currentCycle.completedAt) pills+='<span class="tv-pill tv-pill-dur">'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>';
+
   var reopenHTML='';
   var reopenText=t.reopenReason||(t.cycles.length>0?(t.cycles[0].reopenReason||''):'');
-  if(reopenText&&t.status===STATUS.PENDING)reopenHTML='<div class="tv-task-reopen-row"><span class="tv-task-reopen-reason">Reopened: '+escapeHtml(reopenText)+'</span></div>';
+  if(reopenText&&t.status===STATUS.PENDING) reopenHTML='<div class="tv-reopen-row">Reopened: '+escapeHtml(reopenText)+'</div>';
+
+  // Card state class — drives background color
   var stateClass=isComplete?'tv-card-complete':t.status===STATUS.INFIELD?'tv-card-infield':'tv-card-pending';
+
+  // Action button — full width at bottom
   var actionHTML='';
   if(isComplete){
-    actionHTML='<div class="tv-action-wrap">'
-      +'<button class="tv-advance-btn tv-btn-complete" disabled>'
-      +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Complete</button>'
-      +'<button class="tv-reopen-link" data-task-id="'+t.id+'">Reopen</button>'
-      +'</div>';
+    actionHTML='<button class="tv-advance-btn tv-btn-complete" disabled>'
+      +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+      +'Complete</button>'
+      +'<button class="tv-reopen-link" data-task-id="'+t.id+'">Reopen</button>';
   } else if(t.status===STATUS.INFIELD){
     actionHTML='<button class="tv-advance-btn tv-btn-infield" data-task-id="'+t.id+'">'
-      +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Mark Complete</button>';
+      +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+      +'Mark Complete</button>';
   } else {
     actionHTML='<button class="tv-advance-btn tv-btn-pending" data-task-id="'+t.id+'">'
-      +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Set In Field</button>';
+      +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
+      +'Set In Field</button>';
   }
+
   return '<div class="tv-task-card '+stateClass+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'">'
-    +'<div class="tv-task-inner">'
-    +'<div class="tv-task-content">'
-    +'<div class="tv-task-desc-row"><div class="tv-task-desc">'+escapeHtml(t.desc)+'</div>'
+    +'<div class="tv-card-top">'
+    +'<div class="tv-card-name">'+escapeHtml(t.desc)+'</div>'
     +'<button type="button" class="'+noteClass+'" data-action="toggle-note" data-task-id="'+t.id+'">'+noteIconSvg+'</button>'
     +'</div>'
-    +'<div class="tv-task-divider"></div>'
-    +'<div class="tv-task-detail-row">'+detailHTML+'</div>'
+    +'<div class="tv-card-pills">'+pills+'</div>'
     +reopenHTML
-    +'</div>'
-    +'<div class="tv-task-action">'+actionHTML+'</div>'
-    +'</div>'
+    +'<div class="tv-card-action">'+actionHTML+'</div>'
     +'</div>';
 }
 
