@@ -8,10 +8,69 @@
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
 <style>
+/* === Transition animations === */
 .tv-task-card{transition:background-color .22s ease,opacity .28s ease,transform .28s ease,box-shadow .22s ease}
 .tv-task-card.row-success-infield{background:rgba(141,183,219,.14);box-shadow:0 0 0 1px rgba(141,183,219,.20) inset}
 .tv-task-card.row-success-complete{background:rgba(42,181,126,.12);box-shadow:0 0 0 1px rgba(42,181,126,.20) inset}
 .tv-task-card.row-exit{opacity:0;transform:translateY(-6px)}
+
+/* === TOP NAV === */
+.tv-topnav{display:flex;align-items:center;justify-content:center;gap:10px;padding:22px 20px 14px}
+.tv-topnav-projects{font-size:17px;font-weight:400;color:var(--tv-text-muted);letter-spacing:-.02em;white-space:nowrap;cursor:default;transition:color .15s}
+.tv-topnav-projects.is-active{font-weight:700;color:var(--tv-text)}
+.tv-topnav-projects.is-link{cursor:pointer;color:var(--tv-text-secondary)}
+.tv-topnav-projects.is-link:active{color:var(--tv-text)}
+.tv-topnav-dot{font-size:17px;color:var(--tv-text-muted);font-weight:400;flex-shrink:0}
+.tv-topnav-section{font-size:17px;font-weight:400;color:var(--tv-text-muted);letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:55vw;transition:color .15s}
+.tv-topnav-section.is-active{font-weight:700;color:var(--tv-text)}
+
+/* === TASK TOOLBAR === */
+.tv-task-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:0 16px 10px;max-width:480px;margin:0 auto;width:100%;box-sizing:border-box}
+.tv-toolbar-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:100px;border:1px solid var(--tv-border);background:var(--tv-surface);color:var(--tv-text-secondary);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:opacity .15s;-webkit-tap-highlight-color:transparent;white-space:nowrap;touch-action:manipulation}
+.tv-toolbar-btn:active{opacity:.75}
+.tv-undo-btn{background:var(--tv-text);color:var(--tv-bg);border-color:transparent}
+html.tv-dark .tv-undo-btn{background:var(--tv-surface-raised);color:var(--tv-text);border-color:var(--tv-border)}
+
+/* === TASK CARD STATES === */
+.tv-task-card.tv-card-complete{opacity:0.5}
+
+/* === ADVANCE BUTTON (single tap) === */
+.tv-advance-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:84px;padding:10px 8px;border-radius:10px;border:none;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:transform .1s ease,opacity .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;line-height:1.2}
+.tv-advance-btn:active{transform:scale(0.95);opacity:.8}
+.tv-advance-btn svg{width:20px;height:20px;flex-shrink:0}
+.tv-btn-pending{background:var(--tv-pending-bg);color:var(--tv-pending-text)}
+.tv-btn-infield{background:var(--tv-infield-bg);color:var(--tv-infield-text)}
+.tv-btn-complete{background:var(--tv-complete-bg);color:var(--tv-complete-text);cursor:default;opacity:.75}
+.tv-btn-complete:active{transform:none;opacity:.75}
+
+/* === REOPEN LINK === */
+.tv-action-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.tv-reopen-link{background:none;border:none;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;color:var(--tv-text-muted);cursor:pointer;padding:2px 4px;text-decoration:underline;text-underline-offset:2px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.tv-reopen-link:active{color:var(--tv-text-secondary)}
+
+/* === TASK ACTION COLUMN === */
+.tv-task-action{display:flex;align-items:center;justify-content:center;padding:12px 12px 12px 10px;flex-shrink:0}
+
+/* === NOTES BOTTOM SHEET === */
+.tv-sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);pointer-events:none;transition:background .25s ease;z-index:200}
+.tv-sheet-overlay.open{background:rgba(0,0,0,0.4);pointer-events:all}
+.tv-bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--tv-surface);border-radius:20px 20px 0 0;padding:0 20px calc(32px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .3s cubic-bezier(0.32,0.72,0,1);z-index:201;display:flex;flex-direction:column}
+.tv-bottom-sheet.open{transform:translateY(0)}
+.tv-sheet-handle{width:36px;height:4px;background:var(--tv-border);border-radius:2px;margin:12px auto 18px;flex-shrink:0}
+.tv-sheet-title{font-size:16px;font-weight:700;color:var(--tv-text);margin-bottom:2px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tv-sheet-sub{font-size:12px;color:var(--tv-text-muted);margin-bottom:14px;flex-shrink:0}
+.tv-sheet-textarea{border:1px solid var(--tv-border);border-radius:10px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:15px;color:var(--tv-text);background:var(--tv-note-bg);outline:none;resize:none;min-height:100px;line-height:1.5;transition:border-color .15s;-webkit-user-select:text;user-select:text}
+.tv-sheet-textarea:focus{border-color:var(--tv-text-secondary)}
+.tv-sheet-textarea::placeholder{color:var(--tv-text-muted)}
+.tv-sheet-char{font-size:11px;color:var(--tv-text-muted);text-align:right;margin-top:4px;margin-bottom:12px;flex-shrink:0}
+.tv-sheet-save{width:100%;border:none;border-radius:12px;height:50px;background:var(--tv-text);color:var(--tv-bg);font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;flex-shrink:0;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
+.tv-sheet-save:active{opacity:.8}
+html.tv-dark .tv-sheet-save{background:var(--tv-surface-raised);color:var(--tv-text);border:1px solid var(--tv-border)}
+
+/* === COMPLETED DIVIDER === */
+.tv-completed-divider{display:flex;align-items:center;gap:8px;margin:20px 0 10px}
+.tv-completed-divider-line{flex:1;height:1px;background:var(--tv-divider)}
+.tv-completed-divider-text{font-size:11px;font-weight:600;color:var(--tv-text-muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
 </style>
 </head>
 <body>
