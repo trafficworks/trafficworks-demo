@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v20</title>
+<title>TrafficWorks — Tech View v21</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -851,7 +851,8 @@ function renderTaskCards(){
   var statusOrder={};statusOrder[STATUS.PENDING]=0;statusOrder[STATUS.INFIELD]=1;statusOrder[STATUS.COMPLETE]=2;
   var openTasks=tasks.filter(t=>t.status!==STATUS.COMPLETE);
   var completedTasks=tasks.filter(t=>t.status===STATUS.COMPLETE);
-  openTasks.sort((a,b)=>(statusOrder[a.status]||0)-(statusOrder[b.status]||0)||a.site-b.site);
+  // Sort by site number only — no status reordering, cards stay in place
+  openTasks.sort((a,b)=>a.site-b.site);
   completedTasks.sort((a,b)=>a.site-b.site);
   var html='';
   openTasks.forEach(t=>{html+=taskCardHTML(t,false);});
