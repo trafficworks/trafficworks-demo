@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v6</title>
+<title>TrafficWorks — Tech View v7</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -787,126 +787,83 @@ function renderTaskCards(){
 function taskCardHTML(t,isComplete){
   var stateClass=isComplete?'tv-card-complete':t.status===STATUS.INFIELD?'tv-card-infield':'tv-card-pending';
   var noteStroke=isComplete?'#1a5c35':t.status===STATUS.INFIELD?'#1c4a7a':'#7a5210';
-  var noteDotColor=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
-  var noteDotBg=isComplete?'#ddf0e4':t.status===STATUS.INFIELD?'#d6e4f0':'#f5f0d8';
+  var dotColor=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
+  var dotBorder=isComplete?'#ddf0e4':t.status===STATUS.INFIELD?'#d6e4f0':'#f5f0d8';
+  var undoBorder=isComplete?'rgba(26,92,53,.3)':t.status===STATUS.INFIELD?'rgba(28,74,122,.3)':'rgba(122,82,16,.3)';
+  var undoColor=isComplete?'rgba(26,92,53,.55)':t.status===STATUS.INFIELD?'rgba(28,74,122,.55)':'rgba(122,82,16,.55)';
 
-  // Note button
-  var noteDot=t.note?'<span style="position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:'+noteDotColor+';border:1.5px solid '+noteDotBg+';display:block;pointer-events:none;"></span>':'';
+  // Note button — bordered box, center dot always, corner dot if has note
+  var cornerDot=t.note
+    ?'<span style="position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:'+dotColor+';border:1.5px solid '+dotBorder+';display:block;pointer-events:none;"></span>'
+    :'';
+  var centerDot='<span style="width:5px;height:5px;border-radius:50%;background:'+noteStroke+';display:block;opacity:0.5;"></span>';
   var noteBtn='<button type="button" data-action="toggle-note" data-task-id="'+t.id+'" style="'
-    +'position:relative;background:rgba(255,255,255,0.45);border:none;border-radius:8px;'
-    +'width:32px;height:32px;min-width:32px;flex-shrink:0;'
+    +'position:relative;background:transparent;'
+    +'border:1.5px solid '+undoBorder+';border-radius:8px;'
+    +'width:30px;height:30px;min-width:30px;flex-shrink:0;'
     +'display:flex;align-items:center;justify-content:center;'
-    +'cursor:pointer;margin-left:8px;padding:0;opacity:'+(t.note?'1':'0.4')+';">'
-    +'<svg viewBox="0 0 24 24" fill="none" stroke="'+noteStroke+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">'
-    +'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
-    +'<polyline points="14 2 14 8 20 8"/>'
-    +(t.note?'<line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>':'')
-    +'</svg>'+noteDot+'</button>';
+    +'cursor:pointer;margin-left:8px;padding:0;margin-top:1px;">'
+    +centerDot+cornerDot+'</button>';
 
   // Pills
+  var typeBg=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
+  var typeColor=isComplete?'#9fe1cb':t.status===STATUS.INFIELD?'#b5d4f4':'#faeeda';
   var pills='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.5);color:'+noteStroke+';">#'+t.site+'</span>';
-  if(t.type){
-    var typeBg=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
-    var typeColor=isComplete?'#9fe1cb':t.status===STATUS.INFIELD?'#b5d4f4':'#faeeda';
-    pills+='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:'+typeBg+';color:'+typeColor+';letter-spacing:.05em;">'+escapeHtml(t.type)+'</span>';
-  }
+  if(t.type) pills+='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:'+typeBg+';color:'+typeColor+';letter-spacing:.05em;">'+escapeHtml(t.type)+'</span>';
   if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)
-    pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.35);color:#3a5a7a;" class="live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
+    pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.35);color:'+noteStroke+';" class="live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
   else if(isComplete&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)
     pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.35);color:'+noteStroke+';">'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>';
 
   var reopenHTML='';
   var reopenText=t.reopenReason||(t.cycles.length>0?(t.cycles[0].reopenReason||''):'');
   if(reopenText&&t.status===STATUS.PENDING)
-    reopenHTML='<div style="font-size:11px;color:#7a5210;margin-bottom:8px;">Reopened: '+escapeHtml(reopenText)+'</div>';
+    reopenHTML='<div style="font-size:11px;color:'+noteStroke+';margin-bottom:6px;opacity:0.8;">Reopened: '+escapeHtml(reopenText)+'</div>';
 
   // Undo SVG
-  var undoSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;display:block;">'
+  var undoSvg='<svg viewBox="0 0 24 24" fill="none" stroke="'+undoColor+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:block;">'
     +'<path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>';
 
-  // Undo box colors
-  var undoBg=isComplete?'rgba(26,92,53,.13)':t.status===STATUS.INFIELD?'rgba(28,74,122,.13)':'rgba(122,82,16,.13)';
-  var undoColor=isComplete?'rgba(26,92,53,.6)':t.status===STATUS.INFIELD?'rgba(28,74,122,.6)':'rgba(122,82,16,.6)';
-  var undoType=isComplete?'complete':'infield';
-
-  // Main button styles
-  var mainBg=isComplete?'rgba(255,255,255,0.35)':'rgba(255,255,255,0.55)';
-  var mainColor=noteStroke;
-  var mainLabel=isComplete?'Reopen':t.status===STATUS.INFIELD?'In Field':'Pending';
-  var mainIcon=t.status===STATUS.PENDING
-    ?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
-    :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>';
-
-  var undoBoxHTML = t.status===STATUS.PENDING ? '' :
-    '<button data-task-id="'+t.id+'" data-undo="'+undoType+'" style="'
-    +'flex-shrink:0;width:48px;border:none;border-radius:10px;'
+  // Undo box — transparent with border
+  var undoBoxHTML=t.status===STATUS.PENDING?'':
+    '<button data-task-id="'+t.id+'" data-undo="'+(isComplete?'complete':'infield')+'" style="'
+    +'flex-shrink:0;width:44px;align-self:stretch;'
+    +'border:1.5px solid '+undoBorder+';border-radius:10px;'
+    +'background:transparent;'
     +'display:flex;align-items:center;justify-content:center;'
-    +'background:'+undoBg+';color:'+undoColor+';'
     +'cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
     +undoSvg+'</button>';
 
-  var actionHTML='<div style="display:flex;flex-direction:row;align-items:stretch;gap:8px;margin-top:0;">'
+  // Main button
+  var mainBg='rgba(255,255,255,0.5)';
+  var mainLabel=isComplete?'Reopen':t.status===STATUS.INFIELD?'In Field':'Pending';
+  var mainIcon=t.status===STATUS.PENDING
+    ?'<svg viewBox="0 0 24 24" fill="none" stroke="'+noteStroke+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
+    :'<svg viewBox="0 0 24 24" fill="none" stroke="'+noteStroke+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  var actionHTML='<div style="display:flex;flex-direction:row;align-items:stretch;gap:8px;">'
     +undoBoxHTML
     +'<button class="tv-main-btn" data-task-id="'+t.id+'" style="'
-    +'flex:1;display:flex;align-items:center;justify-content:center;gap:8px;'
-    +'padding:15px 10px;border-radius:10px;border:none;'
-    +'background:'+mainBg+';color:'+mainColor+';'
+    +'flex:1;display:flex;align-items:center;justify-content:center;gap:7px;'
+    +'padding:13px 10px;border-radius:10px;border:none;'
+    +'background:'+mainBg+';color:'+noteStroke+';'
     +'font-family:Inter,sans-serif;font-size:12px;font-weight:700;'
     +'letter-spacing:.07em;text-transform:uppercase;cursor:pointer;'
     +'-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
     +mainIcon+mainLabel+'</button>'
     +'</div>';
 
-  return '<div class="tv-task-card '+stateClass+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'">'
-    +'<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1px;">'
+  // Equal spacing: 6px between name/pills, 6px between pills/button
+  return '<div class="tv-task-card '+stateClass+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'" style="padding:14px 14px 13px;">'
+    +'<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">'
     +'<div class="tv-card-name">'+escapeHtml(t.desc)+'</div>'
     +noteBtn
     +'</div>'
-    +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px;margin-bottom:12px;">'+pills+'</div>'
+    +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;">'+pills+'</div>'
     +reopenHTML
     +actionHTML
     +'</div>';
 }
-
-// ── Notes bottom sheet ──────────────────────────────────────
-function openNoteSheet(taskId){
-  var task=currentTasks().find(t=>String(t.id)===String(taskId));if(!task)return;
-  state.activeNoteTaskId=taskId;
-  document.getElementById('sheetTitle').textContent=task.desc||'Note';
-  document.getElementById('sheetSub').textContent='#'+task.site+(task.type?' · '+task.type:'');
-  var ta=document.getElementById('sheetTextarea');
-  ta.value=task.note||'';
-  document.getElementById('sheetCharCount').textContent=100-(task.note||'').length;
-  document.getElementById('sheetOverlay').classList.add('open');
-  document.getElementById('noteBottomSheet').classList.add('open');
-  setTimeout(()=>ta.focus(),320);
-}
-function closeNoteSheet(){
-  document.getElementById('sheetOverlay').classList.remove('open');
-  document.getElementById('noteBottomSheet').classList.remove('open');
-  state.activeNoteTaskId=null;
-}
-document.getElementById('sheetTextarea').addEventListener('input',function(){
-  document.getElementById('sheetCharCount').textContent=100-this.value.length;
-});
-async function saveNoteSheet(){
-  var id=state.activeNoteTaskId;if(!id)return;
-  var task=currentTasks().find(t=>String(t.id)===String(id));if(!task)return;
-  var note=document.getElementById('sheetTextarea').value.trim();
-  const {error}=await supabase.from('tasks').update({notes:note}).eq('id',id);
-  if(error){showError('Could not save note.',error);return;}
-  await touchLastActive();
-  task.note=note;closeNoteSheet();renderTaskCards();renderProjectCards();
-}
-
-// ── Cycle task status (single tap, all Supabase logic intact) ──
-async function getCoords(){if(qp('geo')!=='1')return null;if(!navigator.geolocation)return null;return new Promise(resolve=>{navigator.geolocation.getCurrentPosition(pos=>resolve({lat:pos.coords.latitude,lng:pos.coords.longitude}),()=>resolve(null),{enableHighAccuracy:true,timeout:3000,maximumAge:300000})})}
-async function getLatestCycleRow(taskId){const {data,error}=await supabase.from('cycles').select('*').eq('task_id',taskId).order('cycle_num',{ascending:false}).limit(1).maybeSingle();if(error)throw error;return data||null;}
-async function getCycleRowById(cycleId){if(!cycleId)return null;const {data,error}=await supabase.from('cycles').select('*').eq('id',cycleId).maybeSingle();if(error)throw error;return data||null;}
-async function refreshCurrentProject(projectId){await loadProjectsAndTasks();if(projectId)state.currentProject=state.projects.find(p=>String(p.id)===String(projectId))||null;}
-function markTaskSuccess(taskId,kind){var row=document.getElementById('task-card-'+String(taskId));if(!row)return;row.classList.add(kind==='complete'?'row-success-complete':'row-success-infield');setTimeout(()=>row.classList.add('row-exit'),420);}
-function delay(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
-
 async function undoCardStatus(taskId, fromState){
   if(!state.currentProject) return;
   var projectId=state.currentProject.id;
