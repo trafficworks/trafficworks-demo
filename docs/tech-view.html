@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v15</title>
+<title>TrafficWorks — Tech View v16</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -529,6 +529,84 @@ body { background: var(--tv-bg); color: var(--tv-text); overflow-x: hidden; -web
 #projectCards { display: flex; flex-direction: column; gap: 10px; padding: 12px 16px 40px; max-width: 480px; margin: 0 auto; }
 .tv-content { padding: 0; max-width: 100%; }
 #taskCards { padding: 12px 16px 100px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; }
+
+/* ============================================================
+   PRINT / PDF STYLES
+   ============================================================ */
+@page {
+  size: auto;
+  margin: 12mm 10mm;
+}
+
+@media print {
+  /* Hide everything except the job sheet */
+  body > * { display: none !important; }
+
+  .jobsheet-overlay {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+    z-index: auto !important;
+  }
+
+  .jobsheet-header { display: none !important; }
+
+  .jobsheet-body {
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    background: #fff !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .jobsheet-body > * {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .jobsheet-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .js-section,
+  .js-instructions-card {
+    box-shadow: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .js-site {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .js-section-header-pending,
+  .js-section-header-infield,
+  .js-section-header-complete,
+  .js-instructions-header {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .js-footer {
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    font-size: 10px;
+    color: #999;
+  }
+}
 </style>
 </head>
 <body>
@@ -1126,7 +1204,7 @@ function openJobSheet(projectId){
   html+=renderGroup('Pending',pending,'js-section-header-pending','js-section-dot-pending');
   html+=renderGroup('In Field',infield,'js-section-header-infield','js-section-dot-infield');
   html+=renderGroup('Complete',complete,'js-section-header-complete','js-section-dot-complete');
-  html+='<div class="js-footer">Report generated '+dateStr+' · <span class="js-footer-brand">The Count Company</span></div>';
+  html+='<div class="js-footer"><span class="js-footer-brand">The Count Company</span></div>';
   document.getElementById('printContent').innerHTML='<div class="jobsheet-container">'+html+'</div>';
   document.getElementById('printOverlay').classList.add('visible');
   const lockY=window.scrollY||window.pageYOffset||0;
