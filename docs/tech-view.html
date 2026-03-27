@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v8</title>
+<title>TrafficWorks — Tech View v10</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -703,9 +703,13 @@ async function loadAll(){
   try{
     await loadTech();await touchLastActive();await loadProjectsAndTasks();
     document.getElementById('undoBtn').style.display='none';
+    console.log('Projects loaded:',state.projects.length,'Tech:',state.techId);
     renderProjectStats();renderProjectCards();
-    if(!state.projects.length)document.getElementById('projectCards').innerHTML='<div class="tv-empty-state">No assigned jobs right now</div>';
-  }catch(err){showError('Could not load tech view.',err);document.getElementById('projectCards').innerHTML='<div class="tv-empty-state">Could not load assigned jobs</div>';}
+    if(!state.projects.length)document.getElementById('projectCards').innerHTML='<div class="tv-empty-state" style="text-align:center;padding:40px 16px;color:var(--tv-text-muted);">No assigned jobs right now</div>';
+  }catch(err){
+    console.error('loadAll error:',err);
+    document.getElementById('projectCards').innerHTML='<div class="tv-empty-state" style="text-align:center;padding:40px 16px;color:red;">Error: '+err.message+'</div>';
+  }
   finally{setLoading(false);}
 }
 
@@ -1078,6 +1082,38 @@ document.addEventListener('click',function(e){
 document.getElementById('reopenOverlay').addEventListener('click',function(e){if(e.target===this)closeReopenModal();});
 document.getElementById('closeJobSheetBtn')?.addEventListener('click',closePrintView);
 document.getElementById('printJobSheetBtn')?.addEventListener('click',()=>window.print());
+
+
+// ── Notes bottom sheet ──────────────────────────────────────
+function openNoteSheet(taskId){
+  var task=currentTasks().find(t=>String(t.id)===String(taskId));if(!task)return;
+  state.activeNoteTaskId=taskId;
+  document.getElementById('sheetTitle').textContent=task.desc||'Note';
+  document.getElementById('sheetSub').textContent='#'+task.site+(task.type?' · '+task.type:'');
+  var ta=document.getElementById('sheetTextarea');
+  ta.value=task.note||'';
+  document.getElementById('sheetCharCount').textContent=100-(task.note||'').length;
+  document.getElementById('sheetOverlay').classList.add('open');
+  document.getElementById('noteBottomSheet').classList.add('open');
+  setTimeout(()=>ta.focus(),320);
+}
+function closeNoteSheet(){
+  document.getElementById('sheetOverlay').classList.remove('open');
+  document.getElementById('noteBottomSheet').classList.remove('open');
+  state.activeNoteTaskId=null;
+}
+document.getElementById('sheetTextarea').addEventListener('input',function(){
+  document.getElementById('sheetCharCount').textContent=100-this.value.length;
+});
+async function saveNoteSheet(){
+  var id=state.activeNoteTaskId;if(!id)return;
+  var task=currentTasks().find(t=>String(t.id)===String(id));if(!task)return;
+  var note=document.getElementById('sheetTextarea').value.trim();
+  const {error}=await supabase.from('tasks').update({notes:note}).eq('id',id);
+  if(error){showError('Could not save note.',error);return;}
+  await touchLastActive();
+  task.note=note;closeNoteSheet();renderTaskCards();renderProjectCards();
+}
 
 Object.assign(window,{showProjects,openProject,undoLastAction,undoCardStatus,promptReopen,closeReopenModal,confirmReopen,openJobSheet,closePrintView,cycleTaskStatus,closeNoteSheet,saveNoteSheet});
 // Intercept browser back button
