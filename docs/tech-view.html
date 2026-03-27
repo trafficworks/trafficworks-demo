@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v16</title>
+<title>TrafficWorks — Tech View v18</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -1072,6 +1072,9 @@ async function cycleTaskStatus(taskId){
       const {error:te3}=await supabase.from('tasks').update({status:'pending',reopen_reason:'Reopened by tech'}).eq('id',taskId);if(te3)throw te3;
     }
     await touchLastActive();
+    // Refresh project data from Supabase so counts stay accurate
+    await refreshCurrentProject(state.currentProject ? state.currentProject.id : null);
+    renderProjectStats();
     renderProjectCards();
   }catch(err){
     console.error('Supabase error:',err);
@@ -1126,6 +1129,9 @@ async function undoCardStatus(taskId, fromState){
       const {error:te2}=await supabase.from('tasks').update({status:'in-field'}).eq('id',taskId);if(te2)throw te2;
     }
     await touchLastActive();
+    // Refresh project data from Supabase so counts stay accurate
+    await refreshCurrentProject(state.currentProject ? state.currentProject.id : null);
+    renderProjectStats();
     renderProjectCards();
   }catch(err){showError('Could not undo.',err);}
 }
@@ -1229,7 +1235,120 @@ document.addEventListener('click',function(e){
 });
 document.getElementById('reopenOverlay').addEventListener('click',function(e){if(e.target===this)closeReopenModal();});
 document.getElementById('closeJobSheetBtn')?.addEventListener('click',closePrintView);
-document.getElementById('printJobSheetBtn')?.addEventListener('click',()=>window.print());
+document.getElementById('printJobSheetBtn')?.addEventListener('click',function(){
+  var content=document.getElementById('printContent').innerHTML;
+  var pw=window.open('','_blank','width=800,height=600');
+  pw.document.write(`<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Job Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@page { size: letter portrait; margin: 15mm 12mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #fff; color: #1A1D21; font-size: 14px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.jobsheet-container { width: 100%; max-width: 100%; }
+.js-project { margin-bottom: 18px; }
+.js-project-name { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; color: #1A1D21; line-height: 1.2; margin-bottom: 4px; }
+.js-project-meta { font-size: 13px; color: #6B7178; margin-bottom: 2px; }
+.js-instructions-card { background: #fff; border-radius: 10px; margin-bottom: 14px; overflow: hidden; border: 1px solid #E0DED8; }
+.js-instructions-header { display: flex; align-items: center; justify-content: space-between; background: #4A7A5E; padding: 9px 14px; }
+.js-instructions-title { font-size: 10.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; }
+.js-instructions-body { padding: 12px 14px; font-size: 13.5px; font-weight: 600; color: #2A2D31; line-height: 1.5; }
+.js-section { background: #fff; border-radius: 10px; margin-bottom: 12px; overflow: hidden; border: 1px solid #E0DED8; break-inside: avoid; page-break-inside: avoid; }
+.js-section-header { display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; }
+.js-section-header-pending  { background: #F5EDD6; }
+.js-section-header-infield  { background: #DCEAF8; }
+.js-section-header-complete { background: #D4EDDF; }
+.js-section-left { display: flex; align-items: center; gap: 8px; }
+.js-section-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.js-section-dot-pending  { background: #D4A843; }
+.js-section-dot-infield  { background: #4A7FBF; }
+.js-section-dot-complete { background: #3AA66A; }
+.js-section-label { font-size: 10.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.js-section-header-pending  .js-section-label { color: #6B4A08; }
+.js-section-header-infield  .js-section-label { color: #1C4A7A; }
+.js-section-header-complete .js-section-label { color: #1A5C35; }
+.js-section-count { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+.js-section-header-pending  .js-section-count { background: rgba(107,74,8,0.14);  color: #6B4A08; }
+.js-section-header-infield  .js-section-count { background: rgba(28,74,122,0.14); color: #1C4A7A; }
+.js-section-header-complete .js-section-count { background: rgba(26,92,53,0.16);  color: #1A5C35; }
+.js-site-list { padding: 4px 0; }
+.js-site { padding: 10px 14px; border-bottom: 1px solid #F0EEE9; break-inside: avoid; page-break-inside: avoid; }
+.js-site:last-child { border-bottom: none; }
+.js-site-header { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+.js-site-num { font-size: 12px; font-weight: 700; color: #9DA3AA; flex-shrink: 0; min-width: 24px; }
+.js-site-desc { font-size: 14px; font-weight: 700; color: #1A1D21; flex: 1; letter-spacing: -0.01em; line-height: 1.2; }
+.js-site-tags { display: flex; gap: 4px; flex-shrink: 0; }
+.js-site-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; padding: 3px 7px; border-radius: 6px; background: #ECEAE4; color: #4A4F55; }
+.js-site-tech-init { font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 6px; background: #E8E6E0; color: #6B7178; }
+.js-site-times { font-size: 11.5px; color: #7D838A; margin-top: 3px; line-height: 1.4; }
+.js-site-note { font-size: 12px; font-weight: 600; color: #4A4F55; margin-top: 4px; font-style: italic; }
+.js-footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #DEDBD5; text-align: center; font-size: 11px; color: #9DA3AA; }
+.js-footer-brand { font-weight: 700; color: #6B7178; }
+
+/* ============================================================
+   PROJECT CARDS — mc card system (embedded, no external dep)
+   ============================================================ */
+.mc {
+  border-radius: 20px; padding: 14px 18px;
+  display: flex; flex-direction: column;
+  position: relative; width: 100%; box-sizing: border-box;
+  cursor: pointer; transition: opacity .15s;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.mc:active { opacity: .88; }
+.mc.mc-no-topbar { padding-top: 16px; }
+.mc-pending    { background: var(--tv-pending-bg);  color: var(--tv-pending-text); }
+.mc-inprogress { background: var(--tv-infield-bg);  color: var(--tv-infield-text); }
+.mc-complete   { background: var(--tv-complete-bg); color: var(--tv-complete-text); }
+.mc-top-bar { display: flex; align-items: center; width: 100%; margin-bottom: 10px; min-height: 26px; }
+.mc-top-left { flex-shrink: 0; }
+.mc-top-mid  { flex: 1; }
+.mc-top-right { flex-shrink: 0; }
+.mc-pill-sm { font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; display: inline-flex; align-items: center; gap: 5px; }
+.mc-infield-pill  { background: rgba(58,166,106,.15); color: var(--tv-complete-text); }
+.mc-inprogress .mc-infield-pill { background: rgba(28,74,122,.12); color: var(--tv-infield-text); }
+.mc-pending-pill  { background: rgba(196,154,46,.18); color: var(--tv-pending-text); }
+.mc-blink { width: 6px; height: 6px; border-radius: 50%; background: var(--tv-complete-accent); flex-shrink: 0; animation: mcblink 1.8s ease-in-out infinite; }
+.mc-pd-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tv-pending-accent); flex-shrink: 0; }
+@keyframes mcblink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.mc-name-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 2px; }
+.mc-check { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: rgba(26,92,53,.15); display: flex; align-items: center; justify-content: center; }
+.mc-name { font-size: 16px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.3; margin-bottom: 2px; color: inherit; }
+.mc-city { font-size: 13px; font-weight: 500; opacity: .6; margin-bottom: 12px; }
+.mc-divider { width: 100%; height: 1px; margin-bottom: 12px; }
+.mc-pending    .mc-divider { background: rgba(122,82,16,.12); }
+.mc-inprogress .mc-divider { background: rgba(28,74,122,.12); }
+.mc-complete   .mc-divider { background: rgba(26,92,53,.12); }
+.mc-counter { font-size: 54px; font-weight: 700; letter-spacing: -0.05em; line-height: 1; margin-bottom: 3px; align-self: center; }
+.mc-slash, .mc-total { opacity: .28; font-weight: 400; }
+.mc-complete .mc-done { color: var(--tv-complete-accent); }
+.mc-counter-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; opacity: .45; margin-bottom: 14px; align-self: center; }
+.mc-pill { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 12px; border-radius: 100px; border: none; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s; -webkit-tap-highlight-color: transparent; }
+.mc-pill:active { opacity: .75; }
+.mc-pending    .mc-pill { background: rgba(122,82,16,.10);  color: var(--tv-pending-text); }
+.mc-inprogress .mc-pill { background: rgba(28,74,122,.10);  color: var(--tv-infield-text); }
+.mc-complete   .mc-pill { background: rgba(26,92,53,.12);   color: var(--tv-complete-text); }
+.mc-prog { width: 100%; height: 3px; border-radius: 99px; margin-top: 12px; overflow: hidden; }
+.mc-pending    .mc-prog { background: rgba(122,82,16,.12); }
+.mc-inprogress .mc-prog { background: rgba(28,74,122,.12); }
+.mc-complete   .mc-prog { background: rgba(26,92,53,.12); }
+.mc-prog-fill { height: 100%; border-radius: 99px; }
+.mc-pending    .mc-prog-fill { background: var(--tv-pending-accent); }
+.mc-inprogress .mc-prog-fill { background: var(--tv-infield-accent); }
+.mc-complete   .mc-prog-fill { background: var(--tv-complete-accent); }
+</style>
+</head>
+<body>
+`+content+`
+</body>
+</html>`);
+  pw.document.close();
+  pw.onload=function(){pw.focus();pw.print();};
+});
 
 
 // ── Notes bottom sheet ──────────────────────────────────────
