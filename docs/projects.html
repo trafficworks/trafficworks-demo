@@ -1269,14 +1269,26 @@ async function openJobSheet(id) {
 
 function closeJobSheet() { document.getElementById('jobsheetOverlay').classList.remove('visible'); document.body.style.overflow = ''; }
 function printJobSheet() {
-  var bodyEl = document.getElementById('jobsheetBody');
-  if (!bodyEl) return;
-  var content = bodyEl.innerHTML;
-  var css = '@page{size:letter portrait;margin:12mm 10mm;}*{box-sizing:border-box;margin:0;padding:0;}body{font-family:Inter,sans-serif;background:#fff;color:#1A1D21;font-size:13px;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.js-project{margin-bottom:12px;}.js-project-name{font-size:20px;font-weight:800;letter-spacing:-0.03em;color:#1A1D21;line-height:1.2;margin-bottom:3px;}.js-project-meta{font-size:12px;color:#6B7178;margin-bottom:2px;}.js-instructions-card{background:#fff;border-radius:8px;margin-bottom:10px;overflow:hidden;border:1px solid #E0DED8;break-inside:avoid;page-break-inside:avoid;}.js-instructions-header{display:flex;align-items:center;justify-content:space-between;background:#4A7A5E;padding:7px 12px;}.js-instructions-title{font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#fff;}.js-instructions-body{padding:10px 12px;font-size:12.5px;font-weight:600;color:#2A2D31;line-height:1.5;}.js-section{background:#fff;border-radius:8px;margin-bottom:10px;border:1px solid #E0DED8;break-before:avoid;page-break-before:avoid;}.js-section-header{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;}.js-section-header-pending{background:#F5EDD6;}.js-section-header-infield{background:#DCEAF8;}.js-section-header-complete{background:#D4EDDF;}.js-section-left{display:flex;align-items:center;gap:8px;}.js-section-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}.js-section-dot-pending{background:#D4A843;}.js-section-dot-infield{background:#4A7FBF;}.js-section-dot-complete{background:#3AA66A;}.js-section-label{font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;}.js-section-header-pending .js-section-label{color:#6B4A08;}.js-section-header-infield .js-section-label{color:#1C4A7A;}.js-section-header-complete .js-section-label{color:#1A5C35;}.js-section-count{font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;}.js-section-header-pending .js-section-count{background:rgba(107,74,8,0.14);color:#6B4A08;}.js-section-header-infield .js-section-count{background:rgba(28,74,122,0.14);color:#1C4A7A;}.js-section-header-complete .js-section-count{background:rgba(26,92,53,0.16);color:#1A5C35;}.js-site-list{padding:2px 0;}.js-site{padding:8px 12px;border-bottom:1px solid #F0EEE9;break-inside:avoid;page-break-inside:avoid;}.js-site:last-child{border-bottom:none;}.js-site-header{display:flex;align-items:center;gap:8px;margin-bottom:3px;}.js-site-num{font-size:12px;font-weight:500;color:#9DA3AA;flex-shrink:0;min-width:24px;}.js-site-desc{font-size:14px;font-weight:500;color:#1A1D21;flex:1;letter-spacing:-0.01em;line-height:1.2;margin-bottom:2px;}.js-site-tags{display:flex;gap:4px;flex-shrink:0;}.js-site-tag{font-size:10px;font-weight:700;letter-spacing:0.04em;padding:3px 7px;border-radius:6px;background:#ECEAE4;color:#4A4F55;}.js-site-times{font-size:11px;color:#9DA3AA;margin-top:2px;line-height:1.6;}.js-site-times div{display:block;}.js-site-note{font-size:12px;font-weight:600;color:#4A4F55;margin-top:4px;font-style:italic;}.js-footer{margin-top:24px;padding-top:12px;border-top:1px solid #DEDBD5;text-align:center;font-size:11px;color:#9DA3AA;}.js-footer-brand{font-weight:700;color:#6B7178;}';
-  var pw = window.open('', '_blank', 'width=850,height=700');
-  pw.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Job Sheet</title><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>' + css + '</style></head><body>' + content + '</body></html>');
-  pw.document.close();
-  setTimeout(function(){ pw.focus(); pw.print(); }, 600);
+  var overlay = document.getElementById('jobsheetOverlay');
+  if (!overlay) return;
+  var prev = {
+    position: overlay.style.position,
+    height:   overlay.style.height,
+    overflow: overlay.style.overflow,
+    inset:    overlay.style.inset,
+    zIndex:   overlay.style.zIndex
+  };
+  overlay.style.position = 'static';
+  overlay.style.height   = 'auto';
+  overlay.style.overflow = 'visible';
+  overlay.style.inset    = 'auto';
+  overlay.style.zIndex   = 'auto';
+  window.print();
+  overlay.style.position = prev.position;
+  overlay.style.height   = prev.height;
+  overlay.style.overflow = prev.overflow;
+  overlay.style.inset    = prev.inset;
+  overlay.style.zIndex   = prev.zIndex;
 }
 
 
