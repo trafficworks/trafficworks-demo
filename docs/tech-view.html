@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v34</title>
+<title>TrafficWorks — Tech View v35</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -42,6 +42,8 @@ html.tv-dark {
   --tv-complete-bg:     #1A3828;
   --tv-complete-text:   #72D49A;
   --tv-complete-accent: #52C486;
+  --tv-infield-accent:  #6AAAD4;
+  --tv-pending-accent:  #D4A84A;
   --tv-bg:              #1C1E22;
   --tv-surface:         #272B32;
   --tv-surface-raised:  #2E3239;
@@ -883,14 +885,14 @@ function renderTaskCards(){
 
 function taskCardHTML(t,isComplete,isOnHold){
   var stateClass=isComplete?'tv-card-complete':t.status===STATUS.INFIELD?'tv-card-infield':'tv-card-pending';
-  var nameColor=isComplete?'#0d3320':t.status===STATUS.INFIELD?'#1a2d45':'#3d3400';
-  var noteStroke=isComplete?'#1a5c35':t.status===STATUS.INFIELD?'#1c4a7a':'#7a5210';
-  var dotColor=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
+  var nameColor='var(--tv-text)';
+  var noteStroke=isComplete?'var(--tv-complete-text)':t.status===STATUS.INFIELD?'var(--tv-infield-text)':'var(--tv-pending-text)';
+  var dotColor=isComplete?'var(--tv-complete-accent)':t.status===STATUS.INFIELD?'var(--tv-infield-accent)':'var(--tv-pending-accent)';
   var dotBorder=isComplete?'#BDE0CC':t.status===STATUS.INFIELD?'#d6e4f0':'#f5f0d8';
-  var borderColor=isComplete?'rgba(26,92,53,.25)':t.status===STATUS.INFIELD?'rgba(28,74,122,.25)':'rgba(122,82,16,.25)';
-  var undoColor=isComplete?'rgba(26,92,53,.55)':t.status===STATUS.INFIELD?'rgba(28,74,122,.55)':'rgba(122,82,16,.55)';
-  var typeBg=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
-  var typeColor=isComplete?'#9fe1cb':t.status===STATUS.INFIELD?'#b5d4f4':'#faeeda';
+  var borderColor='rgba(128,128,128,0.3)';
+  var undoColor=isComplete?'var(--tv-complete-text)':t.status===STATUS.INFIELD?'var(--tv-infield-text)':'var(--tv-pending-text)';
+  var typeBg=isComplete?'var(--tv-complete-accent)':t.status===STATUS.INFIELD?'var(--tv-infield-accent)':'var(--tv-pending-accent)';
+  var typeColor=isComplete?'var(--tv-complete-bg)':t.status===STATUS.INFIELD?'var(--tv-infield-bg)':'var(--tv-pending-bg)';
 
   // Note bubble
   var cornerDot=t.note
@@ -951,7 +953,7 @@ function taskCardHTML(t,isComplete,isOnHold){
   var actionHTML='<button class="tv-main-btn" data-task-id="'+t.id+'" style="'
     +'width:100%;display:flex;align-items:center;justify-content:center;gap:7px;'
     +'padding:13px 10px;border-radius:10px;border:none;'
-    +'background:rgba(255,255,255,0.5);color:'+noteStroke+';'
+    +'background:rgba(128,128,128,0.15);color:'+noteStroke+';'
     +'font-family:Inter,sans-serif;font-size:12px;font-weight:700;'
     +'letter-spacing:.07em;text-transform:uppercase;cursor:pointer;'
     +'-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
