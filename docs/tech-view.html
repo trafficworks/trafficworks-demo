@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v36</title>
+<title>TrafficWorks — Tech View v37</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -884,6 +884,7 @@ function renderTaskCards(){
 }
 
 function taskCardHTML(t,isComplete,isOnHold){
+  var isDark=document.documentElement.classList.contains('tv-dark');
   var stateClass=isComplete?'tv-card-complete':t.status===STATUS.INFIELD?'tv-card-infield':'tv-card-pending';
   var nameColor='var(--tv-text)';
   var noteStroke=isComplete?'var(--tv-complete-text)':t.status===STATUS.INFIELD?'var(--tv-infield-text)':'var(--tv-pending-text)';
@@ -919,12 +920,12 @@ function taskCardHTML(t,isComplete,isOnHold){
     +undoSvg+'</button>';
 
   // Pills — left group
-  var pills='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.5);color:'+noteStroke+';">#'+t.site+'</span>';
+  var pillBg=isDark?'rgba(255,255,255,0.18)':'rgba(255,255,255,0.5)';var durBg=isDark?'rgba(255,255,255,0.15)':'rgba(255,255,255,0.35)';var pills='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:'+pillBg+';color:'+noteStroke+';">#'+t.site+'</span>';
   if(t.type) pills+='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:'+typeBg+';color:'+typeColor+';letter-spacing:.05em;">'+escapeHtml(t.type)+'</span>';
   if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)
-    pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.35);color:'+noteStroke+';" class="live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
+    pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:'+durBg+';color:'+noteStroke+';" class="live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
   else if(isComplete&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)
-    pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.35);color:'+noteStroke+';">'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>';
+    pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:'+durBg+';color:'+noteStroke+';">'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>';
   pills+=noteBtn;
 
   var reopenHTML='';
@@ -953,7 +954,7 @@ function taskCardHTML(t,isComplete,isOnHold){
   var actionHTML='<button class="tv-main-btn" data-task-id="'+t.id+'" style="'
     +'width:100%;display:flex;align-items:center;justify-content:center;gap:7px;'
     +'padding:13px 10px;border-radius:10px;border:none;'
-    +'background:rgba(128,128,128,0.15);color:'+noteStroke+';'
+    +'background:'+(isDark?'rgba(255,255,255,0.12)':'rgba(255,255,255,0.5)')+';color:'+noteStroke+';'
     +'font-family:Inter,sans-serif;font-size:12px;font-weight:700;'
     +'letter-spacing:.07em;text-transform:uppercase;cursor:pointer;'
     +'-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
