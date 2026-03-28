@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v37</title>
+<title>TrafficWorks — Tech View v39</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -33,28 +33,28 @@
   --tv-header-text:     #1A1D21;
 }
 html.tv-dark {
-  --tv-pending-bg:      #4A3A1A;
+  --tv-pending-bg:      #1E2128;
   --tv-pending-text:    #F5C85A;
-  --tv-pending-accent:  #D4A84A;
-  --tv-infield-bg:      #1A2E48;
-  --tv-infield-text:    #90C4E8;
-  --tv-infield-accent:  #6AAAD4;
-  --tv-complete-bg:     #1A3828;
-  --tv-complete-text:   #72D49A;
-  --tv-complete-accent: #52C486;
-  --tv-infield-accent:  #6AAAD4;
-  --tv-pending-accent:  #D4A84A;
-  --tv-bg:              #1C1E22;
-  --tv-surface:         #272B32;
-  --tv-surface-raised:  #2E3239;
-  --tv-border:          rgba(255,255,255,0.12);
-  --tv-divider:         rgba(255,255,255,0.08);
-  --tv-text:            #E6E8EC;
-  --tv-text-secondary:  #9AA0AA;
-  --tv-text-muted:      #676D76;
-  --tv-note-bg:         #30343C;
-  --tv-header-bg:       #1C1E22;
-  --tv-header-text:     #E6E8EC;
+  --tv-pending-accent:  #F5C85A;
+  --tv-infield-bg:      #1E2128;
+  --tv-infield-text:    #60B4F0;
+  --tv-infield-accent:  #60B4F0;
+  --tv-complete-bg:     #1E2128;
+  --tv-complete-text:   #4FD68A;
+  --tv-complete-accent: #4FD68A;
+  --tv-bg:              #111318;
+  --tv-surface:         #1E2128;
+  --tv-surface-raised:  #262A33;
+  --tv-border:          rgba(255,255,255,0.08);
+  --tv-divider:         rgba(255,255,255,0.06);
+  --tv-text:            #E8EAF0;
+  --tv-text-secondary:  #8A909A;
+  --tv-text-muted:      #565C68;
+  --tv-note-bg:         #262A33;
+  --tv-header-bg:       #111318;
+  --tv-header-text:     #E8EAF0;
+  --tv-infield-accent:  #60B4F0;
+  --tv-pending-accent:  #F5C85A;
 }
 
 /* === Transition animations === */
@@ -1336,9 +1336,15 @@ body { font-family: 'Inter', sans-serif; background: #fff; color: #1A1D21; font-
 /* ============================================================
    DARK MODE CARD OVERRIDES
    ============================================================ */
-html.tv-dark .tv-card-pending  { background: var(--tv-pending-bg) !important; }
-html.tv-dark .tv-card-infield  { background: var(--tv-infield-bg) !important; }
-html.tv-dark .tv-card-complete { background: var(--tv-complete-bg) !important; opacity: 0.7; }
+html.tv-dark .tv-card-pending,
+html.tv-dark .tv-card-infield,
+html.tv-dark .tv-card-complete {
+  background: var(--tv-surface) !important;
+  border-radius: 16px !important;
+}
+html.tv-dark .tv-card-pending  { border-left: 3px solid #F5C85A !important; }
+html.tv-dark .tv-card-infield  { border-left: 3px solid #60B4F0 !important; }
+html.tv-dark .tv-card-complete { border-left: 3px solid #4FD68A !important; opacity: 0.65 !important; }
 
 /* Card name text */
 html.tv-dark .tv-card-pending  .tv-card-name,
@@ -1402,9 +1408,9 @@ html.tv-dark .tv-card-infield  span[style*="background:#185fa5"] { background: #
 html.tv-dark .tv-card-complete span[style*="background:#0f6e56"] { background: #127860 !important; color: #90E8CC !important; }
 
 /* Main button text */
-html.tv-dark .tv-card-pending  button[style*="background:rgba(255,255,255,0.5)"] { background: rgba(245,200,90,0.18) !important; color: #F5C85A !important; }
-html.tv-dark .tv-card-infield  button[style*="background:rgba(255,255,255,0.5)"] { background: rgba(144,196,232,0.18) !important; color: #90C4E8 !important; }
-html.tv-dark .tv-card-complete button[style*="background:rgba(255,255,255,0.5)"] { background: rgba(114,212,154,0.18) !important; color: #72D49A !important; }
+html.tv-dark .tv-card-pending  .tv-main-btn { background: rgba(245,200,90,0.15) !important; color: #F5C85A !important; border: 1px solid rgba(245,200,90,0.3) !important; }
+html.tv-dark .tv-card-infield  .tv-main-btn { background: rgba(96,180,240,0.15) !important; color: #60B4F0 !important; border: 1px solid rgba(96,180,240,0.3) !important; }
+html.tv-dark .tv-card-complete .tv-main-btn { background: rgba(79,214,138,0.12) !important; color: #4FD68A !important; border: 1px solid rgba(79,214,138,0.25) !important; }
 
 /* Job sheet toolbar button */
 html.tv-dark .tv-jobsheet-wide { background: #2A2820 !important; color: #C4A85A !important; }
@@ -1429,6 +1435,26 @@ html.tv-dark .tv-card-complete span[style*="rgba(255,255,255,0.35)"] {
   background: rgba(114,212,154,0.25) !important;
   color: #72D49A !important;
 }
+
+/* Dark mode project list cards */
+html.tv-dark .mc-pending    { background: #1E2128 !important; color: #F5C85A !important; border-left: 3px solid #F5C85A !important; }
+html.tv-dark .mc-inprogress { background: #1E2128 !important; color: #60B4F0 !important; border-left: 3px solid #60B4F0 !important; }
+html.tv-dark .mc-complete   { background: #1E2128 !important; color: #4FD68A !important; border-left: 3px solid #4FD68A !important; opacity: 0.7; }
+html.tv-dark .mc-hold       { background: #1E2128 !important; color: #8A909A !important; border-left: 3px solid #565C68 !important; }
+html.tv-dark .mc-name       { color: inherit !important; }
+html.tv-dark .mc-city       { color: inherit !important; opacity: 0.55 !important; }
+html.tv-dark .mc-counter    { color: inherit !important; }
+html.tv-dark .mc-pill       { background: rgba(255,255,255,0.08) !important; color: inherit !important; }
+html.tv-dark .mc-jobsheet-wide,
+html.tv-dark .mc-pill.mc-view-btn { background: rgba(255,255,255,0.08) !important; color: inherit !important; }
+html.tv-dark .mc-divider    { background: rgba(255,255,255,0.07) !important; }
+html.tv-dark .mc-prog       { background: rgba(255,255,255,0.08) !important; }
+html.tv-dark .mc-pending    .mc-prog-fill { background: #F5C85A !important; }
+html.tv-dark .mc-inprogress .mc-prog-fill { background: #60B4F0 !important; }
+html.tv-dark .mc-complete   .mc-prog-fill { background: #4FD68A !important; }
+html.tv-dark .tv-jobsheet-wide { background: rgba(255,255,255,0.08) !important; color: var(--tv-text) !important; }
+html.tv-dark #projectStatsBar,
+html.tv-dark #tvTaskToolbar  { background: var(--tv-header-bg) !important; color: var(--tv-text-muted) !important; }
 </style>
 </head>
 <body>
