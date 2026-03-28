@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v30</title>
+<title>TrafficWorks — Tech View v32</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
 <style>
 /* === TOKEN OVERRIDES (self-contained, no external CSS dependency) === */
 :root {
-  --tv-pending-bg:      #F5EDD6;
+  --tv-pending-bg:      #EDE0B0;
   --tv-pending-text:    #7A5210;
   --tv-pending-accent:  #C49A2E;
-  --tv-infield-bg:      #DCEAF8;
+  --tv-infield-bg:      #C8DCF2;
   --tv-infield-text:    #1C4A7A;
   --tv-infield-accent:  #4A7FBF;
-  --tv-complete-bg:     #D4EDDF;
+  --tv-complete-bg:     #BDE0CC;
   --tv-complete-text:   #1A5C35;
   --tv-complete-accent: #3AA66A;
   --tv-bg:              #F4F3F0;
@@ -883,7 +883,7 @@ function taskCardHTML(t,isComplete,isOnHold){
   var nameColor=isComplete?'#0d3320':t.status===STATUS.INFIELD?'#1a2d45':'#3d3400';
   var noteStroke=isComplete?'#1a5c35':t.status===STATUS.INFIELD?'#1c4a7a':'#7a5210';
   var dotColor=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
-  var dotBorder=isComplete?'#ddf0e4':t.status===STATUS.INFIELD?'#d6e4f0':'#f5f0d8';
+  var dotBorder=isComplete?'#BDE0CC':t.status===STATUS.INFIELD?'#d6e4f0':'#f5f0d8';
   var borderColor=isComplete?'rgba(26,92,53,.25)':t.status===STATUS.INFIELD?'rgba(28,74,122,.25)':'rgba(122,82,16,.25)';
   var undoColor=isComplete?'rgba(26,92,53,.55)':t.status===STATUS.INFIELD?'rgba(28,74,122,.55)':'rgba(122,82,16,.55)';
   var typeBg=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
@@ -1321,7 +1321,7 @@ body { font-family: 'Inter', sans-serif; background: #fff; color: #1A1D21; font-
 .mc-complete   .mc-prog-fill { background: var(--tv-complete-accent); }
 
 /* On Hold card */
-.mc-hold { background: #CCCAC5 !important; color: #5A5850 !important; }
+.mc-hold { background: #D8D6D1 !important; color: #5A5850 !important; }
 .mc-hold .mc-divider { background: rgba(90,88,80,.1); }
 .mc-hold .mc-pill { background: rgba(90,88,80,.08); color: #5A5850; }
 .mc-hold .mc-prog { background: rgba(90,88,80,.1); }
