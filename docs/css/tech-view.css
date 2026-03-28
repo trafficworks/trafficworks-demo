@@ -221,6 +221,90 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 .mc-inprogress .mc-prog-fill { background: var(--tv-infield-accent); }
 .mc-complete   .mc-prog-fill { background: var(--tv-complete-accent); }
 
+
+/* ============================================================
+   JOB SHEET OVERLAY — TV page
+   ============================================================ */
+.jobsheet-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: #F4F3F0;
+  overflow: hidden;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  z-index: 9999;
+}
+.jobsheet-overlay.visible {
+  display: flex;
+}
+.jobsheet-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  background: #F4F3F0;
+  border-bottom: 1px solid #DEDBD5;
+  gap: 12px;
+  width: 100%;
+  flex: 0 0 auto;
+  flex-shrink: 0;
+}
+.jobsheet-body {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 16px calc(40px + env(safe-area-inset-bottom, 0px));
+  background: #F4F3F0;
+  display: block;
+}
+.jobsheet-container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  background: #F4F3F0;
+  box-shadow: none;
+}
+.js-instructions-card,
+.js-section {
+  width: 100%;
+  box-shadow: none;
+}
+
+@media print {
+  body > * { display: none !important; }
+  .jobsheet-overlay {
+    display: block !important;
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+    z-index: auto !important;
+  }
+  .jobsheet-overlay.visible { display: block !important; }
+  .jobsheet-header { display: none !important; }
+  .jobsheet-body {
+    display: block !important;
+    overflow: visible !important;
+    height: auto !important;
+    flex: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+    background: #fff !important;
+  }
+  .jobsheet-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    background: #fff !important;
+  }
+}
 /* ============================================================
    TASK CARDS
    ============================================================ */
@@ -433,6 +517,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
   color: var(--tv-bg);
   border-color: transparent;
 }
+
 
 /* ============================================================
    TASK CARDS — new state system
