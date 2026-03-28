@@ -43,9 +43,6 @@
   --tv-note-bg:         #F5F4F1;
 }
 
-
-
-
 /* ============================================================
    BASE OVERRIDES
    ============================================================ */
@@ -224,8 +221,6 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 .mc-inprogress .mc-prog-fill { background: var(--tv-infield-accent); }
 .mc-complete   .mc-prog-fill { background: var(--tv-complete-accent); }
 
-/* Dark mode — card overrides */
-
 /* ============================================================
    TASK CARDS
    ============================================================ */
@@ -332,82 +327,6 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 }
 
 /* ============================================================
-   JOB SHEET OVERLAY
-   ============================================================ */
-.jobsheet-overlay { display:none; position:fixed; inset:0; background:#F4F3F0; z-index:500; flex-direction:column; overflow:hidden; }
-.jobsheet-overlay.visible { display:flex; }
-
-.jobsheet-header { display:flex; align-items:center; padding:14px 16px; background:#F4F3F0; border-bottom:1px solid #DEDBD5; gap:12px; flex-shrink:0; }
-.jobsheet-close { background:none; border:none; cursor:pointer; color:#6B7178; display:flex; align-items:center; padding:4px; flex-shrink:0; }
-.jobsheet-title { font-family:inherit; font-size:15px; font-weight:700; color:#1A1D21; letter-spacing:-0.02em; display:flex; align-items:center; gap:7px; flex:1; }
-.jobsheet-title svg { color:#3AA66A; flex-shrink:0; }
-.jobsheet-download { display:inline-flex; align-items:center; gap:6px; padding:9px 16px; background:#1A1D21; color:#fff; border:none; border-radius:100px; font-family:inherit; font-size:12.5px; font-weight:700; letter-spacing:-0.01em; cursor:pointer; flex-shrink:0; }
-
-.jobsheet-body { flex:1; overflow-y:auto; padding:20px 14px 40px; -webkit-overflow-scrolling:touch; display:flex; flex-direction:column; align-items:center; }
-.jobsheet-body > * { width:100%; max-width:760px; }
-@media (max-width: 840px) { .jobsheet-body > * { max-width:none; } }
-
-/* project header */
-.jobsheet-overlay .js-project { margin-bottom:18px; }
-.jobsheet-overlay .js-project-name { font-size:22px; font-weight:800; letter-spacing:-0.03em; color:#1A1D21; line-height:1.2; margin-bottom:4px; }
-.jobsheet-overlay .js-project-meta { font-size:13px; color:#6B7178; margin-bottom:2px; }
-.jobsheet-overlay .js-project-num { font-size:12px; color:#7D838A; margin-bottom:2px; }
-.jobsheet-overlay .js-project-date { font-size:11px; color:#9DA3AA; }
-
-/* instructions card */
-.jobsheet-overlay .js-instructions-card { background:#fff; border-radius:14px; margin-bottom:14px; overflow:hidden; }
-.jobsheet-overlay .js-instructions-header { display:flex; align-items:center; justify-content:space-between; background:#4A7A5E; padding:9px 14px; border-radius:14px 14px 0 0; }
-.jobsheet-overlay .js-instructions-title { font-size:10.5px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:#fff; }
-.jobsheet-overlay .js-instructions-body { padding:12px 14px; font-size:13.5px; font-weight:600; color:#2A2D31; line-height:1.5; }
-
-/* section cards */
-.jobsheet-overlay .js-section { background:#fff; border-radius:14px; margin-bottom:12px; overflow:hidden; margin-top:0; }
-.jobsheet-overlay .js-section-header { display:flex; align-items:center; justify-content:space-between; padding:9px 14px; border-radius:14px 14px 0 0; border-bottom:none; padding-bottom:9px; }
-.jobsheet-overlay .js-section-header-pending  { background:#F5EDD6; }
-.jobsheet-overlay .js-section-header-infield  { background:#DCEAF8; }
-.jobsheet-overlay .js-section-header-complete { background:#D4EDDF; }
-.jobsheet-overlay .js-section-left { display:flex; align-items:center; gap:8px; }
-.jobsheet-overlay .js-section-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-.jobsheet-overlay .js-section-dot-pending  { background:#D4A843; }
-.jobsheet-overlay .js-section-dot-infield  { background:#4A7FBF; }
-.jobsheet-overlay .js-section-dot-complete { background:#3AA66A; }
-.jobsheet-overlay .js-section-label { font-size:10.5px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:inherit; border-bottom:none; padding-bottom:0; }
-.jobsheet-overlay .js-section-header-pending  .js-section-label { color:#6B4A08; }
-.jobsheet-overlay .js-section-header-infield  .js-section-label { color:#1C4A7A; }
-.jobsheet-overlay .js-section-header-complete .js-section-label { color:#1A5C35; }
-.jobsheet-overlay .js-section-count { font-size:11px; font-weight:700; padding:2px 8px; border-radius:100px; }
-.jobsheet-overlay .js-section-header-pending  .js-section-count { background:rgba(107,74,8,0.14);  color:#6B4A08; }
-.jobsheet-overlay .js-section-header-infield  .js-section-count { background:rgba(28,74,122,0.14); color:#1C4A7A; }
-.jobsheet-overlay .js-section-header-complete .js-section-count { background:rgba(26,92,53,0.16);  color:#1A5C35; }
-
-/* site rows */
-.jobsheet-overlay .js-site-list { padding:4px 0; }
-.jobsheet-overlay .js-site { padding:10px 14px; border-bottom:1px solid #F0EEE9; }
-.jobsheet-overlay .js-site:last-child { border-bottom:none; }
-.jobsheet-overlay .js-site-header { display:flex; align-items:center; gap:8px; margin-bottom:3px; }
-.jobsheet-overlay .js-site-num { font-size:12px; font-weight:700; color:#9DA3AA; flex-shrink:0; min-width:24px; }
-.jobsheet-overlay .js-site-desc { font-size:14px; font-weight:700; color:#1A1D21; flex:1; letter-spacing:-0.01em; line-height:1.2; }
-.jobsheet-overlay .js-site-tags { display:flex; gap:4px; flex-shrink:0; }
-.jobsheet-overlay .js-site-tag { font-size:10px; font-weight:700; letter-spacing:0.04em; padding:3px 7px; border-radius:6px; background:#ECEAE4; color:#4A4F55; }
-.jobsheet-overlay .js-site-tech-init { font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; background:#E8E6E0; color:#6B7178; letter-spacing:0.02em; }
-.jobsheet-overlay .js-site-times { font-size:11.5px; color:#7D838A; margin-top:3px; line-height:1.4; }
-.jobsheet-overlay .js-site-note { font-size:12px; font-weight:600; color:#4A4F55; margin-top:4px; font-style:italic; }
-
-/* footer */
-.jobsheet-overlay .js-footer { margin-top:24px; padding-top:14px; border-top:1px solid #DEDBD5; text-align:center; font-size:11px; color:#9DA3AA; letter-spacing:0.02em; }
-.jobsheet-overlay .js-footer-brand { font-weight:700; color:#6B7178; }
-
-/* print */
-@media print {
-  body > * { display:none !important; }
-  .jobsheet-overlay { display:block !important; position:static !important; overflow:visible !important; background:#fff !important; height:auto !important; z-index:auto !important; }
-  .jobsheet-header { display:none !important; }
-  .jobsheet-body { display:block !important; overflow:visible !important; padding:20px !important; display:block !important; }
-  .jobsheet-body > * { max-width:100% !important; }
-  .js-section-header-pending, .js-section-header-infield, .js-section-header-complete, .js-instructions-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-}
-
-/* ============================================================
    STATUS CHANGE CONFIRMATION
    ============================================================ */
 .tv-confirm-overlay { position: fixed; inset: 0; z-index: 400; display: none; align-items: center; justify-content: center; pointer-events: none; }
@@ -423,127 +342,6 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 /* Undo confirmation overlay */
 .tv-undo-circle { width: 90px; height: 90px; background: var(--green); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 4px 20px rgba(42,181,126,0.4); transition: opacity 0.25s ease, transform 0.25s ease; }
 .tv-undo-text { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 0.3px; }
-
-/* Dark mode — topnav */
-/* tv-topnav-title dark mode removed */
-
-/* Dark mode — back button and undo button */
-
-/* Dark mode — filter pill active state */
-
-/* Dark mode — note save button */
-
-
-/* job sheet cleanup */
-.jobsheet-container {
-  box-shadow: none !important;
-}
-
-.jobsheet-overlay .js-instructions-card,
-.jobsheet-overlay .js-section {
-  box-shadow: none !important;
-}
-
-/* ===== HARD OVERLAY FIX ===== */
-
-.jobsheet-overlay {
-  position: fixed !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-
-  background: #F4F3F0 !important;
-
-  display: none;
-  align-items: center;
-  justify-content: center;
-
-  z-index: 9999 !important;
-}
-
-/* when visible */
-.jobsheet-overlay.visible {
-  display: flex !important;
-}
-
-/* container (the sheet itself) */
-.jobsheet-container {
-  width: 100%;
-  max-width: 820px;
-  margin: 20px;
-  background: #F4F3F0 !important;
-
-  box-shadow: none !important;
-}
-
-/* kill ALL inner shadows */
-.js-instructions-card,
-.js-section {
-  box-shadow: none !important;
-}
-
-
-/* ===== FINAL TECH VIEW MOBILE JOB SHEET FIX ===== */
-.jobsheet-overlay {
-  position: fixed !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  min-height: 100vh !important;
-  height: 100dvh !important;
-  background: #F4F3F0 !important;
-  overflow: hidden !important;
-  align-items: stretch !important;
-  justify-content: flex-start !important;
-  z-index: 9999 !important;
-}
-
-.jobsheet-header {
-  width: 100% !important;
-  flex: 0 0 auto !important;
-}
-
-.jobsheet-body {
-  width: 100% !important;
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  padding: 20px 16px calc(110px + env(safe-area-inset-bottom, 0px)) !important;
-  background: #F4F3F0 !important;
-  display: block !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
-.jobsheet-body > * {
-  width: 100% !important;
-  max-width: none !important;
-}
-
-.jobsheet-container {
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  background: #F4F3F0 !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-}
-
-.js-instructions-card,
-.js-section {
-  width: 100% !important;
-  box-shadow: none !important;
-}
-
-/* Match projects-page viewer feel on phones */
-@media (max-width: 768px) {
-  .jobsheet-header {
-    padding: 14px 16px !important;
-  }
-
-  .jobsheet-download {
-    flex-shrink: 0 !important;
-  }
-}
-
 
 /* ============================================================
    TOP NAV — Projects · Tech View / Project Name
