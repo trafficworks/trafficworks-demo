@@ -857,24 +857,17 @@ function closeJobSheet() {
 function printJobSheet() {
   var overlay = document.getElementById('jobsheetOverlay');
   if (!overlay) return;
-  var prev = {
-    position: overlay.style.position,
-    height:   overlay.style.height,
-    overflow: overlay.style.overflow,
-    inset:    overlay.style.inset,
-    zIndex:   overlay.style.zIndex
-  };
-  overlay.style.position = 'static';
-  overlay.style.height   = 'auto';
-  overlay.style.overflow = 'visible';
-  overlay.style.inset    = 'auto';
-  overlay.style.zIndex   = 'auto';
-  window.print();
-  overlay.style.position = prev.position;
-  overlay.style.height   = prev.height;
-  overlay.style.overflow = prev.overflow;
-  overlay.style.inset    = prev.inset;
-  overlay.style.zIndex   = prev.zIndex;
+  // Strip fixed positioning so content flows for print
+  overlay.style.cssText = 'position:static!important;height:auto!important;overflow:visible!important;inset:auto!important;z-index:auto!important;display:block!important;width:100%!important;';
+  var body = overlay.querySelector('.jobsheet-body');
+  if (body) body.style.cssText = 'overflow:visible!important;height:auto!important;flex:none!important;display:block!important;padding:20px!important;';
+  // Wait for reflow then print
+  setTimeout(function() {
+    window.print();
+    // Restore after print dialog closes
+    overlay.style.cssText = '';
+    if (body) body.style.cssText = '';
+  }, 300);
 }
 
 function toggleMobileNav() {
