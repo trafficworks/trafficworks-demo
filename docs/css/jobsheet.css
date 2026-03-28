@@ -243,23 +243,40 @@
 /* ============================================================
    PRINT
    ============================================================ */
+@page { size: letter portrait; margin: 12mm 10mm; }
+
 @media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
   body > * { display: none !important; }
+  body { overflow: visible !important; height: auto !important; }
+
   .jobsheet-overlay {
     display: block !important;
     position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
     overflow: visible !important;
     background: #fff !important;
-    height: auto !important;
     z-index: auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .jobsheet-overlay.visible {
+    display: block !important;
   }
   .jobsheet-header { display: none !important; }
   .jobsheet-body {
     display: block !important;
     overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+    flex: none !important;
     padding: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
+    background: #fff !important;
   }
   .jobsheet-container {
     width: 100% !important;
@@ -270,7 +287,16 @@
     background: #fff !important;
   }
   .js-instructions-card,
-  .js-section { box-shadow: none !important; }
+  .js-section {
+    box-shadow: none !important;
+    overflow: visible !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .js-site {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
   .js-section-header-pending,
   .js-section-header-infield,
   .js-section-header-complete,
