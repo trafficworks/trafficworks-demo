@@ -9,34 +9,6 @@
 <link rel="stylesheet" href="css/jobsheet.css">
 
 
-
-<style>
-@page { size: letter portrait; margin: 12mm 10mm; }
-@media print {
-  body > *:not(.jobsheet-overlay) { display: none !important; }
-  .jobsheet-overlay { 
-    position: static !important; 
-    display: block !important;
-    width: 100% !important;
-    height: auto !important;
-    overflow: visible !important;
-    background: #fff !important;
-  }
-  .jobsheet-header { display: none !important; }
-  .jobsheet-body {
-    display: block !important;
-    overflow: visible !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
-  .jobsheet-container { width: 100% !important; max-width: 100% !important; }
-  .js-site { break-inside: avoid; page-break-inside: avoid; }
-  .js-section { break-before: avoid; page-break-before: avoid; }
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-</style>
 </head>
 <body>
 
@@ -851,11 +823,11 @@ function openJobSheet() {
       if (t.tech) s += '<span class="js-site-tech-init">' + getInitials(t.tech) + '</span>'
       s += '</div></div>'
       const times = []
-      if (cycle?.deployed_at) times.push('Set: ' + fmtTime(cycle.deployed_at))
-      if (cycle?.completed_at) times.push('Pickup: ' + fmtTime(cycle.completed_at))
-      if (cycle?.deployed_at && cycle?.completed_at) times.push('Duration: ' + fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at)))
-      else if (cycle?.deployed_at && !cycle?.completed_at) times.push('Duration: ' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime()))
-      if (times.length) s += '<div class="js-site-times">' + times.join(' · ') + '</div>'
+      if (cycle?.deployed_at) times.push('<span>Set ' + fmtTime(cycle.deployed_at) + '</span>')
+      if (cycle?.completed_at) times.push('<span>Pickup ' + fmtTime(cycle.completed_at) + '</span>')
+      if (cycle?.deployed_at && cycle?.completed_at) times.push('<span>' + fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at)) + '</span>')
+      else if (cycle?.deployed_at && !cycle?.completed_at) times.push('<span>' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime()) + '</span>')
+      if (times.length) s += '<div class="js-site-times">' + times.join('') + '</div>'
       if (t.note) s += '<div class="js-site-note">' + escapeHtml(t.note) + '</div>'
       s += '</div>'
     })
