@@ -90,7 +90,7 @@
      On Hold                       = red
      Complete                      = green
   */
-  .mc-pending    { background: #EDE0B0 !important; color: #6B4A08 !important; }
+  .mc-pending    { background: #F5EDD6 !important; color: #6B4A08 !important; }
   .mc-inprogress { background: #C8DCF2 !important; color: #1C4A7A !important; }
   .mc-hold { background: #D8D6D1 !important; color: #5A5850 !important; }
   .mc-complete   { background: #BDE0CC !important; color: #1A5C35 !important; }
@@ -274,11 +274,6 @@
   .mc-complete   .mc-prog-fill { background: #3AA66A; }
 }
 
-
-.js-site-num { font-size: 12px; font-weight: 500 !important; color: #9DA3AA; }
-.js-site-desc { font-size: 14px; font-weight: 500 !important; color: #1A1D21; margin-bottom: 2px; }
-.js-site-times { font-size: 11px; color: #9DA3AA; margin-top: 2px; line-height: 1.6; }
-.js-site-times span { display: block; }
 </style>
 </head>
 <body>
@@ -1247,10 +1242,10 @@ async function openJobSheet(id) {
       s += '</div>'
       s += '</div>'
       var times = []
-      if (t.deployed) times.push('<span>Set ' + t.deployed + '</span>')
-      if (t.picked)   times.push('<span>Pickup ' + t.picked + '</span>')
-      if (t.dur)      times.push('<span>' + t.dur + '</span>')
-      if (times.length) s += '<div class="js-site-times">' + times.join('') + '</div>'
+      if (t.deployed) times.push('Set: ' + t.deployed)
+      if (t.picked)   times.push('Pickup: ' + t.picked)
+      if (t.dur)      times.push('Duration: ' + t.dur)
+      if (times.length) s += '<div class="js-site-times">' + times.join(' · ') + '</div>'
       if (t.note) s += '<div class="js-site-note">' + t.note + '</div>'
       s += '</div>'
     })
