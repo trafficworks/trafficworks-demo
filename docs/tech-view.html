@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v21</title>
+<title>TrafficWorks — Tech View v23</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -882,211 +882,72 @@ function taskCardHTML(t,isComplete){
   var dotBorder=isComplete?'#ddf0e4':t.status===STATUS.INFIELD?'#d6e4f0':'#f5f0d8';
   var borderColor=isComplete?'rgba(26,92,53,.25)':t.status===STATUS.INFIELD?'rgba(28,74,122,.25)':'rgba(122,82,16,.25)';
   var undoColor=isComplete?'rgba(26,92,53,.55)':t.status===STATUS.INFIELD?'rgba(28,74,122,.55)':'rgba(122,82,16,.55)';
+  var typeBg=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
+  var typeColor=isComplete?'#9fe1cb':t.status===STATUS.INFIELD?'#b5d4f4':'#faeeda';
 
-  // Note button — thought bubble icon, corner dot if has note
+  // Note bubble
   var cornerDot=t.note
     ?'<span style="position:absolute;top:1px;right:1px;width:6px;height:6px;border-radius:50%;background:'+dotColor+';border:1.5px solid '+dotBorder+';display:block;pointer-events:none;"></span>'
     :'';
-  // Thought bubble SVG — always outline, opacity signals state
-  var bubbleOpacity=t.note?'1':'0.3';
-  var thoughtBubble='<svg viewBox="0 0 24 24" style="width:15px;height:15px;display:block;" fill="none" stroke="'+noteStroke+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="'+bubbleOpacity+'">'
-    +'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
-    +'</svg>';
+  var bubbleOpacity=t.note?'1':'0.35';
   var noteBtn='<button type="button" data-action="toggle-note" data-task-id="'+t.id+'" style="'
-    +'position:relative;background:transparent;'
-    +'border:1.5px solid '+borderColor+';border-radius:7px;'
-    +'width:26px;height:26px;min-width:26px;flex-shrink:0;'
-    +'display:flex;align-items:center;justify-content:center;'
-    +'cursor:pointer;padding:0;margin-left:auto;">'
-    +thoughtBubble+cornerDot+'</button>';
+    +'position:relative;background:transparent;border:1.5px solid '+borderColor+';border-radius:7px;'
+    +'width:24px;height:24px;min-width:24px;flex-shrink:0;'
+    +'display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">'
+    +'<svg viewBox="0 0 24 24" style="width:13px;height:13px;display:block;" fill="none" stroke="'+noteStroke+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="'+bubbleOpacity+'">'
+    +'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'
+    +cornerDot+'</button>';
 
-  // Pills row — site#, type, duration, note button all on same line
-  var typeBg=isComplete?'#0f6e56':t.status===STATUS.INFIELD?'#185fa5':'#ba7517';
-  var typeColor=isComplete?'#9fe1cb':t.status===STATUS.INFIELD?'#b5d4f4':'#faeeda';
+  // Undo box — far right, only on In Field + Complete
+  var undoSvg='<svg viewBox="0 0 24 24" fill="none" stroke="'+undoColor+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;display:block;">'
+    +'<path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>';
+  var undoBtn=t.status===STATUS.PENDING?'':
+    '<button data-task-id="'+t.id+'" data-undo="'+(isComplete?'complete':'infield')+'" style="'
+    +'flex-shrink:0;width:24px;height:24px;min-width:24px;'
+    +'border:1.5px solid '+borderColor+';border-radius:7px;'
+    +'background:transparent;display:flex;align-items:center;justify-content:center;'
+    +'cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
+    +undoSvg+'</button>';
+
+  // Pills — left group
   var pills='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.5);color:'+noteStroke+';">#'+t.site+'</span>';
   if(t.type) pills+='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:'+typeBg+';color:'+typeColor+';letter-spacing:.05em;">'+escapeHtml(t.type)+'</span>';
   if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)
     pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.35);color:'+noteStroke+';" class="live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
   else if(isComplete&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)
     pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,0.35);color:'+noteStroke+';">'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>';
+  pills+=noteBtn;
 
   var reopenHTML='';
   var reopenText=t.reopenReason||(t.cycles.length>0?(t.cycles[0].reopenReason||''):'');
   if(reopenText&&t.status===STATUS.PENDING)
     reopenHTML='<div style="font-size:11px;color:'+noteStroke+';margin-bottom:8px;opacity:0.8;">Reopened: '+escapeHtml(reopenText)+'</div>';
 
-  // Undo SVG
-  var undoSvg='<svg viewBox="0 0 24 24" fill="none" stroke="'+undoColor+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:block;">'
-    +'<path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>';
-
-  // Undo box — only on In Field and Complete
-  var undoBoxHTML=t.status===STATUS.PENDING?'':
-    '<button data-task-id="'+t.id+'" data-undo="'+(isComplete?'complete':'infield')+'" style="'
-    +'flex-shrink:0;width:44px;align-self:stretch;'
-    +'border:1.5px solid '+borderColor+';border-radius:10px;'
-    +'background:transparent;'
-    +'display:flex;align-items:center;justify-content:center;'
-    +'cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
-    +undoSvg+'</button>';
-
-  // Main button
+  // Main button — full width
   var mainLabel=isComplete?'Reopen':t.status===STATUS.INFIELD?'In Field':'Pending';
   var mainIcon=t.status===STATUS.PENDING
     ?'<svg viewBox="0 0 24 24" fill="none" stroke="'+noteStroke+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
     :'<svg viewBox="0 0 24 24" fill="none" stroke="'+noteStroke+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>';
 
-  var actionHTML='<div style="display:flex;flex-direction:row;align-items:stretch;gap:8px;">'
-    +undoBoxHTML
-    +'<button class="tv-main-btn" data-task-id="'+t.id+'" style="'
-    +'flex:1;display:flex;align-items:center;justify-content:center;gap:7px;'
+  var actionHTML='<button class="tv-main-btn" data-task-id="'+t.id+'" style="'
+    +'width:100%;display:flex;align-items:center;justify-content:center;gap:7px;'
     +'padding:13px 10px;border-radius:10px;border:none;'
     +'background:rgba(255,255,255,0.5);color:'+noteStroke+';'
     +'font-family:Inter,sans-serif;font-size:12px;font-weight:700;'
     +'letter-spacing:.07em;text-transform:uppercase;cursor:pointer;'
     +'-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
-    +mainIcon+mainLabel+'</button>'
-    +'</div>';
+    +mainIcon+mainLabel+'</button>';
 
-  // Equal 8px gap: name → pills row → button
   return '<div class="tv-task-card '+stateClass+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'" style="padding:13px 13px 12px;">'
-    +'<div class="tv-card-name" style="font-size:16px;font-weight:700;letter-spacing:-0.02em;color:'+nameColor+';margin-bottom:8px;">'+escapeHtml(t.desc)+'</div>'
-    +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;margin-bottom:8px;">'+pills+noteBtn+'</div>'
+    +'<div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;color:'+nameColor+';margin-bottom:8px;">'+escapeHtml(t.desc)+'</div>'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">'
+    +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">'+pills+'</div>'
+    +undoBtn
+    +'</div>'
     +reopenHTML
     +actionHTML
     +'</div>';
 }
-async function getCoords(){if(qp('geo')!=='1')return null;if(!navigator.geolocation)return null;return new Promise(resolve=>{navigator.geolocation.getCurrentPosition(pos=>resolve({lat:pos.coords.latitude,lng:pos.coords.longitude}),()=>resolve(null),{enableHighAccuracy:true,timeout:3000,maximumAge:300000})})}
-async function getLatestCycleRow(taskId){const {data,error}=await supabase.from('cycles').select('*').eq('task_id',taskId).order('cycle_num',{ascending:false}).limit(1).maybeSingle();if(error)throw error;return data||null;}
-async function getCycleRowById(cycleId){if(!cycleId)return null;const {data,error}=await supabase.from('cycles').select('*').eq('id',cycleId).maybeSingle();if(error)throw error;return data||null;}
-async function refreshCurrentProject(projectId){await loadProjectsAndTasks();if(projectId)state.currentProject=state.projects.find(p=>String(p.id)===String(projectId))||null;}
-
-async function cycleTaskStatus(taskId){
-  if(!state.currentProject)return;
-  var task=state.currentProject.tasks.find(t=>String(t.id)===String(taskId));
-  if(!task)return;
-  var prevStatus=task.status;
-  var prevCycle=Object.assign({},task.currentCycle);
-
-  var nextStatus;
-  if(task.status===STATUS.PENDING) nextStatus=STATUS.INFIELD;
-  else if(task.status===STATUS.INFIELD) nextStatus=STATUS.COMPLETE;
-  else if(task.status===STATUS.COMPLETE) nextStatus=STATUS.PENDING;
-  else return;
-
-  // Update in memory instantly
-  task.status=nextStatus;
-  if(nextStatus===STATUS.INFIELD){
-    task.currentCycle={deployedAt:new Date(),completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
-  } else if(nextStatus===STATUS.COMPLETE){
-    task.currentCycle=Object.assign({},prevCycle,{completedAt:new Date(),pickedUpAt:new Date()});
-  } else {
-    task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
-    task.reopenReason='Reopened by tech';
-  }
-
-  // Re-render card in place
-  var cardEl=document.getElementById('task-card-'+String(taskId));
-  if(cardEl){
-    var isNowComplete=nextStatus===STATUS.COMPLETE;
-    cardEl.outerHTML=taskCardHTML(task,isNowComplete);
-    rewireCard(taskId);
-    var newCard=document.getElementById('task-card-'+String(taskId));
-    if(newCard){
-      var flashColor=nextStatus===STATUS.COMPLETE?'rgba(26,92,53,0.5)':nextStatus===STATUS.INFIELD?'rgba(28,74,122,0.5)':'rgba(122,82,16,0.4)';
-      newCard.style.transition='box-shadow 0.1s ease';
-      newCard.style.boxShadow='0 0 0 2px '+flashColor;
-      setTimeout(function(){newCard.style.transition='box-shadow 0.6s ease';newCard.style.boxShadow='none';},100);
-      // Move complete cards to bottom, reopened cards to top
-      setTimeout(function(){
-        var container=document.getElementById('taskCards');
-        if(!container)return;
-        var divider=container.querySelector('.tv-completed-divider');
-        var card=document.getElementById('task-card-'+String(taskId));
-        if(!card)return;
-        if(nextStatus===STATUS.COMPLETE){
-          // Move after divider (or to end if no divider)
-          if(divider){
-            // Insert after divider
-            divider.parentNode.insertBefore(card,divider.nextSibling);
-          } else {
-            // Create divider then append
-            var div=document.createElement('div');
-            div.className='tv-completed-divider';
-            div.innerHTML='<div class="tv-completed-divider-line"></div><span class="tv-completed-divider-text">Complete</span><div class="tv-completed-divider-line"></div>';
-            container.appendChild(div);
-            container.appendChild(card);
-          }
-          // Update divider count
-          var completeCount=container.querySelectorAll('.tv-card-complete').length;
-          var divText=container.querySelector('.tv-completed-divider-text');
-          if(divText)divText.textContent='Complete ('+completeCount+')';
-        } else if(prevStatus===STATUS.COMPLETE){
-          // Reopened — move before divider
-          if(divider){
-            container.insertBefore(card,divider);
-          } else {
-            container.insertBefore(card,container.firstChild);
-          }
-          // Update/remove divider count
-          var completeCount2=container.querySelectorAll('.tv-card-complete').length;
-          var divider2=container.querySelector('.tv-completed-divider');
-          if(divider2){
-            if(completeCount2===0){divider2.remove();}
-            else{var dt=divider2.querySelector('.tv-completed-divider-text');if(dt)dt.textContent='Complete ('+completeCount2+')';}
-          }
-        }
-      }, 700);
-    }
-  }
-
-  // Show toast
-  var arrow=nextStatus===STATUS.INFIELD?'In Field':nextStatus===STATUS.COMPLETE?'Complete':'Pending';
-  showToast('#'+task.site+' · '+task.desc+' → '+arrow, taskId, prevStatus, prevCycle);
-
-  // Write to Supabase in background
-  try{
-    if(prevStatus===STATUS.PENDING && nextStatus===STATUS.INFIELD){
-      const latest=await getLatestCycleRow(taskId);
-      const nextNum=(latest?.cycle_num||0)+1;
-      const now=new Date().toISOString();
-      const coords=await getCoords();
-      const payload={task_id:taskId,cycle_num:nextNum,deployed_at:now,deployed_by:state.techId};
-      if(coords){payload.deploy_lat=coords.lat;payload.deploy_lng=coords.lng;}
-      const {data:nc,error:ce}=await supabase.from('cycles').insert([payload]).select('*').single();
-      if(ce)throw ce;
-      const {error:te}=await supabase.from('tasks').update({status:'in-field',reopen_reason:null}).eq('id',taskId);
-      if(te)throw te;
-      task.currentCycle.cycleId=nc.id;task.currentCycle.cycleNum=nc.cycle_num;
-      task.cycles.unshift({id:nc.id,cycle_num:nc.cycle_num,deployedAt:new Date(nc.deployed_at),completedAt:null,pickedUpAt:null,reopenReason:'',reopenedBy:''});
-    } else if(prevStatus===STATUS.INFIELD && nextStatus===STATUS.COMPLETE){
-      const cid=prevCycle.cycleId||null;
-      let latest=cid?await getCycleRowById(cid):null;
-      if(!latest)latest=await getLatestCycleRow(taskId);
-      if(!latest)throw new Error('No cycle found.');
-      const now=new Date().toISOString();
-      const coords=await getCoords();
-      const patch={picked_up_at:now,picked_up_by:state.techId,completed_at:now,completed_by:state.techId};
-      if(coords){patch.pickup_lat=coords.lat;patch.pickup_lng=coords.lng;}
-      const {error:ce2}=await supabase.from('cycles').update(patch).eq('id',latest.id);if(ce2)throw ce2;
-      const {error:te2}=await supabase.from('tasks').update({status:'complete'}).eq('id',taskId);if(te2)throw te2;
-    } else if(nextStatus===STATUS.PENDING){
-      const {error:te3}=await supabase.from('tasks').update({status:'pending',reopen_reason:'Reopened by tech'}).eq('id',taskId);if(te3)throw te3;
-    }
-    await touchLastActive();
-    // Refresh project data from Supabase so counts stay accurate
-    await refreshCurrentProject(state.currentProject ? state.currentProject.id : null);
-    renderProjectStats();
-    renderProjectCards();
-  }catch(err){
-    console.error('Supabase error:',err);
-    task.status=prevStatus;task.currentCycle=prevCycle;
-    var el2=document.getElementById('task-card-'+String(taskId));
-    if(el2){el2.outerHTML=taskCardHTML(task,prevStatus===STATUS.COMPLETE);rewireCard(taskId);}
-    showError('Could not update task status.',err);
-  }
-}
-
-
 async function undoCardStatus(taskId, fromState){
   if(!state.currentProject)return;
   var task=state.currentProject.tasks.find(t=>String(t.id)===String(taskId));
