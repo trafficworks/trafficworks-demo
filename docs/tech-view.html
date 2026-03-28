@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v24</title>
+<title>TrafficWorks — Tech View v25</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -61,12 +61,12 @@ html.tv-dark {
 /* === TOP NAV === */
 .tv-topnav{display:flex;align-items:center;justify-content:center;gap:10px;padding:22px 20px 14px}
 .tv-topnav-projects{font-size:17px;font-weight:400;color:var(--tv-text-muted);letter-spacing:-.02em;white-space:nowrap;cursor:default;transition:color .15s}
-.tv-topnav-projects.is-active{font-weight:700;color:var(--tv-text)}
+.tv-topnav-projects.is-active{font-weight:700 !important;color:var(--tv-text) !important}
 .tv-topnav-projects.is-link{cursor:pointer;color:var(--tv-text-secondary)}
 .tv-topnav-projects.is-link:active{color:var(--tv-text)}
 .tv-topnav-dot{font-size:17px;color:var(--tv-text-muted);font-weight:400;flex-shrink:0}
 .tv-topnav-section{font-size:17px;font-weight:400;color:var(--tv-text-muted);letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:55vw;transition:color .15s}
-.tv-topnav-section.is-active{font-weight:700;color:var(--tv-text)}
+.tv-topnav-section.is-active{font-weight:700 !important;color:var(--tv-text) !important}
 
 /* === TASK TOOLBAR — sticky === */
 .tv-task-toolbar{
@@ -613,7 +613,7 @@ body { background: var(--tv-bg); color: var(--tv-text); overflow-x: hidden; -web
 
 <!-- TOP NAV -->
 <div class="tv-topnav" id="tvTopnav">
-  <span class="tv-topnav-projects" id="topnavProjects" onclick="showProjects()">Projects</span>
+  <span class="tv-topnav-projects is-active" id="topnavProjects" onclick="showProjects()">Projects</span>
   <span class="tv-topnav-dot">·</span>
   <span class="tv-topnav-section" id="topnavSection">Tech View</span>
 </div>
