@@ -1,6 +1,6 @@
 /* ============================================================
    TECH VIEW — Page-Specific Styles
-   Layers on design-system.css with dark/light auto-switch
+   Layers on design-system.css
    ============================================================ */
 
 /* ============================================================
@@ -43,45 +43,8 @@
   --tv-note-bg:         #F5F4F1;
 }
 
-/* ============================================================
-   TOKENS — DARK (7pm–7am)
-   ============================================================ */
-html.tv-dark {
-  /* Surfaces */
-  --tv-bg:              #1C1E22;
-  --tv-surface:         #272B32;
-  --tv-surface-raised:  #2E3239;
-  --tv-surface-hover:   #32363E;
 
-  /* Borders */
-  --tv-border:          rgba(255,255,255,0.09);
-  --tv-border-subtle:   rgba(255,255,255,0.06);
-  --tv-divider:         rgba(255,255,255,0.07);
 
-  /* Text */
-  --tv-text:            #E6E8EC;
-  --tv-text-secondary:  #9AA0AA;
-  --tv-text-muted:      #676D76;
-
-  /* Header */
-  --tv-header-bg:       #1C1E22;
-  --tv-header-text:     #E6E8EC;
-
-  /* Status — dark: muted, readable, not neon */
-  --tv-pending-bg:      #2E2718;
-  --tv-pending-text:    #D4A84A;
-  --tv-pending-accent:  #C49A2E;
-  --tv-infield-bg:      #182030;
-  --tv-infield-text:    #7AAED4;
-  --tv-infield-accent:  #4A7FBF;
-  --tv-complete-bg:     #182820;
-  --tv-complete-text:   #5EC48A;
-  --tv-complete-accent: #3AA66A;
-
-  /* Misc */
-  --tv-card-shadow:     0 1px 4px rgba(0,0,0,0.35);
-  --tv-note-bg:         #30343C;
-}
 
 /* ============================================================
    BASE OVERRIDES
@@ -177,6 +140,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 .mc-pending    { background: var(--tv-pending-bg);  color: var(--tv-pending-text); }
 .mc-inprogress { background: var(--tv-infield-bg);  color: var(--tv-infield-text); }
 .mc-complete   { background: var(--tv-complete-bg); color: var(--tv-complete-text); }
+.mc-hold       { background: #DEDAD4; color: #5A5850; }
 
 /* Top badge bar */
 .mc-top-bar { display: flex; align-items: center; width: 100%; margin-bottom: 10px; min-height: 26px; }
@@ -213,6 +177,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 /* Divider */
 .mc-divider { width: 100%; height: 1px; margin-bottom: 12px; }
 .mc-pending    .mc-divider { background: rgba(122,82,16,.12); }
+.mc-hold       .mc-divider { background: rgba(90,88,80,.1); }
 .mc-inprogress .mc-divider { background: rgba(28,74,122,.12); }
 .mc-complete   .mc-divider { background: rgba(26,92,53,.12); }
 
@@ -243,12 +208,15 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 }
 .mc-pill:active { opacity: .75; }
 .mc-pending    .mc-pill { background: rgba(122,82,16,.10);  color: var(--tv-pending-text); }
+.mc-hold       .mc-pill { background: rgba(90,88,80,.08); color: #5A5850; }
 .mc-inprogress .mc-pill { background: rgba(28,74,122,.10);  color: var(--tv-infield-text); }
 .mc-complete   .mc-pill { background: rgba(26,92,53,.12);   color: var(--tv-complete-text); }
 
 /* Progress bar */
 .mc-prog { width: 100%; height: 3px; border-radius: 99px; margin-top: 12px; overflow: hidden; }
 .mc-pending    .mc-prog { background: rgba(122,82,16,.12); }
+.mc-hold       .mc-prog { background: rgba(90,88,80,.10); }
+.mc-hold       .mc-prog-fill { background: #9A9890; }
 .mc-inprogress .mc-prog { background: rgba(28,74,122,.12); }
 .mc-complete   .mc-prog { background: rgba(26,92,53,.12); }
 .mc-prog-fill { height: 100%; border-radius: 99px; }
@@ -257,25 +225,6 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 .mc-complete   .mc-prog-fill { background: var(--tv-complete-accent); }
 
 /* Dark mode — card overrides */
-html.tv-dark .mc-pending    { background: var(--tv-pending-bg);  color: var(--tv-pending-text); }
-html.tv-dark .mc-inprogress { background: var(--tv-infield-bg);  color: var(--tv-infield-text); }
-html.tv-dark .mc-complete   { background: var(--tv-complete-bg); color: var(--tv-complete-text); }
-html.tv-dark .mc-check { background: rgba(94,196,138,.15); }
-html.tv-dark .mc-complete .mc-done { color: var(--tv-complete-accent); }
-html.tv-dark .mc-pending    .mc-divider { background: rgba(212,168,74,.12); }
-html.tv-dark .mc-inprogress .mc-divider { background: rgba(122,174,212,.12); }
-html.tv-dark .mc-complete   .mc-divider { background: rgba(94,196,138,.12); }
-html.tv-dark .mc-pending    .mc-prog    { background: rgba(212,168,74,.15); }
-html.tv-dark .mc-inprogress .mc-prog    { background: rgba(122,174,212,.15); }
-html.tv-dark .mc-complete   .mc-prog    { background: rgba(94,196,138,.15); }
-html.tv-dark .mc-infield-pill { background: rgba(94,196,138,.15); }
-html.tv-dark .mc-inprogress .mc-infield-pill { background: rgba(122,174,212,.12); }
-html.tv-dark .mc-pending-pill { background: rgba(212,168,74,.18); }
-html.tv-dark .mc-blink { background: var(--tv-complete-accent); }
-html.tv-dark .mc-pd-dot { background: var(--tv-pending-accent); }
-html.tv-dark .mc-pending    .mc-pill { background: rgba(212,168,74,.12);  color: var(--tv-pending-text); }
-html.tv-dark .mc-inprogress .mc-pill { background: rgba(122,174,212,.12); color: var(--tv-infield-text); }
-html.tv-dark .mc-complete   .mc-pill { background: rgba(94,196,138,.12);  color: var(--tv-complete-text); }
 
 /* ============================================================
    TASK CARDS
@@ -349,7 +298,6 @@ html.tv-dark .mc-complete   .mc-pill { background: rgba(94,196,138,.12);  color:
 .tv-note-char-count { font-size: var(--text-sm); color: var(--tv-text-muted); min-width: 28px; text-align: right; }
 .tv-note-char-count.warn { color: var(--red) }
 .tv-note-save-btn { background: var(--charcoal); color: var(--white); border: none; cursor: pointer; font-size: var(--text-sm); font-weight: 600; font-family: 'Inter', sans-serif; padding: 7px 12px; border-radius: 5px; text-transform: uppercase; letter-spacing: 0.3px; }
-html.tv-dark .tv-note-save-btn { background: var(--steel); }
 
 /* ============================================================
    TOGGLE BUTTONS (hold to change status)
@@ -480,14 +428,10 @@ html.tv-dark .tv-note-save-btn { background: var(--steel); }
 /* tv-topnav-title dark mode removed */
 
 /* Dark mode — back button and undo button */
-html.tv-dark .tv-back-btn { border-color: var(--tv-text-secondary); color: var(--tv-text-secondary); background: none; }
-html.tv-dark .tv-undo-btn { color: var(--tv-text-secondary); }
 
 /* Dark mode — filter pill active state */
-html.tv-dark .tv-filter-pill.active { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); }
 
 /* Dark mode — note save button */
-html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: var(--tv-text); border: 1px solid var(--tv-border); }
 
 
 /* job sheet cleanup */
@@ -691,11 +635,6 @@ html.tv-dark .tv-note-save-btn { background: var(--tv-surface-raised); color: va
   color: var(--tv-bg);
   border-color: transparent;
 }
-html.tv-dark .tv-undo-btn {
-  background: var(--tv-surface-raised);
-  color: var(--tv-text);
-  border-color: var(--tv-border);
-}
 
 /* ============================================================
    TASK CARDS — new state system
@@ -864,11 +803,6 @@ html.tv-dark .tv-undo-btn {
   -webkit-tap-highlight-color: transparent;
 }
 .tv-sheet-save:active { opacity: .8; }
-html.tv-dark .tv-sheet-save {
-  background: var(--tv-surface-raised);
-  color: var(--tv-text);
-  border: 1px solid var(--tv-border);
-}
 
 /* Completed section divider */
 .tv-completed-divider {
