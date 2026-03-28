@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v23</title>
+<title>TrafficWorks — Tech View v24</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -948,6 +948,107 @@ function taskCardHTML(t,isComplete){
     +actionHTML
     +'</div>';
 }
+async function getCoords(){if(qp('geo')!=='1')return null;if(!navigator.geolocation)return null;return new Promise(resolve=>{navigator.geolocation.getCurrentPosition(pos=>resolve({lat:pos.coords.latitude,lng:pos.coords.longitude}),()=>resolve(null),{enableHighAccuracy:true,timeout:3000,maximumAge:300000})})}
+async function getLatestCycleRow(taskId){const {data,error}=await supabase.from('cycles').select('*').eq('task_id',taskId).order('cycle_num',{ascending:false}).limit(1).maybeSingle();if(error)throw error;return data||null;}
+async function getCycleRowById(cycleId){if(!cycleId)return null;const {data,error}=await supabase.from('cycles').select('*').eq('id',cycleId).maybeSingle();if(error)throw error;return data||null;}
+async function refreshCurrentProject(projectId){await loadProjectsAndTasks();if(projectId)state.currentProject=state.projects.find(p=>String(p.id)===String(projectId))||null;}
+
+async function cycleTaskStatus(taskId){
+  if(!state.currentProject)return;
+  var task=state.currentProject.tasks.find(t=>String(t.id)===String(taskId));
+  if(!task)return;
+  var prevStatus=task.status;
+  var prevCycle=Object.assign({},task.currentCycle);
+  var nextStatus;
+  if(task.status===STATUS.PENDING)nextStatus=STATUS.INFIELD;
+  else if(task.status===STATUS.INFIELD)nextStatus=STATUS.COMPLETE;
+  else if(task.status===STATUS.COMPLETE)nextStatus=STATUS.PENDING;
+  else return;
+  task.status=nextStatus;
+  if(nextStatus===STATUS.INFIELD){
+    task.currentCycle={deployedAt:new Date(),completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+  } else if(nextStatus===STATUS.COMPLETE){
+    task.currentCycle=Object.assign({},prevCycle,{completedAt:new Date(),pickedUpAt:new Date()});
+  } else {
+    task.currentCycle={deployedAt:null,completedAt:null,pickedUpAt:null,cycleId:null,cycleNum:null};
+    task.reopenReason='Reopened by tech';
+  }
+  var cardEl=document.getElementById('task-card-'+String(taskId));
+  if(cardEl){
+    var isNowComplete=nextStatus===STATUS.COMPLETE;
+    cardEl.outerHTML=taskCardHTML(task,isNowComplete);
+    rewireCard(taskId);
+    var newCard=document.getElementById('task-card-'+String(taskId));
+    if(newCard){
+      var flashColor=nextStatus===STATUS.COMPLETE?'rgba(26,92,53,0.5)':nextStatus===STATUS.INFIELD?'rgba(28,74,122,0.5)':'rgba(122,82,16,0.4)';
+      newCard.style.transition='box-shadow 0.1s ease';
+      newCard.style.boxShadow='0 0 0 2px '+flashColor;
+      setTimeout(function(){newCard.style.transition='box-shadow 0.6s ease';newCard.style.boxShadow='none';},100);
+      setTimeout(function(){
+        var container=document.getElementById('taskCards');
+        if(!container)return;
+        var divider=container.querySelector('.tv-completed-divider');
+        var card=document.getElementById('task-card-'+String(taskId));
+        if(!card)return;
+        if(nextStatus===STATUS.COMPLETE){
+          if(divider){divider.parentNode.insertBefore(card,divider.nextSibling);}
+          else{var d=document.createElement('div');d.className='tv-completed-divider';d.innerHTML='<div class="tv-completed-divider-line"></div><span class="tv-completed-divider-text">Complete</span><div class="tv-completed-divider-line"></div>';container.appendChild(d);container.appendChild(card);}
+          var cc=container.querySelectorAll('.tv-card-complete').length;
+          var dt=container.querySelector('.tv-completed-divider-text');
+          if(dt)dt.textContent='Complete ('+cc+')';
+        } else if(prevStatus===STATUS.COMPLETE){
+          if(divider){container.insertBefore(card,divider);}
+          else{container.insertBefore(card,container.firstChild);}
+          var cc2=container.querySelectorAll('.tv-card-complete').length;
+          var div2=container.querySelector('.tv-completed-divider');
+          if(div2){if(cc2===0)div2.remove();else{var dt2=div2.querySelector('.tv-completed-divider-text');if(dt2)dt2.textContent='Complete ('+cc2+')';}}
+        }
+      },700);
+    }
+  }
+  var arrow=nextStatus===STATUS.INFIELD?'In Field':nextStatus===STATUS.COMPLETE?'Complete':'Pending';
+  showToast('#'+task.site+' · '+task.desc+' → '+arrow,taskId,prevStatus,prevCycle);
+  try{
+    if(prevStatus===STATUS.PENDING&&nextStatus===STATUS.INFIELD){
+      const latest=await getLatestCycleRow(taskId);
+      const nextNum=(latest?.cycle_num||0)+1;
+      const now=new Date().toISOString();
+      const coords=await getCoords();
+      const payload={task_id:taskId,cycle_num:nextNum,deployed_at:now,deployed_by:state.techId};
+      if(coords){payload.deploy_lat=coords.lat;payload.deploy_lng=coords.lng;}
+      const {data:nc,error:ce}=await supabase.from('cycles').insert([payload]).select('*').single();
+      if(ce)throw ce;
+      const {error:te}=await supabase.from('tasks').update({status:'in-field',reopen_reason:null}).eq('id',taskId);
+      if(te)throw te;
+      task.currentCycle.cycleId=nc.id;task.currentCycle.cycleNum=nc.cycle_num;
+      task.cycles.unshift({id:nc.id,cycle_num:nc.cycle_num,deployedAt:new Date(nc.deployed_at),completedAt:null,pickedUpAt:null,reopenReason:'',reopenedBy:''});
+    } else if(prevStatus===STATUS.INFIELD&&nextStatus===STATUS.COMPLETE){
+      const cid=prevCycle.cycleId||null;
+      let latest=cid?await getCycleRowById(cid):null;
+      if(!latest)latest=await getLatestCycleRow(taskId);
+      if(!latest)throw new Error('No cycle found.');
+      const now=new Date().toISOString();
+      const coords=await getCoords();
+      const patch={picked_up_at:now,picked_up_by:state.techId,completed_at:now,completed_by:state.techId};
+      if(coords){patch.pickup_lat=coords.lat;patch.pickup_lng=coords.lng;}
+      const {error:ce2}=await supabase.from('cycles').update(patch).eq('id',latest.id);if(ce2)throw ce2;
+      const {error:te2}=await supabase.from('tasks').update({status:'complete'}).eq('id',taskId);if(te2)throw te2;
+    } else if(nextStatus===STATUS.PENDING){
+      const {error:te3}=await supabase.from('tasks').update({status:'pending',reopen_reason:'Reopened by tech'}).eq('id',taskId);if(te3)throw te3;
+    }
+    await touchLastActive();
+    await refreshCurrentProject(state.currentProject?state.currentProject.id:null);
+    renderProjectStats();renderProjectCards();
+  }catch(err){
+    console.error('Supabase error:',err);
+    task.status=prevStatus;task.currentCycle=prevCycle;
+    var el2=document.getElementById('task-card-'+String(taskId));
+    if(el2){el2.outerHTML=taskCardHTML(task,prevStatus===STATUS.COMPLETE);rewireCard(taskId);}
+    showError('Could not update task status.',err);
+  }
+}
+
+
 async function undoCardStatus(taskId, fromState){
   if(!state.currentProject)return;
   var task=state.currentProject.tasks.find(t=>String(t.id)===String(taskId));
