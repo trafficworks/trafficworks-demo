@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v33</title>
+<title>TrafficWorks — Tech View v34</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -1378,6 +1378,37 @@ html.tv-dark .tv-card-complete [style*="border-radius:100px"] {
   background: rgba(255,255,255,0.1) !important; 
   color: #72D49A !important; 
 }
+
+/* ============================================================
+   DARK MODE TASK CARD TEXT FIXES
+   ============================================================ */
+
+/* Task name */
+html.tv-dark .tv-card-pending  div[style*="font-size:16px;font-weight:700"] { color: #F5C85A !important; }
+html.tv-dark .tv-card-infield  div[style*="font-size:16px;font-weight:700"] { color: #90C4E8 !important; }
+html.tv-dark .tv-card-complete div[style*="font-size:16px;font-weight:700"] { color: #72D49A !important; }
+
+/* All pill spans inside cards */
+html.tv-dark .tv-card-pending  div[style*="border-radius:100px"] { color: #F5C85A !important; background: rgba(245,200,90,0.15) !important; }
+html.tv-dark .tv-card-infield  div[style*="border-radius:100px"] { color: #90C4E8 !important; background: rgba(144,196,232,0.15) !important; }
+html.tv-dark .tv-card-complete div[style*="border-radius:100px"] { color: #72D49A !important; background: rgba(114,212,154,0.15) !important; }
+
+/* Type pill keeps its solid color but lighter */
+html.tv-dark .tv-card-pending  span[style*="background:#ba7517"] { background: #C4841A !important; color: #FFE5A0 !important; }
+html.tv-dark .tv-card-infield  span[style*="background:#185fa5"] { background: #1E6FB5 !important; color: #B0D8F8 !important; }
+html.tv-dark .tv-card-complete span[style*="background:#0f6e56"] { background: #127860 !important; color: #90E8CC !important; }
+
+/* Main button text */
+html.tv-dark .tv-card-pending  button[style*="background:rgba(255,255,255,0.5)"] { background: rgba(245,200,90,0.18) !important; color: #F5C85A !important; }
+html.tv-dark .tv-card-infield  button[style*="background:rgba(255,255,255,0.5)"] { background: rgba(144,196,232,0.18) !important; color: #90C4E8 !important; }
+html.tv-dark .tv-card-complete button[style*="background:rgba(255,255,255,0.5)"] { background: rgba(114,212,154,0.18) !important; color: #72D49A !important; }
+
+/* Job sheet toolbar button */
+html.tv-dark .tv-jobsheet-wide { background: #2A2820 !important; color: #C4A85A !important; }
+
+/* Completed divider text */
+html.tv-dark .tv-completed-divider-text { color: var(--tv-text-muted) !important; }
+html.tv-dark .tv-completed-divider-line { background: rgba(255,255,255,0.1) !important; }
 </style>
 </head>
 <body>
