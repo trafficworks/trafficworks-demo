@@ -826,10 +826,10 @@ function openJobSheet() {
       if (t.tech) s += '<span class="js-site-tech-init">' + getInitials(t.tech) + '</span>'
       s += '</div></div>'
       const times = []
-      if (cycle?.deployed_at) times.push('<span>Set ' + fmtTime(cycle.deployed_at) + '</span>')
-      if (cycle?.completed_at) times.push('<span>Pickup ' + fmtTime(cycle.completed_at) + '</span>')
-      if (cycle?.deployed_at && cycle?.completed_at) times.push('<span>' + fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at)) + '</span>')
-      else if (cycle?.deployed_at && !cycle?.completed_at) times.push('<span>' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime()) + '</span>')
+      if (cycle?.deployed_at) times.push('<div>Set ' + fmtTime(cycle.deployed_at) + '</div>')
+      if (cycle?.completed_at) times.push('<div>Pickup ' + fmtTime(cycle.completed_at) + '</div>')
+      if (cycle?.deployed_at && cycle?.completed_at) times.push('<div>' + fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at)) + '</div>')
+      else if (cycle?.deployed_at && !cycle?.completed_at) times.push('<div>' + fmtDur(Date.now() - new Date(cycle.deployed_at).getTime()) + '</div>')
       if (times.length) s += '<div class="js-site-times">' + times.join('') + '</div>'
       if (t.note) s += '<div class="js-site-note">' + escapeHtml(t.note) + '</div>'
       s += '</div>'
