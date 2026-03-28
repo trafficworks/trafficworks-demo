@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v32</title>
+<title>TrafficWorks — Tech View v33</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -33,17 +33,20 @@
   --tv-header-text:     #1A1D21;
 }
 html.tv-dark {
-  --tv-pending-bg:      #2E2718;
-  --tv-pending-text:    #D4A84A;
-  --tv-infield-bg:      #182030;
-  --tv-infield-text:    #7AAED4;
-  --tv-complete-bg:     #182820;
-  --tv-complete-text:   #5EC48A;
+  --tv-pending-bg:      #4A3A1A;
+  --tv-pending-text:    #F5C85A;
+  --tv-pending-accent:  #D4A84A;
+  --tv-infield-bg:      #1A2E48;
+  --tv-infield-text:    #90C4E8;
+  --tv-infield-accent:  #6AAAD4;
+  --tv-complete-bg:     #1A3828;
+  --tv-complete-text:   #72D49A;
+  --tv-complete-accent: #52C486;
   --tv-bg:              #1C1E22;
   --tv-surface:         #272B32;
   --tv-surface-raised:  #2E3239;
-  --tv-border:          rgba(255,255,255,0.09);
-  --tv-divider:         rgba(255,255,255,0.07);
+  --tv-border:          rgba(255,255,255,0.12);
+  --tv-divider:         rgba(255,255,255,0.08);
   --tv-text:            #E6E8EC;
   --tv-text-secondary:  #9AA0AA;
   --tv-text-muted:      #676D76;
@@ -1326,6 +1329,55 @@ body { font-family: 'Inter', sans-serif; background: #fff; color: #1A1D21; font-
 .mc-hold .mc-pill { background: rgba(90,88,80,.08); color: #5A5850; }
 .mc-hold .mc-prog { background: rgba(90,88,80,.1); }
 .mc-hold .mc-prog-fill { background: #9A9890; }
+
+/* ============================================================
+   DARK MODE CARD OVERRIDES
+   ============================================================ */
+html.tv-dark .tv-card-pending  { background: var(--tv-pending-bg) !important; }
+html.tv-dark .tv-card-infield  { background: var(--tv-infield-bg) !important; }
+html.tv-dark .tv-card-complete { background: var(--tv-complete-bg) !important; opacity: 0.7; }
+
+/* Card name text */
+html.tv-dark .tv-card-pending  .tv-card-name,
+html.tv-dark .tv-card-pending  [style*="font-size:16px"] { color: #F5C85A !important; }
+html.tv-dark .tv-card-infield  .tv-card-name,
+html.tv-dark .tv-card-infield  [style*="font-size:16px"] { color: #90C4E8 !important; }
+html.tv-dark .tv-card-complete .tv-card-name,
+html.tv-dark .tv-card-complete [style*="font-size:16px"] { color: #72D49A !important; }
+
+/* Main button dark mode */
+html.tv-dark .tv-main-btn { background: rgba(255,255,255,0.12) !important; }
+html.tv-dark .tv-card-pending  .tv-main-btn { color: #F5C85A !important; }
+html.tv-dark .tv-card-infield  .tv-main-btn { color: #90C4E8 !important; }
+html.tv-dark .tv-card-complete .tv-main-btn { color: #72D49A !important; }
+
+/* Undo box dark mode */
+html.tv-dark [data-undo] { 
+  border-color: rgba(255,255,255,0.2) !important; 
+  background: rgba(255,255,255,0.06) !important;
+}
+html.tv-dark .tv-card-pending  [data-undo] { color: #F5C85A !important; }
+html.tv-dark .tv-card-infield  [data-undo] { color: #90C4E8 !important; }
+html.tv-dark .tv-card-complete [data-undo] { color: #72D49A !important; }
+
+/* Note button dark mode */
+html.tv-dark [data-action="toggle-note"] {
+  border-color: rgba(255,255,255,0.2) !important;
+}
+
+/* Pills dark mode */
+html.tv-dark .tv-card-pending  [style*="border-radius:100px"] { 
+  background: rgba(255,255,255,0.1) !important; 
+  color: #F5C85A !important; 
+}
+html.tv-dark .tv-card-infield  [style*="border-radius:100px"] { 
+  background: rgba(255,255,255,0.1) !important; 
+  color: #90C4E8 !important; 
+}
+html.tv-dark .tv-card-complete [style*="border-radius:100px"] { 
+  background: rgba(255,255,255,0.1) !important; 
+  color: #72D49A !important; 
+}
 </style>
 </head>
 <body>
