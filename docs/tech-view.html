@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v45</title>
+<title>TrafficWorks — Tech View v46</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -1181,11 +1181,11 @@ function openJobSheet(projectId){
       if(ini)s+='<span class="js-site-tech-init">'+ini+'</span>';
       s+='</div></div>';
       var times=[];
-      if(t.currentCycle&&t.currentCycle.deployedAt)times.push('<span>Set '+fmtTimeTV(t.currentCycle.deployedAt)+'</span>');
-      if(t.currentCycle&&t.currentCycle.completedAt)times.push('<span>Pickup '+fmtTimeTV(t.currentCycle.completedAt)+'</span>');
-      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)times.push('<span>'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>');
-      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt)times.push('<span>'+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime())+'</span>');
-      if(times.length)s+='<div class="js-site-times">'+times.join('')+'</div>';
+      if(t.currentCycle&&t.currentCycle.deployedAt)times.push('Set '+fmtTimeTV(t.currentCycle.deployedAt));
+      if(t.currentCycle&&t.currentCycle.completedAt)times.push('Pickup '+fmtTimeTV(t.currentCycle.completedAt));
+      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)times.push(fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime()));
+      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt)times.push(fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime()));
+      if(times.length)s+='<div class="js-site-times">'+times.map(function(t){return'<div>'+t+'</div>';}).join('')+'</div>';
       if(t.reopenReason)s+='<div class="js-site-note">Reopened: '+escapeHtml(t.reopenReason)+'</div>';
       if(t.note)s+='<div class="js-site-note">'+escapeHtml(t.note)+'</div>';
       s+='</div>';
