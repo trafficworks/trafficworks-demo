@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v40</title>
+<title>TrafficWorks — Tech View v41</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -904,23 +904,23 @@ function taskCardHTML(t,isComplete,isOnHold){
     +'position:relative;background:transparent;border:1.5px solid '+borderColor+';border-radius:7px;'
     +'width:24px;height:24px;min-width:24px;flex-shrink:0;'
     +'display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">'
-    +'<svg viewBox="0 0 24 24" style="width:13px;height:13px;display:block;" fill="none" stroke="'+noteStroke+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="'+bubbleOpacity+'">'
+    +'<svg viewBox="0 0 24 24" style="width:13px;height:13px;display:block;" fill="none" stroke="'+(isDark?'rgba(255,255,255,0.65)':noteStroke)+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="'+bubbleOpacity+'">'
     +'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'
     +cornerDot+'</button>';
 
   // Undo box — far right, only on In Field + Complete
-  var undoSvg='<svg viewBox="0 0 24 24" fill="none" stroke="'+undoColor+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;display:block;">'
+  var undoSvg='<svg viewBox="0 0 24 24" fill="none" stroke="'+(isDark?'rgba(255,255,255,0.65)':undoColor)+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;display:block;">'
     +'<path d="M2.5 2v6h6"/><path d="M2.66 13.72A10 10 0 1 0 5.43 4.93L2.5 8"/></svg>';
   var undoBtn=t.status===STATUS.PENDING?'':
     '<button data-task-id="'+t.id+'" data-undo="'+(isComplete?'complete':'infield')+'" style="'
     +'flex-shrink:0;width:24px;height:24px;min-width:24px;'
-    +'border:1.5px solid '+borderColor+';border-radius:7px;'
+    +'border:'+(isDark?'1.5px solid rgba(255,255,255,0.28)':'1.5px solid '+borderColor)+';border-radius:7px;'
     +'background:transparent;display:flex;align-items:center;justify-content:center;'
     +'cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">'
     +undoSvg+'</button>';
 
   // Pills — left group
-  var pillBg=isDark?'rgba(255,255,255,0.18)':'rgba(255,255,255,0.5)';var durBg=isDark?'rgba(255,255,255,0.15)':'rgba(255,255,255,0.35)';var pills='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:'+pillBg+';color:'+noteStroke+';">#'+t.site+'</span>';
+  var pillBg=isDark?'rgba(255,255,255,0.14)':'rgba(255,255,255,0.5)';var pillBorder=isDark?'1px solid rgba(255,255,255,0.2)':'none';var durBg=isDark?'rgba(255,255,255,0.14)':'rgba(255,255,255,0.35)';var pills='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:'+pillBg+';border:'+pillBorder+';color:'+(isDark?'rgba(255,255,255,0.82)':noteStroke)+';">#'+t.site+'</span>';
   if(t.type) pills+='<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:'+typeBg+';color:'+typeColor+';letter-spacing:.05em;">'+escapeHtml(t.type)+'</span>';
   if(t.status===STATUS.INFIELD&&t.currentCycle.deployedAt)
     pills+='<span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:100px;background:'+durBg+';color:'+noteStroke+';" class="live-duration" data-task-id="'+t.id+'">'+getLiveDuration(t)+'</span>';
@@ -937,7 +937,7 @@ function taskCardHTML(t,isComplete,isOnHold){
   if(isOnHold){
     var actionHTML='<div style="display:flex;align-items:center;justify-content:center;padding:10px;border-radius:10px;background:rgba(90,88,80,.1);color:#5A5850;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;">ON HOLD</div>';
     return '<div class="tv-task-card tv-card-pending" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'" style="padding:13px 13px 12px;opacity:0.7;">'
-      +'<div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;color:'+nameColor+';margin-bottom:8px;">'+escapeHtml(t.desc)+'</div>'
+      +'<div style="font-size:16px;font-weight:'+(isDark?'600':'700')+';letter-spacing:-0.02em;color:'+nameColor+';margin-bottom:8px;">'+escapeHtml(t.desc)+'</div>'
       +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">'
       +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">'+pills+'</div>'
       +'</div>'
@@ -961,7 +961,7 @@ function taskCardHTML(t,isComplete,isOnHold){
     +mainIcon+mainLabel+'</button>';
 
   return '<div class="tv-task-card '+stateClass+'" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'" style="padding:13px 13px 12px;">'
-    +'<div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;color:'+nameColor+';margin-bottom:8px;">'+escapeHtml(t.desc)+'</div>'
+    +'<div style="font-size:16px;font-weight:'+(isDark?'600':'700')+';letter-spacing:-0.02em;color:'+nameColor+';margin-bottom:8px;">'+escapeHtml(t.desc)+'</div>'
     +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">'
     +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">'+pills+'</div>'
     +undoBtn
