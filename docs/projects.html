@@ -275,6 +275,9 @@
 }
 
 </style>
+<style>.js-site-times { font-size: 11px; color: #9DA3AA; margin-top: 2px; line-height: 1.6; }
+.js-site-times div { display: block; }
+</style>
 </head>
 <body>
 
@@ -1242,10 +1245,10 @@ async function openJobSheet(id) {
       s += '</div>'
       s += '</div>'
       var times = []
-      if (t.deployed) times.push('Set: ' + t.deployed)
-      if (t.picked)   times.push('Pickup: ' + t.picked)
-      if (t.dur)      times.push('Duration: ' + t.dur)
-      if (times.length) s += '<div class="js-site-times">' + times.join(' · ') + '</div>'
+      if (t.deployed) times.push('Set ' + t.deployed)
+      if (t.picked)   times.push('Pickup ' + t.picked)
+      if (t.dur)      times.push(t.dur)
+      if (times.length) s += '<div class="js-site-times">' + times.map(function(x){return '<div>'+x+'</div>';}).join('') + '</div>'
       if (t.note) s += '<div class="js-site-note">' + t.note + '</div>'
       s += '</div>'
     })
