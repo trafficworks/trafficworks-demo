@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v25</title>
+<title>TrafficWorks — Tech View v26</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -804,9 +804,12 @@ function renderProjectCards(){
   container.innerHTML=state.projects.map(p=>{
     var counts=taskCounts(p.tasks),done=counts.complete,total=counts.total;
     var isAllDone=total>0&&done===total,hasInfield=counts.infield>0,hasPending=counts.pending>0;
-    var cardClass=isAllDone?'mc-complete':hasInfield?'mc-inprogress':'mc-pending';
+    var cardClass=p.status==='on-hold'?'mc-hold':isAllDone?'mc-complete':hasInfield?'mc-inprogress':'mc-pending';
     var leftBadge='',rightBadge='';
-    if(!isAllDone){if(hasInfield){leftBadge='<span class="mc-pill-sm mc-infield-pill"><span class="mc-blink"></span>'+counts.infield+' In Field</span>';if(hasPending)rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';}else if(hasPending){rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';}}
+    var isHeld=p.status==='on-hold';
+    if(isHeld){
+      rightBadge='<span class="mc-pill-sm" style="background:rgba(90,88,80,.15);color:#5A5850;"><span style="width:6px;height:6px;border-radius:50%;background:#9A9890;flex-shrink:0;display:inline-block;"></span>On Hold</span>';
+    } else if(!isAllDone){if(hasInfield){leftBadge='<span class="mc-pill-sm mc-infield-pill"><span class="mc-blink"></span>'+counts.infield+' In Field</span>';if(hasPending)rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';}else if(hasPending){rightBadge='<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>'+counts.pending+' Pending</span>';}}
     var showTopBar=leftBadge||rightBadge;
     var checkmark=isAllDone?'<div class="mc-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1A5C35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>':'';
     var pctVal=total>0?Math.round((done/total)*100):0;
@@ -847,6 +850,7 @@ function openProject(id){
 
 function renderTaskCards(){
   if(!state.currentProject)return;
+  var isOnHold=state.currentProject.status==='on-hold';
   var tasks=state.currentProject.tasks;
   var statusOrder={};statusOrder[STATUS.PENDING]=0;statusOrder[STATUS.INFIELD]=1;statusOrder[STATUS.COMPLETE]=2;
   var openTasks=tasks.filter(t=>t.status!==STATUS.COMPLETE);
@@ -855,10 +859,10 @@ function renderTaskCards(){
   openTasks.sort((a,b)=>a.site-b.site);
   completedTasks.sort((a,b)=>a.site-b.site);
   var html='';
-  openTasks.forEach(t=>{html+=taskCardHTML(t,false);});
+  openTasks.forEach(t=>{html+=taskCardHTML(t,false,isOnHold);});
   if(completedTasks.length>0){
     html+='<div class="tv-completed-divider"><div class="tv-completed-divider-line"></div><span class="tv-completed-divider-text">Complete ('+completedTasks.length+')</span><div class="tv-completed-divider-line"></div></div>';
-    completedTasks.forEach(t=>{html+=taskCardHTML(t,true);});
+    completedTasks.forEach(t=>{html+=taskCardHTML(t,true,isOnHold);});
   }
   if(openTasks.length===0&&completedTasks.length===0)html='<div class="tv-empty-state">No tasks assigned</div>';
   document.getElementById('taskCards').innerHTML=html;
@@ -874,7 +878,7 @@ function renderTaskCards(){
   });
 }
 
-function taskCardHTML(t,isComplete){
+function taskCardHTML(t,isComplete,isOnHold){
   var stateClass=isComplete?'tv-card-complete':t.status===STATUS.INFIELD?'tv-card-infield':'tv-card-pending';
   var nameColor=isComplete?'#0d3320':t.status===STATUS.INFIELD?'#1a2d45':'#3d3400';
   var noteStroke=isComplete?'#1a5c35':t.status===STATUS.INFIELD?'#1c4a7a':'#7a5210';
@@ -922,6 +926,18 @@ function taskCardHTML(t,isComplete){
   var reopenText=t.reopenReason||(t.cycles.length>0?(t.cycles[0].reopenReason||''):'');
   if(reopenText&&t.status===STATUS.PENDING)
     reopenHTML='<div style="font-size:11px;color:'+noteStroke+';margin-bottom:8px;opacity:0.8;">Reopened: '+escapeHtml(reopenText)+'</div>';
+
+  // On hold — show badge instead of buttons
+  if(isOnHold){
+    var actionHTML='<div style="display:flex;align-items:center;justify-content:center;padding:10px;border-radius:10px;background:rgba(90,88,80,.1);color:#5A5850;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;">ON HOLD</div>';
+    return '<div class="tv-task-card tv-card-pending" id="task-card-'+t.id+'" data-task-card-id="'+t.id+'" style="padding:13px 13px 12px;opacity:0.7;">'
+      +'<div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;color:'+nameColor+';margin-bottom:8px;">'+escapeHtml(t.desc)+'</div>'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">'
+      +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">'+pills+'</div>'
+      +'</div>'
+      +actionHTML
+      +'</div>';
+  }
 
   // Main button — full width
   var mainLabel=isComplete?'Reopen':t.status===STATUS.INFIELD?'In Field':'Pending';
@@ -1303,6 +1319,13 @@ body { font-family: 'Inter', sans-serif; background: #fff; color: #1A1D21; font-
 .mc-pending    .mc-prog-fill { background: var(--tv-pending-accent); }
 .mc-inprogress .mc-prog-fill { background: var(--tv-infield-accent); }
 .mc-complete   .mc-prog-fill { background: var(--tv-complete-accent); }
+
+/* On Hold card */
+.mc-hold { background: #F0EEE8; color: #5A5850; }
+.mc-hold .mc-divider { background: rgba(90,88,80,.1); }
+.mc-hold .mc-pill { background: rgba(90,88,80,.08); color: #5A5850; }
+.mc-hold .mc-prog { background: rgba(90,88,80,.1); }
+.mc-hold .mc-prog-fill { background: #9A9890; }
 </style>
 </head>
 <body>
