@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TrafficWorks — Tech View v42</title>
+<title>TrafficWorks — Tech View v43</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/design-system.css">
 <link rel="stylesheet" href="css/tech-view.css?v=v3x">
@@ -1181,11 +1181,11 @@ function openJobSheet(projectId){
       if(ini)s+='<span class="js-site-tech-init">'+ini+'</span>';
       s+='</div></div>';
       var times=[];
-      if(t.currentCycle&&t.currentCycle.deployedAt)times.push('Set: '+fmtTimeTV(t.currentCycle.deployedAt));
-      if(t.currentCycle&&t.currentCycle.completedAt)times.push('Pickup: '+fmtTimeTV(t.currentCycle.completedAt));
-      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)times.push('Duration: '+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime()));
-      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt)times.push('Duration: '+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime()));
-      if(times.length)s+='<div class="js-site-times">'+times.join(' · ')+'</div>';
+      if(t.currentCycle&&t.currentCycle.deployedAt)times.push('<span>Set '+fmtTimeTV(t.currentCycle.deployedAt)+'</span>');
+      if(t.currentCycle&&t.currentCycle.completedAt)times.push('<span>Pickup '+fmtTimeTV(t.currentCycle.completedAt)+'</span>');
+      if(t.currentCycle&&t.currentCycle.deployedAt&&t.currentCycle.completedAt)times.push('<span>'+fmtDurTV(new Date(t.currentCycle.completedAt).getTime()-new Date(t.currentCycle.deployedAt).getTime())+'</span>');
+      else if(t.currentCycle&&t.currentCycle.deployedAt&&!t.currentCycle.completedAt)times.push('<span>'+fmtDurTV(Date.now()-new Date(t.currentCycle.deployedAt).getTime())+'</span>');
+      if(times.length)s+='<div class="js-site-times">'+times.join('')+'</div>';
       if(t.reopenReason)s+='<div class="js-site-note">Reopened: '+escapeHtml(t.reopenReason)+'</div>';
       if(t.note)s+='<div class="js-site-note">'+escapeHtml(t.note)+'</div>';
       s+='</div>';
@@ -1264,12 +1264,13 @@ body { font-family: 'Inter', sans-serif; background: #fff; color: #1A1D21; font-
 .js-site { padding: 8px 12px; border-bottom: 1px solid #F0EEE9; break-inside: avoid; page-break-inside: avoid; }
 .js-site:last-child { border-bottom: none; }
 .js-site-header { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
-.js-site-num { font-size: 12px; font-weight: 700; color: #9DA3AA; flex-shrink: 0; min-width: 24px; }
-.js-site-desc { font-size: 14px; font-weight: 700; color: #1A1D21; flex: 1; letter-spacing: -0.01em; line-height: 1.2; }
+.js-site-num { font-size: 12px; font-weight: 500; color: #9DA3AA; flex-shrink: 0; min-width: 24px; }
+.js-site-desc { font-size: 14px; font-weight: 500; color: #1A1D21; flex: 1; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 2px; }
 .js-site-tags { display: flex; gap: 4px; flex-shrink: 0; }
 .js-site-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; padding: 3px 7px; border-radius: 6px; background: #ECEAE4; color: #4A4F55; }
 .js-site-tech-init { font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 6px; background: #E8E6E0; color: #6B7178; }
-.js-site-times { font-size: 11.5px; color: #7D838A; margin-top: 3px; line-height: 1.4; }
+.js-site-times { font-size: 12px; color: #9DA3AA; margin-top: 0; line-height: 1.4; display: flex; gap: 10px; flex-wrap: wrap; }
+.js-site-times span { display: inline-block; }
 .js-site-note { font-size: 12px; font-weight: 600; color: #4A4F55; margin-top: 4px; font-style: italic; }
 .js-footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #DEDBD5; text-align: center; font-size: 11px; color: #9DA3AA; }
 .js-footer-brand { font-weight: 700; color: #6B7178; }
