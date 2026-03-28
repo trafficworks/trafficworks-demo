@@ -208,18 +208,19 @@
 }
 .js-site-num {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   color: #9DA3AA;
   flex-shrink: 0;
   min-width: 24px;
 }
 .js-site-desc {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   color: #1A1D21;
   flex: 1;
   letter-spacing: -0.01em;
   line-height: 1.2;
+  margin-bottom: 2px;
 }
 .js-site-tags {
   display: flex;
@@ -246,10 +247,13 @@
 }
 
 .js-site-times {
-  font-size: 11.5px;
-  color: #7D838A;
-  margin-top: 3px;
-  line-height: 1.4;
+  font-size: 11px;
+  color: #9DA3AA;
+  margin-top: 2px;
+  line-height: 1.6;
+}
+.js-site-times span {
+  display: block;
 }
 .js-site-note {
   font-size: 12px;
