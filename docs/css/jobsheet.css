@@ -1,38 +1,9 @@
 /* ═══════════════════════════════════
    JOB SHEET OVERLAY
    ═══════════════════════════════════ */
-.jobsheet-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #F4F3F0; 
-  z-index: 500;
-  flex-direction: column;
-  overflow: hidden;
-}
 
-.jobsheet-overlay.visible {
-  display: flex;
-}
 
-.jobsheet-container {
-  width: 100%;
-  max-width: 820px;
-  margin: 0 auto;
-  border-radius: 12px;
-  background: #F4F3F0;
-}
-
-/* header bar */
-.jobsheet-header {
-  display: flex;
-  align-items: center;
-  padding: 14px 16px;
-  background: #F4F3F0;
-  border-bottom: 1px solid #DEDBD5;
-  gap: 12px;
-  flex-shrink: 0;
-}
+/* header bar — see OVERLAY section below */
 .jobsheet-close {
   background: none;
   border: none;
@@ -277,31 +248,11 @@
   font-weight: 700;
   color: #6B7178;
 }
-
-/* ===============================
-   DESKTOP DOCUMENT WIDTH
-   =============================== */
-
-
-
-/* overlay backdrop */
-
-
-/* print stays full width */
+/* ============================================================
+   PRINT
+   ============================================================ */
 @media print {
-  .jobsheet-container {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-  }
-}
-
-@media print {
-  /* hide entire page by default */
   body > * { display: none !important; }
-  /* when jobsheet is open, show only it */
   .jobsheet-overlay {
     display: block !important;
     position: static !important;
@@ -318,7 +269,16 @@
     width: 100% !important;
     max-width: 100% !important;
   }
-  /* preserve colored section backgrounds */
+  .jobsheet-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+  }
+  .js-instructions-card,
+  .js-section { box-shadow: none !important; }
   .js-section-header-pending,
   .js-section-header-infield,
   .js-section-header-complete,
@@ -326,99 +286,59 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-
-
-/* job sheet cleanup */
-.jobsheet-container {
-  box-shadow: none !important;
 }
 
-.jobsheet-overlay .js-instructions-card,
-.jobsheet-overlay .js-section {
-  box-shadow: none !important;
-}
-   
-/* ===== HARD OVERLAY FIX ===== */
-
+/* ============================================================
+   OVERLAY — fixed full-screen (mobile + desktop)
+   ============================================================ */
 .jobsheet-overlay {
   position: fixed !important;
   inset: 0 !important;
   width: 100vw !important;
-  height: 100vh !important;
-
+  height: 100dvh !important;
+  min-height: -webkit-fill-available !important;
   background: #F4F3F0 !important;
-
+  overflow: hidden !important;
   display: none;
-  align-items: center;
-  justify-content: center;
-
+  flex-direction: column;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
   z-index: 9999 !important;
 }
-
-/* when visible */
 .jobsheet-overlay.visible {
   display: flex !important;
 }
-
-/* container (the sheet itself) */
-.jobsheet-container {
-  width: 100%;
-  max-width: 820px;
-  margin: 20px;
-  background: #F4F3F0 !important;
-
-  box-shadow: none !important;
-}
-
-/* kill ALL inner shadows */
-.js-instructions-card,
-.js-section {
-  box-shadow: none !important;
-}
-
-/* MOBILE JOB SHEET FIX — append to bottom of jobsheet.css */
-
-.jobsheet-overlay {
-  width: 100% !important;
-  height: 100dvh !important;
-  min-height: -webkit-fill-available !important;
-  align-items: stretch !important;
-  justify-content: flex-start !important;
-  overflow: hidden !important;
-}
-
 .jobsheet-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  background: #F4F3F0;
+  border-bottom: 1px solid #DEDBD5;
+  gap: 12px;
   width: 100% !important;
+  flex: 0 0 auto !important;
+  flex-shrink: 0;
 }
-
 .jobsheet-body {
   width: 100% !important;
   flex: 1 1 auto !important;
   min-height: 0 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
   padding: 20px 16px calc(40px + env(safe-area-inset-bottom, 0px)) !important;
   background: #F4F3F0 !important;
+  display: block !important;
 }
-
 .jobsheet-container {
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
-  box-shadow: none !important;
   background: #F4F3F0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
 }
-
-@media (max-width: 768px) {
-  .jobsheet-body {
-    display: block !important;
-  }
-
-  .jobsheet-container {
-    border-radius: 0 !important;
-  }
-
-  .js-instructions-card,
-  .js-section {
-    width: 100% !important;
-    box-shadow: none !important;
-  }
+.js-instructions-card,
+.js-section {
+  width: 100% !important;
+  box-shadow: none !important;
 }
