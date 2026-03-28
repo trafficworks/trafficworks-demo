@@ -24,28 +24,40 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 16px;
-    padding: 28px 0 18px;
+    gap: 10px;
+    padding: 22px 20px 14px;
   }
   .mc-topnav a {
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 17px;
+    font-weight: 400;
     color: var(--text-3);
     text-decoration: none;
     letter-spacing: -0.02em;
+    white-space: nowrap;
   }
-  .mc-topnav a.active { color: var(--text); }
-  .mc-topnav-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--line); }
+  .mc-topnav a.active {
+    font-weight: 700;
+    color: var(--text);
+  }
+  .mc-topnav-dot {
+    font-size: 17px;
+    color: var(--text-3);
+    font-weight: 400;
+    flex-shrink: 0;
+  }
 
   .mobile-only { display: block !important; }
 
   .m-page-sub {
-    padding: 0 6px 12px;
+    padding: 0 16px 12px;
     font-size: 10.5px;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-3);
+    text-align: center;
+    display: block;
+    width: 100%;
   }
 
   /* ── CARD LIST — 6px sides = max width ── */
@@ -286,7 +298,7 @@
 <!-- Mobile-only simple top nav -->
 <div class="mc-topnav">
   <a href="projects.html" class="active">Projects</a>
-  <span class="mc-topnav-dot"></span>
+  <span class="mc-topnav-dot">·</span>
   <a href="team.html">Team</a>
 </div>
 
