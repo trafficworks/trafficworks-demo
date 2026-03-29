@@ -619,7 +619,7 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 /* ============================================================
    TASK CARDS — new state system
    ============================================================ */
-.tv-task-card.tv-card-complete { opacity: 0.5; }
+.tv-task-card.tv-card-complete { background: var(--tv-complete-bg); opacity: 0.5; }
 
 /* Advance button — single tap, full-width column layout */
 .tv-advance-btn {
