@@ -318,7 +318,7 @@
   <div class="team-section">
     <div class="section-header">
       <span class="section-label" style="padding-top:0">Managers <span class="count" id="managerCount">0</span></span>
-      <button class="btn-action" onclick="openAddModal(\'manager\')"><span class="plus">+</span> Add Manager</button>
+      <button class="btn-action" onclick="openAddModal('manager')"><span class="plus">+</span> Add Manager</button>
     </div>
     <table>
       <thead><tr><th style="width:24%">Name</th><th style="width:24%">Email</th><th style="width:18%">Phone</th><th style="width:12%">Role</th><th style="width:12%">Status</th><th style="width:4%"></th></tr></thead>
@@ -330,7 +330,7 @@
   <div class="team-section">
     <div class="section-header">
       <span class="section-label" style="padding-top:0">Field Technicians <span class="count" id="techCount">0</span></span>
-      <button class="btn-action" onclick="openAddModal(\'tech\')"><span class="plus">+</span> Add Tech</button>
+      <button class="btn-action" onclick="openAddModal('tech')"><span class="plus">+</span> Add Tech</button>
     </div>
     <table>
       <thead><tr><th style="width:24%">Name</th><th style="width:24%">Email</th><th style="width:18%">Phone</th><th style="width:12%">PIN</th><th style="width:12%">Status</th><th style="width:4%"></th></tr></thead>
@@ -707,15 +707,21 @@ async function addMember() {
       phone: phone
     }
 
-    const { error } = await supabase
+    const { data: updated, error } = await supabase
       .from('users')
       .update(updates)
       .eq('id', editingId)
       .eq('company_id', COMPANY_ID)
+      .select()
 
     if (error) {
       console.error('Error updating user:', error)
-      alert('Error saving changes.')
+      alert('Error saving changes: ' + error.message)
+      return
+    }
+
+    if (!updated || updated.length === 0) {
+      alert('No rows updated — check permissions or ID match.')
       return
     }
 
