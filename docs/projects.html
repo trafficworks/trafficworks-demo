@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css?v=20260328">
 <link rel="stylesheet" href="css/jobsheet.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -235,6 +236,7 @@ var archiveTarget = null;
 var notesTarget = null;
 var openKebab = null;
 var openSD = null;
+var currentJobSheetProjectName = '';
 
 var projectTasks = {
   1:{notes:'Gate code: #4521. Equipment staging in east parking lot.',tasks:[
@@ -823,6 +825,8 @@ async function openJobSheet(id) {
     return
   }
 
+  currentJobSheetProjectName = projectData.name;
+
   const { data: taskRows, error: taskError } = await supabase
     .from('tasks')
     .select(`
@@ -1001,19 +1005,16 @@ async function openJobSheet(id) {
 
 function closeJobSheet() { document.getElementById('jobsheetOverlay').classList.remove('visible'); document.body.style.overflow = ''; }
 function printJobSheet() {
-  var overlay = document.getElementById('jobsheetOverlay');
-  if (!overlay) return;
-  // Strip fixed positioning so content flows for print
-  overlay.style.cssText = 'position:static!important;height:auto!important;overflow:visible!important;inset:auto!important;z-index:auto!important;display:block!important;width:100%!important;';
-  var body = overlay.querySelector('.jobsheet-body');
-  if (body) body.style.cssText = 'overflow:visible!important;height:auto!important;flex:none!important;display:block!important;padding:20px!important;';
-  // Wait for reflow then print
-  setTimeout(function() {
-    window.print();
-    // Restore after print dialog closes
-    overlay.style.cssText = '';
-    if (body) body.style.cssText = '';
-  }, 300);
+  var el = document.getElementById('jobsheetOverlay').querySelector('.jobsheet-body');
+  var projectName = currentJobSheetProjectName || 'jobsheet';
+  var filename = projectName.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.pdf';
+  html2pdf().set({
+    margin: [10, 10, 10, 10],
+    filename: filename,
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+  }).from(el).save();
 }
 
 
