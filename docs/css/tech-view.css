@@ -31,10 +31,10 @@
   --tv-pending-bg:      #F5EDD6;
   --tv-pending-text:    #7A5210;
   --tv-pending-accent:  #C49A2E;
-  --tv-infield-bg:      #DCEAF8;
+  --tv-infield-bg:      #C8DCF2;
   --tv-infield-text:    #1C4A7A;
   --tv-infield-accent:  #4A7FBF;
-  --tv-complete-bg:     #D4EDDF;
+  --tv-complete-bg:     #BDE0CC;
   --tv-complete-text:   #1A5C35;
   --tv-complete-accent: #3AA66A;
 
@@ -402,6 +402,103 @@ input, textarea, .tv-note-input { -webkit-user-select: text; user-select: text; 
 .tv-view { display: none; animation: tvViewIn .2s ease }
 .tv-view.active { display: block }
 @keyframes tvViewIn { from { opacity: 0; transform: translateX(8px) } to { opacity: 1; transform: translateX(0) } }  .tv-empty-state { text-align: center; padding: 40px 16px; color: var(--tv-text-muted); }
+
+
+/* ============================================================
+   TASK TOOLBAR — extended (projects view button)
+   ============================================================ */
+.tv-toolbar-left {
+  font-size: 10.5px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--tv-text-muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  flex: 1; min-width: 0;
+}
+.tv-toolbar-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.tv-jobsheet-btn  { background: #E8E3D8; color: #5a4a2a; border: none; }
+.tv-jobsheet-wide {
+  width: 100%; display: flex; align-items: center; justify-content: center;
+  gap: 7px; padding: 10px 16px; border-radius: 10px; border: none;
+  background: #E8E3D8; color: #5a4a2a;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; letter-spacing: 0.01em;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  transition: opacity .15s;
+}
+.tv-jobsheet-wide:active { opacity: .75; }
+
+/* ============================================================
+   TASK CARDS — card layout system
+   ============================================================ */
+.tv-task-card.tv-card-pending { background: var(--tv-pending-bg); }
+.tv-task-card.tv-card-infield { background: var(--tv-infield-bg); }
+
+.tv-card-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 4px;
+}
+.tv-card-name {
+  font-size: 16px; font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.25; flex: 1; min-width: 0;
+}
+.tv-card-pending  .tv-card-name { color: #3d3400; }
+.tv-card-infield  .tv-card-name { color: #1a2d45; }
+.tv-card-complete .tv-card-name { color: #0d3320; }
+
+.tv-card-pills {
+  display: flex; align-items: center; gap: 6px;
+  flex-wrap: wrap; margin-bottom: 10px; margin-top: 4px;
+}
+.tv-pill { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 100px; line-height: 1.5; }
+.tv-card-pending  .tv-pill-site { background: rgba(255,255,255,0.55); color: #5a4a00; }
+.tv-card-pending  .tv-pill-type { background: #ba7517; color: #faeeda; letter-spacing: .07em; }
+.tv-card-pending  .tv-pill-dur  { background: rgba(255,255,255,0.35); color: #7a6010; }
+.tv-card-infield  .tv-pill-site { background: rgba(255,255,255,0.55); color: #2a4a6a; }
+.tv-card-infield  .tv-pill-type { background: #185fa5; color: #b5d4f4; letter-spacing: .07em; }
+.tv-card-infield  .tv-pill-dur  { background: rgba(255,255,255,0.35); color: #3a5a7a; }
+.tv-card-complete .tv-pill-site { background: rgba(255,255,255,0.55); color: #0d3320; }
+.tv-card-complete .tv-pill-type { background: #0f6e56; color: #9fe1cb; letter-spacing: .07em; }
+.tv-card-complete .tv-pill-dur  { background: rgba(255,255,255,0.35); color: #1a5035; }
+
+.tv-reopen-row { font-size: 11px; font-weight: 500; color: var(--tv-pending-text); margin-bottom: 8px; }
+
+/* ============================================================
+   CARD ACTION ROW — undo box + main button
+   ============================================================ */
+.tv-card-action         { display: flex; align-items: stretch; gap: 8px; margin-top: 2px; }
+.tv-card-action-pending { display: flex; }
+.tv-card-action-pending .tv-main-btn { border-radius: 10px; }
+
+.tv-undo-box {
+  flex-shrink: 0; width: 48px; border: none; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; align-self: stretch;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  transition: opacity .15s, transform .1s;
+}
+.tv-undo-box:active { transform: scale(0.93); opacity: .7; }
+.tv-undo-box svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+.tv-card-pending  .tv-undo-box { background: rgba(122,82,16,.13); color: rgba(122,82,16,.55); }
+.tv-card-infield  .tv-undo-box { background: rgba(28,74,122,.13);  color: rgba(28,74,122,.55); }
+.tv-card-complete .tv-undo-box { background: rgba(26,92,53,.13);   color: rgba(26,92,53,.55);  }
+
+.tv-main-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 15px 10px; border-radius: 10px; border: none;
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase; cursor: pointer;
+  transition: transform .1s ease, opacity .15s;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.tv-main-btn:active { transform: scale(0.97); opacity: .85; }
+.tv-main-btn svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2.5; }
+.tv-btn-pending  { background: rgba(255,255,255,0.55); color: #7a5210; }
+.tv-btn-infield  { background: rgba(255,255,255,0.55); color: #1c4a7a; }
+.tv-btn-complete { background: rgba(255,255,255,0.35); color: #1a5c35; }
+
+/* ============================================================
+   TASK CARDS CONTAINER
+   ============================================================ */
+#taskCards { padding: 12px 16px 100px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; }
 
 /* ============================================================
    RESPONSIVE
