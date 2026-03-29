@@ -311,7 +311,7 @@ function renderTable() {
 
     html += '<tr id="row-' + t.id + '">'
     html += '<td><span class="site-num">' + t.site + '</span></td>'
-    html += '<td><div class="cell-name">' + escapeHtml(t.desc) + '</div>' + reopenNote + noteHtml + '<input class="edit-input" value="' + escapeAttr(t.desc) + '" data-action="save-edit" data-id="' + t.id + '"></td>'
+    html += '<td><div class="cell-name">' + escapeHtml(t.desc) + '</div>' + reopenNote + '<input class="edit-input" value="' + escapeAttr(t.desc) + '" data-action="save-edit" data-id="' + t.id + '"></td>'
     html += '<td><span class="type-pill">' + escapeHtml(t.type) + '</span></td>'
     html += '<td><div class="tech-select-wrapper"><span class="tech-avatar ' + (t.tech ? 'assigned' : 'unassigned') + '" data-action="show-tech" data-id="' + t.id + '">' + initials + '<span class="tech-tooltip">' + escapeHtml(t.tech || 'Unassigned') + '</span></span></div></td>'
     html += '<td><span class="badge ' + badgeClass(t.statusLabel) + '">' + t.statusLabel + '</span></td>'
@@ -596,7 +596,7 @@ function closeKebabs() {
   }
 }
 
-function toggleKebab(id, e) {
+function toggleKebab(id, e, btn) {
   if (e) {
     e.preventDefault()
     e.stopPropagation()
@@ -613,7 +613,8 @@ function toggleKebab(id, e) {
   menu.classList.remove('open', 'drop-up', 'drop-down')
 
   if (!isOpen) {
-    const rect = e.currentTarget.getBoundingClientRect()
+    const target = btn || e.currentTarget
+    const rect = target.getBoundingClientRect()
     const spaceBelow = window.innerHeight - rect.bottom
     menu.classList.add('open', spaceBelow < 160 ? 'drop-up' : 'drop-down')
     state.openKebab = id
@@ -903,7 +904,7 @@ document.getElementById('taskSections').addEventListener('click', e => {
 
   if (actionEl.closest('.kebab-cell') || actionEl.closest('.kebab-menu')) e.stopPropagation()
 
-  if (action === 'toggle-kebab') return toggleKebab(id, e)
+  if (action === 'toggle-kebab') return toggleKebab(id, e, actionEl)
   if (action === 'edit-task') return startEdit(id)
   if (action === 'delete-task') return promptDelete(id)
   if (action === 'reopen-task') return promptReopen(id)
