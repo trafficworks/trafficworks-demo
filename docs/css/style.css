@@ -1977,3 +1977,283 @@ tr.editing .edit-input { display: block; }
   color: var(--text-3);
   padding-bottom: 10px;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE PROJECT CARDS — mc card system
+   Moved from projects.html embedded style block
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Hide on desktop, show mobile nav */
+.mc-topnav { display: none; }
+
+@media (max-width: 768px) {
+  /* ── Hide desktop chrome ── */
+  .container > .nav,
+  .container > .nav-line,
+  .container > .page-header,
+  .container > .search-row,
+  #projectSections { display: none !important; }
+
+  .container > .nav,
+  .container > .nav-line,
+  .mobile-nav-menu,
+  .container > .page-header,
+  .container > .search-row,
+  #projectSections,
+  .table-footer { display: none !important; }
+
+  .mc-topnav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 22px 20px 14px;
+  }
+  .mc-topnav a {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--text-3);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .mc-topnav a.active {
+    font-weight: 700;
+    color: var(--text);
+  }
+  .mc-topnav-dot {
+    font-size: 17px;
+    color: var(--text-3);
+    font-weight: 400;
+    flex-shrink: 0;
+  }
+
+  .mobile-only { display: block !important; }
+
+  .m-page-sub {
+    padding: 0 16px 12px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    text-align: center;
+    display: block;
+    width: 100%;
+  }
+
+  /* ── CARD LIST — 6px sides = max width ── */
+  #mobileProjectList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 6px 40px;
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* ── BASE CARD ── */
+  .mc {
+    border-radius: 16px;
+    padding: 16px 18px 15px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+  }
+  /* no badge row — tighter top */
+  .mc.mc-no-topbar { padding-top: 16px; }
+
+  /* ── CARD COLORS ──
+     Pending (no infield activity) = amber
+     In Progress (has infield)     = blue
+     On Hold                       = red
+     Complete                      = green
+  */
+  .mc-pending    { background: #F5EDD6; color: #6B4A08; }
+  .mc-inprogress { background: #C8DCF2; color: #1C4A7A; }
+  .mc-hold { background: #DEDAD4; color: #5A5850; }
+  .mc-complete   { background: #BDE0CC; color: #1A5C35; }
+
+  /* ── TOP BAR: left | center | right — all inline ── */
+  .mc-top-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+    min-height: 26px;
+  }
+  .mc-top-left  { flex-shrink: 0; }
+  .mc-top-mid   { flex: 1; display: flex; justify-content: center; }
+  .mc-top-right { flex-shrink: 0; }
+
+  /* shared pill base */
+  .mc-pill-sm {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* In Progress badge — blue, blinking dot */
+  .mc-badge-inprogress {
+    background: rgba(28,74,122,0.14);
+    color: #1C4A7A;
+  }
+  .mc-blink {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #3AA66A;
+    flex-shrink: 0;
+    animation: mcblink 1.8s ease-in-out infinite;
+  }
+  @keyframes mcblink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* On Hold badge */
+  .mc-badge-hold {
+    background: rgba(90,88,80,0.14);
+    color: #5A5850;
+  }
+
+  /* Complete badge */
+  .mc-badge-complete {
+    background: rgba(26,92,53,0.16);
+    color: #1A5C35;
+  }
+
+  /* In Field pill — center, green dot, tinted to card color */
+  .mc-infield-pill {
+    background: rgba(58,166,106,0.15);
+    color: #1A5C35;
+  }
+  .mc-inprogress .mc-infield-pill { color: #1C4A7A; background: rgba(28,74,122,0.1); }
+  .mc-hold       .mc-infield-pill { color: #5A5850; background: rgba(90,88,80,0.1); }
+  .mc-if-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #3AA66A;
+    flex-shrink: 0;
+  }
+
+  /* Pending pill — upper right, amber always */
+  .mc-pending-pill {
+    background: rgba(212,168,67,0.22);
+    color: #6B4A08;
+  }
+  .mc-pd-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #D4A843;
+    flex-shrink: 0;
+  }
+
+  /* ── NAME ROW — with optional right-aligned checkmark ── */
+  .mc-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 2px;
+  }
+  .mc-check {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: rgba(26,92,53,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mc-check svg { display: block; }
+
+  /* ── NAME + CITY ── */
+  .mc-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    margin-bottom: 2px;
+    color: inherit;
+  }
+  .mc-city {
+    font-size: 13px;
+    opacity: 0.6;
+    margin-bottom: 14px;
+  }
+
+  /* ── DIVIDER ── */
+  .mc-divider { width: 100%; height: 1px; margin-bottom: 12px; }
+  .mc-pending    .mc-divider { background: rgba(107,74,8,0.12); }
+  .mc-inprogress .mc-divider { background: rgba(28,74,122,0.12); }
+  .mc-hold       .mc-divider { background: rgba(122,32,32,0.12); }
+  .mc-complete   .mc-divider { background: rgba(26,92,53,0.12); }
+
+  /* ── COUNTER ── */
+  .mc-counter {
+    font-size: 54px;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    margin-bottom: 3px;
+    align-self: center;
+  }
+  .mc-slash, .mc-total { opacity: 0.28; font-weight: 400; }
+  .mc-complete .mc-done { color: #3AA66A; }
+
+  .mc-counter-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 14px;
+    align-self: center;
+  }
+
+  /* ── VIEW JOB SHEET PILL ── */
+  .mc-pill {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 12px;
+    border-radius: 100px;
+    border: none;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .mc-pill:active { opacity: 0.75; }
+  .mc-pending    .mc-pill { background: rgba(107,74,8,0.11);   color: #6B4A08; }
+  .mc-inprogress .mc-pill { background: rgba(28,74,122,0.11);  color: #1C4A7A; }
+  .mc-hold       .mc-pill { background: rgba(90,88,80,0.11);  color: #5A5850; }
+  .mc-hold .mc-prog { background: rgba(90,88,80,.15); }
+  .mc-hold .mc-prog-fill { background: #9A9890; }
+  .mc-complete   .mc-pill { background: rgba(26,92,53,0.12);   color: #1A5C35; }
+
+  /* ── PROGRESS BAR ── */
+  .mc-prog { width: 100%; height: 3px; border-radius: 99px; margin-top: 12px; overflow: hidden; }
+  .mc-pending    .mc-prog { background: rgba(107,74,8,0.12); }
+  .mc-inprogress .mc-prog { background: rgba(28,74,122,0.12); }
+  .mc-hold .mc-prog { background: rgba(90,88,80,.15); }
+  .mc-complete   .mc-prog { background: rgba(26,92,53,0.12); }
+
+  .mc-prog-fill { height: 100%; border-radius: 99px; }
+  .mc-pending    .mc-prog-fill { background: #D4A843; }
+  .mc-inprogress .mc-prog-fill { background: #4A7FBF; }
+  .mc-hold .mc-prog-fill { background: #9A9890; }
+  .mc-complete   .mc-prog-fill { background: #3AA66A; }
+
+}
