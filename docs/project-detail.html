@@ -277,7 +277,7 @@ function renderStats() {
     let pills = ''
     if (pending > 0)  pills += '<span class="pd-stat-pill pd-stat-pending"><span class="pd-stat-dot pd-stat-dot-pending"></span>' + pending + ' Pending</span>'
     if (infield > 0)  pills += '<span class="pd-stat-pill pd-stat-infield"><span class="pd-stat-dot pd-stat-dot-infield"></span>' + infield + ' In Field</span>'
-    if (complete > 0) pills += '<span class="pd-stat-pill pd-stat-complete"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' + complete + '</span>'
+    if (complete > 0) pills += '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3AA66A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>'
     statsRow.innerHTML = pills
     statsRow.style.display = pills ? 'flex' : 'none'
   }
