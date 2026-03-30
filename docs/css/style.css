@@ -524,20 +524,20 @@ tbody tr:last-child td { border-bottom: none; }
   padding: 7px 14px;
   border: none;
   border-radius: 100px;
-  background: #3AA66A;
+  background: #BDE0CC;
   font-family: var(--font);
   font-size: var(--text-md);
   font-weight: 600;
-  color: #fff;
+  color: #1A5C35;
   cursor: pointer;
   transition: opacity .15s;
   white-space: nowrap;
 }
-.btn-action-green:hover { opacity: 0.88; }
+.btn-action-green:hover { opacity: 0.82; }
 .btn-action-green .plus {
   font-size: 15px;
   line-height: 0;
-  color: #fff;
+  color: #1A5C35;
 }
 
 .btn-ghost {
@@ -2084,12 +2084,12 @@ tr.editing .edit-input { display: block; }
   .mc-counter-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.45; margin-bottom: 14px; align-self: center; }
 
   /* ── Job Sheet pill button ── */
-  .mc-pill { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 12px; border-radius: 100px; border: none; font-family: var(--font); font-size: 13px; font-weight: 600; letter-spacing: -0.01em; cursor: pointer; transition: opacity 0.15s; background: rgba(26,92,53,0.12); color: #1A5C35; }
+  .mc-pill { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 12px; border-radius: 100px; border: none; font-family: var(--font); font-size: 13px; font-weight: 600; letter-spacing: -0.01em; cursor: pointer; transition: opacity 0.15s; background: #E8E3D8; color: #5a4a2a; }
   .mc-pill:active { opacity: 0.75; }
-  .mc-pending    .mc-pill { background: rgba(26,92,53,0.12); color: #1A5C35; }
-  .mc-inprogress .mc-pill { background: rgba(26,92,53,0.12); color: #1A5C35; }
-  .mc-hold       .mc-pill { background: rgba(26,92,53,0.12); color: #1A5C35; }
-  .mc-complete   .mc-pill { background: rgba(26,92,53,0.12); color: #1A5C35; }
+  .mc-pending    .mc-pill { background: #E8E3D8; color: #5a4a2a; }
+  .mc-inprogress .mc-pill { background: #E8E3D8; color: #5a4a2a; }
+  .mc-hold       .mc-pill { background: #E8E3D8; color: #5a4a2a; }
+  .mc-complete   .mc-pill { background: #E8E3D8; color: #5a4a2a; }
 
   /* ── Progress bar ── */
   .mc-prog { width: 100%; height: 3px; border-radius: 99px; margin-top: 12px; overflow: hidden; }
