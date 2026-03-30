@@ -647,6 +647,8 @@ tbody tr:hover .kebab { color: var(--text-3); }
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 100px;
+  min-width: 90px;
+  justify-content: center;
 }
 .pd-stat-dot {
   width: 6px; height: 6px;
