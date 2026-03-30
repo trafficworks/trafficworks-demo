@@ -277,7 +277,7 @@ function renderStats() {
     let pills = ''
     if (pending > 0)  pills += '<span style="display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:#7A5210;"><span class="pd-stat-dot pd-stat-dot-pending"></span>' + pending + '</span>'
     if (infield > 0)  pills += '<span style="display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:#1C4A7A;"><span class="pd-stat-dot pd-stat-dot-infield"></span>' + infield + '</span>'
-    if (complete > 0) pills += '<span style="display:inline-flex;align-items:center;gap:4px;color:#3AA66A;font-size:10.5px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3AA66A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' + complete + '</span>'
+    if (complete > 0) pills += '<span style="display:inline-flex;align-items:center;gap:4px;color:#3AA66A;font-size:13px;font-weight:600;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3AA66A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' + complete + '</span>'
     statsRow.innerHTML = pills
     statsRow.style.display = pills ? 'flex' : 'none'
   }
