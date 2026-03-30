@@ -642,12 +642,12 @@ tbody tr:hover .kebab { color: var(--text-3); }
   align-items: center;
   gap: 5px;
   font-size: 10.5px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 100px;
-  min-width: 90px;
+  min-width: 105px;
   justify-content: center;
 }
 .pd-stat-dot {
@@ -655,7 +655,7 @@ tbody tr:hover .kebab { color: var(--text-3); }
   border-radius: 50%;
   flex-shrink: 0;
 }
-.pd-stat-pending  { background: #F5EDD6; color: #7A5210; }
+.pd-stat-pending  { background: #F5EDD6; color: #5C3A08; }
 .pd-stat-dot-pending { background: #D4A843; }
 .pd-stat-infield  { background: #C8DCF2; color: #1C4A7A; }
 .pd-stat-dot-infield { background: #4A7FBF; animation: mcblink 1.8s ease-in-out infinite; }
