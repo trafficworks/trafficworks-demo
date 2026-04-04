@@ -460,6 +460,55 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 
 /* ep action buttons — right side */
 .ep-acts { display: flex; align-items: center; gap: 6px; }
+/* kebab menu */
+.kebab-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 2px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(31,41,51,.12);
+  z-index: 100;
+  min-width: 130px;
+  overflow: hidden;
+}
+.kebab-menu.open { display: block; }
+.kebab-menu.drop-down { top: calc(100% + 2px); bottom: auto; }
+.kebab-menu.drop-up { bottom: calc(100% + 2px); top: auto; }
+.kebab-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  background: none;
+  border: none;
+  font-family: var(--font);
+  font-size: 12px;
+  color: var(--text-2);
+  cursor: pointer;
+  text-align: left;
+  transition: background .1s;
+}
+.kebab-menu-item:hover { background: var(--surface-2); }
+.kebab-menu-item.danger { color: #C45C5C; }
+.kebab-menu-item.danger:hover { background: #fdf2f2; }
+.kebab-menu-item svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+.t-kbab {
+  background: none; border: none; cursor: pointer;
+  color: var(--line-strong); padding: 4px;
+  display: flex; align-items: center;
+  border-radius: 2px; transition: all .15s;
+}
+.t-kbab:hover { color: var(--text-2); background: var(--surface-2); }
+.t-kbab svg { width: 14px; height: 14px; }
+
+/* kebab cell needs position relative */
+td:has(.t-kbab) { position: relative; }
+
 .ep-act-btn {
   height: 26px; padding: 0 11px;
   border: 1px solid var(--line); border-radius: 2px;
@@ -1014,7 +1063,7 @@ textarea.form-input { height: auto; padding: 8px 10px; resize: vertical; line-he
   <div class="js-bar">
     <button class="js-close" onclick="closeJobSheet()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <span class="js-bar-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</span>
-    <button class="js-dl"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
+    <button class="js-dl" onclick="printJobSheet()"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
   </div>
   <div class="js-body"><div class="js-doc" id="jsDoc"></div></div>
 </div>
@@ -1352,7 +1401,7 @@ function renderTaskPanel(projectId) {
     const dur  = getDuration(t)
     const init = getInitials(t.tech)
     const tnClass = t.statusLabel === 'In Field' ? 'tn-field' : t.statusLabel === 'Complete' ? 'tn-done' : 'tn-pend'
-    const noteHtml = t.note ? `<div class="t-note">${escapeHtml(t.note)}</div>` : ''
+    const noteHtml = ''
     const reportBtn = t.statusLabel === 'Complete'
       ? `<button class="t-rpt" onclick="openReport('${t.type}','${escapeHtml(t.desc)}','')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
@@ -1366,7 +1415,7 @@ function renderTaskPanel(projectId) {
       <td style="text-align:center;padding-right:0"><span class="t-tech ${t.tech ? '' : 'empty'}" title="${escapeHtml(t.tech || 'Unassigned')}">${t.tech ? init : '—'}</span></td>
       <td><span class="t-dur">${dur || '—'}</span></td>
       <td class="r">${reportBtn}</td>
-      <td><button class="t-kbab" data-action="toggle-kebab" data-id="${t.id}" data-proj="${projectId}">
+      <td style="position:relative;width:28px"><button class="t-kbab" data-action="toggle-kebab" data-id="${t.id}" data-proj="${projectId}">
         <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
       </button>
       <div class="kebab-menu" id="km-${t.id}">
@@ -1488,6 +1537,7 @@ async function submitTasks() {
     })
   })
 
+  console.log('Inserting tasks:', inserts)
   if (!inserts.length) { showToast('No tasks to save'); return }
 
   const { error } = await supabase.from('tasks').insert(inserts)
@@ -1692,20 +1742,20 @@ async function openJobSheet(projectId) {
   html += renderGroup('Complete', complete, 'js-section-header-complete', 'js-section-dot-complete')
   html += '<div class="js-footer">Report generated ' + dateStr + ' · <span class="js-footer-brand">The Count Company</span></div>'
 
-  document.getElementById('jobsheetBody').innerHTML = '<div class="jobsheet-container">' + html + '</div>'
-  document.getElementById('jobsheetOverlay').classList.add('visible')
+  document.getElementById('jsDoc').innerHTML = '<div class="jobsheet-container">' + html + '</div>'
+  document.getElementById('jsOverlay').classList.add('open')
   document.body.style.overflow = 'hidden'
 }
 
 window.openJobSheet = openJobSheet
 
 function closeJobSheet() {
-  document.getElementById('jobsheetOverlay').classList.remove('visible')
+  document.getElementById('jsOverlay').classList.remove('open')
   document.body.style.overflow = ''
 }
 
 function printJobSheet() {
-  const el = document.getElementById('jobsheetOverlay').querySelector('.jobsheet-body')
+  const el = document.getElementById('jsOverlay').querySelector('.js-body')
   const filename = (currentJobSheetProjectName || 'jobsheet').replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.pdf'
   html2pdf().set({ margin:[10,10,10,10], filename, image:{type:'jpeg',quality:1}, html2canvas:{scale:2,useCORS:true}, jsPDF:{unit:'mm',format:'letter',orientation:'portrait'} }).from(el).save()
 }
@@ -1739,7 +1789,7 @@ document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', function(e) {
     if (e.target === this) {
       this.classList.remove('open')
-      if (this.id === 'jobsheetOverlay') document.body.style.overflow = ''
+      if (this.id === 'jsOverlay') document.body.style.overflow = ''
     }
   })
 })
@@ -1747,7 +1797,8 @@ document.querySelectorAll('.modal-overlay').forEach(el => {
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return
   document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'))
-  closeJobSheet()
+  document.getElementById('jsOverlay')?.classList.remove('open')
+  document.body.style.overflow = ''
 })
 
 document.getElementById('closeJobSheetBtn')?.addEventListener('click', closeJobSheet)
