@@ -8,442 +8,6 @@
 <link rel="stylesheet" href="css/style.css?v=20260328">
 <link rel="stylesheet" href="css/jobsheet.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-<style>
-:root{
-  --pg-bg:#F4F3F0;
-  --pg-surface:#FFFDFA;
-  --pg-surface-2:rgba(255,255,255,.78);
-  --pg-text:#1A1D21;
-  --pg-text-2:#6B7178;
-  --pg-text-3:#7D838A;
-  --pg-line:#DEDBD5;
-  --pg-line-soft:#ECEAE4;
-  --pg-accent:#7EA88A;
-  --pg-accent-strong:#6E987A;
-  --pg-pending:#F5C27A;
-  --pg-pending-bg:#FBF3E7;
-  --pg-progress:#BFD7EA;
-  --pg-progress-bg:#EEF5FB;
-  --pg-complete:#2AB57E;
-  --pg-complete-bg:#EDF8F3;
-  --pg-hold:#D8D3CA;
-  --pg-hold-bg:#F4F1EC;
-}
-html,body{background:var(--pg-bg);}
-body{font-family:'DM Sans',sans-serif;color:var(--pg-text);}
-.container{max-width:1220px;}
-.nav{
-  height:72px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.nav-name{font-weight:600;letter-spacing:-.01em}
-.nav-line{height:1px;background:var(--pg-line);margin-top:0}
-.main{padding-top:30px;padding-bottom:36px}
-.page-header{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  margin-bottom:18px;
-}
-.page-title{
-  display:block;
-  font-size:44px;
-  line-height:1;
-  font-weight:700;
-  letter-spacing:-.055em;
-  color:var(--pg-text);
-}
-.page-count{
-  display:block;
-  margin-top:6px;
-  font-size:14px;
-  font-weight:600;
-  color:var(--pg-text-2);
-}
-.page-meta{
-  font-size:13px;
-  font-weight:600;
-  color:var(--pg-text-3);
-  letter-spacing:.01em;
-}
-.search-row{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  background:var(--pg-surface-2);
-  border:1px solid #E2DDD4;
-  border-radius:18px;
-  padding:12px 14px 12px 18px;
-  box-shadow:0 1px 2px rgba(0,0,0,.03);
-  backdrop-filter:blur(8px);
-  margin-bottom:20px;
-}
-.search-wrap{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex:1;
-  min-width:0;
-  background:transparent;
-  border:none;
-}
-.search-wrap svg{width:18px;height:18px;color:var(--pg-text-3);flex-shrink:0}
-.search-input{
-  width:100%;
-  min-width:0;
-  height:42px;
-  border:none;
-  outline:none;
-  background:transparent;
-  font:500 16px 'DM Sans',sans-serif;
-  color:var(--pg-text);
-}
-.search-input::placeholder{color:var(--pg-text-3)}
-.toolbar-divider{
-  width:1px;
-  height:22px;
-  background:#DED8CF;
-  flex-shrink:0;
-}
-.toolbar-chip{
-  height:42px;
-  padding:0 14px;
-  border:1px solid transparent;
-  background:transparent;
-  border-radius:12px;
-  font:600 14px 'DM Sans',sans-serif;
-  color:var(--pg-text-2);
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  white-space:nowrap;
-}
-.toolbar-chip svg{width:14px;height:14px}
-.btn-action-green{
-  height:42px;
-  padding:0 18px;
-  border:none;
-  border-radius:14px;
-  background:var(--pg-accent);
-  color:#fff;
-  font:700 15px 'DM Sans',sans-serif;
-  cursor:pointer;
-  transition:background .15s ease;
-  white-space:nowrap;
-}
-.btn-action-green:hover{background:var(--pg-accent-strong)}
-.btn-action-green .plus{font-size:18px;line-height:1}
-#projectSections{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
-.projects-summary{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-  margin-bottom:4px;
-}
-.summary-card{
-  background:rgba(255,255,255,.92);
-  border:1px solid #E3DED5;
-  border-radius:18px;
-  padding:16px 18px;
-}
-.summary-kicker{
-  font-size:11px;
-  color:var(--pg-text-3);
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  font-weight:700;
-  margin-bottom:8px;
-}
-.summary-value{
-  font-size:26px;
-  line-height:1;
-  font-weight:700;
-  letter-spacing:-.04em;
-  color:var(--pg-text);
-}
-.summary-sub{
-  margin-top:6px;
-  font-size:13px;
-  font-weight:600;
-  color:var(--pg-text-2);
-}
-.project-card{
-  position:relative;
-  display:grid;
-  grid-template-columns:6px minmax(0,1fr);
-  background:var(--pg-surface);
-  border:1px solid var(--pg-line);
-  border-radius:20px;
-  overflow:visible;
-  box-shadow:0 2px 10px rgba(25,33,40,.03);
-}
-.project-rail{min-height:100%; border-radius:20px 0 0 20px;}
-.project-rail.pending{background:var(--pg-pending)}
-.project-rail.progress{background:var(--pg-progress)}
-.project-rail.complete{background:var(--pg-complete)}
-.project-rail.hold{background:#BEB7AB}
-.project-body{
-  padding:18px 20px 18px 18px;
-}
-.project-top{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:18px;
-  align-items:start;
-}
-.project-title{
-  font-size:22px;
-  line-height:1.05;
-  font-weight:700;
-  letter-spacing:-.03em;
-  color:var(--pg-text);
-  margin:0 0 6px;
-}
-.project-meta-line{
-  font-size:14px;
-  color:var(--pg-text-2);
-  font-weight:600;
-}
-.project-meta-line .dot{padding:0 7px;color:#B0B5BB}
-.project-submeta{
-  margin-top:7px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-.meta-pill{
-  height:28px;
-  padding:0 10px;
-  border-radius:999px;
-  border:1px solid var(--pg-line-soft);
-  background:#F8F6F2;
-  font-size:12px;
-  font-weight:700;
-  color:var(--pg-text-2);
-  display:inline-flex;
-  align-items:center;
-}
-.project-actions{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  position:relative;
-}
-.action-btn{
-  height:36px;
-  padding:0 14px;
-  border-radius:999px;
-  border:1px solid #DDD7CD;
-  background:#fff;
-  font:700 13px 'DM Sans',sans-serif;
-  color:var(--pg-text-2);
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  transition:border-color .15s ease, color .15s ease, background .15s ease;
-}
-.action-btn:hover{border-color:#D2C7B5;color:var(--pg-text);background:#FFFEFC}
-.action-btn svg{width:14px;height:14px}
-.action-btn.primary{background:#F7F5F0}
-.kebab-wrap{position:relative}
-.kebab{
-  width:36px;height:36px;border-radius:999px;border:1px solid #DDD7CD;background:#fff;color:var(--pg-text-2);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
-}
-.kebab svg{width:16px;height:16px}
-.project-mid{
-  display:grid;
-  grid-template-columns:minmax(300px,1fr) 250px;
-  gap:24px;
-  align-items:end;
-  margin-top:18px;
-}
-.project-progress-labels{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:8px;
-  font-size:11px;
-  color:var(--pg-text-3);
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  font-weight:700;
-}
-.progress-wrap-clean{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.progress-bar-clean{
-  flex:1;
-  height:10px;
-  background:#ECE8E0;
-  border-radius:999px;
-  overflow:hidden;
-}
-.progress-fill-clean{
-  height:100%;
-  border-radius:999px;
-  background:linear-gradient(90deg,#9AB9C6 0%, #7EA88A 100%);
-}
-.progress-pct-clean{
-  font-size:16px;
-  font-weight:700;
-  color:var(--pg-text);
-  min-width:44px;
-  text-align:right;
-}
-.project-stats{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-}
-.mini-stat{
-  border:1px solid var(--pg-line-soft);
-  background:#FBF9F5;
-  border-radius:14px;
-  padding:10px 12px;
-}
-.mini-stat .lbl{
-  font-size:10px;
-  font-weight:700;
-  color:var(--pg-text-3);
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  margin-bottom:5px;
-}
-.mini-stat .val{
-  font-size:18px;
-  font-weight:700;
-  letter-spacing:-.03em;
-  color:var(--pg-text);
-}
-.status-pill{
-  position:relative;
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  height:32px;
-  padding:0 12px;
-  border-radius:999px;
-  border:1px solid transparent;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
-  white-space:nowrap;
-}
-.status-pill.pending{background:var(--pg-pending-bg);border-color:#F1DEC0;color:#8D5B17}
-.status-pill.progress{background:var(--pg-progress-bg);border-color:#D7E4ED;color:#426B84}
-.status-pill.complete{background:var(--pg-complete-bg);border-color:#CFEBDC;color:#226A4B;cursor:default}
-.status-pill.hold{background:var(--pg-hold-bg);border-color:#E4DED5;color:#6F6A60}
-.status-dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.85}
-.status-dropdown{
-  position:absolute;
-  top:40px;
-  left:0;
-  min-width:160px;
-  background:#fff;
-  border:1px solid var(--pg-line);
-  border-radius:14px;
-  box-shadow:0 12px 30px rgba(0,0,0,.10);
-  padding:6px;
-  z-index:20;
-  display:none;
-}
-.status-dropdown.open{display:block}
-.status-dropdown-item{
-  width:100%;
-  height:38px;
-  border:none;
-  background:transparent;
-  border-radius:10px;
-  text-align:left;
-  padding:0 10px;
-  font:700 13px 'DM Sans',sans-serif;
-  color:var(--pg-text);
-  display:flex;
-  align-items:center;
-  gap:8px;
-  cursor:pointer;
-}
-.status-dropdown-item:hover{background:#F7F5F0}
-.sd-dot{width:7px;height:7px;border-radius:50%}
-.sd-pending{background:#D69224}
-.sd-in-progress{background:#4D7F9A}
-.sd-on-hold{background:#8D8578}
-.sd-complete{background:#2E9568}
-.kebab-menu{
-  position:absolute;
-  right:0;
-  top:44px;
-  min-width:180px;
-  background:#fff;
-  border:1px solid var(--pg-line);
-  border-radius:14px;
-  box-shadow:0 12px 30px rgba(0,0,0,.10);
-  padding:6px;
-  z-index:25;
-  display:none;
-}
-.kebab-menu.open{display:block}
-.kebab-menu.drop-up{top:auto;bottom:44px}
-.kebab-menu-item{
-  width:100%;
-  height:40px;
-  border:none;
-  border-radius:10px;
-  background:transparent;
-  display:flex;
-  align-items:center;
-  gap:9px;
-  padding:0 10px;
-  text-align:left;
-  font:700 13px 'DM Sans',sans-serif;
-  color:var(--pg-text);
-  cursor:pointer;
-}
-.kebab-menu-item:hover{background:#F7F5F0}
-.kebab-menu-item.danger{color:#AF4949}
-.kebab-menu-item svg{width:15px;height:15px;flex-shrink:0}
-.empty-state{
-  background:rgba(255,255,255,.75);
-  border:1px dashed #D9D2C6;
-  border-radius:22px;
-  padding:56px 24px;
-  text-align:center;
-  color:var(--pg-text-2);
-}
-.table-footer{
-  margin-top:10px;
-  font-size:13px;
-  font-weight:600;
-  color:var(--pg-text-3);
-}
-.mobile-only,.mc-topnav,.mobile-nav-menu{display:none}
-@media (max-width: 900px){
-  .mobile-only,.mc-topnav{display:block}
-  .page-meta{display:none}
-  .projects-summary,.project-card,.table-footer{display:none !important}
-  .search-row{
-    background:transparent;
-    border:none;
-    padding:0;
-    box-shadow:none;
-    border-radius:0;
-    margin-bottom:12px;
-  }
-  .toolbar-divider,.toolbar-chip{display:none}
-}
-</style>
-
 </head>
 <body>
 
@@ -485,7 +49,6 @@ body{font-family:'DM Sans',sans-serif;color:var(--pg-text);}
     <div>
       <span class="page-title">Projects</span>
       <span class="page-count" id="projectCount"></span>
-      <div class="page-meta" id="pageMeta">Track field progress, open work, and job sheets in one clean workspace.</div>
     </div>
   </div>
 
@@ -493,12 +56,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--pg-text);}
   <div class="search-row">
     <div class="search-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input class="search-input" type="text" placeholder="Search projects, clients, or cities…" id="searchInput">
-    </div>
-    <div class="toolbar-divider"></div>
-    <div class="toolbar-chip">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18"/><path d="M6 12h12"/><path d="M10 19h4"/></svg>
-      Desktop workspace
+      <input class="search-input" type="text" placeholder="Search projects…" id="searchInput">
     </div>
     <button class="btn-action-green" id="openCreateModalBtn"><span class="plus">+</span> New Project</button>
   </div>
@@ -717,133 +275,90 @@ function openProjectDetail(id) {
 // ═══════════════════════════════════════
 // RENDER — grouped by status
 // ═══════════════════════════════════════
-
 function renderProjects(list) {
   var sections = document.getElementById('projectSections');
   var footer = document.getElementById('tableFooter');
   var empty = document.getElementById('emptyState');
-  var meta = document.getElementById('pageMeta');
 
   if (projects.length === 0) {
     sections.innerHTML = '';
     footer.style.display = 'none';
     empty.classList.add('show');
-    document.getElementById('projectCount').textContent = '0 active';
-    if (meta) meta.textContent = 'No projects yet. Create one to get started.';
     return;
   }
 
   empty.classList.remove('show');
 
-  var active = projects.filter(function(p){ return p.status !== 'Complete' });
-  var openTasks = active.reduce(function(s,p){ return s + p.openTasks }, 0);
-  var completeProjects = projects.filter(function(p){ return p.status === 'Complete' }).length;
-  var avgProgress = projects.length ? Math.round(projects.reduce(function(s,p){ return s + (p.pct || 0); }, 0) / projects.length) : 0;
-
-  document.getElementById('projectCount').textContent = active.length + ' active';
-  if (meta) meta.textContent = projects.length + ' total projects · ' + openTasks + ' open tasks · ' + completeProjects + ' complete';
-
   if (list.length === 0) {
-    sections.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--pg-text-3);background:rgba(255,255,255,.75);border:1px dashed #D9D2C6;border-radius:22px">No projects match your search</div>';
+    sections.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-3)">No projects match your search</div>';
     footer.style.display = 'none';
     return;
   }
 
-  function desktopTone(status) {
-    if (status === 'Pending') return 'pending';
-    if (status === 'Complete') return 'complete';
-    if (status === 'On Hold') return 'hold';
-    return 'progress';
-  }
-
-  function statusLabel(p) {
-    if (p.status === 'In Progress' && p.infieldTasks > 0) return p.infieldTasks + ' in field';
-    if (p.status === 'Pending') return 'Waiting to start';
-    if (p.status === 'On Hold') return 'Paused';
-    if (p.status === 'Complete') return 'Ready to archive';
-    return 'In progress';
-  }
-
   var html = '';
-  html += '<div class="projects-summary">';
-  html +=   '<div class="summary-card"><div class="summary-kicker">Active Projects</div><div class="summary-value">' + active.length + '</div><div class="summary-sub">' + openTasks + ' open tasks across the board</div></div>';
-  html +=   '<div class="summary-card"><div class="summary-kicker">Average Progress</div><div class="summary-value">' + avgProgress + '%</div><div class="summary-sub">Live completion across all projects</div></div>';
-  html +=   '<div class="summary-card"><div class="summary-kicker">Completed</div><div class="summary-value">' + completeProjects + '</div><div class="summary-sub">Projects ready for archive</div></div>';
-  html += '</div>';
+  html += '<table><thead><tr>';
+  html += '<th style="width:35%">Project</th>';
+  html += '<th style="width:12%">Status</th>';
+  html += '<th style="width:22%">Progress</th>';
+  html += '<th style="width:8%" class="c">Open</th>';
+  html += '<th style="width:8%" class="c">Done</th>';
+  html += '<th style="width:4%"></th>';
+  html += '</tr></thead><tbody>';
 
   list.forEach(function(p) {
-    var complete = Math.max(0, (p.totalTasks || 0) - (p.openTasks || 0));
-    var tone = desktopTone(p.status);
+    var complete = p.totalTasks - p.openTasks;
     var statusDropdown = '';
-    var statusPill = '';
+    var statusClick = '';
+    var progressCell = '';
 
     if (p.status !== 'Complete') {
+      statusClick = ' data-action="toggle-status" data-id="' + p.id + '" style="cursor:pointer"';
       statusDropdown = '<div class="status-dropdown" id="sd-' + p.id + '">' + getStatusOptions(p) + '</div>';
-      statusPill = '<div style="position:relative"><button class="status-pill ' + tone + '" data-action="toggle-status" data-id="' + p.id + '"><span class="status-dot"></span>' + p.status + '</button>' + statusDropdown + '</div>';
-    } else {
-      statusPill = '<span class="status-pill ' + tone + '"><span class="status-dot"></span>' + p.status + '</span>';
     }
 
-    html += '<article class="project-card project-row" data-project-id="' + p.id + '">';
-    html +=   '<div class="project-rail ' + tone + '"></div>';
-    html +=   '<div class="project-body">';
-    html +=     '<div class="project-top">';
-    html +=       '<div>';
-    html +=         '<h3 class="project-title">' + p.name + '</h3>';
-    html +=         '<div class="project-meta-line">' + (p.location || 'No location added') + '<span class="dot">·</span>' + statusLabel(p) + '</div>';
-    html +=         '<div class="project-submeta">';
-    if (p.client) html += '<span class="meta-pill">' + p.client + '</span>';
-    if (p.projectNum) html += '<span class="meta-pill">Project #' + p.projectNum + '</span>';
-    html +=           '<span class="meta-pill">' + (p.totalTasks || 0) + ' tasks</span>';
-    html +=         '</div>';
-    html +=       '</div>';
-
-    html +=       '<div class="project-actions">';
-    html +=         statusPill;
-    html +=         '<button class="action-btn primary" data-action="open-project" data-id="' + p.id + '">Open</button>';
-    html +=         '<button class="action-btn" data-action="jobsheet" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</button>';
-    html +=         '<div class="kebab-wrap">';
-    html +=           '<button class="kebab" data-action="toggle-kebab" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
-    html +=           '<div class="kebab-menu" id="kebab-' + p.id + '">';
-    html +=             '<button class="kebab-menu-item" data-action="edit" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
-    html +=             '<button class="kebab-menu-item" data-action="notes" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Tech Notes</button>';
     if (p.status === 'Complete') {
-      html +=           '<button class="kebab-menu-item" data-action="archive" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Archive</button>';
-      html +=           '<button class="kebab-menu-item" data-action="reopen" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/></svg>Reopen</button>';
+      progressCell = '<span style="display:inline-flex;gap:6px"><button class="btn-small" data-action="archive" data-id="' + p.id + '">Archive</button><button class="btn-small" data-action="reopen" data-id="' + p.id + '">Reopen</button></span>';
+    } else {
+      progressCell = '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + p.pct + '%"></div></div><span class="progress-pct">' + p.pct + '%</span></div>';
     }
-    html +=             '<button class="kebab-menu-item danger" data-action="delete" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
-    html +=           '</div>';
-    html +=         '</div>';
-    html +=       '</div>';
-    html +=     '</div>';
 
-    html +=     '<div class="project-mid">';
-    html +=       '<div>';
-    html +=         '<div class="project-progress-labels"><span>Project Progress</span><span>' + complete + ' complete · ' + (p.openTasks || 0) + ' open</span></div>';
-    html +=         '<div class="progress-wrap-clean"><div class="progress-bar-clean"><div class="progress-fill-clean" style="width:' + (p.pct || 0) + '%"></div></div><div class="progress-pct-clean">' + (p.pct || 0) + '%</div></div>';
-    html +=       '</div>';
-    html +=       '<div class="project-stats">';
-    html +=         '<div class="mini-stat"><div class="lbl">Open</div><div class="val">' + (p.openTasks || 0) + '</div></div>';
-    html +=         '<div class="mini-stat"><div class="lbl">Done</div><div class="val">' + complete + '</div></div>';
-    html +=       '</div>';
-    html +=     '</div>';
-    html +=   '</div>';
-    html += '</article>';
+    html += '<tr class="project-row" data-project-id="' + p.id + '" style="cursor:pointer">';
+    html += '<td><div class="cell-name">' + p.name + '</div><div class="cell-sub">' + (p.location || '') + '</div></td>';
+    html += '<td style="position:relative"><span class="badge ' + badgeClass(p.status) + '"' + statusClick + '>' + p.status + '</span>' + statusDropdown + '</td>';
+    html += '<td>' + progressCell + '</td>';
+    html += '<td class="c"><span class="cell-num-open ' + (p.openTasks===0?'zero':'') + '">' + p.openTasks + '</span></td>';
+    html += '<td class="c"><span class="cell-num-done">' + complete + '</span></td>';
+    html += '<td class="r kebab-cell"><button class="kebab" data-action="toggle-kebab" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
+    html += '<div class="kebab-menu" id="kebab-' + p.id + '">';
+    html += '<button class="kebab-menu-item" data-action="edit" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
+    html += '<button class="kebab-menu-item" data-action="notes" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Tech Notes</button>';
+    html += '<button class="kebab-menu-item" data-action="jobsheet" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</button>';
+    if (p.status === 'Complete') {
+      html += '<button class="kebab-menu-item" data-action="archive" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Archive</button>';
+    }
+    html += '<button class="kebab-menu-item danger" data-action="delete" data-id="' + p.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
+    html += '</div></td>';
+    html += '</tr>';
   });
 
+  html += '</tbody></table>';
   sections.innerHTML = html;
 
   sections.querySelectorAll('.project-row').forEach(function(row) {
     row.addEventListener('click', function(e) {
-      if (e.target.closest('[data-action]')) return;
-      if (e.target.closest('.status-dropdown')) return;
-      if (e.target.closest('.kebab-menu')) return;
-      openProjectDetail(row.dataset.projectId);
-    });
+      if (e.target.closest('.kebab-cell')) return
+      if (e.target.closest('.badge')) return
+      if (e.target.closest('.status-dropdown')) return
+      if (e.target.closest('.kebab-menu')) return
+
+      openProjectDetail(row.dataset.projectId)
+    })
   });
 
   var mList = document.getElementById('mobileProjectList');
   var mSub = document.getElementById('mobilePageSub');
+  var active = projects.filter(function(p){ return p.status !== 'Complete' });
+  var openTasks = active.reduce(function(s,p){ return s + p.openTasks }, 0);
 
   if (mSub) mSub.textContent = active.length + ' active · ' + openTasks + ' open tasks';
 
@@ -868,6 +383,7 @@ function renderProjects(list) {
       var rightBadge  = '';
 
       if (isAllDone || s === 'Complete') {
+        // all done — no badges, clean card
       } else if (s === 'On Hold') {
         rightBadge = '<span class="mc-pill-sm mc-badge-hold"><span style="width:6px;height:6px;border-radius:50%;background:#9A9890;display:inline-block;flex-shrink:0;"></span> On Hold</span>';
       } else if (s === 'In Progress' && hasInfield) {
@@ -878,13 +394,16 @@ function renderProjects(list) {
       } else if (hasActivity && hasPending) {
         rightBadge = '<span class="mc-pill-sm mc-pending-pill"><span class="mc-pd-dot"></span>' + p.pendingTasks + ' Pending</span>';
       }
+      // else: no activity at all — no badges, top bar omitted
 
       var showTopBar = leftBadge || centerBadge || rightBadge;
+
       var checkmark = isAllDone
         ? '<div class="mc-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1A5C35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'
         : '';
 
       mHtml += '<div class="mc ' + cardClass + (showTopBar ? '' : ' mc-no-topbar') + '">';
+
       if (showTopBar) {
         mHtml += '<div class="mc-top-bar">';
         mHtml += '<div class="mc-top-left">'  + leftBadge   + '</div>';
@@ -892,11 +411,14 @@ function renderProjects(list) {
         mHtml += '<div class="mc-top-right">' + rightBadge  + '</div>';
         mHtml += '</div>';
       }
+
       mHtml += '<div class="mc-name-row"><div class="mc-name">' + p.name + '</div>' + checkmark + '</div>';
       mHtml += '<div class="mc-city">' + (p.location || '') + '</div>';
       mHtml += '<div class="mc-divider"></div>';
+
       mHtml += '<div class="mc-counter"><span class="mc-done">' + done + '</span><span class="mc-slash">/</span><span class="mc-total">' + p.totalTasks + '</span></div>';
       mHtml += '<div class="mc-counter-label">Tasks Complete</div>';
+
       mHtml += '<button class="mc-pill" data-action="jobsheet" data-id="' + p.id + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Job Sheet</button>';
       mHtml += '<div class="mc-prog"><div class="mc-prog-fill" style="width:' + p.pct + '%"></div></div>';
       mHtml += '</div>';
@@ -904,9 +426,12 @@ function renderProjects(list) {
     mList.innerHTML = mHtml;
   }
 
+  document.getElementById('projectCount').textContent = active.length + ' active';
   footer.style.display = '';
   footer.textContent = projects.length + ' projects · ' + openTasks + ' open tasks';
 }
+
+
 // ═══════════════════════════════════════
 // FILTER
 // ═══════════════════════════════════════
@@ -1557,7 +1082,6 @@ document.getElementById('projectSections')?.addEventListener('click', function(e
   }
 
   if (action === 'toggle-kebab') return toggleKebab(id, e)
-  if (action === 'open-project') return openProjectDetail(id)
   if (action === 'edit') return openEditModal(id)
   if (action === 'notes') return openNotesModal(id)
   if (action === 'jobsheet') return openJobSheet(id)
