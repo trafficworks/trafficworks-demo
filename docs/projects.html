@@ -104,6 +104,80 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
   line-height: 1.25;
 }
 
+/* project row hover actions */
+.pr-name-block { position: relative; }
+.pr-row-acts {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity .15s;
+  pointer-events: none;
+}
+.pb:hover .pr-row-acts {
+  opacity: 1;
+  pointer-events: auto;
+}
+.pr-row-act {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-3);
+  padding: 4px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  transition: all .15s;
+}
+.pr-row-act:hover { background: var(--surface-2); color: var(--text-2); }
+.pr-row-act.danger:hover { background: #fdf2f2; color: #C45C5C; }
+.pr-row-act svg { width: 13px; height: 13px; }
+
+/* inline edit input for project name */
+.pr-name-input {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.01em;
+  border: none;
+  border-bottom: 1.5px solid #C8A96A;
+  background: transparent;
+  font-family: var(--font);
+  outline: none;
+  width: 100%;
+  padding: 0;
+}
+
+/* tech assign dropdown */
+.tech-dd {
+  position: absolute;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(31,41,51,.12);
+  z-index: 200;
+  min-width: 130px;
+  overflow: hidden;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.tech-dd-item {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background .1s;
+  font-family: var(--font);
+}
+.tech-dd-item:hover { background: var(--surface-2); }
+.tech-dd-item.selected { font-weight: 600; color: var(--text); }
+.tech-dd-item.unassigned { color: var(--text-3); }
+
 /* ── 1950s PROGRESS BAR ── */
 .prog-block {
   display: flex;
@@ -967,6 +1041,19 @@ textarea.form-input { height: auto; padding: 8px 10px; resize: vertical; line-he
   </div>
 </div>
 
+<!-- DELETE PROJECT MODAL -->
+<div class="modal-overlay" id="deleteProjectModal">
+  <div class="modal">
+    <div class="modal-eyebrow">Project</div>
+    <div class="modal-title">Delete Project</div>
+    <div class="modal-body" id="deleteProjectBody"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('deleteProjectModal')">Cancel</button>
+      <button class="btn-danger" onclick="confirmDeleteProject()">Delete Project</button>
+    </div>
+  </div>
+</div>
+
 <!-- DELETE TASK MODAL -->
 <div class="modal-overlay" id="deleteTaskModal">
   <div class="modal">
@@ -1290,8 +1377,16 @@ function renderProjects() {
     pb.id = 'pb-' + p.id
     pb.innerHTML = `
       <div class="pr-topbar" onclick="toggle('${p.id}')">
-        <div class="pr-name-block">
-          <div class="pr-name">${escapeHtml(p.name)}</div>
+        <div class="pr-name-block" onclick="event.stopPropagation()">
+          <div class="pr-name" id="pname-${p.id}">${escapeHtml(p.name)}</div>
+          <div class="pr-row-acts">
+            <button class="pr-row-act" title="Edit name" onclick="startEditProject('${p.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="pr-row-act danger" title="Delete project" onclick="promptDeleteProject('${p.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
         </div>
         <div class="pr-middle">
           <div class="prog-block">
@@ -1470,13 +1565,14 @@ function renderTaskPanel(projectId) {
       <td style="text-align:center"><span class="t-site">${t.site}</span></td>
       <td><span class="tn-wrap ${tnClass}">${escapeHtml(t.desc)}</span>${noteHtml}</td>
       <td style="text-align:center;padding-right:0"><span class="t-type">${escapeHtml(t.type)}</span></td>
-      <td style="text-align:center;padding-right:0"><span class="t-tech ${t.tech ? '' : 'empty'}" title="${escapeHtml(t.tech || 'Unassigned')}">${t.tech ? init : '—'}</span></td>
+      <td style="text-align:center;padding-right:0;position:relative"><span class="t-tech ${t.tech ? '' : 'empty'}" data-action="show-tech" data-id="${t.id}" data-proj="${projectId}" title="${escapeHtml(t.tech || 'Unassigned')}" style="cursor:pointer">${t.tech ? init : '—'}</span></td>
       <td><span class="t-dur">${dur || '—'}</span></td>
       <td class="r">${reportBtn}</td>
       <td style="position:relative;width:28px"><button class="t-kbab" data-action="toggle-kebab" data-id="${t.id}" data-proj="${projectId}">
         <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
       </button>
       <div class="kebab-menu" id="km-${t.id}">
+        <button class="kebab-menu-item" data-action="edit-task" data-id="${t.id}" data-proj="${projectId}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>
         ${t.statusLabel === 'Complete' ? `<button class="kebab-menu-item" data-action="reopen-task" data-id="${t.id}" data-proj="${projectId}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg>Reopen</button>` : ''}
         <button class="kebab-menu-item danger" data-action="delete-task" data-id="${t.id}" data-proj="${projectId}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>
       </div></td>
@@ -1497,8 +1593,10 @@ function renderTaskPanel(projectId) {
     const id     = el.dataset.id
     const proj   = el.dataset.proj
     if (action === 'toggle-kebab') { e.stopPropagation(); toggleKebab(id) }
+    if (action === 'edit-task')    { e.stopPropagation(); startEditTask(id, proj) }
     if (action === 'delete-task')  { e.stopPropagation(); promptDeleteTask(id, proj) }
     if (action === 'reopen-task')  { e.stopPropagation(); promptReopenTask(id, proj) }
+    if (action === 'show-tech')    { e.stopPropagation(); showTechSelect(id, proj, el) }
   })
 }
 
@@ -2028,6 +2126,159 @@ function handleTabKey(e, id, field) {
 
 window.updateTypeColor = updateTypeColor
 window.handleTabKey = handleTabKey
+
+// ═══════════════════════════════════════
+// PROJECT INLINE EDIT
+// ═══════════════════════════════════════
+function startEditProject(id) {
+  const nameEl = document.getElementById('pname-' + id)
+  if (!nameEl) return
+  const current = nameEl.textContent
+  const input = document.createElement('input')
+  input.className = 'pr-name-input'
+  input.value = current
+  input.style.width = Math.max(current.length * 9, 120) + 'px'
+  nameEl.replaceWith(input)
+  input.focus()
+  input.select()
+
+  async function save() {
+    const val = input.value.trim()
+    if (!val || val === current) {
+      input.replaceWith(nameEl)
+      return
+    }
+    const { error } = await supabase.from('projects').update({ name: val }).eq('id', id)
+    if (error) { console.error('editProject:', error); input.replaceWith(nameEl); return }
+    nameEl.textContent = val
+    const proj = projects.find(p => p.id === id)
+    if (proj) proj.name = val
+    input.replaceWith(nameEl)
+    showToast('Project updated')
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); save() }
+    if (e.key === 'Escape') input.replaceWith(nameEl)
+  })
+  input.addEventListener('blur', save)
+}
+window.startEditProject = startEditProject
+
+// ═══════════════════════════════════════
+// PROJECT DELETE
+// ═══════════════════════════════════════
+let deleteProjectTarget = null
+
+function promptDeleteProject(id) {
+  deleteProjectTarget = id
+  const proj = projects.find(p => p.id === id)
+  document.getElementById('deleteProjectBody').textContent = 'Delete "' + (proj?.name || 'this project') + '"? This permanently removes the project and all its tasks.'
+  openModal('deleteProjectModal')
+}
+window.promptDeleteProject = promptDeleteProject
+
+async function confirmDeleteProject() {
+  if (!deleteProjectTarget) return
+  const id = deleteProjectTarget
+  const { error } = await supabase.from('projects').delete().eq('id', id).eq('company_id', COMPANY_ID)
+  if (error) { console.error('deleteProject:', error); alert(JSON.stringify(error)); return }
+  deleteProjectTarget = null
+  closeModal('deleteProjectModal')
+  if (openId === id) openId = null
+  await loadProjects()
+  showToast('Project deleted')
+}
+
+// ═══════════════════════════════════════
+// TASK INLINE EDIT
+// ═══════════════════════════════════════
+function startEditTask(taskId, projectId) {
+  closeAllKebabs()
+  const tasks = tasksByProject[projectId] || []
+  const task = tasks.find(t => t.id === taskId)
+  if (!task) return
+
+  const nameWrap = document.querySelector(`#tasks-${projectId} .tn-wrap[data-task-id="${taskId}"]`)
+  // find the tn-wrap by traversing from the row
+  const row = document.getElementById('tr-' + taskId)
+  if (!row) return
+  const tnWrap = row.querySelector('.tn-wrap')
+  if (!tnWrap) return
+
+  const current = task.desc
+  const input = document.createElement('input')
+  input.type = 'text'
+  input.value = current
+  input.style.cssText = 'width:100%;border:none;border-bottom:1.5px solid #C8A96A;background:transparent;font-family:var(--font);font-size:13px;font-weight:500;color:var(--text);outline:none;padding:0 2px;'
+  tnWrap.replaceWith(input)
+  input.focus()
+  input.select()
+
+  async function saveTask() {
+    const val = input.value.trim()
+    if (!val || val === current) {
+      input.replaceWith(tnWrap)
+      return
+    }
+    const { error } = await supabase.from('tasks').update({ description: val }).eq('id', taskId)
+    if (error) { console.error('editTask:', error); input.replaceWith(tnWrap); return }
+    task.desc = val
+    tnWrap.textContent = val
+    input.replaceWith(tnWrap)
+    showToast('Task updated')
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); saveTask() }
+    if (e.key === 'Escape') input.replaceWith(tnWrap)
+  })
+  input.addEventListener('blur', saveTask)
+}
+
+// ═══════════════════════════════════════
+// TECH ASSIGN DROPDOWN
+// ═══════════════════════════════════════
+function showTechSelect(taskId, projectId, el) {
+  document.querySelector('.tech-dd')?.remove()
+  if (!techs.length) return
+
+  const tasks = tasksByProject[projectId] || []
+  const task = tasks.find(t => t.id === taskId)
+  const dd = document.createElement('div')
+  dd.className = 'tech-dd'
+
+  const allOptions = [{ id: '', label: 'Unassigned' }].concat(
+    techs.map(t => ({ id: t.id, label: getTechName(t) }))
+  )
+
+  allOptions.forEach(item => {
+    const div = document.createElement('div')
+    div.className = 'tech-dd-item' + (item.label === (task?.tech || '') ? ' selected' : '') + (!item.id ? ' unassigned' : '')
+    div.textContent = item.label
+    div.addEventListener('click', async ev => {
+      ev.stopPropagation()
+      const { error } = await supabase.from('tasks').update({ tech_id: item.id || null }).eq('id', taskId)
+      if (error) { console.error('assignTech:', error); dd.remove(); return }
+      dd.remove()
+      cyclesByTask = {}
+      await loadTasksForProject(projectId)
+      await refreshProjectRow(projectId)
+      showToast(item.id ? 'Tech assigned' : 'Unassigned')
+    })
+    dd.appendChild(div)
+  })
+
+  el.style.position = 'relative'
+  el.appendChild(dd)
+
+  setTimeout(() => {
+    const close = evt => {
+      if (!dd.contains(evt.target)) { dd.remove(); document.removeEventListener('click', close) }
+    }
+    document.addEventListener('click', close)
+  }, 0)
+}
 
 // ═══════════════════════════════════════
 // INIT
