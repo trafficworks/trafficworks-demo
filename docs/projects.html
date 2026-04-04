@@ -537,20 +537,16 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 /* kebab menu */
 .kebab-menu {
   display: none;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 2px);
+  position: fixed;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 2px;
   box-shadow: 0 4px 16px rgba(31,41,51,.12);
-  z-index: 100;
+  z-index: 9999;
   min-width: 130px;
   overflow: hidden;
 }
 .kebab-menu.open { display: block; }
-.kebab-menu.drop-down { top: calc(100% + 2px); bottom: auto; }
-.kebab-menu.drop-up { bottom: calc(100% + 2px); top: auto; }
 .kebab-menu-item {
   display: flex;
   align-items: center;
@@ -1568,7 +1564,7 @@ function renderTaskPanel(projectId) {
       <td style="text-align:center;padding-right:0;position:relative"><span class="t-tech ${t.tech ? '' : 'empty'}" data-action="show-tech" data-id="${t.id}" data-proj="${projectId}" title="${escapeHtml(t.tech || 'Unassigned')}" style="cursor:pointer">${t.tech ? init : '—'}</span></td>
       <td><span class="t-dur">${dur || '—'}</span></td>
       <td class="r">${reportBtn}</td>
-      <td style="position:relative;width:28px"><button class="t-kbab" data-action="toggle-kebab" data-id="${t.id}" data-proj="${projectId}">
+      <td style="position:relative;width:28px"><button class="t-kbab" data-id="${t.id}" data-proj="${projectId}" style="opacity:0;pointer-events:none">
         <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
       </button>
       <div class="kebab-menu" id="km-${t.id}" style="z-index:300">
@@ -1585,6 +1581,31 @@ function renderTaskPanel(projectId) {
 
   panel.innerHTML = html
 
+  // show kebab on row hover
+  panel.querySelectorAll('tbody tr').forEach(tr => {
+    const menu = tr.querySelector('.kebab-menu')
+    if (!menu) return
+    tr.addEventListener('mouseenter', () => {
+      if (!menu) return
+      const rect = tr.getBoundingClientRect()
+      menu.style.position = 'fixed'
+      menu.style.right = (window.innerWidth - rect.right - 24) + 'px'
+      menu.style.top = (rect.top) + 'px'
+      menu.style.zIndex = '9999'
+      menu.classList.add('open')
+    })
+    tr.addEventListener('mouseleave', e => {
+      if (!menu.contains(e.relatedTarget)) {
+        menu.classList.remove('open')
+      }
+    })
+    menu.addEventListener('mouseleave', e => {
+      if (!e.relatedTarget || !e.relatedTarget.closest('tr[id^="tr-"]')) {
+        menu.classList.remove('open')
+      }
+    })
+  })
+
   // kebab delegation
   panel.addEventListener('click', e => {
     const el = e.target.closest('[data-action]')
@@ -1592,7 +1613,6 @@ function renderTaskPanel(projectId) {
     const action = el.dataset.action
     const id     = el.dataset.id
     const proj   = el.dataset.proj
-    if (action === 'toggle-kebab') { e.stopPropagation(); toggleKebab(id) }
     if (action === 'edit-task')    { e.stopPropagation(); startEditTask(id, proj) }
     if (action === 'delete-task')  { e.stopPropagation(); promptDeleteTask(id, proj) }
     if (action === 'reopen-task')  { e.stopPropagation(); promptReopenTask(id, proj) }
@@ -2257,7 +2277,12 @@ function startEditTask(taskId, projectId) {
 // ═══════════════════════════════════════
 function showTechSelect(taskId, projectId, el) {
   document.querySelector('.tech-dd')?.remove()
-  if (!techs.length) return
+  console.log('showTechSelect called', taskId, projectId, 'techs:', techs.length)
+  if (!techs.length) {
+    showToast('Loading techs…')
+    loadTechs().then(() => showTechSelect(taskId, projectId, el))
+    return
+  }
 
   const tasks = tasksByProject[projectId] || []
   const task = tasks.find(t => t.id === taskId)
