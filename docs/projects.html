@@ -118,7 +118,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
   transition: opacity .15s;
   pointer-events: none;
 }
-.pb:hover .pr-row-acts {
+.pb:hover:not(.open) .pr-row-acts {
   opacity: 1;
   pointer-events: auto;
 }
@@ -1571,7 +1571,7 @@ function renderTaskPanel(projectId) {
       <td style="position:relative;width:28px"><button class="t-kbab" data-action="toggle-kebab" data-id="${t.id}" data-proj="${projectId}">
         <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
       </button>
-      <div class="kebab-menu" id="km-${t.id}">
+      <div class="kebab-menu" id="km-${t.id}" style="z-index:300">
         <button class="kebab-menu-item" data-action="edit-task" data-id="${t.id}" data-proj="${projectId}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>
         ${t.statusLabel === 'Complete' ? `<button class="kebab-menu-item" data-action="reopen-task" data-id="${t.id}" data-proj="${projectId}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg>Reopen</button>` : ''}
         <button class="kebab-menu-item danger" data-action="delete-task" data-id="${t.id}" data-proj="${projectId}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>
@@ -1609,7 +1609,10 @@ function toggleKebab(id) {
   closeAllKebabs()
   const menu = document.getElementById('km-' + id)
   if (!menu) return
-  menu.classList.add('open', 'drop-down')
+  const btn = menu.previousElementSibling
+  const rect = btn ? btn.getBoundingClientRect() : null
+  const spaceBelow = rect ? window.innerHeight - rect.bottom : 200
+  menu.classList.add('open', spaceBelow < 160 ? 'drop-up' : 'drop-down')
   openKebabId = id
 }
 
