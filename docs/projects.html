@@ -1938,14 +1938,25 @@ function addTaskRow(name='', type=defaultType, tech=defaultTech) {
   const sel = tr.querySelector('.tg-sel')
   updateTypeColor(sel)
   updateCount()
-  if (!name && rowCount === 1) {
-    const inp = tr.querySelector('.tg-inp')
-    inp.addEventListener('paste', () => setTimeout(() => { updateRowState(id); updateCount() }, 0))
-    inp.focus()
-  } else {
-    const inp = tr.querySelector('.tg-inp')
-    inp.addEventListener('paste', () => setTimeout(() => { updateRowState(id); updateCount() }, 0))
-  }
+  const inp = tr.querySelector('.tg-inp')
+  inp.addEventListener('paste', function(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    const raw = (e.clipboardData || window.clipboardData).getData('text') || ''
+    const lines = raw.split(/[\r\n]+/).map(function(l){ return l.trim() }).filter(Boolean)
+    if (!lines.length) return
+    if (lines.length === 1) {
+      const s = inp.selectionStart, en = inp.selectionEnd
+      inp.value = inp.value.slice(0,s) + lines[0] + inp.value.slice(en)
+      updateRowState(id); updateCount(); return
+    }
+    inp.value = lines[0]
+    updateRowState(id)
+    for (var i = 1; i < lines.length; i++) { addTaskRow(lines[i]) }
+    addTaskRow()
+    updateCount()
+  })
+  if (!name && rowCount === 1) inp.focus()
 }
 
 window.addTaskRow = addTaskRow
