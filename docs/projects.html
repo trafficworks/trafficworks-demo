@@ -1170,8 +1170,10 @@ function showToast(msg) {
   el._t = setTimeout(() => el.classList.remove('visible'), 2500)
 }
 
-function openModal(id)  { document.getElementById(id)?.classList.add('open') }
+function openModal(id)  { console.log('openModal', id); document.getElementById(id)?.classList.add('open') }
+window.openModal = openModal
 function closeModal(id) { document.getElementById(id)?.classList.remove('open') }
+window.closeModal = closeModal
 
 // ═══════════════════════════════════════
 // LOAD PROJECTS
@@ -1606,13 +1608,22 @@ async function confirmReopenTask() {
 // CREATE PROJECT
 // ═══════════════════════════════════════
 async function createProject() {
-  const name     = document.getElementById('mnpName').value.trim()
-  const num      = document.getElementById('mnpNum').value.trim()
-  const client   = document.getElementById('mnpClient').value.trim()
-  const location = document.getElementById('mnpLocation').value.trim()
-  const notes    = document.getElementById('mnpNotes').value.trim()
+  console.log('createProject called')
+  const nameEl = document.getElementById('mnpName')
+  console.log('mnpName el:', nameEl)
+  const name     = nameEl?.value.trim() || ''
+  const num      = document.getElementById('mnpNum')?.value.trim() || ''
+  const client   = document.getElementById('mnpClient')?.value.trim() || ''
+  const location = document.getElementById('mnpLocation')?.value.trim() || ''
+  const notes    = document.getElementById('mnpNotes')?.value.trim() || ''
+  console.log('values:', { name, num, client, location })
 
-  if (!name) { document.getElementById('mnpName').focus(); return }
+  if (!name) { 
+    console.log('no name — focusing')
+    nameEl?.focus()
+    showToast('Project name required')
+    return 
+  }
 
   const { error } = await supabase.from('projects').insert([{
     company_id: COMPANY_ID,
