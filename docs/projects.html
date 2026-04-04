@@ -1206,6 +1206,62 @@ async function loadProjects() {
 }
 
 // ═══════════════════════════════════════
+// REFRESH SINGLE PROJECT ROW
+// ═══════════════════════════════════════
+async function refreshProjectRow(projectId) {
+  const { data, error } = await supabase
+    .from('project_summary')
+    .select('*')
+    .eq('id', projectId)
+    .single()
+
+  if (error || !data) return
+
+  // update local projects array
+  const idx = projects.findIndex(p => p.id === projectId)
+  if (idx > -1) {
+    projects[idx] = {
+      ...projects[idx],
+      pct:          data.pct_complete || 0,
+      pendingTasks: data.pending_tasks || 0,
+      infieldTasks: data.infield_tasks || 0,
+      doneTasks:    (data.total_tasks || 0) - ((data.pending_tasks || 0) + (data.infield_tasks || 0)),
+      totalTasks:   data.total_tasks || 0,
+    }
+  }
+
+  const p = projects[idx]
+  if (!p) return
+
+  // update progress bar
+  const pb = document.getElementById('pb-' + projectId)
+  if (!pb) return
+
+  const fill = pb.querySelector('.prog-fill')
+  if (fill) {
+    fill.style.width = p.pct + '%'
+    fill.className = 'prog-fill ' + (p.status === 'complete' ? 'done' : 'active')
+  }
+
+  const pct = pb.querySelector('.prog-pct')
+  if (pct) pct.textContent = p.pct + '%'
+
+  // update stamps
+  const stampsEl = pb.querySelector('.pr-stamps')
+  if (stampsEl) {
+    let stamps = ''
+    if (p.infieldTasks > 0) stamps += `<span class="stamp stamp-field">${p.infieldTasks} In Field</span>`
+    if (p.pendingTasks > 0) stamps += `<span class="stamp stamp-pend">${p.pendingTasks} Pending</span>`
+    if (p.doneTasks    > 0) stamps += `<span class="stamp stamp-done">${p.doneTasks} Done</span>`
+    if (p.status === 'complete') {
+      stamps += `<button class="row-btn" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button>`
+      stamps += `<button class="row-btn" onclick="event.stopPropagation();reopenProject('${p.id}')">Reopen</button>`
+    }
+    stampsEl.innerHTML = stamps
+  }
+}
+
+// ═══════════════════════════════════════
 // RENDER PROJECTS
 // ═══════════════════════════════════════
 function renderProjects() {
@@ -1546,9 +1602,14 @@ async function submitTasks() {
   if (error) { console.error('submitTasks:', error); alert(JSON.stringify(error)); return }
 
   closeModal('addTaskModal')
+
+  // refresh just this project's tasks inline — keep panel open
   cyclesByTask = {}
   await loadTasksForProject(addTaskProjectId)
-  await loadProjects()
+
+  // update project row stamps + bar without rebuilding the list
+  await refreshProjectRow(addTaskProjectId)
+
   showToast(inserts.length + (inserts.length === 1 ? ' task added' : ' tasks added'))
 }
 
@@ -1574,7 +1635,7 @@ async function confirmDeleteTask() {
   closeModal('deleteTaskModal')
   cyclesByTask = {}
   await loadTasksForProject(projectId)
-  await loadProjects()
+  await refreshProjectRow(projectId)
   showToast('Task deleted')
 }
 
@@ -1600,7 +1661,7 @@ async function confirmReopenTask() {
   closeModal('reopenModal')
   cyclesByTask = {}
   await loadTasksForProject(projectId)
-  await loadProjects()
+  await refreshProjectRow(projectId)
   showToast('Task reopened')
 }
 
