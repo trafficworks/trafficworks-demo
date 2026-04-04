@@ -1610,9 +1610,22 @@ function toggleKebab(id) {
   const menu = document.getElementById('km-' + id)
   if (!menu) return
   const btn = menu.previousElementSibling
-  const rect = btn ? btn.getBoundingClientRect() : null
-  const spaceBelow = rect ? window.innerHeight - rect.bottom : 200
-  menu.classList.add('open', spaceBelow < 160 ? 'drop-up' : 'drop-down')
+  if (!btn) return
+  const rect = btn.getBoundingClientRect()
+  const spaceBelow = window.innerHeight - rect.bottom
+
+  // use fixed positioning to escape table/overflow clipping
+  menu.style.position = 'fixed'
+  menu.style.right = (window.innerWidth - rect.right) + 'px'
+  menu.style.zIndex = '9999'
+  if (spaceBelow < 160) {
+    menu.style.bottom = (window.innerHeight - rect.top) + 'px'
+    menu.style.top = 'auto'
+  } else {
+    menu.style.top = (rect.bottom + 2) + 'px'
+    menu.style.bottom = 'auto'
+  }
+  menu.classList.add('open')
   openKebabId = id
 }
 
@@ -2272,8 +2285,21 @@ function showTechSelect(taskId, projectId, el) {
     dd.appendChild(div)
   })
 
-  el.style.position = 'relative'
-  el.appendChild(dd)
+  // use fixed positioning to escape table clipping
+  const rect = el.getBoundingClientRect()
+  dd.style.position = 'fixed'
+  dd.style.zIndex = '9999'
+  const spaceBelow = window.innerHeight - rect.bottom
+  if (spaceBelow < 200) {
+    dd.style.bottom = (window.innerHeight - rect.top) + 'px'
+    dd.style.top = 'auto'
+  } else {
+    dd.style.top = (rect.bottom + 4) + 'px'
+    dd.style.bottom = 'auto'
+  }
+  dd.style.left = rect.left + 'px'
+  dd.style.transform = 'none'
+  document.body.appendChild(dd)
 
   setTimeout(() => {
     const close = evt => {
