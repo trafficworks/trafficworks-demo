@@ -1950,10 +1950,28 @@ function addTaskRow(name='', type=defaultType, tech=defaultTech) {
       inp.value = inp.value.slice(0,s) + lines[0] + inp.value.slice(en)
       updateRowState(id); updateCount(); return
     }
-    inp.value = lines[0]
-    updateRowState(id)
-    for (var i = 1; i < lines.length; i++) { addTaskRow(lines[i]) }
-    addTaskRow()
+    // multi-line: collect all existing row values, splice in pasted lines, rebuild
+    const tbody = document.getElementById('taskGridBody')
+    const existingRows = Array.from(tbody.querySelectorAll('tr'))
+    const currentIdx = existingRows.findIndex(function(r){ return r.id === 'tgr-' + id })
+    // get values of all rows
+    const allValues = existingRows.map(function(r) {
+      return {
+        name: r.querySelector('.tg-inp') ? r.querySelector('.tg-inp').value.trim() : '',
+        type: r.querySelectorAll('.tg-sel')[0] ? r.querySelectorAll('.tg-sel')[0].value : defaultType,
+        tech: r.querySelectorAll('.tg-sel')[1] ? r.querySelectorAll('.tg-sel')[1].value : defaultTech
+      }
+    })
+    // replace current row with first pasted line, insert rest after
+    allValues[currentIdx].name = lines[0]
+    const newRows = lines.slice(1).map(function(l){ return { name: l, type: defaultType, tech: defaultTech } })
+    const merged = allValues.slice(0, currentIdx + 1).concat(newRows).concat(allValues.slice(currentIdx + 1))
+    // rebuild grid
+    tbody.innerHTML = ''
+    rowCount = 0
+    merged.forEach(function(v) {
+      addTaskRow(v.name, v.type, v.tech)
+    })
     updateCount()
   })
   if (!name && rowCount === 1) inp.focus()
