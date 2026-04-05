@@ -687,7 +687,7 @@ td:has(.t-kbab) { position: relative; }
 .t-rpt svg { width: 9px; height: 9px; }
 
 /* kebab */
-.t-kbab { background: none; border: none; cursor: pointer; color: var(--line-strong); padding: 3px; display: inline-flex; align-items: center; transition: color .15s; opacity: 0; }
+.t-kbab { background: none; border: none; cursor: pointer; color: #8A7A6A; padding: 3px; display: inline-flex; align-items: center; transition: color .15s; opacity: 0; }
 .tasks-table tbody .t-kbab:hover { color: var(--text); }
 .t-kbab svg { width: 13px; height: 13px; }
 
@@ -828,13 +828,11 @@ textarea.form-input { height: auto; padding: 8px 10px; resize: vertical; line-he
 .js-dl:hover { background: var(--c-olive-h); }
 
 /* body */
-.js-body { flex: 1; overflow-y: auto; background: var(--bg); padding: 32px; }
+.js-body { flex: 1; overflow-y: auto; background: #fff; padding: 32px; }
 .js-doc {
   max-width: 640px; margin: 0 auto;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: #fff;
   padding: 40px 48px;
-  box-shadow: 0 2px 12px rgba(31,41,51,.08);
   font-family: var(--font);
 }
 .js-ey { font-size: 9px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--text-eyebrow); margin-bottom: 5px; }
@@ -869,7 +867,9 @@ textarea.form-input { height: auto; padding: 8px 10px; resize: vertical; line-he
 .js-section-header-complete .js-section-label { color: #5E6B4A; }
 .js-section-count { font-size: 11px; font-weight: 700; color: var(--text-3); }
 .js-site-list { border: 1px solid var(--line-soft); border-top: none; border-radius: 0 0 1px 1px; margin-bottom: 12px; }
-.js-site { padding: 10px 14px; border-bottom: 1px solid var(--line-soft); }
+.js-site { padding: 10px 14px; border-bottom: 1px solid var(--line-soft); page-break-inside: avoid; }
+.js-section { page-break-inside: avoid; }
+.js-section-header { page-break-after: avoid; }
 .js-site:last-child { border-bottom: none; }
 .js-site-header { display: flex; align-items: center; gap: 8px; }
 .js-site-num { font-size: 10px; font-weight: 700; color: var(--text-3); min-width: 18px; }
