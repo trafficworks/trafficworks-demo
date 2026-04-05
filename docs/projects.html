@@ -569,7 +569,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 
 .t-kbab {
   background: none; border: none; cursor: pointer;
-  color: var(--line-strong); padding: 4px;
+  color: #8A7A6A; padding: 4px;
   display: flex; align-items: center;
   border-radius: 2px; transition: all .15s;
 }
@@ -1512,13 +1512,15 @@ async function toggle(id) {
   if (openId) document.getElementById('pb-' + openId)?.classList.remove('open')
 
   openId = id
-  document.getElementById('pb-' + id)?.classList.add('open')
+  const pb = document.getElementById('pb-' + id)
+  pb?.classList.add('open')
   allPbs.forEach(pb => {
     if (pb.id !== 'pb-' + id) pb.classList.add('dimmed')
     else pb.classList.remove('dimmed')
   })
 
-  await loadTasksForProject(id)
+  // open immediately — load tasks async in background
+  loadTasksForProject(id)
 }
 
 // expose for onclick
