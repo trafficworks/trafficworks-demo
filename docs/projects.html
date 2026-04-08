@@ -267,30 +267,50 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 .pr-stamps {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   flex-shrink: 0;
   padding-left: 14px;
   margin-left: auto;
   justify-content: flex-end;
 }
 
+/* segmented pill container */
+.stamps-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
 .stamp {
   display: inline-flex;
   align-items: center;
-  padding: 4px 9px;
-  border-radius: 1px;
+  gap: 5px;
+  padding: 4px 10px;
   font-size: 9px;
   font-weight: 700;
-  letter-spacing: .1em;
+  letter-spacing: .08em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #fff;
-  border: none;
+  border-right: 1px solid var(--line);
+}
+.stamp:last-child { border-right: none; }
+.stamp::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.stamp-pend  { background: var(--c-amber); }
-.stamp-field { background: var(--c-teal); }
-.stamp-done  { background: var(--c-olive); }
+.stamp-pend  { background: #F3E6C7; color: #A8823F; }
+.stamp-pend::before  { background: #D6A95C; }
+.stamp-field { background: #DCE7E9; color: #4E6B70; }
+.stamp-field::before { background: #6F8F95; }
+.stamp-done  { background: #E3E8DC; color: #5E6B4A; }
+.stamp-done::before  { background: #7E8F63; }
 
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
 
@@ -1392,9 +1412,11 @@ async function refreshProjectRow(projectId) {
   const stampsEl = pb.querySelector('.pr-stamps')
   if (stampsEl) {
     let stamps = ''
-    if (p.infieldTasks > 0) stamps += `<span class="stamp stamp-field">${p.infieldTasks} In Field</span>`
-    if (p.pendingTasks > 0) stamps += `<span class="stamp stamp-pend">${p.pendingTasks} Pending</span>`
-    if (p.doneTasks    > 0) stamps += `<span class="stamp stamp-done">${p.doneTasks} Done</span>`
+    const _sf = p.infieldTasks > 0 ? `<span class="stamp stamp-field">${p.infieldTasks} In Field</span>` : ''
+    const _sp = p.pendingTasks > 0 ? `<span class="stamp stamp-pend">${p.pendingTasks} Pending</span>` : ''
+    const _sd = p.doneTasks    > 0 ? `<span class="stamp stamp-done">${p.doneTasks} Done</span>` : ''
+    const _inner = _sf + _sp + _sd
+    if (_inner) stamps = `<div class="stamps-pill">${_inner}</div>`
     if (p.status === 'complete') {
       stamps += `<button class="row-btn" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button>`
       stamps += `<button class="row-btn" onclick="event.stopPropagation();reopenProject('${p.id}')">Reopen</button>`
@@ -1419,9 +1441,11 @@ function renderProjects() {
 
     // stamps
     let stamps = ''
-    if (p.infieldTasks > 0) stamps += `<span class="stamp stamp-field">${p.infieldTasks} In Field</span>`
-    if (p.pendingTasks > 0) stamps += `<span class="stamp stamp-pend">${p.pendingTasks} Pending</span>`
-    if (p.doneTasks    > 0) stamps += `<span class="stamp stamp-done">${p.doneTasks} Done</span>`
+    const _sf = p.infieldTasks > 0 ? `<span class="stamp stamp-field">${p.infieldTasks} In Field</span>` : ''
+    const _sp = p.pendingTasks > 0 ? `<span class="stamp stamp-pend">${p.pendingTasks} Pending</span>` : ''
+    const _sd = p.doneTasks    > 0 ? `<span class="stamp stamp-done">${p.doneTasks} Done</span>` : ''
+    const _inner = _sf + _sp + _sd
+    if (_inner) stamps = `<div class="stamps-pill">${_inner}</div>`
     if (isComplete) {
       stamps += `<button class="row-btn" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button>`
       stamps += `<button class="row-btn" onclick="event.stopPropagation();reopenProject('${p.id}')">Reopen</button>`
