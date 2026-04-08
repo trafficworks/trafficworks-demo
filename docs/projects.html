@@ -522,7 +522,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 .pb.open .chevron { transform: rotate(90deg); color: var(--text-3); }
 .pb:hover .chevron { color: var(--text-3); }
 
-.row-btn { height: 22px; padding: 0 9px; border: 1px solid var(--line); border-radius: 2px; background: transparent; font-family: var(--font); font-size: 10px; font-weight: 500; color: var(--text-3); cursor: pointer; transition: all .15s; }
+.row-btn { height: 22px; padding: 0 9px; border: 1px solid var(--line); border-radius: 2px; background: transparent; font-family: var(--font); font-size: 10px; font-weight: 500; color: var(--text-3); cursor: pointer; transition: all .15s; letter-spacing: .04em; }
+.row-btn-archive { border-color: var(--c-olive); color: var(--c-olive-h); font-weight: 700; letter-spacing: .06em; }
+.row-btn-archive:hover { background: #E3E8DC; color: var(--c-olive-h); }
 .row-btn:hover { border-color: var(--text-3); color: var(--text); }
 
 /* ── EXPAND PANEL ── */
@@ -1418,8 +1420,7 @@ async function refreshProjectRow(projectId) {
     const _inner = _sf + _sp + _sd
     if (_inner) stamps = `<div class="stamps-pill">${_inner}</div>`
     if (p.status === 'complete') {
-      stamps += `<button class="row-btn" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button>`
-      stamps += `<button class="row-btn" onclick="event.stopPropagation();reopenProject('${p.id}')">Reopen</button>`
+      stamps = `<button class="row-btn row-btn-archive" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button>`
     }
     stampsEl.innerHTML = stamps
   }
@@ -1447,9 +1448,8 @@ function renderProjects() {
     const _inner = _sf + _sp + _sd
     if (_inner) stamps = `<div class="stamps-pill">${_inner}</div>`
     if (isComplete) {
-      stamps += `<button class="row-btn" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button>`
-      stamps += `<button class="row-btn" onclick="event.stopPropagation();reopenProject('${p.id}')">Reopen</button>`
-    }
+      stamps = `<button class="row-btn row-btn-archive" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button>`
+      }
 
     const pb = document.createElement('div')
     pb.className = 'pb'
