@@ -4,364 +4,608 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Count Company — Archive</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #F7F6F2; --surface: #FFFDFA; --surface-2: #F4F1EA; --surface-3: #FAF8F3;
+  --text: #1F2933; --text-2: #5F6B76; --text-3: #74808A; --text-label: #6F7B84; --text-eyebrow: #7A868F;
+  --line: #DDD8CF; --line-soft: #EBE6DE; --line-strong: #CFC8BC;
+  --c-teal: #6F8F95; --c-teal-h: #4E6B70; --c-teal-lt: #DCE7E9;
+  --c-olive: #7E8F63; --c-olive-h: #5E6B4A; --c-olive-lt: #E3E8DC;
+  --c-amber: #D6A95C; --c-amber-h: #A8823F; --c-amber-lt: #F3E6C7;
+  --font: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+/* NAV */
+nav { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 48px; height: 54px; display: flex; align-items: center; justify-content: space-between; }
+.nav-brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+.nav-logo { width: 21px; height: 21px; border-radius: 50%; background: var(--c-teal); display: flex; align-items: center; justify-content: center; }
+.nav-logo svg { width: 11px; height: 11px; }
+.nav-name { font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: -.01em; }
+.nav-links { display: flex; }
+.nav-links a { font-size: 12px; font-weight: 500; color: var(--text-3); text-decoration: none; padding: 0 14px; height: 54px; display: flex; align-items: center; border-bottom: 2px solid transparent; transition: color .15s; }
+.nav-links a:hover { color: var(--text); }
+.nav-links a.active { color: var(--text); border-bottom-color: var(--c-teal); }
+
+/* PAGE */
+.page { max-width: 900px; margin: 0 auto; padding: 32px 48px 80px; }
+.page-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text-eyebrow); margin-bottom: 4px; }
+.page-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.page-title { font-size: 20px; font-weight: 700; letter-spacing: -.025em; color: var(--text); }
+
+/* UPLOAD MODAL TRIGGER */
+.btn-upload { height: 32px; padding: 0 14px; border: 1px solid var(--line); border-radius: 2px; background: var(--surface); font-family: var(--font); font-size: 11px; font-weight: 600; color: var(--text-2); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all .15s; letter-spacing: .03em; }
+.btn-upload:hover { border-color: var(--line-strong); color: var(--text); }
+.btn-upload svg { width: 12px; height: 12px; }
+
+/* ARCHIVE PROJECT CARD */
+.arc-card { background: var(--surface); border: 1px solid var(--line); border-radius: 2px; margin-bottom: 8px; }
+.arc-card-header { display: flex; align-items: center; padding: 0 16px; height: 52px; cursor: pointer; user-select: none; gap: 12px; }
+.arc-card-header:hover { background: var(--surface-2); }
+.arc-name { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.01em; flex: 1; }
+.arc-meta { font-size: 11px; color: var(--text-3); display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.arc-meta-item { display: flex; align-items: center; gap: 4px; }
+.arc-archived-date { font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.arc-chevron { font-size: 11px; color: var(--line-strong); transition: transform .2s; flex-shrink: 0; }
+.arc-card.open .arc-chevron { transform: rotate(90deg); }
+
+/* EXPAND PANEL */
+.arc-panel { display: none; border-top: 1px solid var(--line-soft); }
+.arc-card.open .arc-panel { display: block; }
+
+/* TASK TABLE */
+.arc-table-wrap { padding: 0; }
+.arc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.arc-table th { padding: 8px 12px; background: var(--surface-2); color: var(--text-eyebrow); font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; border-bottom: 1px solid var(--line); text-align: left; }
+.arc-table th:last-child { text-align: right; padding-right: 16px; }
+.arc-table td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+.arc-table tr:last-child td { border-bottom: none; }
+.arc-table tbody tr:hover td { background: rgba(31,41,51,.018); }
+
+.arc-task-num { font-size: 11px; color: var(--text-3); font-weight: 600; width: 32px; }
+.arc-task-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.arc-task-type { display: inline-flex; align-items: center; padding: 3px 8px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 1px; font-size: 9px; font-weight: 700; letter-spacing: .06em; color: var(--text-label); }
+.arc-reports-cell { text-align: right; padding-right: 16px; }
+
+/* REPORT CHIPS */
+.report-chips { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.report-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 1px; font-size: 10px; font-weight: 600; letter-spacing: .04em; cursor: pointer; border: 1px solid var(--line); background: var(--surface-2); color: var(--text-2); text-decoration: none; transition: all .15s; white-space: nowrap; }
+.report-chip:hover { border-color: var(--c-teal); color: var(--c-teal-h); background: var(--c-teal-lt); }
+.report-chip svg { width: 11px; height: 11px; flex-shrink: 0; }
+.report-chip.xlsx { color: var(--c-olive-h); background: var(--c-olive-lt); border-color: #A5B097; }
+.report-chip.xlsx:hover { border-color: var(--c-olive-h); }
+.report-chip.uploaded { color: var(--c-amber-h); background: var(--c-amber-lt); border-color: #E7C98A; }
+
+/* GENERATE BUTTON */
+.btn-generate { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 1px; font-size: 10px; font-weight: 600; letter-spacing: .04em; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--text-3); transition: all .15s; font-family: var(--font); white-space: nowrap; }
+.btn-generate:hover { border-color: var(--c-teal); color: var(--c-teal-h); }
+.btn-generate svg { width: 11px; height: 11px; }
+
+/* NO REPORT */
+.no-report { font-size: 11px; color: var(--text-3); font-style: italic; }
+
+/* PANEL FOOTER */
+.arc-panel-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--surface-2); border-top: 1px solid var(--line-soft); }
+.arc-footer-meta { font-size: 10px; color: var(--text-3); }
+.arc-footer-actions { display: flex; align-items: center; gap: 8px; }
+.btn-unarchive { height: 28px; padding: 0 12px; border: 1px solid var(--line); border-radius: 2px; background: transparent; font-family: var(--font); font-size: 10px; font-weight: 600; color: var(--text-3); cursor: pointer; transition: all .15s; letter-spacing: .04em; }
+.btn-unarchive:hover { border-color: var(--line-strong); color: var(--text); }
+.btn-upload-project { height: 28px; padding: 0 12px; border: 1px solid var(--line); border-radius: 2px; background: transparent; font-family: var(--font); font-size: 10px; font-weight: 600; color: var(--text-3); cursor: pointer; transition: all .15s; letter-spacing: .04em; display: inline-flex; align-items: center; gap: 5px; }
+.btn-upload-project:hover { border-color: var(--c-teal); color: var(--c-teal-h); }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-3); }
+.empty-state-icon { font-size: 32px; margin-bottom: 12px; opacity: .4; }
+.empty-state-title { font-size: 14px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+.empty-state-sub { font-size: 12px; }
+
+/* UPLOAD MODAL */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(31,41,51,.4); z-index: 500; align-items: center; justify-content: center; opacity: 0; transition: opacity .18s; pointer-events: none; }
+.modal-overlay.open { display: flex; opacity: 1; pointer-events: auto; }
+.modal { background: var(--surface); border: 1px solid var(--line); border-radius: 2px; width: 480px; box-shadow: 0 8px 32px rgba(31,41,51,.12); animation: m-in .16s ease; }
+@keyframes m-in { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+.modal-header { padding: 18px 20px 14px; border-bottom: 1px solid var(--line-soft); }
+.modal-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--text-eyebrow); margin-bottom: 4px; }
+.modal-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -.02em; }
+.modal-body { padding: 18px 20px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--line-soft); }
+.btn-ghost { height: 32px; padding: 0 14px; border: 1px solid var(--line); border-radius: 2px; background: var(--surface-2); font-family: var(--font); font-size: 11px; font-weight: 500; color: var(--text-2); cursor: pointer; }
+.btn-solid { height: 32px; padding: 0 16px; border: 1px solid rgba(0,0,0,.1); border-radius: 2px; background: var(--c-teal); font-family: var(--font); font-size: 11px; font-weight: 700; color: #fff; cursor: pointer; letter-spacing: .03em; }
+.btn-solid:hover { background: var(--c-teal-h); }
+
+/* UPLOAD ZONE */
+.upload-zone { border: 2px dashed var(--line); border-radius: 2px; padding: 28px 20px; text-align: center; cursor: pointer; transition: all .15s; background: var(--surface-2); }
+.upload-zone:hover, .upload-zone.drag { border-color: var(--c-teal); background: var(--c-teal-lt); }
+.upload-zone-icon { margin-bottom: 8px; color: var(--text-3); }
+.upload-zone-icon svg { width: 28px; height: 28px; }
+.upload-zone-title { font-size: 13px; font-weight: 600; color: var(--text-2); margin-bottom: 4px; }
+.upload-zone-sub { font-size: 11px; color: var(--text-3); }
+.upload-file-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.upload-file-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--surface); border: 1px solid var(--line-soft); border-radius: 1px; font-size: 11px; color: var(--text-2); }
+.upload-file-item svg { width: 13px; height: 13px; flex-shrink: 0; color: var(--c-teal); }
+.upload-file-remove { margin-left: auto; background: none; border: none; cursor: pointer; color: var(--text-3); font-size: 14px; padding: 0 2px; }
+.upload-file-remove:hover { color: #C45C5C; }
+
+/* FIELD SELECTS */
+.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.field:last-child { margin-bottom: 0; }
+.field-label { font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--text-eyebrow); }
+.field-select, .field-input { height: 34px; border: 1px solid var(--line); border-radius: 2px; background: var(--surface); font-family: var(--font); font-size: 13px; color: var(--text); padding: 0 10px; outline: none; width: 100%; transition: border-color .15s; }
+.field-select:focus, .field-input:focus { border-color: #C8A96A; }
+
+/* LOADING */
+.loading { text-align: center; padding: 40px; color: var(--text-3); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(8px); background: var(--text); color: #fff; border-radius: 2px; padding: 10px 18px; font-size: 12px; font-weight: 500; z-index: 800; opacity: 0; transition: all .2s; pointer-events: none; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
 </head>
 <body>
 
-<div class="container">
-  <div class="nav">
-    <a class="nav-brand" href="projects.html">
-      <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <span class="nav-name">The Count Company</span>
-    </a>
-    <div class="nav-links">
-      <a href="projects.html">Projects</a>
-      <a href="team.html">Team</a>
-      <a href="archive.html" class="active">Archive</a>
-    </div>
-    <button class="m-kebab" onclick="toggleMobileNav()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<nav>
+  <a class="nav-brand" href="projects.html">
+    <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <span class="nav-name">The Count Company</span>
+  </a>
+  <div class="nav-links">
+    <a href="projects.html">Projects</a>
+    <a href="team.html">Team</a>
+    <a href="reports.html">Reports</a>
+    <a href="archive.html" class="active">Archive</a>
   </div>
-  <div class="nav-line"></div>
+</nav>
+
+<div class="page">
+  <div class="page-eyebrow">The Count Company</div>
+  <div class="page-title-row">
+    <div class="page-title">Archive</div>
+    <button class="btn-upload" onclick="openUploadModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Upload Report
+    </button>
+  </div>
+  <div id="archiveList"><div class="loading">Loading archive…</div></div>
 </div>
 
-<!-- Mobile nav menu -->
-<div class="mobile-nav-menu" id="mobileNavMenu">
-  <a href="projects.html">Projects</a>
-  <a href="team.html">Team</a>
-  <a class="active" href="archive.html">Archive</a>
-</div>
-
-<div class="container main">
-  <div class="page-header">
-    <div>
-      <span class="page-title">Archive</span>
-      <span class="page-count" id="archiveCount"></span>
+<!-- UPLOAD MODAL -->
+<div class="modal-overlay" id="uploadModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-eyebrow">Archive</div>
+      <div class="modal-title">Upload Report</div>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label class="field-label">Project</label>
+        <select class="field-select" id="uploadProject">
+          <option value="">Select project…</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Task / Site</label>
+        <select class="field-select" id="uploadTask">
+          <option value="">Select task…</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Report Type</label>
+        <select class="field-select" id="uploadType">
+          <option value="ADT">ADT</option>
+          <option value="TMC">TMC</option>
+          <option value="SPD">Speed Survey</option>
+          <option value="CLS">Classification</option>
+          <option value="JOB_SHEET">Job Sheet</option>
+          <option value="OTHER">Other</option>
+        </select>
+      </div>
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('uploadFileInput').click()">
+        <div class="upload-zone-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <div class="upload-zone-title">Drop PDF or Excel here</div>
+        <div class="upload-zone-sub">or click to browse · PDF and XLSX only</div>
+      </div>
+      <input type="file" id="uploadFileInput" accept=".pdf,.xlsx" style="display:none" multiple>
+      <div class="upload-file-list" id="uploadFileList"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeUploadModal()">Cancel</button>
+      <button class="btn-solid" onclick="submitUpload()">Upload</button>
     </div>
   </div>
-
-  <div class="search-row">
-    <div class="search-wrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input class="search-input" type="text" placeholder="Search archived projects…" id="searchInput" oninput="renderArchive()">
-    </div>
-  </div>
-
-  <div id="archiveTable"></div>
-
-  <!-- Mobile view -->
-  <div class="mobile-only">
-    <div id="mobileArchiveList"></div>
-  </div>
-
-  <div class="table-footer" id="tableFooter"></div>
 </div>
-
-<!-- EDIT MODAL -->
-<div class="modal-overlay" id="editModal"><div class="modal">
-  <div class="modal-title">Edit Project</div>
-  <div class="form-group"><label class="form-label">Project Name</label><input class="form-input" id="editName"></div>
-  <div class="form-group"><label class="form-label">Client</label><input class="form-input" id="editClient"></div>
-  <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="editLocation"></div>
-  <div class="modal-actions"><button class="btn-ghost" onclick="closeEditModal()">Cancel</button><button class="btn-solid" onclick="saveEdit()">Save</button></div>
-</div></div>
-
-<!-- DELETE MODAL -->
-<div class="modal-overlay" id="deleteModal"><div class="modal">
-  <div class="modal-title">Delete Project</div>
-  <div class="modal-body" id="deleteBody"></div>
-  <div class="modal-actions"><button class="btn-ghost" onclick="closeDeleteModal()">Cancel</button><button class="btn-danger" onclick="confirmDelete()">Delete</button></div>
-</div></div>
-
-<!-- RESTORE MODAL -->
-<div class="modal-overlay" id="restoreModal"><div class="modal">
-  <div class="modal-title">Restore Project</div>
-  <div class="modal-body" id="restoreBody"></div>
-  <div class="modal-actions"><button class="btn-ghost" onclick="closeRestoreModal()">Cancel</button><button class="btn-solid" onclick="confirmRestore()">Restore</button></div>
-</div></div>
 
 <div class="toast" id="toast"></div>
 
-<script>
-var archivedProjects=[
-  {id:1,name:'Civic Center Speed Survey',projectNum:'DEMO-2026-090',client:'City of Burbank',location:'Burbank, CA',
-   completedDate:'Feb 20, 2026',archivedDate:'Feb 22, 2026',
-   bulkFiles:['CivicCenter_EB_Speed.pdf','CivicCenter_WB_Speed.pdf','CivicCenter_EB_Speed.xlsx','CivicCenter_WB_Speed.xlsx','Downtown_TMC_Main.pdf','Downtown_TMC_Main.xlsx'],
-   tasks:[{site:1,desc:'Speed Survey Civic Center EB',type:'SPD'},{site:2,desc:'Speed Survey Civic Center WB',type:'SPD'},{site:3,desc:'TMC Olive & San Fernando',type:'TMC'},{site:4,desc:'TMC Olive & Magnolia',type:'TMC'}]},
-  {id:2,name:'University District Count Set',projectNum:'DEMO-2026-088',client:'City of Irvine',location:'Irvine, CA',
-   completedDate:'Feb 12, 2026',archivedDate:'Feb 14, 2026',
-   bulkFiles:['CampusLoop_ADT_NB.pdf','CampusLoop_ADT_SB.pdf','CampusLoop_ADT_NB.xlsx','CampusLoop_ADT_SB.xlsx','Bridge_Count_Bike.pdf'],
-   tasks:[{site:1,desc:'ADT Campus Loop NB',type:'ADT'},{site:2,desc:'ADT Campus Loop SB',type:'ADT'},{site:3,desc:'Bike Count Bridge Plaza',type:'CLS'},{site:4,desc:'TMC Campus & California',type:'TMC'},{site:5,desc:'TMC Campus & University',type:'TMC'}]},
-  {id:3,name:'Waterfront Before/After Review',projectNum:'DEMO-2026-081',client:'Port Mobility Partners',location:'San Pedro, CA',
-   completedDate:'Jan 28, 2026',archivedDate:'Jan 30, 2026',
-   bulkFiles:['Waterfront_BeforeAfter_Summary.pdf','Waterfront_BeforeAfter_Data.xlsx'],
-   tasks:[{site:1,desc:'ADT Harbor Blvd NB',type:'ADT'},{site:2,desc:'ADT Harbor Blvd SB',type:'ADT'},{site:3,desc:'Ped Count 6th Street Plaza',type:'CLS'},{site:4,desc:'Bike Count Harbor Promenade',type:'CLS'}]}
-];
+<script type="module">
+import { supabase } from './js/supabase.js'
 
-var expandedId=null, openKebab=null, editTarget=null, deleteTarget=null, restoreTarget=null;
+const COMPANY_ID = '4f365a63-e2d8-45ea-960a-67d35b5f95e1'
 
-function getFileExt(name){ var parts=name.split('.'); return parts[parts.length-1].toUpperCase(); }
-function getFileName(name){ return name.replace(/\.[^.]+$/,''); }
-function getTypeClass(type){ return type==='TMC'?'type-tmc':type==='SPD'?'type-spd':type==='ADT'?'type-adt':''; }
+// ── STATE ──────────────────────────────────────────────────────────────────
+let archivedProjects = []
+let allTasks = {}
+let allReports = {}
+let uploadFiles = []
+let openProjectId = null
 
-function renderArchive(){
-  var search=(document.getElementById('searchInput').value||'').toLowerCase();
-  var filtered=archivedProjects.filter(function(p){
-    return !search||p.name.toLowerCase().indexOf(search)>-1||(p.client||'').toLowerCase().indexOf(search)>-1||(p.location||'').toLowerCase().indexOf(search)>-1;
-  });
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function escapeHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+}
 
-  document.getElementById('archiveCount').textContent=filtered.length+' project'+(filtered.length!==1?'s':'');
+function showToast(msg) {
+  const t = document.getElementById('toast')
+  t.textContent = msg
+  t.classList.add('show')
+  setTimeout(() => t.classList.remove('show'), 2500)
+}
 
-  var totalFiles=filtered.reduce(function(s,p){return s+p.bulkFiles.length},0);
-  var totalTasks=filtered.reduce(function(s,p){return s+p.tasks.length},0);
-  document.getElementById('tableFooter').textContent=filtered.length+' archived projects · '+totalTasks+' tasks · '+totalFiles+' files';
+function fmtDate(iso) {
+  if (!iso) return '—'
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
 
-  if(filtered.length===0){
-    document.getElementById('archiveTable').innerHTML='<div style="text-align:center;padding:60px 20px;color:var(--text-3)">No archived projects'+(search?' match your search':'')+'</div>';
-    return;
+function reportIcon(format) {
+  if (format === 'xlsx') return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9l6 6m0-6l-6 6"/></svg>`
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`
+}
+
+// ── LOAD ARCHIVE ───────────────────────────────────────────────────────────
+async function loadArchive() {
+  const list = document.getElementById('archiveList')
+
+  const { data: projects, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('company_id', COMPANY_ID)
+    .not('archived_at', 'is', null)
+    .order('archived_at', { ascending: false })
+
+  if (error) { console.error(error); list.innerHTML = '<div class="loading">Error loading archive.</div>'; return }
+
+  if (!projects.length) {
+    list.innerHTML = `<div class="empty-state">
+      <div class="empty-state-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><rect x="1" y="3" width="22" height="5"/><path d="M10 12h4"/></svg>
+      </div>
+      <div class="empty-state-title">No archived projects yet</div>
+      <div class="empty-state-sub">Archived projects will appear here</div>
+    </div>`
+    return
   }
 
-  var html='<table><thead><tr>'+
-    
-    '<th style="width:30%">Project</th>'+
-    '<th style="width:14%">Location</th>'+
-    '<th style="width:8%" class="c">Tasks</th>'+
-    '<th style="width:13%">Completed</th>'+
-    '<th style="width:13%">Archived</th>'+
-    '<th style="width:10%">Files</th>'+
-    '<th style="width:4%"></th>'+
-  '</tr></thead><tbody>';
+  archivedProjects = projects
 
-  filtered.forEach(function(p){
-    var isExpanded=expandedId===p.id;
+  // Load all tasks and reports for these projects
+  const projectIds = projects.map(p => p.id)
 
-    html+='<tr class="'+(isExpanded?'row-expanded':'')+'" onclick="toggleExpand('+p.id+')" style="cursor:pointer">';
-    
-    html+='<td><div class="cell-name">'+p.name+'</div><div class="cell-sub">'+p.client+'</div></td>';
-    html+='<td><span class="cell-secondary">'+p.location+'</span></td>';
-    html+='<td class="c"><span class="cell-num">'+p.tasks.length+'</span></td>';
-    html+='<td><span class="cell-date">'+p.completedDate+'</span></td>';
-    html+='<td><span class="cell-date">'+p.archivedDate+'</span></td>';
-    html+='<td><span class="cell-secondary" style="display:inline-flex;align-items:center;gap:4px;font-size:12px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+p.bulkFiles.length+'</span></td>';
-    html+='<td class="r kebab-cell"><button class="kebab" onclick="event.stopPropagation();toggleKebab('+p.id+',event)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>';
-    html+='<div class="kebab-menu" id="kebab-'+p.id+'">';
-    html+='<button class="kebab-menu-item" onclick="event.stopPropagation();openEditModal('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>';
-    html+='<button class="kebab-menu-item" onclick="event.stopPropagation();openRestoreModal('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 3 3 7 7 7"/></svg>Restore</button>';
-    html+='<button class="kebab-menu-item danger" onclick="event.stopPropagation();openDeleteModal('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button>';
-    html+='</div></td></tr>';
+  const [tasksRes, reportsRes] = await Promise.all([
+    supabase.from('tasks').select('*, study_types(code)').in('project_id', projectIds).order('site'),
+    supabase.from('reports').select('*').in('project_id', projectIds).order('generated_at', { ascending: false })
+  ])
 
-    // Expanded panel
-    if(isExpanded){
-      html+='<tr class="expand-row" onclick="event.stopPropagation()"><td colspan="7"><div class="expand-panel">';
+  // Index by project
+  if (tasksRes.data) {
+    tasksRes.data.forEach(t => {
+      if (!allTasks[t.project_id]) allTasks[t.project_id] = []
+      allTasks[t.project_id].push(t)
+    })
+  }
+  if (reportsRes.data) {
+    reportsRes.data.forEach(r => {
+      if (!allReports[r.task_id]) allReports[r.task_id] = []
+      allReports[r.task_id].push(r)
+    })
+    // also index project-level reports (no task_id)
+    reportsRes.data.filter(r => !r.task_id).forEach(r => {
+      const key = 'proj_' + r.project_id
+      if (!allReports[key]) allReports[key] = []
+      allReports[key].push(r)
+    })
+  }
 
-      // Action strip
-      html+='<div class="action-strip">';
-      html+='<button class="btn-small" onclick="downloadAll('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download All</button>';
-      html+='<button class="btn-small btn-upload" onclick="document.getElementById(\'upload-'+p.id+'\').click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload Files<input type="file" id="upload-'+p.id+'" multiple accept=".pdf,.xlsx,.xls,.csv" style="display:none" onchange="bulkUpload('+p.id+')"></button>';
-      html+='<button class="btn-small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Audit Report</button>';
-      html+='</div>';
+  renderArchive()
+}
 
-      // Two columns
-      html+='<div class="expand-columns">';
+// ── RENDER ─────────────────────────────────────────────────────────────────
+function renderArchive() {
+  const list = document.getElementById('archiveList')
+  list.innerHTML = archivedProjects.map(p => renderProjectCard(p)).join('')
+}
 
-      // LEFT — sites
-      html+='<div style="width:42%;flex-shrink:0">';
-      html+='<div class="expand-col-label">Sites <span class="col-count">'+p.tasks.length+'</span></div>';
-      html+='<ul class="file-list">';
-      p.tasks.forEach(function(t){
-        var tc=getTypeClass(t.type||'');
-        html+='<li class="file-item"><span class="site-num" style="min-width:22px">#'+t.site+'</span><span class="file-name" style="color:var(--text)">'+t.desc+'</span>'+(t.type?'<span class="type-pill '+tc+'" style="font-size:9px;min-width:32px;padding:2px 6px">'+t.type+'</span>':'')+'</li>';
-      });
-      html+='</ul></div>';
+function renderProjectCard(p) {
+  const tasks = allTasks[p.id] || []
+  const totalReports = tasks.reduce((s, t) => s + (allReports[t.id]||[]).length, 0)
+    + (allReports['proj_' + p.id] || []).length
 
-      html+='<div class="expand-divider"></div>';
+  return `<div class="arc-card" id="arc-${p.id}">
+    <div class="arc-card-header" onclick="toggleProject('${p.id}')">
+      <div class="arc-name">${escapeHtml(p.name)}</div>
+      <div class="arc-meta">
+        ${p.client ? `<span class="arc-meta-item">${escapeHtml(p.client)}</span>` : ''}
+        ${p.project_num ? `<span class="arc-meta-item">#${escapeHtml(p.project_num)}</span>` : ''}
+        <span class="arc-meta-item">${tasks.length} task${tasks.length !== 1 ? 's' : ''}</span>
+        <span class="arc-meta-item">${totalReports} report${totalReports !== 1 ? 's' : ''}</span>
+        <span class="arc-archived-date">Archived ${fmtDate(p.archived_at)}</span>
+      </div>
+      <span class="arc-chevron">›</span>
+    </div>
+    <div class="arc-panel" id="arc-panel-${p.id}">
+      ${renderTaskTable(p, tasks)}
+      <div class="arc-panel-footer">
+        <span class="arc-footer-meta">${tasks.length} tasks · ${totalReports} reports · ${p.location || ''}</span>
+        <div class="arc-footer-actions">
+          <button class="btn-upload-project" onclick="openUploadModal('${p.id}')">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload Report
+          </button>
+          <button class="btn-unarchive" onclick="unarchiveProject('${p.id}')">Unarchive</button>
+        </div>
+      </div>
+    </div>
+  </div>`
+}
 
-      // RIGHT — files grouped
-      html+='<div style="flex:1;min-width:0">';
-      html+='<div class="expand-col-label">Files <span class="col-count">'+p.bulkFiles.length+'</span></div>';
-      html+='<ul class="file-list">';
-      p.bulkFiles.forEach(function(f,i){
-        var ext=getFileExt(f), name=getFileName(f);
-        var isXls=ext==='XLSX'||ext==='XLS'||ext==='CSV';
-        var icon=isXls
-          ?'<svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>'
-          :'<svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
-        html+='<li class="file-item">'+icon+'<span class="file-name">'+name+'</span><span class="file-ext">'+ext+'</span>';
-        html+='<button class="file-delete" onclick="deleteFile('+p.id+','+i+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
-        html+='<button class="file-action" onclick="downloadFile('+p.id+','+i+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>';
-        html+='</li>';
-      });
-      html+='</ul></div>';
+function renderTaskTable(p, tasks) {
+  if (!tasks.length) return `<div style="padding:16px 20px;font-size:12px;color:var(--text-3);font-style:italic">No tasks in this project.</div>`
 
-      html+='</div>'; // expand-columns
-      html+='</div></td></tr>'; // expand-panel
+  const rows = tasks.map(t => {
+    const reports = allReports[t.id] || []
+    const typeCode = t.study_types?.code || '—'
+
+    const reportChips = reports.length
+      ? reports.map(r => {
+          const dlUrl = r.storage_path
+            ? `javascript:downloadReport('${r.id}')`
+            : `javascript:void(0)`
+          return `<a class="report-chip${r.format === 'xlsx' ? ' xlsx' : ''}${r.uploaded ? ' uploaded' : ''}"
+            href="${dlUrl}" title="${escapeHtml(r.filename)}">
+            ${reportIcon(r.format)}
+            ${r.type} ${r.format.toUpperCase()}${r.uploaded ? ' ↑' : ''}
+          </a>`
+        }).join('')
+      : `<span class="no-report">No reports</span>`
+
+    const genBtn = `<button class="btn-generate" onclick="openReport('${t.study_types?.code||''}','${t.id}','${p.id}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="15" x2="8" y2="15"/><line x1="12" y1="11" x2="8" y2="11"/></svg>
+      Generate
+    </button>`
+
+    return `<tr>
+      <td class="arc-task-num">${t.site}</td>
+      <td><span class="arc-task-name">${escapeHtml(t.description)}</span></td>
+      <td><span class="arc-task-type">${escapeHtml(typeCode)}</span></td>
+      <td class="arc-reports-cell">
+        <div class="report-chips">
+          ${reportChips}
+          ${genBtn}
+        </div>
+      </td>
+    </tr>`
+  }).join('')
+
+  return `<div class="arc-table-wrap">
+    <table class="arc-table">
+      <thead>
+        <tr>
+          <th style="width:36px">#</th>
+          <th>Task</th>
+          <th style="width:80px">Type</th>
+          <th style="width:300px;text-align:right;padding-right:16px">Reports</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`
+}
+
+// ── TOGGLE ─────────────────────────────────────────────────────────────────
+function toggleProject(id) {
+  const card = document.getElementById('arc-' + id)
+  card.classList.toggle('open')
+}
+window.toggleProject = toggleProject
+
+// ── UNARCHIVE ──────────────────────────────────────────────────────────────
+async function unarchiveProject(id) {
+  const { error } = await supabase
+    .from('projects')
+    .update({ archived_at: null, archived_by: null })
+    .eq('id', id)
+
+  if (error) { console.error(error); return }
+
+  archivedProjects = archivedProjects.filter(p => p.id !== id)
+  delete allTasks[id]
+  renderArchive()
+  showToast('Project restored to Projects')
+}
+window.unarchiveProject = unarchiveProject
+
+// ── OPEN REPORT GENERATOR ─────────────────────────────────────────────────
+function openReport(type, taskId, projectId) {
+  const tasks = allTasks[projectId] || []
+  const task  = tasks.find(t => t.id === taskId) || {}
+  const proj  = archivedProjects.find(p => p.id === projectId) || {}
+
+  const params = new URLSearchParams({
+    location: task.description || '',
+    city:     proj.location    || '',
+    project:  proj.project_num || '',
+    client:   proj.client      || '',
+    type:     type
+  })
+
+  const map = { TMC: 'TMC_Report_Generator.html', SPD: 'SPD_Report_Generator.html', ADT: 'ADT_Report_Generator.html', CLS: 'CLS_Report_Generator.html' }
+  window.open((map[type] || 'ADT_Report_Generator.html') + '?' + params.toString(), '_blank')
+}
+window.openReport = openReport
+
+// ── DOWNLOAD REPORT ───────────────────────────────────────────────────────
+async function downloadReport(reportId) {
+  const report = Object.values(allReports).flat().find(r => r.id === reportId)
+  if (!report?.storage_path) { showToast('No file stored'); return }
+
+  const { data, error } = await supabase.storage
+    .from('reports')
+    .createSignedUrl(report.storage_path, 60)
+
+  if (error) { console.error(error); showToast('Download failed'); return }
+  window.open(data.signedUrl, '_blank')
+}
+window.downloadReport = downloadReport
+
+// ── UPLOAD MODAL ──────────────────────────────────────────────────────────
+async function openUploadModal(preselectedProjectId = null) {
+  uploadFiles = []
+  document.getElementById('uploadFileList').innerHTML = ''
+  document.getElementById('uploadTask').innerHTML = '<option value="">Select task…</option>'
+
+  // populate project dropdown with archived projects
+  const sel = document.getElementById('uploadProject')
+  sel.innerHTML = '<option value="">Select project…</option>'
+  archivedProjects.forEach(p => {
+    const opt = document.createElement('option')
+    opt.value = p.id
+    opt.textContent = p.name + (p.project_num ? ` (#${p.project_num})` : '')
+    sel.appendChild(opt)
+  })
+
+  if (preselectedProjectId) {
+    sel.value = preselectedProjectId
+    await loadUploadTasks(preselectedProjectId)
+  }
+
+  document.getElementById('uploadModal').classList.add('open')
+}
+window.openUploadModal = openUploadModal
+
+function closeUploadModal() {
+  document.getElementById('uploadModal').classList.remove('open')
+  uploadFiles = []
+}
+window.closeUploadModal = closeUploadModal
+
+document.getElementById('uploadProject')?.addEventListener('change', async function() {
+  await loadUploadTasks(this.value)
+})
+
+async function loadUploadTasks(projectId) {
+  const sel = document.getElementById('uploadTask')
+  sel.innerHTML = '<option value="">All tasks / project-level</option>'
+  if (!projectId) return
+  const tasks = allTasks[projectId] || []
+  tasks.forEach(t => {
+    const opt = document.createElement('option')
+    opt.value = t.id
+    opt.textContent = `#${t.site} — ${t.description}`
+    sel.appendChild(opt)
+  })
+}
+
+// File input
+document.getElementById('uploadFileInput')?.addEventListener('change', function() {
+  handleFiles(Array.from(this.files))
+})
+
+// Drag and drop
+const zone = document.getElementById('uploadZone')
+zone?.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag') })
+zone?.addEventListener('dragleave', () => zone.classList.remove('drag'))
+zone?.addEventListener('drop', e => {
+  e.preventDefault()
+  zone.classList.remove('drag')
+  handleFiles(Array.from(e.dataTransfer.files))
+})
+
+function handleFiles(files) {
+  const valid = files.filter(f => f.type === 'application/pdf' || f.name.endsWith('.xlsx'))
+  uploadFiles.push(...valid)
+  renderFileList()
+}
+
+function renderFileList() {
+  const list = document.getElementById('uploadFileList')
+  list.innerHTML = uploadFiles.map((f, i) => `
+    <div class="upload-file-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>${escapeHtml(f.name)}</span>
+      <span style="margin-left:4px;color:var(--text-3);font-size:10px">${(f.size/1024).toFixed(0)} KB</span>
+      <button class="upload-file-remove" onclick="removeFile(${i})">×</button>
+    </div>`).join('')
+}
+
+function removeFile(idx) {
+  uploadFiles.splice(idx, 1)
+  renderFileList()
+}
+window.removeFile = removeFile
+
+async function submitUpload() {
+  const projectId = document.getElementById('uploadProject').value
+  const taskId    = document.getElementById('uploadTask').value
+  const type      = document.getElementById('uploadType').value
+
+  if (!projectId) { showToast('Please select a project'); return }
+  if (!uploadFiles.length) { showToast('Please select a file'); return }
+
+  const proj = archivedProjects.find(p => p.id === projectId)
+
+  for (const file of uploadFiles) {
+    const ext      = file.name.endsWith('.xlsx') ? 'xlsx' : 'pdf'
+    const safeName = file.name.replace(/[^a-z0-9.\-_]/gi, '_')
+    const path     = `${COMPANY_ID}/${projectId}/${Date.now()}_${safeName}`
+
+    const { error: upErr } = await supabase.storage
+      .from('reports')
+      .upload(path, file, { contentType: file.type, upsert: false })
+
+    if (upErr) { console.error(upErr); showToast('Upload failed: ' + upErr.message); continue }
+
+    const record = {
+      company_id:   COMPANY_ID,
+      project_id:   projectId,
+      task_id:      taskId || null,
+      type,
+      format:       ext,
+      filename:     file.name,
+      storage_path: path,
+      uploaded:     true,
     }
-  });
 
-  html+='</tbody></table>';
-  document.getElementById('archiveTable').innerHTML=html;
+    const { data: rep, error: dbErr } = await supabase.from('reports').insert(record).select().single()
+    if (dbErr) { console.error(dbErr); continue }
 
-  // Mobile render
-  var mArch = document.getElementById('mobileArchiveList');
-  if(mArch) {
-    var mHtml = '';
-    filtered.forEach(function(p) {
-      mHtml += '<div class="m-project-row" onclick="toggleExpand('+p.id+')">';
-      mHtml += '<div class="m-project-left">';
-      mHtml += '<div class="m-project-name">'+p.name+'</div>';
-      mHtml += '<div class="m-project-detail">'+p.client+' · '+p.tasks.length+' tasks</div>';
-      mHtml += '</div>';
-      mHtml += '<div class="m-project-right">';
-      mHtml += '<div class="m-project-tasks">'+p.bulkFiles.length+' files</div>';
-      mHtml += '<div class="m-project-tasks" style="font-size:10px">'+p.archivedDate+'</div>';
-      mHtml += '</div>';
-      mHtml += '</div>';
+    // Update local state
+    const key = taskId || ('proj_' + projectId)
+    if (!allReports[key]) allReports[key] = []
+    allReports[key].unshift(rep)
 
-      // Expanded panel on mobile
-      if(expandedId === p.id) {
-        mHtml += '<div style="padding:12px 0 16px;border-bottom:1px solid var(--line);border-left:3px solid var(--accent);padding-left:16px;margin-left:4px">';
-        
-        // Action buttons
-        mHtml += '<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">';
-        mHtml += '<button class="btn-small" onclick="event.stopPropagation();downloadAll('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download All</button>';
-        mHtml += '<button class="btn-small btn-upload" onclick="event.stopPropagation();document.getElementById(\'upload-'+p.id+'\').click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload<input type="file" id="upload-'+p.id+'" multiple accept=".pdf,.xlsx,.xls,.csv" style="display:none" onchange="bulkUpload('+p.id+')"></button>';
-        mHtml += '</div>';
-
-        // Sites
-        mHtml += '<div class="expand-col-label" style="margin-bottom:6px">Sites <span class="col-count">'+p.tasks.length+'</span></div>';
-        p.tasks.forEach(function(t) {
-          var tc = getTypeClass(t.type||'');
-          mHtml += '<div style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px">';
-          mHtml += '<span style="color:var(--text-3);min-width:18px;font-variant-numeric:tabular-nums">#'+t.site+'</span>';
-          mHtml += '<span style="flex:1;color:var(--text);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">'+t.desc+'</span>';
-          if(t.type) mHtml += '<span class="type-pill '+tc+'" style="font-size:9px;min-width:28px;padding:1px 5px">'+t.type+'</span>';
-          mHtml += '</div>';
-        });
-
-        // Files
-        if(p.bulkFiles.length > 0) {
-          mHtml += '<div class="expand-col-label" style="margin-top:12px;margin-bottom:6px">Files <span class="col-count">'+p.bulkFiles.length+'</span></div>';
-          p.bulkFiles.forEach(function(f, i) {
-            var ext = getFileExt(f), name = getFileName(f);
-            mHtml += '<div style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px">';
-            mHtml += '<span style="flex:1;color:var(--text-2);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">'+name+'</span>';
-            mHtml += '<span class="file-ext">'+ext+'</span>';
-            mHtml += '<button class="file-action" onclick="event.stopPropagation();downloadFile('+p.id+','+i+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>';
-            mHtml += '</div>';
-          });
-        }
-
-        mHtml += '</div>';
-      }
-    });
-    mArch.innerHTML = mHtml;
+    // Mark task has_report
+    if (taskId) {
+      await supabase.from('tasks').update({ has_report: true }).eq('id', taskId)
+    }
   }
+
+  closeUploadModal()
+  renderArchive()
+  showToast(`${uploadFiles.length} file${uploadFiles.length > 1 ? 's' : ''} uploaded`)
+  uploadFiles = []
 }
+window.submitUpload = submitUpload
 
-function toggleExpand(id){ expandedId=expandedId===id?null:id; renderArchive(); }
+// ── INIT ──────────────────────────────────────────────────────────────────
+await loadArchive()
 
-function downloadFile(pid,idx){ var p=archivedProjects.find(function(x){return x.id===pid}); if(p) showToast('Downloading "'+p.bulkFiles[idx]+'"'); }
-function downloadAll(pid){ var p=archivedProjects.find(function(x){return x.id===pid}); if(p) showToast('Downloading '+p.bulkFiles.length+' files'); }
+// Click outside modal to close
+document.getElementById('uploadModal')?.addEventListener('click', function(e) {
+  if (e.target === this) closeUploadModal()
+})
 
-function deleteFile(pid,idx){
-  var p=archivedProjects.find(function(x){return x.id===pid}); if(!p) return;
-  var name=p.bulkFiles[idx];
-  p.bulkFiles.splice(idx,1);
-  renderArchive();
-  showToast('"'+name+'" deleted');
-}
-
-function bulkUpload(pid){
-  var input=document.getElementById('upload-'+pid);
-  var files=input.files; if(!files||files.length===0) return;
-  var p=archivedProjects.find(function(x){return x.id===pid}); if(!p) return;
-  for(var i=0;i<files.length;i++) p.bulkFiles.push(files[i].name);
-  input.value='';
-  renderArchive();
-  showToast(files.length+' file'+(files.length!==1?'s':'')+' uploaded');
-}
-
-// Kebab
-var openKebab=null;
-function toggleKebab(id,e){
-  e.stopPropagation();
-  if(openKebab&&openKebab!==id){var old=document.getElementById('kebab-'+openKebab);if(old)old.classList.remove('open','drop-up','drop-down');}
-  var menu=document.getElementById('kebab-'+id);
-  var isOpen=menu.classList.contains('open');
-  menu.classList.remove('open','drop-up','drop-down');
-  if(!isOpen){var rect=e.currentTarget.getBoundingClientRect();menu.classList.add('open',(window.innerHeight-rect.bottom)<160?'drop-up':'drop-down');openKebab=id;}
-  else{openKebab=null;}
-}
-function closeKebabs(){if(openKebab){var el=document.getElementById('kebab-'+openKebab);if(el)el.classList.remove('open','drop-up','drop-down');openKebab=null;}}
-document.addEventListener('click',closeKebabs);
-
-// Edit
-var editTarget=null;
-function openEditModal(id){
-  closeKebabs();editTarget=id;
-  var p=archivedProjects.find(function(x){return x.id===id});if(!p)return;
-  document.getElementById('editName').value=p.name;
-  document.getElementById('editClient').value=p.client;
-  document.getElementById('editLocation').value=p.location;
-  document.getElementById('editModal').classList.add('visible');
-}
-function closeEditModal(){document.getElementById('editModal').classList.remove('visible');editTarget=null;}
-function saveEdit(){
-  if(!editTarget)return;
-  var p=archivedProjects.find(function(x){return x.id===editTarget});if(!p)return;
-  p.name=document.getElementById('editName').value.trim()||p.name;
-  p.client=document.getElementById('editClient').value.trim();
-  p.location=document.getElementById('editLocation').value.trim();
-  closeEditModal();renderArchive();showToast('Project updated');
-}
-
-// Delete
-var deleteTarget=null;
-function openDeleteModal(id){
-  closeKebabs();deleteTarget=id;
-  var p=archivedProjects.find(function(x){return x.id===id});
-  document.getElementById('deleteBody').textContent='Permanently delete "'+(p?p.name:'this project')+'" and all its files? This cannot be undone.';
-  document.getElementById('deleteModal').classList.add('visible');
-}
-function closeDeleteModal(){document.getElementById('deleteModal').classList.remove('visible');deleteTarget=null;}
-function confirmDelete(){
-  if(!deleteTarget)return;
-  archivedProjects=archivedProjects.filter(function(x){return x.id!==deleteTarget});
-  if(expandedId===deleteTarget) expandedId=null;
-  deleteTarget=null;closeDeleteModal();renderArchive();showToast('Project deleted');
-}
-
-// Restore
-var restoreTarget=null;
-function openRestoreModal(id){
-  closeKebabs();restoreTarget=id;
-  var p=archivedProjects.find(function(x){return x.id===id});
-  document.getElementById('restoreBody').textContent='Restore "'+(p?p.name:'this project')+'" to active projects?';
-  document.getElementById('restoreModal').classList.add('visible');
-}
-function closeRestoreModal(){document.getElementById('restoreModal').classList.remove('visible');restoreTarget=null;}
-function confirmRestore(){
-  if(!restoreTarget)return;
-  var p=archivedProjects.find(function(x){return x.id===restoreTarget});
-  archivedProjects=archivedProjects.filter(function(x){return x.id!==restoreTarget});
-  if(expandedId===restoreTarget) expandedId=null;
-  restoreTarget=null;closeRestoreModal();renderArchive();showToast('"'+(p?p.name:'Project')+'" restored');
-}
-
-function showToast(msg){
-  var el=document.getElementById('toast');el.textContent=msg;el.classList.add('visible');
-  clearTimeout(el._timer);el._timer=setTimeout(function(){el.classList.remove('visible')},2500);
-}
-
-document.querySelectorAll('.modal-overlay').forEach(function(el){el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('visible')});});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeEditModal();closeDeleteModal();closeRestoreModal();}});
-
-renderArchive();
-
-// Mobile nav
-function toggleMobileNav(){document.getElementById('mobileNavMenu').classList.toggle('open')}
-document.addEventListener('click',function(e){if(!e.target.closest('.m-kebab,.mobile-nav-menu')){var m=document.getElementById('mobileNavMenu');if(m)m.classList.remove('open')}});
 </script>
-
 </body>
 </html>
