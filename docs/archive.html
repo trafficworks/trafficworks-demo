@@ -6,20 +6,46 @@
 <title>The Count Company — Archive</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --bg: #F7F6F2; --surface: #FFFDFA; --surface-2: #F4F1EA; --surface-3: #FAF8F3;
-  --text: #1F2933; --text-2: #5F6B76; --text-3: #74808A; --text-label: #6F7B84; --text-eyebrow: #7A868F;
-  --line: #DDD8CF; --line-soft: #EBE6DE; --line-strong: #CFC8BC;
-  --c-teal: #6F8F95; --c-teal-h: #4E6B70; --c-teal-lt: #DCE7E9;
-  --c-olive: #7E8F63; --c-olive-h: #5E6B4A; --c-olive-lt: #E3E8DC;
-  --c-amber: #D6A95C; --c-amber-h: #A8823F; --c-amber-lt: #F3E6C7;
+  --bg:          #F7F6F2;
+  --surface:     #FFFDFA;
+  --surface-2:   #F4F1EA;
+  --surface-3:   #FAF8F3;
+  --text:        #1F2933;
+  --text-2:      #5F6B76;
+  --text-3:      #74808A;
+  --text-label:  #6F7B84;
+  --text-eyebrow:#7A868F;
+  --line:        #DDD8CF;
+  --line-soft:   #EBE6DE;
+  --line-strong: #CFC8BC;
+  --dir:         #E5D6AC;
+  --interval:    #EDF3E8;
+  --phf:         #EAF1F6;
+  --accent:      #3AA66A;
+  --btn-green:   #7EA88A;
+  --btn-green-h: #6A9478;
+  /* locked 1950s palette */
+  --c-teal:      #6F8F95;
+  --c-teal-h:    #4E6B70;
+  --c-teal-lt:   #8FAEB3;
+  --c-olive:     #7E8F63;
+  --c-olive-h:   #5E6B4A;
+  --c-olive-lt:  #A5B097;
+  --c-amber:     #D6A95C;
+  --c-amber-h:   #A8823F;
+  --c-amber-lt:  #E7C98A;
+  --c-track:     #E0DED8;
   --font: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
+
 body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; }
 
-/* NAV */
-nav { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 48px; height: 54px; display: flex; align-items: center; justify-content: space-between; }
+/* ── NAV ── */
+.nav { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 48px; height: 54px; display: flex; align-items: center; justify-content: space-between; }
 .nav-brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
 .nav-logo { width: 21px; height: 21px; border-radius: 50%; background: var(--c-teal); display: flex; align-items: center; justify-content: center; }
 .nav-logo svg { width: 11px; height: 11px; }
@@ -29,123 +55,1206 @@ nav { background: var(--surface); border-bottom: 1px solid var(--line); padding:
 .nav-links a:hover { color: var(--text); }
 .nav-links a.active { color: var(--text); border-bottom-color: var(--c-teal); }
 
-/* PAGE */
-.page { max-width: 900px; margin: 0 auto; padding: 32px 48px 80px; }
-.page-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text-eyebrow); margin-bottom: 4px; }
-.page-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+/* ── MAIN ── */
+.main { max-width: 1020px; margin: 0 auto; padding: 32px 48px 80px; }
+
+/* ── PAGE HEAD ── */
+.page-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--text-eyebrow); margin-bottom: 5px; }
 .page-title { font-size: 20px; font-weight: 700; letter-spacing: -.025em; color: var(--text); }
 
-/* UPLOAD MODAL TRIGGER */
-.btn-upload { height: 32px; padding: 0 14px; border: 1px solid var(--line); border-radius: 2px; background: var(--surface); font-family: var(--font); font-size: 11px; font-weight: 600; color: var(--text-2); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all .15s; letter-spacing: .03em; }
-.btn-upload:hover { border-color: var(--line-strong); color: var(--text); }
-.btn-upload svg { width: 12px; height: 12px; }
+/* ── COL HEADERS — shown only in list view ── */
+.proj-cols { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 0 14px 8px; transition: opacity .2s; }
+.proj-cols.hidden { opacity: 0; pointer-events: none; }
+.proj-col-th { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-eyebrow); }
+.proj-col-th.c { text-align: center; }
 
-/* ARCHIVE PROJECT CARD */
-.arc-card { background: var(--surface); border: 1px solid var(--line); border-radius: 2px; margin-bottom: 8px; }
-.arc-card-header { display: flex; align-items: center; padding: 0 16px; height: 52px; cursor: pointer; user-select: none; gap: 12px; }
-.arc-card-header:hover { background: var(--surface-2); }
-.arc-name { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.01em; flex: 1; }
-.arc-meta { font-size: 11px; color: var(--text-3); display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
-.arc-meta-item { display: flex; align-items: center; gap: 4px; }
-.arc-archived-date { font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
-.arc-chevron { font-size: 11px; color: var(--line-strong); transition: transform .2s; flex-shrink: 0; }
+/* ── PROJECT ROW — survey card style ── */
+.pr-topbar {
+  display: grid;
+  grid-template-columns: 320px 1fr 20px;
+  gap: 0;
+  align-items: center;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background .1s;
+  min-height: 64px;
+}
+.pr-topbar:hover { background: rgba(31,41,51,.013); }
+.pb.open .pr-topbar { background: var(--surface-2); border-bottom: 1px solid var(--line-soft); }
+
+/* project name — clean, no underline */
+.pr-middle {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.pr-name-block {
+  padding-right: 20px;
+  border-right: 1px solid var(--line-soft);
+  margin-right: 20px;
+}
+.pr-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.01em;
+  line-height: 1.25;
+}
+
+/* project row hover actions */
+.pr-name-block { position: relative; }
+.pr-row-acts {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity .15s;
+  pointer-events: none;
+}
+.pb:hover:not(.open) .pr-row-acts {
+  opacity: 1;
+  pointer-events: auto;
+}
+.pr-row-act {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-3);
+  padding: 4px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  transition: all .15s;
+}
+.pr-row-act:hover { background: var(--surface-2); color: var(--text-2); }
+.pr-row-act.danger:hover { background: #fdf2f2; color: #C45C5C; }
+.pr-row-act svg { width: 13px; height: 13px; }
+
+/* inline edit input for project name */
+.pr-name-input {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.01em;
+  border: none;
+  border-bottom: 1.5px solid #C8A96A;
+  background: transparent;
+  font-family: var(--font);
+  outline: none;
+  width: 100%;
+  padding: 0;
+}
+
+/* tech assign dropdown */
+.tech-dd {
+  position: absolute;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(31,41,51,.12);
+  z-index: 200;
+  min-width: 130px;
+  overflow: hidden;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.tech-dd-item {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background .1s;
+  font-family: var(--font);
+}
+.tech-dd-item:hover { background: var(--surface-2); }
+.tech-dd-item.selected { font-weight: 600; color: var(--text); }
+.tech-dd-item.unassigned { color: var(--text-3); }
+
+/* ── 1950s PROGRESS BAR ── */
+.prog-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  padding-right: 16px;
+  border-right: 1px solid var(--line-soft);
+  margin-right: 0;
+}
+
+.prog-gauge {
+  width: 160px;
+  flex-shrink: 0;
+  position: relative;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* outer ruled track */
+.prog-track {
+  width: 100%;
+  height: 12px;
+  background: var(--c-track);
+  border: 1px solid var(--line-strong);
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* hash fill */
+.prog-fill {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: width .4s ease;
+}
+
+/* amber hatching for in-progress */
+.prog-fill.active {
+  background: repeating-linear-gradient(
+    45deg,
+    #C89B4F,
+    #C89B4F 3px,
+    #E7C98A 3px,
+    #E7C98A 7px
+  );
+}
+
+/* solid olive for complete */
+.prog-fill.done {
+  background: var(--c-olive);
+  opacity: .8;
+}
+
+/* tick marks */
+.prog-ticks {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1px;
+  pointer-events: none;
+}
+.prog-tick {
+  width: 1px;
+  height: 100%;
+  background: rgba(31,41,51,.12);
+}
+.prog-tick:first-child, .prog-tick:last-child { background: transparent; }
+
+/* percentage stamp */
+.prog-pct {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-label);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
+  min-width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── STATUS STAMPS — solid fill, rubber stamp ── */
+.pr-stamps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding-left: 14px;
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+/* segmented pill container */
+.stamps-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-right: 1px solid var(--line);
+}
+.stamp:last-child { border-right: none; }
+.stamp::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stamp-pend  { background: #F3E6C7; color: #A8823F; }
+.stamp-pend::before  { background: #D6A95C; }
+.stamp-field { background: #DCE7E9; color: #4E6B70; }
+.stamp-field::before { background: #6F8F95; }
+.stamp-done  { background: #E3E8DC; color: #5E6B4A; }
+.stamp-done::before  { background: #7E8F63; }
+.stamp-archive { background: #E3E8DC; color: #5E6B4A; cursor: pointer; border: none; font-family: var(--font); }
+.stamp-archive::before { background: #7E8F63; }
+.stamp-archive:hover { background: #d4dece; }
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+/* chevron */
+.ptb-chevron {
+  color: var(--line-strong);
+  transition: transform .2s, color .15s;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-left: 10px;
+}
+.ptb-chevron svg { width: 13px; height: 13px; }
+.pb.open .ptb-chevron { transform: rotate(90deg); color: var(--text-3); }
+.pb:hover .ptb-chevron { color: var(--text-3); }
+
+/* ── ADD PROJECT — 1950s form label style ── */
+.add-proj-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #6F8F95;
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 4px;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: .03em;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.add-proj-btn:hover { background: #4E6B70; }
+.add-proj-bracket { font-size: 13px; font-weight: 400; color: rgba(255,255,255,.7); letter-spacing: 0; }
+.add-proj-label { letter-spacing: .03em; }
+.add-proj-bracket {
+  font-size: 13px;
+  font-weight: 400;
+  color: #8a7a5a;
+  letter-spacing: 0;
+  line-height: 1;
+}
+.add-proj-label { letter-spacing: .1em; }
+
+/* task badges in expand panel — match stamp style */
+/* task status — ChartMogul solid fill style */
+.ts {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 22px;
+  border-radius: 1px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  min-width: 72px;
+  justify-content: center;
+}
+.ts-field {
+  background: var(--c-teal);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+/* subtle pulse shimmer for in-field */
+.ts-field::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.15) 50%, transparent 100%);
+  animation: shimmer 2.4s ease-in-out infinite;
+}
+@keyframes shimmer { 0%,100%{opacity:0} 50%{opacity:1} }
+
+.ts-pend {
+  background: var(--c-amber);
+  color: #fff;
+}
+.ts-done {
+  background: var(--c-olive);
+  color: #fff;
+}
+
+/* ep stat badges — match */
+.ep-field { background: var(--c-teal-lt) !important; border: 1px solid var(--c-teal) !important; color: var(--c-teal) !important; border-radius: 1px !important; }
+.ep-field .ep-dot { background: var(--c-teal) !important; }
+.ep-pend  { background: var(--c-amber-lt) !important; border: 1px solid var(--c-amber) !important; color: var(--c-amber-h) !important; border-radius: 1px !important; }
+.ep-pend  .ep-dot { background: var(--c-amber) !important; }
+.ep-done  { background: var(--c-olive-lt) !important; border: 1px solid var(--c-olive) !important; color: var(--c-olive) !important; border-radius: 1px !important; }
+
+/* ── PROJECT BLOCK ── */
+.pb {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  margin-bottom: 3px;
+  overflow: hidden;
+  transition: box-shadow .15s, opacity .2s, max-height .25s;
+}
+.pb:hover { box-shadow: 0 1px 8px rgba(31,41,51,.07); }
+.pb.open { box-shadow: 0 2px 20px rgba(31,41,51,.1); margin-bottom: 0; }
+
+/* hidden state — other projects fade when one is open */
+.pb.dimmed {
+  opacity: 0;
+  pointer-events: none;
+  max-height: 0;
+  margin-bottom: 0;
+  border-width: 0;
+  overflow: hidden;
+}
+
+/* ── PROJECT ROW ── */
+.pr { display: grid; grid-template-columns: 1fr auto 20px; gap: 12px; align-items: center; padding: 13px 16px; cursor: pointer; user-select: none; transition: background .1s; }
+.pr:hover { background: rgba(31,41,51,.013); }
+.pb.open .pr { background: var(--surface-2); border-bottom: 1px solid var(--line-soft); }
+
+.pr-name { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: -.01em; line-height: 1.2; }
+.pr-sub  { font-size: 11px; color: var(--text-3); margin-top: 2px; font-weight: 400; }
+
+/* badge */
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 3px 7px; border-radius: 2px; white-space: nowrap; }
+
+/* inline stat pills in project row */
+.pr-pills { display: flex; align-items: center; gap: 5px; flex-wrap: nowrap; }
+.pr-pill { font-size: 9px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.pr-pill-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.pr-pill-field { background: var(--interval); color: #2A6040; }
+.pr-pill-field .pr-pill-dot { background: var(--accent); animation: blink 1.8s ease-in-out infinite; }
+.pr-pill-pend  { background: var(--dir); color: #6B4A08; }
+.pr-pill-pend  .pr-pill-dot { background: #C4920E; }
+.pr-pill-done  { background: var(--phf); color: #1C4A7A; }
+
+/* notes icon button */
+.notes-icon-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--line-strong); padding: 4px 6px;
+  display: inline-flex; align-items: center;
+  transition: color .15s; position: relative;
+  border-radius: 2px;
+}
+.notes-icon-btn:hover { color: var(--text-2); background: rgba(31,41,51,.04); }
+.notes-icon-btn svg { width: 14px; height: 14px; }
+.notes-icon-btn.has-notes { color: var(--text-label); }
+
+/* filled dot indicator when notes exist */
+.notes-icon-btn.has-notes::after {
+  content: '';
+  position: absolute;
+  top: 2px; right: 2px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #C4920E;
+  border: 1.5px solid var(--surface-3);
+}
+
+/* tooltip opens to the left now (right-anchored) */
+.notes-tooltip {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(31,41,51,.12);
+  padding: 10px 12px;
+  width: 240px;
+  z-index: 20;
+  text-align: left;
+}
+.notes-icon-btn:hover .notes-tooltip { display: block; }
+.notes-tooltip-label {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-3); margin-bottom: 5px;
+}
+.notes-tooltip-text {
+  font-size: 11px; color: var(--text-2);
+  line-height: 1.5; font-style: italic;
+}
+
+
+.badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.b-prog { background: var(--interval); color: #2A6040; }
+.b-prog::before { background: var(--accent); }
+.b-pend { background: var(--dir); color: #6B4A08; }
+.b-pend::before { background: #C4920E; }
+.b-done { background: var(--phf); color: #1C4A7A; }
+.b-done::before { background: #4A7FBF; }
+.b-hold { background: var(--surface-2); color: var(--text-3); border: 1px solid var(--line); }
+.b-hold::before { background: var(--line-strong); }
+
+/* progress */
+.prog { display: flex; align-items: center; gap: 8px; }
+.prog-bar { flex: 1; height: 3px; background: var(--line-soft); border-radius: 1px; overflow: hidden; }
+.prog-fill { height: 100%; background: var(--accent); opacity: .5; border-radius: 1px; }
+.prog-pct { font-size: 11px; font-weight: 500; color: var(--text-3); min-width: 26px; text-align: right; font-variant-numeric: tabular-nums; }
+
+.col-n { font-size: 13px; font-weight: 600; color: var(--text); text-align: center; font-variant-numeric: tabular-nums; }
+.col-n.dim { color: var(--text-3); font-weight: 400; }
+
+.chevron { color: var(--line-strong); transition: transform .2s, color .15s; display: flex; align-items: center; justify-content: flex-end; }
+.chevron svg { width: 13px; height: 13px; }
+.pb.open .chevron { transform: rotate(90deg); color: var(--text-3); }
+.pb:hover .chevron { color: var(--text-3); }
+
+.row-btn { height: 22px; padding: 0 9px; border: 1px solid var(--line); border-radius: 2px; background: transparent; font-family: var(--font); font-size: 10px; font-weight: 500; color: var(--text-3); cursor: pointer; transition: all .15s; letter-spacing: .04em; }
+.row-btn-archive { border-color: var(--c-olive); color: var(--c-olive-h); font-weight: 700; letter-spacing: .06em; }
+.row-btn-archive:hover { background: #E3E8DC; color: var(--c-olive-h); }
+.row-btn:hover { border-color: var(--text-3); color: var(--text); }
+
+/* ── EXPAND PANEL ── */
+.ep { display: none; }
+.pb.open .ep { display: block; animation: ep-in .18s ease; }
+@keyframes ep-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ep bar */
+.ep-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 16px;
+  background: var(--surface-3);
+  border-bottom: 1px solid var(--line-soft);
+  gap: 12px;
+}
+
+.ep-stats { display: flex; align-items: center; gap: 5px; }
+
+.ep-stat { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.ep-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.ep-field { background: var(--interval); color: #2A6040; }
+.ep-field .ep-dot { background: var(--accent); animation: blink 1.8s ease-in-out infinite; }
+.ep-pend  { background: var(--dir);  color: #6B4A08; }
+.ep-pend  .ep-dot { background: #C4920E; }
+.ep-done  { background: var(--phf);  color: #1C4A7A; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
+
+/* ep action buttons — right side */
+.ep-acts { display: flex; align-items: center; gap: 6px; }
+/* kebab menu */
+.kebab-menu {
+  display: none;
+  position: fixed;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(31,41,51,.12);
+  z-index: 9999;
+  min-width: 130px;
+  overflow: hidden;
+}
+.kebab-menu.open { display: block; }
+.kebab-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  background: none;
+  border: none;
+  font-family: var(--font);
+  font-size: 12px;
+  color: var(--text-2);
+  cursor: pointer;
+  text-align: left;
+  transition: background .1s;
+}
+.kebab-menu-item:hover { background: var(--surface-2); }
+.kebab-menu-item.danger { color: #C45C5C; }
+.kebab-menu-item.danger:hover { background: #fdf2f2; }
+.kebab-menu-item svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+.t-kbab {
+  background: none; border: none; cursor: pointer;
+  color: #8A7A6A; padding: 4px;
+  display: flex; align-items: center;
+  border-radius: 2px; transition: all .15s;
+}
+.t-kbab:hover { color: var(--text-2); background: var(--surface-2); }
+.t-kbab svg { width: 14px; height: 14px; }
+
+/* kebab cell needs position relative */
+td:has(.t-kbab) { position: relative; }
+
+.ep-act-btn {
+  height: 26px; padding: 0 11px;
+  border: 1px solid var(--line); border-radius: 2px;
+  background: var(--surface); font-family: var(--font);
+  font-size: 10px; font-weight: 600; color: var(--text-2);
+  cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+  transition: all .15s; letter-spacing: .01em; white-space: nowrap;
+}
+.ep-act-btn:hover { border-color: var(--text-3); color: var(--text); background: var(--surface-2); }
+.ep-act-btn svg { width: 10px; height: 10px; flex-shrink: 0; }
+.ep-act-btn-green { background: var(--c-olive); border-color: var(--c-olive); color: #fff; }
+.ep-act-btn-green:hover { background: var(--c-olive-h); border-color: var(--c-olive-h); color: #fff; }
+
+/* Add Task button matches Job Sheet green */
+.ep-act-btn.add-task-btn { background: var(--c-teal); border-color: var(--c-teal); color: #fff; }
+.ep-act-btn.add-task-btn:hover { background: var(--c-teal-h); border-color: var(--c-teal-h); }
+
+/* ── NOTES — passive ── */
+.ep-notes {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex; gap: 8px; align-items: baseline;
+}
+.ep-notes-label { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); flex-shrink: 0; }
+.ep-notes-text  { font-size: 11px; color: var(--text-3); line-height: 1.4; font-style: italic; }
+
+/* ── TASK TABLE — spacious ── */
+.tasks-wrap { padding: 0 20px 18px; }
+
+.tasks-table { width: 100%; border-collapse: collapse; }
+
+.tasks-table thead th {
+  font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-label); padding: 8px 8px 7px 0;
+  border-bottom: 1px solid var(--line); text-align: left;
+}
+.tasks-table thead th.r { text-align: right; padding-right: 0; }
+
+.tasks-table tbody td {
+  padding: 9px 8px 9px 0;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: middle;
+}
+.tasks-table tbody td.c { text-align: center; padding-right: 0; }
+.tasks-table tbody td.r { text-align: right; padding-right: 4px; }
+.tasks-table tbody td:first-child { text-align: center; padding-right: 0; }
+.tasks-table tbody tr:last-child td { border-bottom: none; }
+.tasks-table tbody tr:hover td { background: rgba(31,41,51,.018); }
+
+/* row tints — status communicated by color, no badge needed */
+.tasks-table tbody tr.r-field td { background: transparent; }
+.tasks-table tbody tr.r-done td { opacity: 1; }
+
+.t-site { font-size: 11px; font-weight: 500; color: var(--text-3); font-variant-numeric: tabular-nums; display: block; text-align: center; }
+
+.t-tech {
+  font-size: 9px; font-weight: 700; color: var(--text-2);
+  background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 50%; width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: default; position: relative;
+  vertical-align: middle;
+}
+.t-tech.empty { border-style: dashed; color: var(--text-3); background: transparent; font-size: 10px; }
+
+
+.t-name { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.3; }
+
+/* fixed-width muted status fill on task name cell */
+.tn-wrap {
+  display: inline-block;
+  width: 150px;
+  padding: 3px 8px;
+  border-radius: 1px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tn-pend  { background: #F3E6C7; color: #A8823F; }
+.tn-field { background: #DCE7E9; color: #4E6B70; }
+.tn-done  { background: #E3E8DC; color: #5E6B4A; font-weight: 400; }
+.t-note { font-size: 11px; font-style: italic; color: var(--text-3); margin-top: 3px; }
+
+/* type tag */
+.t-type { font-size: 9px; font-weight: 600; letter-spacing: .06em; color: var(--text-label); padding: 2px 6px; border: 1px solid var(--line); border-radius: 2px; background: var(--surface-2); display: inline-flex; align-items: center; justify-content: center; }
+
+/* duration */
+.t-dur { font-size: 12px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+/* inline report button — hover on row */
+.t-rpt-wrap { position: relative; }
+.t-rpt {
+  height: 22px; padding: 0 9px;
+  border: 1px solid var(--line); border-radius: 2px;
+  background: var(--surface); font-family: var(--font);
+  font-size: 9px; font-weight: 700; color: var(--text-label);
+  cursor: pointer; display: inline-flex; align-items: center; gap: 3px;
+  letter-spacing: .05em; text-transform: uppercase;
+  transition: all .15s; white-space: nowrap;
+  opacity: 0;
+}
+.tasks-table tbody tr:hover .t-rpt { opacity: 1; }
+.t-rpt:hover { border-color: var(--btn-green); color: var(--btn-green); background: var(--interval); }
+.t-rpt svg { width: 9px; height: 9px; }
+
+/* kebab */
+.t-kbab { background: none; border: none; cursor: pointer; color: #8A7A6A; padding: 3px; display: inline-flex; align-items: center; transition: color .15s; opacity: 1; color: #8A7A6A; }
+.tasks-table tbody .t-kbab:hover { color: var(--text-2); }
+.t-kbab svg { width: 13px; height: 13px; }
+
+/* foot */
+.tasks-foot { padding-top: 10px; font-size: 10px; color: var(--text-3); border-top: 1px solid var(--line-soft); letter-spacing: .02em; margin-top: 2px; }
+
+/* ── PAGE FOOT ── */
+.page-foot { display: none; }
+
+/* ── MODALS ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(31,41,51,.35); display: flex; align-items: center; justify-content: center; z-index: 500; opacity: 0; pointer-events: none; transition: opacity .18s; }
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal { background: var(--surface); border: 1px solid var(--line); border-radius: 3px; padding: 22px; width: 400px; max-width: 92vw; box-shadow: 0 8px 32px rgba(31,41,51,.14); animation: m-in .16s ease; }
+@keyframes m-in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── NEW PROJECT MODAL — survey form style ── */
+.modal-new-proj {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  width: 560px;
+  max-width: 94vw;
+  box-shadow: 0 12px 48px rgba(31,41,51,.18);
+  animation: m-in .18s ease;
+  overflow: hidden;
+}
+@keyframes m-in { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.mnp-header {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+  padding: 18px 24px 16px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.mnp-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text-eyebrow); margin-bottom: 4px; }
+.mnp-title { font-size: 22px; font-weight: 700; letter-spacing: -.03em; color: var(--text); line-height: 1; }
+.mnp-close { background: none; border: none; cursor: pointer; color: var(--text-3); padding: 2px; transition: color .15s; }
+.mnp-close:hover { color: var(--text); }
+.mnp-body { padding: 24px 24px 8px; }
+.mnp-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+.mnp-field-lg .mnp-input { font-size: 17px; font-weight: 600; }
+.mnp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.mnp-label { font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--text-eyebrow); }
+.mnp-opt { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--text-3); font-size: 9px; }
+.mnp-input {
+  height: 40px; border: none;
+  border-bottom: 1.5px solid var(--line);
+  background: transparent; font-family: var(--font);
+  font-size: 15px; font-weight: 500; color: var(--text);
+  outline: none; transition: border-color .15s;
+  padding: 0 2px; width: 100%; border-radius: 0;
+}
+.mnp-input::placeholder { color: var(--text-3); font-weight: 400; font-size: 13px; }
+.mnp-input:focus { border-bottom-color: #C8A96A; }
+.mnp-textarea { height: auto; padding: 8px 2px; resize: none; line-height: 1.6; font-size: 13px; }
+.mnp-rule { height: 1px; background: var(--line-soft); margin: 4px 0 20px; }
+.mnp-footer {
+  padding: 16px 24px; border-top: 1px solid var(--line);
+  background: var(--surface-2);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.mnp-cancel {
+  height: 34px; padding: 0 16px;
+  border: 1px solid var(--line); border-radius: 2px;
+  background: transparent; font-family: var(--font);
+  font-size: 10px; font-weight: 600; color: var(--text-3);
+  cursor: pointer; letter-spacing: .08em; text-transform: uppercase;
+  transition: all .15s;
+}
+.mnp-cancel:hover { border-color: var(--text-3); color: var(--text); }
+.mnp-submit {
+  height: 40px; padding: 0 28px;
+  border: 1px solid rgba(0,0,0,.1); border-radius: 4px;
+  background: #6F8F95; font-family: var(--font);
+  font-size: 11px; font-weight: 500; color: #fff;
+  cursor: pointer; letter-spacing: .03em;
+  transition: background .15s; display: flex; align-items: center; gap: 6px;
+}
+.mnp-submit:hover { background: #4E6B70; }
+.modal-body { font-size: 13px; color: var(--text-2); line-height: 1.5; margin-bottom: 14px; }
+.modal-eyebrow { font-size: 9px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--text-eyebrow); margin-bottom: 4px; }
+.modal-title { font-size: 15px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 16px; color: var(--text); }
+.form-group { margin-bottom: 11px; }
+.form-label { display: block; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-label); margin-bottom: 4px; }
+.form-label .opt { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--text-3); font-size: 10px; }
+.form-input { width: 100%; height: 32px; padding: 0 10px; border: 1px solid var(--line); border-radius: 2px; background: var(--surface); font-family: var(--font); font-size: 12px; color: var(--text); outline: none; transition: border-color .15s; }
+.form-input:focus { border-color: var(--text-3); }
+textarea.form-input { height: auto; padding: 8px 10px; resize: vertical; line-height: 1.5; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-select { width: 100%; height: 32px; padding: 0 26px 0 10px; border: 1px solid var(--line); border-radius: 2px; background: var(--surface); font-family: var(--font); font-size: 12px; color: var(--text); outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2374808A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; }
+.modal-actions { display: flex; gap: 7px; justify-content: flex-end; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line-soft); }
+.btn-solid { height: 30px; padding: 0 14px; border: 1px solid var(--btn-green); border-radius: 2px; background: var(--btn-green); font-family: var(--font); font-size: 11px; font-weight: 600; color: #fff; cursor: pointer; transition: background .15s; }
+.btn-solid:hover { background: var(--btn-green-h); }
+.btn-ghost { height: 30px; padding: 0 12px; border: 1px solid var(--line); border-radius: 2px; background: transparent; font-family: var(--font); font-size: 11px; font-weight: 500; color: var(--text-2); cursor: pointer; transition: all .15s; }
+.btn-ghost:hover { border-color: var(--text-3); color: var(--text); }
+.tab-bar { display: flex; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
+.tab-btn { flex: 1; text-align: center; padding: 7px; font-size: 11px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; color: var(--text-3); transition: all .15s; }
+.tab-btn.active { border-bottom-color: var(--text); color: var(--text); }
+.drop-zone { border: 1.5px dashed var(--line); border-radius: 2px; padding: 18px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all .15s; }
+.drop-zone:hover { border-color: var(--accent); background: var(--interval); }
+.drop-zone span { font-size: 11px; color: var(--text-3); }
+.drop-zone strong { color: var(--text-2); }
+
+/* ── JOB SHEET ── */
+.js-overlay { display: none; position: fixed; inset: 0; z-index: 700; background: rgba(31,41,51,.45); flex-direction: column; }
+.js-overlay.open { display: flex; }
+
+/* top bar — parchment style */
+.js-bar {
+  height: 54px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 28px; flex-shrink: 0;
+}
+.js-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-3); display: flex; padding: 6px;
+  border-radius: 2px; transition: all .15s;
+}
+.js-close:hover { color: var(--text); background: var(--surface-3); }
+.js-bar-title {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-eyebrow); flex: 1;
+  display: flex; align-items: center; gap: 8px;
+}
+.js-bar-title svg { color: var(--c-olive); }
+
+/* download button — olive */
+.js-dl {
+  height: 32px; padding: 0 16px;
+  border: 1px solid rgba(0,0,0,.1); border-radius: 4px;
+  background: var(--c-olive); font-family: var(--font);
+  font-size: 11px; font-weight: 500; color: #fff;
+  cursor: pointer; display: inline-flex; align-items: center;
+  gap: 6px; letter-spacing: .03em; transition: background .15s;
+}
+.js-dl:hover { background: var(--c-olive-h); }
+
+/* body */
+.js-body { flex: 1; overflow-y: auto; background: #fff; padding: 32px; }
+.js-doc {
+  max-width: 640px; margin: 0 auto;
+  background: #fff;
+  padding: 40px 48px;
+  font-family: var(--font);
+}
+.js-ey { font-size: 9px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--text-eyebrow); margin-bottom: 5px; }
+.js-hd { display: grid; grid-template-columns: 1fr auto; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 14px; }
+.js-pname { font-size: 17px; font-weight: 700; letter-spacing: -.02em; color: var(--text); margin-bottom: 3px; }
+.js-pmeta { font-size: 11px; color: var(--text-2); line-height: 1.6; }
+.js-brand { text-align: right; font-size: 11px; color: var(--text-2); line-height: 1.6; }
+.js-brand strong { display: block; color: var(--text); font-weight: 700; }
+.js-sec-hd {
+  font-size: 9px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--text-eyebrow);
+  padding-bottom: 8px; border-bottom: 1px solid var(--line);
+  margin: 20px 0 10px; display: flex; align-items: center;
+  justify-content: space-between;
+}
+.js-section { margin-bottom: 4px; }
+.js-section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px; border-radius: 1px; margin-bottom: 2px;
+}
+.js-section-header-pending  { background: #F3E6C7; }
+.js-section-header-infield  { background: #DCE7E9; }
+.js-section-header-complete { background: #E3E8DC; }
+.js-section-left { display: flex; align-items: center; gap: 8px; }
+.js-section-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.js-section-dot-pending  { background: var(--c-amber); }
+.js-section-dot-infield  { background: var(--c-teal); }
+.js-section-dot-complete { background: var(--c-olive); }
+.js-section-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.js-section-header-pending  .js-section-label { color: #A8823F; }
+.js-section-header-infield  .js-section-label { color: #4E6B70; }
+.js-section-header-complete .js-section-label { color: #5E6B4A; }
+.js-section-count { font-size: 11px; font-weight: 700; color: var(--text-3); }
+.js-site-list { border: 1px solid var(--line-soft); border-top: none; border-radius: 0 0 1px 1px; margin-bottom: 12px; }
+.js-site { padding: 10px 14px; border-bottom: 1px solid var(--line-soft); page-break-inside: avoid; }
+.js-section { page-break-inside: avoid; }
+.js-section-header { page-break-after: avoid; }
+.js-site:last-child { border-bottom: none; }
+.js-site-header { display: flex; align-items: center; gap: 8px; }
+.js-site-num { font-size: 10px; font-weight: 700; color: var(--text-3); min-width: 18px; }
+.js-site-desc { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; letter-spacing: -.01em; }
+.js-site-tags { display: flex; align-items: center; gap: 5px; }
+.js-site-tag { font-size: 9px; font-weight: 700; letter-spacing: .06em; color: var(--text-label); padding: 2px 6px; border: 1px solid var(--line); border-radius: 1px; background: var(--surface-2); }
+.js-site-tech-init { font-size: 9px; font-weight: 700; color: var(--text-2); background: var(--surface-2); border: 1px solid var(--line); border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; }
+.js-site-times { font-size: 11px; color: var(--text-3); margin-top: 4px; margin-left: 26px; display: flex; gap: 12px; flex-wrap: wrap; }
+.js-site-note { font-size: 11px; color: var(--text-2); margin-top: 3px; margin-left: 26px; font-style: italic; }
+.js-project { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid var(--line); }
+.js-project-name { font-size: 20px; font-weight: 700; letter-spacing: -.025em; color: var(--text); margin-bottom: 4px; }
+.js-project-meta { font-size: 11px; color: var(--text-2); line-height: 1.6; }
+.js-project-num { font-size: 10px; color: var(--text-3); margin-top: 2px; letter-spacing: .04em; }
+.js-instructions-card { background: var(--surface-2); border: 1px solid var(--line); border-radius: 1px; margin-bottom: 20px; overflow: hidden; }
+.js-instructions-header { padding: 8px 14px; border-bottom: 1px solid var(--line-soft); }
+.js-instructions-title { font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--text-eyebrow); }
+.js-instructions-body { padding: 10px 14px; font-size: 12px; color: var(--text-2); line-height: 1.6; }
+.js-footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--line-soft); font-size: 10px; color: var(--text-3); letter-spacing: .04em; }
+.js-footer-brand { font-weight: 700; color: var(--text-2); }
+/* ── TASK GRID — spreadsheet style ── */
+.task-grid-wrap {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.task-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font);
+}
+
+.tg-th {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line-soft);
+  padding: 8px 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-eyebrow);
+  text-align: left;
+}
+.tg-th:last-child { border-right: none; }
+.tg-th-num { width: 32px; text-align: center; }
+.tg-th-type { width: 88px; }
+.tg-th-tech { width: 130px; }
+
+/* grid rows */
+.task-grid tbody tr {
+  border-bottom: 1px solid var(--line-soft);
+  transition: background .08s;
+}
+.task-grid tbody tr:last-child { border-bottom: none; }
+.task-grid tbody tr:hover { background: rgba(31,41,51,.015); }
+.task-grid tbody tr.tg-row-filled { background: var(--surface-3); }
+
+.tg-td {
+  padding: 0;
+  border-right: 1px solid var(--line-soft);
+  vertical-align: middle;
+}
+.tg-td:last-child { border-right: none; }
+.tg-td-num {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-3);
+  padding: 0 8px;
+  width: 32px;
+  user-select: none;
+}
+
+/* cell inputs — invisible until focused */
+.tg-inp {
+  width: 100%;
+  height: 38px;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  padding: 0 10px;
+  outline: none;
+  transition: background .1s;
+}
+.tg-inp::placeholder { color: var(--text-3); font-weight: 400; font-size: 12px; }
+.tg-inp:focus { background: rgba(200,169,106,.07); }
+
+.tg-sel {
+  width: 100%;
+  height: 38px;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  padding: 0 8px;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%2374808A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  transition: background-color .1s;
+}
+.tg-sel:focus { background-color: rgba(200,169,106,.07); }
+
+/* type color chips in select */
+.tg-sel.type-tmc { color: #1C4A7A; }
+.tg-sel.type-spd { color: #6B4A08; }
+.tg-sel.type-adt { color: #2A6040; }
+.tg-sel.type-cls { color: #4A2A6B; }
+
+/* delete row button */
+.tg-del {
+  background: none; border: none; cursor: pointer;
+  color: var(--line-strong); padding: 0 8px;
+  font-size: 14px; line-height: 1;
+  transition: color .15s; display: none;
+  height: 38px; align-items: center;
+}
+.task-grid tbody tr:hover .tg-del { display: flex; }
+.tg-del:hover { color: #C45C5C; }
+
+/* add row button */
+.tg-add-row {
+  display: flex; align-items: center; gap: 5px;
+  padding: 8px 10px;
+  background: none; border: none;
+  font-family: var(--font);
+  font-size: 10px; font-weight: 600;
+  color: var(--text-3); cursor: pointer;
+  letter-spacing: .04em;
+  transition: color .15s;
+  width: 100%;
+}
+.tg-add-row:hover { color: var(--text-2); }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(12px); background: var(--text); color: var(--surface); padding: 8px 16px; border-radius: 2px; font-size: 11px; font-weight: 500; opacity: 0; pointer-events: none; transition: all .22s; z-index: 800; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+
+/* ── ARCHIVE OVERRIDES ── */
+.arc-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  margin-bottom: 3px;
+  overflow: visible;
+}
+
+.arc-row {
+  display: grid;
+  grid-template-columns: 220px 1fr 110px 140px 60px 20px;
+  align-items: center;
+  padding: 0 16px;
+  height: 52px;
+  cursor: pointer;
+  user-select: none;
+  gap: 0;
+}
+.arc-row:hover { background: var(--surface-2); }
+
+.arc-col-name {
+  padding-right: 16px;
+  border-right: 1px solid var(--line-soft);
+}
+.arc-name { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.arc-col-mid {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  border-right: 1px solid var(--line-soft);
+}
+.arc-client  { font-size: 12px; font-weight: 600; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.arc-city    { font-size: 11px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.arc-col-projnum {
+  padding: 0 14px;
+  font-size: 11px; font-weight: 600; color: var(--text-3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  border-right: 1px solid var(--line-soft);
+}
+
+.arc-col-date {
+  padding: 0 14px;
+  font-size: 10px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text-3);
+  white-space: nowrap;
+  border-right: 1px solid var(--line-soft);
+}
+
+.arc-col-reports {
+  padding: 0 12px;
+  text-align: center;
+}
+.arc-report-badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 8px; border-radius: 1px;
+  font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  background: var(--c-olive-lt); border: 1px solid #A5B097; color: var(--c-olive-h);
+  white-space: nowrap;
+}
+.arc-report-badge.none {
+  background: var(--surface-2); border-color: var(--line); color: var(--text-3);
+}
+
+.arc-chevron { font-size: 13px; color: var(--line-strong); transition: transform .2s; text-align: right; }
 .arc-card.open .arc-chevron { transform: rotate(90deg); }
 
-/* EXPAND PANEL */
+/* PANEL */
 .arc-panel { display: none; border-top: 1px solid var(--line-soft); }
 .arc-card.open .arc-panel { display: block; }
 
 /* TASK TABLE */
-.arc-table-wrap { padding: 0; }
 .arc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.arc-table th { padding: 8px 12px; background: var(--surface-2); color: var(--text-eyebrow); font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; border-bottom: 1px solid var(--line); text-align: left; }
+.arc-table th {
+  padding: 8px 12px;
+  background: var(--surface-2);
+  color: var(--text-eyebrow);
+  font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
 .arc-table th:last-child { text-align: right; padding-right: 16px; }
 .arc-table td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
 .arc-table tr:last-child td { border-bottom: none; }
 .arc-table tbody tr:hover td { background: rgba(31,41,51,.018); }
 
-.arc-task-num { font-size: 11px; color: var(--text-3); font-weight: 600; width: 32px; }
+.arc-task-num  { font-size: 11px; color: var(--text-3); font-weight: 600; width: 32px; }
 .arc-task-name { font-size: 13px; font-weight: 600; color: var(--text); }
-.arc-task-type { display: inline-flex; align-items: center; padding: 3px 8px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 1px; font-size: 9px; font-weight: 700; letter-spacing: .06em; color: var(--text-label); }
-.arc-reports-cell { text-align: right; padding-right: 16px; }
+.arc-task-type {
+  display: inline-flex; align-items: center;
+  padding: 3px 8px; background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 1px;
+  font-size: 9px; font-weight: 700; letter-spacing: .06em; color: var(--text-label);
+}
+.arc-reports-cell { text-align: right; padding-right: 16px !important; }
 
 /* REPORT CHIPS */
 .report-chips { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
-.report-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 1px; font-size: 10px; font-weight: 600; letter-spacing: .04em; cursor: pointer; border: 1px solid var(--line); background: var(--surface-2); color: var(--text-2); text-decoration: none; transition: all .15s; white-space: nowrap; }
-.report-chip:hover { border-color: var(--c-teal); color: var(--c-teal-h); background: var(--c-teal-lt); }
+.report-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 9px; border-radius: 1px;
+  font-size: 10px; font-weight: 600; letter-spacing: .04em;
+  cursor: pointer; border: 1px solid var(--line);
+  background: var(--surface-2); color: var(--text-2);
+  text-decoration: none; transition: all .15s; white-space: nowrap;
+}
+.report-chip:hover { border-color: var(--c-teal); color: var(--c-teal-h); background: #DCE7E9; }
 .report-chip svg { width: 11px; height: 11px; flex-shrink: 0; }
-.report-chip.xlsx { color: var(--c-olive-h); background: var(--c-olive-lt); border-color: #A5B097; }
+.report-chip.xlsx { color: var(--c-olive-h); background: #E3E8DC; border-color: #A5B097; }
 .report-chip.xlsx:hover { border-color: var(--c-olive-h); }
-.report-chip.uploaded { color: var(--c-amber-h); background: var(--c-amber-lt); border-color: #E7C98A; }
-
-/* GENERATE BUTTON */
-.btn-generate { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 1px; font-size: 10px; font-weight: 600; letter-spacing: .04em; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--text-3); transition: all .15s; font-family: var(--font); white-space: nowrap; }
+.report-chip.uploaded { color: var(--c-amber-h); background: #F3E6C7; border-color: #E7C98A; }
+.btn-generate {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 9px; border-radius: 1px;
+  font-size: 10px; font-weight: 600; letter-spacing: .04em;
+  cursor: pointer; border: 1px solid var(--line);
+  background: transparent; color: var(--text-3);
+  transition: all .15s; font-family: var(--font); white-space: nowrap;
+}
 .btn-generate:hover { border-color: var(--c-teal); color: var(--c-teal-h); }
 .btn-generate svg { width: 11px; height: 11px; }
 
-/* NO REPORT */
-.no-report { font-size: 11px; color: var(--text-3); font-style: italic; }
-
 /* PANEL FOOTER */
-.arc-panel-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--surface-2); border-top: 1px solid var(--line-soft); }
+.arc-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--surface-2); border-top: 1px solid var(--line-soft);
+}
 .arc-footer-meta { font-size: 10px; color: var(--text-3); }
 .arc-footer-actions { display: flex; align-items: center; gap: 8px; }
-.btn-unarchive { height: 28px; padding: 0 12px; border: 1px solid var(--line); border-radius: 2px; background: transparent; font-family: var(--font); font-size: 10px; font-weight: 600; color: var(--text-3); cursor: pointer; transition: all .15s; letter-spacing: .04em; }
+.btn-dl-all {
+  height: 28px; padding: 0 12px;
+  border: 1px solid var(--c-teal); border-radius: 2px;
+  background: transparent; font-family: var(--font);
+  font-size: 10px; font-weight: 700; color: var(--c-teal);
+  cursor: pointer; transition: all .15s; letter-spacing: .04em;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.btn-dl-all:hover { background: #DCE7E9; }
+.btn-dl-all svg { width: 11px; height: 11px; }
+.btn-upload-report {
+  height: 28px; padding: 0 12px;
+  border: 1px solid var(--line); border-radius: 2px;
+  background: transparent; font-family: var(--font);
+  font-size: 10px; font-weight: 600; color: var(--text-3);
+  cursor: pointer; transition: all .15s;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.btn-upload-report:hover { border-color: var(--line-strong); color: var(--text); }
+.btn-unarchive {
+  height: 28px; padding: 0 12px;
+  border: 1px solid var(--line); border-radius: 2px;
+  background: transparent; font-family: var(--font);
+  font-size: 10px; font-weight: 600; color: var(--text-3);
+  cursor: pointer; transition: all .15s;
+}
 .btn-unarchive:hover { border-color: var(--line-strong); color: var(--text); }
-.btn-upload-project { height: 28px; padding: 0 12px; border: 1px solid var(--line); border-radius: 2px; background: transparent; font-family: var(--font); font-size: 10px; font-weight: 600; color: var(--text-3); cursor: pointer; transition: all .15s; letter-spacing: .04em; display: inline-flex; align-items: center; gap: 5px; }
-.btn-upload-project:hover { border-color: var(--c-teal); color: var(--c-teal-h); }
 
-/* EMPTY STATE */
+/* TABLE HEADER ROW */
+.arc-table-header {
+  display: grid;
+  grid-template-columns: 220px 1fr 110px 140px 60px 20px;
+  padding: 0 16px;
+  height: 32px; align-items: center;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.arc-th {
+  font-size: 9px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-eyebrow);
+}
+
+/* EMPTY + LOADING */
 .empty-state { text-align: center; padding: 60px 20px; color: var(--text-3); }
-.empty-state-icon { font-size: 32px; margin-bottom: 12px; opacity: .4; }
-.empty-state-title { font-size: 14px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
-.empty-state-sub { font-size: 12px; }
+.empty-icon  { margin-bottom: 12px; opacity: .3; }
+.empty-title { font-size: 14px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+.empty-sub   { font-size: 12px; }
+.arc-loading { text-align: center; padding: 40px; font-size: 11px; color: var(--text-3); letter-spacing: .08em; text-transform: uppercase; }
 
 /* UPLOAD MODAL */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(31,41,51,.4); z-index: 500; align-items: center; justify-content: center; opacity: 0; transition: opacity .18s; pointer-events: none; }
-.modal-overlay.open { display: flex; opacity: 1; pointer-events: auto; }
-.modal { background: var(--surface); border: 1px solid var(--line); border-radius: 2px; width: 480px; box-shadow: 0 8px 32px rgba(31,41,51,.12); animation: m-in .16s ease; }
-@keyframes m-in { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
-.modal-header { padding: 18px 20px 14px; border-bottom: 1px solid var(--line-soft); }
-.modal-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--text-eyebrow); margin-bottom: 4px; }
-.modal-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -.02em; }
-.modal-body { padding: 18px 20px; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--line-soft); }
-.btn-ghost { height: 32px; padding: 0 14px; border: 1px solid var(--line); border-radius: 2px; background: var(--surface-2); font-family: var(--font); font-size: 11px; font-weight: 500; color: var(--text-2); cursor: pointer; }
-.btn-solid { height: 32px; padding: 0 16px; border: 1px solid rgba(0,0,0,.1); border-radius: 2px; background: var(--c-teal); font-family: var(--font); font-size: 11px; font-weight: 700; color: #fff; cursor: pointer; letter-spacing: .03em; }
-.btn-solid:hover { background: var(--c-teal-h); }
-
-/* UPLOAD ZONE */
-.upload-zone { border: 2px dashed var(--line); border-radius: 2px; padding: 28px 20px; text-align: center; cursor: pointer; transition: all .15s; background: var(--surface-2); }
-.upload-zone:hover, .upload-zone.drag { border-color: var(--c-teal); background: var(--c-teal-lt); }
-.upload-zone-icon { margin-bottom: 8px; color: var(--text-3); }
-.upload-zone-icon svg { width: 28px; height: 28px; }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(31,41,51,.4); z-index: 500; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.upload-zone {
+  border: 2px dashed var(--line); border-radius: 2px;
+  padding: 28px 20px; text-align: center; cursor: pointer;
+  transition: all .15s; background: var(--surface-2);
+  margin-bottom: 12px;
+}
+.upload-zone:hover, .upload-zone.drag { border-color: var(--c-teal); background: #DCE7E9; }
 .upload-zone-title { font-size: 13px; font-weight: 600; color: var(--text-2); margin-bottom: 4px; }
-.upload-zone-sub { font-size: 11px; color: var(--text-3); }
-.upload-file-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
-.upload-file-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--surface); border: 1px solid var(--line-soft); border-radius: 1px; font-size: 11px; color: var(--text-2); }
+.upload-zone-sub   { font-size: 11px; color: var(--text-3); }
+.upload-file-list  { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.upload-file-item  {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; background: var(--surface);
+  border: 1px solid var(--line-soft); border-radius: 1px;
+  font-size: 11px; color: var(--text-2);
+}
 .upload-file-item svg { width: 13px; height: 13px; flex-shrink: 0; color: var(--c-teal); }
 .upload-file-remove { margin-left: auto; background: none; border: none; cursor: pointer; color: var(--text-3); font-size: 14px; padding: 0 2px; }
 .upload-file-remove:hover { color: #C45C5C; }
-
-/* FIELD SELECTS */
-.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-.field:last-child { margin-bottom: 0; }
-.field-label { font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--text-eyebrow); }
-.field-select, .field-input { height: 34px; border: 1px solid var(--line); border-radius: 2px; background: var(--surface); font-family: var(--font); font-size: 13px; color: var(--text); padding: 0 10px; outline: none; width: 100%; transition: border-color .15s; }
-.field-select:focus, .field-input:focus { border-color: #C8A96A; }
-
-/* LOADING */
-.loading { text-align: center; padding: 40px; color: var(--text-3); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
-
-/* TOAST */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(8px); background: var(--text); color: #fff; border-radius: 2px; padding: 10px 18px; font-size: 12px; font-weight: 500; z-index: 800; opacity: 0; transition: all .2s; pointer-events: none; white-space: nowrap; }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<nav>
+<nav class="nav">
   <a class="nav-brand" href="projects.html">
     <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
     <span class="nav-name">The Count Company</span>
@@ -158,60 +1267,58 @@ nav { background: var(--surface); border-bottom: 1px solid var(--line); padding:
   </div>
 </nav>
 
-<div class="page">
-  <div class="page-eyebrow">The Count Company</div>
-  <div class="page-title-row">
-    <div class="page-title">Archive</div>
-    <button class="btn-upload" onclick="openUploadModal()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      Upload Report
-    </button>
+<div class="main">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div class="page-eyebrow">The Count Company — Archive</div>
   </div>
-  <div id="archiveList"><div class="loading">Loading archive…</div></div>
+
+  <!-- COLUMN HEADERS -->
+  <div class="arc-table-header">
+    <div class="arc-th">Project</div>
+    <div class="arc-th">Client / City</div>
+    <div class="arc-th">Project #</div>
+    <div class="arc-th">Archived</div>
+    <div class="arc-th">Reports</div>
+    <div></div>
+  </div>
+
+  <div id="archiveList"><div class="arc-loading">Loading archive…</div></div>
+
 </div>
 
 <!-- UPLOAD MODAL -->
 <div class="modal-overlay" id="uploadModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-eyebrow">Archive</div>
-      <div class="modal-title">Upload Report</div>
+  <div class="modal" style="width:460px">
+    <div class="modal-header" style="padding:16px 20px 12px;border-bottom:1px solid var(--line-soft)">
+      <div class="modal-eyebrow" style="font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-eyebrow);margin-bottom:3px">Archive</div>
+      <div class="modal-title" style="font-size:15px;font-weight:700;color:var(--text)">Upload Report</div>
     </div>
-    <div class="modal-body">
-      <div class="field">
-        <label class="field-label">Project</label>
-        <select class="field-select" id="uploadProject">
-          <option value="">Select project…</option>
-        </select>
-      </div>
-      <div class="field">
-        <label class="field-label">Task / Site</label>
-        <select class="field-select" id="uploadTask">
+    <div style="padding:16px 20px">
+      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
+        <label style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-eyebrow)">Task</label>
+        <select class="field-select" id="uploadTask" style="height:34px;border:1px solid var(--line);border-radius:2px;background:var(--surface);font-family:var(--font);font-size:13px;color:var(--text);padding:0 10px;outline:none;width:100%">
           <option value="">Select task…</option>
         </select>
       </div>
-      <div class="field">
-        <label class="field-label">Report Type</label>
-        <select class="field-select" id="uploadType">
+      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px">
+        <label style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-eyebrow)">Report Type</label>
+        <select class="field-select" id="uploadType" style="height:34px;border:1px solid var(--line);border-radius:2px;background:var(--surface);font-family:var(--font);font-size:13px;color:var(--text);padding:0 10px;outline:none;width:100%">
           <option value="ADT">ADT</option>
           <option value="TMC">TMC</option>
           <option value="SPD">Speed Survey</option>
           <option value="CLS">Classification</option>
-          <option value="JOB_SHEET">Job Sheet</option>
           <option value="OTHER">Other</option>
         </select>
       </div>
-      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('uploadFileInput').click()">
-        <div class="upload-zone-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        </div>
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
         <div class="upload-zone-title">Drop PDF or Excel here</div>
         <div class="upload-zone-sub">or click to browse · PDF and XLSX only</div>
       </div>
-      <input type="file" id="uploadFileInput" accept=".pdf,.xlsx" style="display:none" multiple>
-      <div class="upload-file-list" id="uploadFileList"></div>
+      <input type="file" id="fileInput" accept=".pdf,.xlsx" style="display:none" multiple>
+      <div class="upload-file-list" id="fileList"></div>
     </div>
-    <div class="modal-actions">
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid var(--line-soft)">
       <button class="btn-ghost" onclick="closeUploadModal()">Cancel</button>
       <button class="btn-solid" onclick="submitUpload()">Upload</button>
     </div>
@@ -225,15 +1332,15 @@ import { supabase } from './js/supabase.js'
 
 const COMPANY_ID = '4f365a63-e2d8-45ea-960a-67d35b5f95e1'
 
-// ── STATE ──────────────────────────────────────────────────────────────────
 let archivedProjects = []
-let allTasks = {}
-let allReports = {}
-let uploadFiles = []
-let openProjectId = null
+let tasksByProject   = {}
+let reportsByTask    = {}
+let uploadFiles      = []
+let uploadProjectId  = null
+let openId           = null
 
 // ── HELPERS ────────────────────────────────────────────────────────────────
-function escapeHtml(s) {
+function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
 }
 
@@ -249,12 +1356,7 @@ function fmtDate(iso) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
-function reportIcon(format) {
-  if (format === 'xlsx') return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9l6 6m0-6l-6 6"/></svg>`
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`
-}
-
-// ── LOAD ARCHIVE ───────────────────────────────────────────────────────────
+// ── LOAD ───────────────────────────────────────────────────────────────────
 async function loadArchive() {
   const list = document.getElementById('archiveList')
 
@@ -265,173 +1367,155 @@ async function loadArchive() {
     .not('archived_at', 'is', null)
     .order('archived_at', { ascending: false })
 
-  if (error) { console.error(error); list.innerHTML = '<div class="loading">Error loading archive.</div>'; return }
+  if (error) { list.innerHTML = '<div class="arc-loading">Error loading archive.</div>'; return }
 
   if (!projects.length) {
     list.innerHTML = `<div class="empty-state">
-      <div class="empty-state-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><rect x="1" y="3" width="22" height="5"/><path d="M10 12h4"/></svg>
-      </div>
-      <div class="empty-state-title">No archived projects yet</div>
-      <div class="empty-state-sub">Archived projects will appear here</div>
+      <div class="empty-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><rect x="1" y="3" width="22" height="5"/><path d="M10 12h4"/></svg></div>
+      <div class="empty-title">No archived projects yet</div>
+      <div class="empty-sub">Archived projects will appear here</div>
     </div>`
     return
   }
 
   archivedProjects = projects
+  const ids = projects.map(p => p.id)
 
-  // Load all tasks and reports for these projects
-  const projectIds = projects.map(p => p.id)
-
-  const [tasksRes, reportsRes] = await Promise.all([
-    supabase.from('tasks').select('*, study_types(code)').in('project_id', projectIds).order('site'),
-    supabase.from('reports').select('*').in('project_id', projectIds).order('generated_at', { ascending: false })
+  const [tr, rr] = await Promise.all([
+    supabase.from('tasks').select('*, study_types(code)').in('project_id', ids).order('site'),
+    supabase.from('reports').select('*').in('project_id', ids).order('generated_at', { ascending: false })
   ])
 
-  // Index by project
-  if (tasksRes.data) {
-    tasksRes.data.forEach(t => {
-      if (!allTasks[t.project_id]) allTasks[t.project_id] = []
-      allTasks[t.project_id].push(t)
-    })
-  }
-  if (reportsRes.data) {
-    reportsRes.data.forEach(r => {
-      if (!allReports[r.task_id]) allReports[r.task_id] = []
-      allReports[r.task_id].push(r)
-    })
-    // also index project-level reports (no task_id)
-    reportsRes.data.filter(r => !r.task_id).forEach(r => {
-      const key = 'proj_' + r.project_id
-      if (!allReports[key]) allReports[key] = []
-      allReports[key].push(r)
-    })
-  }
+  tasksByProject = {}
+  reportsByTask  = {}
 
-  renderArchive()
+  if (tr.data) tr.data.forEach(t => {
+    if (!tasksByProject[t.project_id]) tasksByProject[t.project_id] = []
+    tasksByProject[t.project_id].push(t)
+  })
+
+  if (rr.data) rr.data.forEach(r => {
+    const key = r.task_id || ('proj_' + r.project_id)
+    if (!reportsByTask[key]) reportsByTask[key] = []
+    reportsByTask[key].push(r)
+  })
+
+  renderList()
 }
 
 // ── RENDER ─────────────────────────────────────────────────────────────────
-function renderArchive() {
-  const list = document.getElementById('archiveList')
-  list.innerHTML = archivedProjects.map(p => renderProjectCard(p)).join('')
+function renderList() {
+  document.getElementById('archiveList').innerHTML =
+    archivedProjects.map(p => renderCard(p)).join('')
 }
 
-function renderProjectCard(p) {
-  const tasks = allTasks[p.id] || []
-  const totalReports = tasks.reduce((s, t) => s + (allReports[t.id]||[]).length, 0)
-    + (allReports['proj_' + p.id] || []).length
+function renderCard(p) {
+  const tasks = tasksByProject[p.id] || []
+  const totalReports = tasks.reduce((s, t) => s + (reportsByTask[t.id]||[]).length, 0)
+
+  const badge = totalReports > 0
+    ? `<span class="arc-report-badge has-reports">${totalReports} Report${totalReports>1?'s':''}</span>`
+    : `<span class="arc-report-badge none">None</span>`
 
   return `<div class="arc-card" id="arc-${p.id}">
-    <div class="arc-card-header" onclick="toggleProject('${p.id}')">
-      <div class="arc-name">${escapeHtml(p.name)}</div>
-      <div class="arc-meta">
-        ${p.client ? `<span class="arc-meta-item">${escapeHtml(p.client)}</span>` : ''}
-        ${p.project_num ? `<span class="arc-meta-item">#${escapeHtml(p.project_num)}</span>` : ''}
-        <span class="arc-meta-item">${tasks.length} task${tasks.length !== 1 ? 's' : ''}</span>
-        <span class="arc-meta-item">${totalReports} report${totalReports !== 1 ? 's' : ''}</span>
-        <span class="arc-archived-date">Archived ${fmtDate(p.archived_at)}</span>
+    <div class="arc-row" onclick="toggle('${p.id}')">
+      <div class="arc-col-name">
+        <div class="arc-name">${esc(p.name)}</div>
       </div>
-      <span class="arc-chevron">›</span>
+      <div class="arc-col-mid">
+        ${p.client ? `<div class="arc-client">${esc(p.client)}</div>` : ''}
+        ${p.location ? `<div class="arc-city">${esc(p.location)}</div>` : ''}
+      </div>
+      <div class="arc-col-projnum">${p.project_num ? '#'+esc(p.project_num) : '—'}</div>
+      <div class="arc-col-date">${fmtDate(p.archived_at)}</div>
+      <div class="arc-col-reports">${badge}</div>
+      <div class="arc-chevron">›</div>
     </div>
     <div class="arc-panel" id="arc-panel-${p.id}">
-      ${renderTaskTable(p, tasks)}
-      <div class="arc-panel-footer">
-        <span class="arc-footer-meta">${tasks.length} tasks · ${totalReports} reports · ${p.location || ''}</span>
+      ${renderTasks(p, tasks)}
+      <div class="arc-footer">
+        <span class="arc-footer-meta">${tasks.length} task${tasks.length!==1?'s':''} · ${totalReports} report${totalReports!==1?'s':''}</span>
         <div class="arc-footer-actions">
-          <button class="btn-upload-project" onclick="openUploadModal('${p.id}')">
+          <button class="btn-upload-report" onclick="openUploadModal('${p.id}')">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            Upload Report
+            Upload
           </button>
-          <button class="btn-unarchive" onclick="unarchiveProject('${p.id}')">Unarchive</button>
+          <button class="btn-dl-all" onclick="downloadAll('${p.id}')">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download All
+          </button>
+          <button class="btn-unarchive" onclick="unarchive('${p.id}')">Unarchive</button>
         </div>
       </div>
     </div>
   </div>`
 }
 
-function renderTaskTable(p, tasks) {
-  if (!tasks.length) return `<div style="padding:16px 20px;font-size:12px;color:var(--text-3);font-style:italic">No tasks in this project.</div>`
+function renderTasks(p, tasks) {
+  if (!tasks.length) return `<div style="padding:14px 16px;font-size:12px;color:var(--text-3);font-style:italic">No tasks.</div>`
 
   const rows = tasks.map(t => {
-    const reports = allReports[t.id] || []
-    const typeCode = t.study_types?.code || '—'
+    const reports = reportsByTask[t.id] || []
+    const chips = reports.map(r => {
+      const cls = r.format === 'xlsx' ? ' xlsx' : r.uploaded ? ' uploaded' : ''
+      return `<a class="report-chip${cls}" href="javascript:void(0)" onclick="dlReport('${r.id}')" title="${esc(r.filename)}">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        ${esc(r.type)} ${r.format.toUpperCase()}
+      </a>`
+    }).join('')
 
-    const reportChips = reports.length
-      ? reports.map(r => {
-          const dlUrl = r.storage_path
-            ? `javascript:downloadReport('${r.id}')`
-            : `javascript:void(0)`
-          return `<a class="report-chip${r.format === 'xlsx' ? ' xlsx' : ''}${r.uploaded ? ' uploaded' : ''}"
-            href="${dlUrl}" title="${escapeHtml(r.filename)}">
-            ${reportIcon(r.format)}
-            ${r.type} ${r.format.toUpperCase()}${r.uploaded ? ' ↑' : ''}
-          </a>`
-        }).join('')
-      : `<span class="no-report">No reports</span>`
-
-    const genBtn = `<button class="btn-generate" onclick="openReport('${t.study_types?.code||''}','${t.id}','${p.id}')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="15" x2="8" y2="15"/><line x1="12" y1="11" x2="8" y2="11"/></svg>
+    const genBtn = `<button class="btn-generate" onclick="generate('${t.study_types?.code||''}','${t.id}','${p.id}')">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
       Generate
     </button>`
 
     return `<tr>
       <td class="arc-task-num">${t.site}</td>
-      <td><span class="arc-task-name">${escapeHtml(t.description)}</span></td>
-      <td><span class="arc-task-type">${escapeHtml(typeCode)}</span></td>
+      <td><span class="arc-task-name">${esc(t.description)}</span></td>
+      <td><span class="arc-task-type">${esc(t.study_types?.code||'—')}</span></td>
       <td class="arc-reports-cell">
-        <div class="report-chips">
-          ${reportChips}
-          ${genBtn}
-        </div>
+        <div class="report-chips">${chips}${genBtn}</div>
       </td>
     </tr>`
   }).join('')
 
-  return `<div class="arc-table-wrap">
-    <table class="arc-table">
-      <thead>
-        <tr>
-          <th style="width:36px">#</th>
-          <th>Task</th>
-          <th style="width:80px">Type</th>
-          <th style="width:300px;text-align:right;padding-right:16px">Reports</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
-  </div>`
+  return `<table class="arc-table">
+    <thead><tr>
+      <th style="width:36px">#</th>
+      <th>Task</th>
+      <th style="width:70px">Type</th>
+      <th style="text-align:right;padding-right:16px">Reports</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`
 }
 
-// ── TOGGLE ─────────────────────────────────────────────────────────────────
-function toggleProject(id) {
+// ── TOGGLE ────────────────────────────────────────────────────────────────
+function toggle(id) {
   const card = document.getElementById('arc-' + id)
-  card.classList.toggle('open')
+  if (!card) return
+  const wasOpen = card.classList.contains('open')
+  document.querySelectorAll('.arc-card.open').forEach(c => c.classList.remove('open'))
+  if (!wasOpen) card.classList.add('open')
 }
-window.toggleProject = toggleProject
+window.toggle = toggle
 
-// ── UNARCHIVE ──────────────────────────────────────────────────────────────
-async function unarchiveProject(id) {
-  const { error } = await supabase
-    .from('projects')
+// ── UNARCHIVE ─────────────────────────────────────────────────────────────
+async function unarchive(id) {
+  const { error } = await supabase.from('projects')
     .update({ archived_at: null, archived_by: null })
     .eq('id', id)
-
   if (error) { console.error(error); return }
-
   archivedProjects = archivedProjects.filter(p => p.id !== id)
-  delete allTasks[id]
-  renderArchive()
+  renderList()
   showToast('Project restored to Projects')
 }
-window.unarchiveProject = unarchiveProject
+window.unarchive = unarchive
 
-// ── OPEN REPORT GENERATOR ─────────────────────────────────────────────────
-function openReport(type, taskId, projectId) {
-  const tasks = allTasks[projectId] || []
-  const task  = tasks.find(t => t.id === taskId) || {}
-  const proj  = archivedProjects.find(p => p.id === projectId) || {}
-
+// ── GENERATE ─────────────────────────────────────────────────────────────
+function generate(type, taskId, projectId) {
+  const task = (tasksByProject[projectId]||[]).find(t => t.id === taskId) || {}
+  const proj = archivedProjects.find(p => p.id === projectId) || {}
   const params = new URLSearchParams({
     location: task.description || '',
     city:     proj.location    || '',
@@ -439,47 +1523,55 @@ function openReport(type, taskId, projectId) {
     client:   proj.client      || '',
     type:     type
   })
-
-  const map = { TMC: 'TMC_Report_Generator.html', SPD: 'SPD_Report_Generator.html', ADT: 'ADT_Report_Generator.html', CLS: 'CLS_Report_Generator.html' }
-  window.open((map[type] || 'ADT_Report_Generator.html') + '?' + params.toString(), '_blank')
+  const map = { TMC:'TMC_Report_Generator.html', SPD:'SPD_Report_Generator.html', ADT:'ADT_Report_Generator.html', CLS:'CLS_Report_Generator.html' }
+  window.open((map[type]||'ADT_Report_Generator.html') + '?' + params, '_blank')
 }
-window.openReport = openReport
+window.generate = generate
 
 // ── DOWNLOAD REPORT ───────────────────────────────────────────────────────
-async function downloadReport(reportId) {
-  const report = Object.values(allReports).flat().find(r => r.id === reportId)
-  if (!report?.storage_path) { showToast('No file stored'); return }
-
-  const { data, error } = await supabase.storage
-    .from('reports')
-    .createSignedUrl(report.storage_path, 60)
-
-  if (error) { console.error(error); showToast('Download failed'); return }
+async function dlReport(reportId) {
+  const all = Object.values(reportsByTask).flat()
+  const r = all.find(x => x.id === reportId)
+  if (!r?.storage_path) { showToast('No file stored — please re-generate'); return }
+  const { data, error } = await supabase.storage.from('reports').createSignedUrl(r.storage_path, 60)
+  if (error) { showToast('Download failed'); return }
   window.open(data.signedUrl, '_blank')
 }
-window.downloadReport = downloadReport
+window.dlReport = dlReport
+
+// ── DOWNLOAD ALL ─────────────────────────────────────────────────────────
+async function downloadAll(projectId) {
+  const tasks = tasksByProject[projectId] || []
+  const reports = tasks.flatMap(t => reportsByTask[t.id]||[]).filter(r => r.storage_path)
+  if (!reports.length) { showToast('No stored reports to download'); return }
+  showToast(`Downloading ${reports.length} report${reports.length>1?'s':''}…`)
+  for (const r of reports) {
+    const { data } = await supabase.storage.from('reports').createSignedUrl(r.storage_path, 60)
+    if (data?.signedUrl) {
+      const a = document.createElement('a')
+      a.href = data.signedUrl
+      a.download = r.filename
+      a.click()
+      await new Promise(res => setTimeout(res, 600))
+    }
+  }
+}
+window.downloadAll = downloadAll
 
 // ── UPLOAD MODAL ──────────────────────────────────────────────────────────
-async function openUploadModal(preselectedProjectId = null) {
+async function openUploadModal(projectId) {
+  uploadProjectId = projectId
   uploadFiles = []
-  document.getElementById('uploadFileList').innerHTML = ''
-  document.getElementById('uploadTask').innerHTML = '<option value="">Select task…</option>'
-
-  // populate project dropdown with archived projects
-  const sel = document.getElementById('uploadProject')
-  sel.innerHTML = '<option value="">Select project…</option>'
-  archivedProjects.forEach(p => {
-    const opt = document.createElement('option')
-    opt.value = p.id
-    opt.textContent = p.name + (p.project_num ? ` (#${p.project_num})` : '')
-    sel.appendChild(opt)
+  document.getElementById('fileList').innerHTML = ''
+  const sel = document.getElementById('uploadTask')
+  sel.innerHTML = '<option value="">Project-level (no specific task)</option>'
+  const tasks = tasksByProject[projectId] || []
+  tasks.forEach(t => {
+    const o = document.createElement('option')
+    o.value = t.id
+    o.textContent = `#${t.site} — ${t.description}`
+    sel.appendChild(o)
   })
-
-  if (preselectedProjectId) {
-    sel.value = preselectedProjectId
-    await loadUploadTasks(preselectedProjectId)
-  }
-
   document.getElementById('uploadModal').classList.add('open')
 }
 window.openUploadModal = openUploadModal
@@ -490,122 +1582,75 @@ function closeUploadModal() {
 }
 window.closeUploadModal = closeUploadModal
 
-document.getElementById('uploadProject')?.addEventListener('change', async function() {
-  await loadUploadTasks(this.value)
+document.getElementById('uploadModal')?.addEventListener('click', e => {
+  if (e.target === document.getElementById('uploadModal')) closeUploadModal()
 })
 
-async function loadUploadTasks(projectId) {
-  const sel = document.getElementById('uploadTask')
-  sel.innerHTML = '<option value="">All tasks / project-level</option>'
-  if (!projectId) return
-  const tasks = allTasks[projectId] || []
-  tasks.forEach(t => {
-    const opt = document.createElement('option')
-    opt.value = t.id
-    opt.textContent = `#${t.site} — ${t.description}`
-    sel.appendChild(opt)
-  })
-}
-
-// File input
-document.getElementById('uploadFileInput')?.addEventListener('change', function() {
+document.getElementById('fileInput')?.addEventListener('change', function() {
   handleFiles(Array.from(this.files))
 })
 
-// Drag and drop
 const zone = document.getElementById('uploadZone')
 zone?.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag') })
 zone?.addEventListener('dragleave', () => zone.classList.remove('drag'))
-zone?.addEventListener('drop', e => {
-  e.preventDefault()
-  zone.classList.remove('drag')
-  handleFiles(Array.from(e.dataTransfer.files))
-})
+zone?.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag'); handleFiles(Array.from(e.dataTransfer.files)) })
 
 function handleFiles(files) {
   const valid = files.filter(f => f.type === 'application/pdf' || f.name.endsWith('.xlsx'))
+  if (!valid.length) { showToast('PDF and XLSX only'); return }
   uploadFiles.push(...valid)
   renderFileList()
 }
 
 function renderFileList() {
-  const list = document.getElementById('uploadFileList')
-  list.innerHTML = uploadFiles.map((f, i) => `
+  document.getElementById('fileList').innerHTML = uploadFiles.map((f,i) => `
     <div class="upload-file-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      <span>${escapeHtml(f.name)}</span>
+      <span>${esc(f.name)}</span>
       <span style="margin-left:4px;color:var(--text-3);font-size:10px">${(f.size/1024).toFixed(0)} KB</span>
       <button class="upload-file-remove" onclick="removeFile(${i})">×</button>
     </div>`).join('')
 }
 
-function removeFile(idx) {
-  uploadFiles.splice(idx, 1)
-  renderFileList()
-}
+function removeFile(i) { uploadFiles.splice(i,1); renderFileList() }
 window.removeFile = removeFile
 
 async function submitUpload() {
-  const projectId = document.getElementById('uploadProject').value
-  const taskId    = document.getElementById('uploadTask').value
-  const type      = document.getElementById('uploadType').value
-
-  if (!projectId) { showToast('Please select a project'); return }
-  if (!uploadFiles.length) { showToast('Please select a file'); return }
-
-  const proj = archivedProjects.find(p => p.id === projectId)
+  if (!uploadProjectId) return
+  if (!uploadFiles.length) { showToast('Select a file first'); return }
+  const taskId = document.getElementById('uploadTask').value || null
+  const type   = document.getElementById('uploadType').value
 
   for (const file of uploadFiles) {
-    const ext      = file.name.endsWith('.xlsx') ? 'xlsx' : 'pdf'
-    const safeName = file.name.replace(/[^a-z0-9.\-_]/gi, '_')
-    const path     = `${COMPANY_ID}/${projectId}/${Date.now()}_${safeName}`
+    const ext  = file.name.endsWith('.xlsx') ? 'xlsx' : 'pdf'
+    const safe = file.name.replace(/[^a-z0-9.\-_]/gi,'_')
+    const path = `${COMPANY_ID}/${uploadProjectId}/${Date.now()}_${safe}`
 
-    const { error: upErr } = await supabase.storage
-      .from('reports')
-      .upload(path, file, { contentType: file.type, upsert: false })
+    const { error: upErr } = await supabase.storage.from('reports').upload(path, file, { contentType: file.type })
+    if (upErr) { showToast('Upload failed: ' + upErr.message); continue }
 
-    if (upErr) { console.error(upErr); showToast('Upload failed: ' + upErr.message); continue }
+    const { data: rep } = await supabase.from('reports').insert({
+      company_id: COMPANY_ID, project_id: uploadProjectId,
+      task_id: taskId, type, format: ext,
+      filename: file.name, storage_path: path, uploaded: true
+    }).select().single()
 
-    const record = {
-      company_id:   COMPANY_ID,
-      project_id:   projectId,
-      task_id:      taskId || null,
-      type,
-      format:       ext,
-      filename:     file.name,
-      storage_path: path,
-      uploaded:     true,
-    }
-
-    const { data: rep, error: dbErr } = await supabase.from('reports').insert(record).select().single()
-    if (dbErr) { console.error(dbErr); continue }
-
-    // Update local state
-    const key = taskId || ('proj_' + projectId)
-    if (!allReports[key]) allReports[key] = []
-    allReports[key].unshift(rep)
-
-    // Mark task has_report
-    if (taskId) {
-      await supabase.from('tasks').update({ has_report: true }).eq('id', taskId)
+    if (rep) {
+      const key = taskId || ('proj_' + uploadProjectId)
+      if (!reportsByTask[key]) reportsByTask[key] = []
+      reportsByTask[key].unshift(rep)
+      if (taskId) await supabase.from('tasks').update({ has_report: true }).eq('id', taskId)
     }
   }
 
   closeUploadModal()
-  renderArchive()
-  showToast(`${uploadFiles.length} file${uploadFiles.length > 1 ? 's' : ''} uploaded`)
-  uploadFiles = []
+  renderList()
+  showToast('Uploaded successfully')
 }
 window.submitUpload = submitUpload
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 await loadArchive()
-
-// Click outside modal to close
-document.getElementById('uploadModal')?.addEventListener('click', function(e) {
-  if (e.target === this) closeUploadModal()
-})
-
 </script>
 </body>
 </html>
