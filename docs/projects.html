@@ -1055,7 +1055,7 @@ textarea.form-input { height: auto; padding: 8px 10px; resize: vertical; line-he
     <a href="#" class="active">Projects</a>
     <a href="#">Team</a>
     <a href="#">Reports</a>
-    <a href="#">Archive</a>
+    <a href="archive.html">Archive</a>
   </div>
 </nav>
 
@@ -1904,11 +1904,35 @@ window.createProject = createProject
 // ═══════════════════════════════════════
 // ARCHIVE / REOPEN PROJECT
 // ═══════════════════════════════════════
-async function archiveProject(id) {
-  const { error } = await supabase.from('projects').update({ status: 'complete' }).eq('id', id).eq('company_id', COMPANY_ID)
+let archiveTarget = null
+
+function promptArchiveProject(id) {
+  archiveTarget = id
+  const proj = projects.find(p => p.id === id)
+  document.getElementById('archiveProjectBody').textContent =
+    'Move "' + (proj?.name || 'this project') + '" to Archive? It will be removed from the Projects page.'
+  openModal('archiveProjectModal')
+}
+window.promptArchiveProject = promptArchiveProject
+
+async function confirmArchiveProject() {
+  if (!archiveTarget) return
+  const id = archiveTarget
+  const { error } = await supabase
+    .from('projects')
+    .update({ archived_at: new Date().toISOString() })
+    .eq('id', id)
+    .eq('company_id', COMPANY_ID)
   if (error) { console.error('archiveProject:', error); return }
+  archiveTarget = null
+  closeModal('archiveProjectModal')
+  if (openId === id) openId = null
   await loadProjects()
-  showToast('Project archived')
+  showToast('Project archived — view in Archive')
+}
+
+async function archiveProject(id) {
+  promptArchiveProject(id)
 }
 window.archiveProject = archiveProject
 
@@ -2410,5 +2434,18 @@ function showTechSelect(taskId, projectId, el) {
 await loadProjects()
 
 </script>
+
+<!-- ARCHIVE PROJECT MODAL -->
+<div class="modal-overlay" id="archiveProjectModal">
+  <div class="modal">
+    <div class="modal-eyebrow">Project</div>
+    <div class="modal-title">Archive Project</div>
+    <div class="modal-body" id="archiveProjectBody"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('archiveProjectModal')">Cancel</button>
+      <button class="btn-solid" onclick="confirmArchiveProject()" style="background:var(--c-olive)">Archive</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
