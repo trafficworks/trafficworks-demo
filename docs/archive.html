@@ -1043,213 +1043,56 @@ textarea.form-input { height: auto; padding: 8px 10px; resize: vertical; line-he
 .toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(12px); background: var(--text); color: var(--surface); padding: 8px 16px; border-radius: 2px; font-size: 11px; font-weight: 500; opacity: 0; pointer-events: none; transition: all .22s; z-index: 800; white-space: nowrap; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-
-/* ── ARCHIVE OVERRIDES ── */
-.arc-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  margin-bottom: 3px;
-  overflow: visible;
-}
-
-.arc-row {
-  display: grid;
-  grid-template-columns: 220px 1fr 110px 140px 60px 20px;
-  align-items: center;
-  padding: 0 16px;
-  height: 52px;
-  cursor: pointer;
-  user-select: none;
-  gap: 0;
-}
-.arc-row:hover { background: var(--surface-2); }
-
-.arc-col-name {
-  padding-right: 16px;
-  border-right: 1px solid var(--line-soft);
-}
-.arc-name { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-.arc-col-mid {
-  padding: 0 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2px;
-  min-width: 0;
-  border-right: 1px solid var(--line-soft);
-}
-.arc-client  { font-size: 12px; font-weight: 600; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.arc-city    { font-size: 11px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-.arc-col-projnum {
-  padding: 0 14px;
-  font-size: 11px; font-weight: 600; color: var(--text-3);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  border-right: 1px solid var(--line-soft);
-}
-
-.arc-col-date {
-  padding: 0 14px;
-  font-size: 10px; font-weight: 600; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--text-3);
-  white-space: nowrap;
-  border-right: 1px solid var(--line-soft);
-}
-
-.arc-col-reports {
-  padding: 0 12px;
-  text-align: center;
-}
-.arc-report-badge {
-  display: inline-flex; align-items: center;
-  padding: 3px 8px; border-radius: 1px;
-  font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-  background: var(--c-olive-lt); border: 1px solid #A5B097; color: var(--c-olive-h);
-  white-space: nowrap;
-}
-.arc-report-badge.none {
-  background: var(--surface-2); border-color: var(--line); color: var(--text-3);
-}
-
-.arc-chevron { font-size: 13px; color: var(--line-strong); transition: transform .2s; text-align: right; }
-.arc-card.open .arc-chevron { transform: rotate(90deg); }
-
-/* PANEL */
-.arc-panel { display: none; border-top: 1px solid var(--line-soft); }
-.arc-card.open .arc-panel { display: block; }
-
-/* TASK TABLE */
-.arc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.arc-table th {
-  padding: 8px 12px;
-  background: var(--surface-2);
-  color: var(--text-eyebrow);
-  font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-  border-bottom: 1px solid var(--line);
-  text-align: left;
-}
-.arc-table th:last-child { text-align: right; padding-right: 16px; }
-.arc-table td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
-.arc-table tr:last-child td { border-bottom: none; }
-.arc-table tbody tr:hover td { background: rgba(31,41,51,.018); }
-
-.arc-task-num  { font-size: 11px; color: var(--text-3); font-weight: 600; width: 32px; }
-.arc-task-name { font-size: 13px; font-weight: 600; color: var(--text); }
-.arc-task-type {
-  display: inline-flex; align-items: center;
-  padding: 3px 8px; background: var(--surface-2);
-  border: 1px solid var(--line); border-radius: 1px;
-  font-size: 9px; font-weight: 700; letter-spacing: .06em; color: var(--text-label);
-}
-.arc-reports-cell { text-align: right; padding-right: 16px !important; }
-
-/* REPORT CHIPS */
-.report-chips { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
-.report-chip {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 9px; border-radius: 1px;
-  font-size: 10px; font-weight: 600; letter-spacing: .04em;
-  cursor: pointer; border: 1px solid var(--line);
-  background: var(--surface-2); color: var(--text-2);
-  text-decoration: none; transition: all .15s; white-space: nowrap;
-}
-.report-chip:hover { border-color: var(--c-teal); color: var(--c-teal-h); background: #DCE7E9; }
-.report-chip svg { width: 11px; height: 11px; flex-shrink: 0; }
-.report-chip.xlsx { color: var(--c-olive-h); background: #E3E8DC; border-color: #A5B097; }
-.report-chip.xlsx:hover { border-color: var(--c-olive-h); }
-.report-chip.uploaded { color: var(--c-amber-h); background: #F3E6C7; border-color: #E7C98A; }
-.btn-generate {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 9px; border-radius: 1px;
-  font-size: 10px; font-weight: 600; letter-spacing: .04em;
-  cursor: pointer; border: 1px solid var(--line);
-  background: transparent; color: var(--text-3);
-  transition: all .15s; font-family: var(--font); white-space: nowrap;
-}
-.btn-generate:hover { border-color: var(--c-teal); color: var(--c-teal-h); }
-.btn-generate svg { width: 11px; height: 11px; }
-
-/* PANEL FOOTER */
-.arc-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 14px;
-  background: var(--surface-2); border-top: 1px solid var(--line-soft);
-}
-.arc-footer-meta { font-size: 10px; color: var(--text-3); }
-.arc-footer-actions { display: flex; align-items: center; gap: 8px; }
-.btn-dl-all {
-  height: 28px; padding: 0 12px;
-  border: 1px solid var(--c-teal); border-radius: 2px;
-  background: transparent; font-family: var(--font);
-  font-size: 10px; font-weight: 700; color: var(--c-teal);
-  cursor: pointer; transition: all .15s; letter-spacing: .04em;
-  display: inline-flex; align-items: center; gap: 5px;
-}
-.btn-dl-all:hover { background: #DCE7E9; }
-.btn-dl-all svg { width: 11px; height: 11px; }
-.btn-upload-report {
-  height: 28px; padding: 0 12px;
-  border: 1px solid var(--line); border-radius: 2px;
-  background: transparent; font-family: var(--font);
-  font-size: 10px; font-weight: 600; color: var(--text-3);
-  cursor: pointer; transition: all .15s;
-  display: inline-flex; align-items: center; gap: 5px;
-}
-.btn-upload-report:hover { border-color: var(--line-strong); color: var(--text); }
-.btn-unarchive {
-  height: 28px; padding: 0 12px;
-  border: 1px solid var(--line); border-radius: 2px;
-  background: transparent; font-family: var(--font);
-  font-size: 10px; font-weight: 600; color: var(--text-3);
-  cursor: pointer; transition: all .15s;
-}
-.btn-unarchive:hover { border-color: var(--line-strong); color: var(--text); }
-
-/* TABLE HEADER ROW */
-.arc-table-header {
-  display: grid;
-  grid-template-columns: 220px 1fr 110px 140px 60px 20px;
-  padding: 0 16px;
-  height: 32px; align-items: center;
-  border-bottom: 1px solid var(--line);
-  background: var(--surface-2);
-}
-.arc-th {
-  font-size: 9px; font-weight: 700; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--text-eyebrow);
-}
-
-/* EMPTY + LOADING */
-.empty-state { text-align: center; padding: 60px 20px; color: var(--text-3); }
-.empty-icon  { margin-bottom: 12px; opacity: .3; }
-.empty-title { font-size: 14px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
-.empty-sub   { font-size: 12px; }
-.arc-loading { text-align: center; padding: 40px; font-size: 11px; color: var(--text-3); letter-spacing: .08em; text-transform: uppercase; }
-
-/* UPLOAD MODAL */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(31,41,51,.4); z-index: 500; align-items: center; justify-content: center; }
-.modal-overlay.open { display: flex; }
-.upload-zone {
-  border: 2px dashed var(--line); border-radius: 2px;
-  padding: 28px 20px; text-align: center; cursor: pointer;
-  transition: all .15s; background: var(--surface-2);
-  margin-bottom: 12px;
-}
-.upload-zone:hover, .upload-zone.drag { border-color: var(--c-teal); background: #DCE7E9; }
-.upload-zone-title { font-size: 13px; font-weight: 600; color: var(--text-2); margin-bottom: 4px; }
-.upload-zone-sub   { font-size: 11px; color: var(--text-3); }
-.upload-file-list  { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
-.upload-file-item  {
-  display: flex; align-items: center; gap: 8px;
-  padding: 7px 10px; background: var(--surface);
-  border: 1px solid var(--line-soft); border-radius: 1px;
-  font-size: 11px; color: var(--text-2);
-}
-.upload-file-item svg { width: 13px; height: 13px; flex-shrink: 0; color: var(--c-teal); }
-.upload-file-remove { margin-left: auto; background: none; border: none; cursor: pointer; color: var(--text-3); font-size: 14px; padding: 0 2px; }
-.upload-file-remove:hover { color: #C45C5C; }
+.arc-meta-block { display:flex; align-items:center; gap:0; flex:1; min-width:0; }
+.arc-meta-field { display:flex; flex-direction:column; gap:3px; padding:0 16px; border-right:1px solid var(--line-soft); min-width:0; flex-shrink:0; }
+.arc-meta-field:last-child { border-right:none; }
+.arc-meta-label { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--text-eyebrow); line-height:1; }
+.arc-meta-value { font-size:12px; font-weight:600; color:var(--text-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:160px; }
+.arc-meta-date  { font-size:11px; font-weight:500; color:var(--text-3); }
+.arc-report-badge { display:inline-flex; align-items:center; padding:3px 9px; border-radius:1px; font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; background:var(--c-olive-lt); border:1px solid #A5B097; color:var(--c-olive-h); white-space:nowrap; }
+.arc-report-badge.none { background:var(--surface-2); border-color:var(--line); color:var(--text-3); }
+.arc-task-table { width:100%; border-collapse:collapse; font-size:12px; }
+.arc-task-table th { padding:8px 12px; background:var(--surface-2); color:var(--text-eyebrow); font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; border-bottom:1px solid var(--line); text-align:left; }
+.arc-task-table th:last-child { text-align:right; padding-right:16px; }
+.arc-task-table td { padding:9px 12px; border-bottom:1px solid var(--line-soft); vertical-align:middle; }
+.arc-task-table tr:last-child td { border-bottom:none; }
+.arc-task-table tbody tr:hover td { background:rgba(31,41,51,.018); }
+.arc-task-num  { font-size:11px; color:var(--text-3); font-weight:600; width:32px; }
+.arc-task-name { font-size:13px; font-weight:600; color:var(--text); }
+.arc-task-type { display:inline-flex; align-items:center; padding:3px 8px; background:var(--surface-2); border:1px solid var(--line); border-radius:1px; font-size:9px; font-weight:700; letter-spacing:.06em; color:var(--text-label); }
+.arc-reports-cell { text-align:right !important; padding-right:16px !important; }
+.report-chips { display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+.report-chip { display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:1px; font-size:10px; font-weight:600; letter-spacing:.04em; cursor:pointer; border:1px solid var(--line); background:var(--surface-2); color:var(--text-2); text-decoration:none; transition:all .15s; white-space:nowrap; }
+.report-chip:hover { border-color:var(--c-teal); color:var(--c-teal-h); background:#DCE7E9; }
+.report-chip svg { width:11px; height:11px; flex-shrink:0; }
+.report-chip.xlsx { color:var(--c-olive-h); background:#E3E8DC; border-color:#A5B097; }
+.report-chip.uploaded { color:var(--c-amber-h); background:#F3E6C7; border-color:#E7C98A; }
+.btn-generate { display:inline-flex; align-items:center; gap:5px; padding:4px 9px; border-radius:1px; font-size:10px; font-weight:600; letter-spacing:.04em; cursor:pointer; border:1px solid var(--line); background:transparent; color:var(--text-3); transition:all .15s; font-family:var(--font); white-space:nowrap; }
+.btn-generate:hover { border-color:var(--c-teal); color:var(--c-teal-h); }
+.btn-generate svg { width:11px; height:11px; }
+.arc-panel-footer { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--surface-2); border-top:1px solid var(--line-soft); }
+.arc-footer-meta { font-size:10px; color:var(--text-3); }
+.arc-footer-btns { display:flex; align-items:center; gap:8px; }
+.btn-arc { height:28px; padding:0 12px; border:1px solid var(--line); border-radius:2px; background:transparent; font-family:var(--font); font-size:10px; font-weight:600; color:var(--text-3); cursor:pointer; transition:all .15s; letter-spacing:.03em; display:inline-flex; align-items:center; gap:5px; }
+.btn-arc:hover { border-color:var(--line-strong); color:var(--text); }
+.btn-arc.teal { border-color:var(--c-teal); color:var(--c-teal-h); }
+.btn-arc.teal:hover { background:#DCE7E9; }
+.btn-arc svg { width:11px; height:11px; }
+.arc-empty { text-align:center; padding:60px 20px; color:var(--text-3); }
+.arc-empty-title { font-size:14px; font-weight:600; color:var(--text-2); margin-bottom:6px; }
+.arc-empty-sub { font-size:12px; }
+.arc-loading { text-align:center; padding:40px; font-size:11px; color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; }
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(31,41,51,.4); z-index:500; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.upload-zone { border:2px dashed var(--line); border-radius:2px; padding:24px 20px; text-align:center; cursor:pointer; transition:all .15s; background:var(--surface-2); margin-bottom:12px; }
+.upload-zone:hover, .upload-zone.drag { border-color:var(--c-teal); background:#DCE7E9; }
+.upload-zone-title { font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:3px; }
+.upload-zone-sub { font-size:11px; color:var(--text-3); }
+.upload-file-list { display:flex; flex-direction:column; gap:5px; margin-top:10px; }
+.upload-file-item { display:flex; align-items:center; gap:8px; padding:7px 10px; background:var(--surface); border:1px solid var(--line-soft); border-radius:1px; font-size:11px; color:var(--text-2); }
+.upload-file-item svg { width:13px; height:13px; flex-shrink:0; color:var(--c-teal); }
+.upload-file-remove { margin-left:auto; background:none; border:none; cursor:pointer; color:var(--text-3); font-size:14px; }
+.upload-file-remove:hover { color:#C45C5C; }
 </style>
 </head>
 <body>
@@ -1268,42 +1111,38 @@ textarea.form-input { height: auto; padding: 8px 10px; resize: vertical; line-he
 </nav>
 
 <div class="main">
-
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
     <div class="page-eyebrow">The Count Company — Archive</div>
   </div>
-
-  <!-- COLUMN HEADERS -->
-  <div class="arc-table-header">
-    <div class="arc-th">Project</div>
-    <div class="arc-th">Client / City</div>
-    <div class="arc-th">Project #</div>
-    <div class="arc-th">Archived</div>
-    <div class="arc-th">Reports</div>
-    <div></div>
-  </div>
-
   <div id="archiveList"><div class="arc-loading">Loading archive…</div></div>
+</div>
 
+<div class="js-overlay" id="jsOverlay">
+  <div class="js-bar">
+    <button class="js-close" onclick="closeJobSheet()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="js-bar-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Job Sheet</span>
+    <button class="js-dl" onclick="printJobSheet()"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF</button>
+  </div>
+  <div class="js-body"><div class="js-doc" id="jsDoc"></div></div>
 </div>
 
 <!-- UPLOAD MODAL -->
 <div class="modal-overlay" id="uploadModal">
   <div class="modal" style="width:460px">
-    <div class="modal-header" style="padding:16px 20px 12px;border-bottom:1px solid var(--line-soft)">
-      <div class="modal-eyebrow" style="font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-eyebrow);margin-bottom:3px">Archive</div>
-      <div class="modal-title" style="font-size:15px;font-weight:700;color:var(--text)">Upload Report</div>
+    <div style="padding:16px 20px 12px;border-bottom:1px solid var(--line-soft)">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-eyebrow);margin-bottom:3px">Archive</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text)">Upload Report</div>
     </div>
     <div style="padding:16px 20px">
       <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
         <label style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-eyebrow)">Task</label>
-        <select class="field-select" id="uploadTask" style="height:34px;border:1px solid var(--line);border-radius:2px;background:var(--surface);font-family:var(--font);font-size:13px;color:var(--text);padding:0 10px;outline:none;width:100%">
-          <option value="">Select task…</option>
+        <select id="uploadTask" style="height:34px;border:1px solid var(--line);border-radius:2px;background:var(--surface);font-family:var(--font);font-size:13px;color:var(--text);padding:0 10px;outline:none;width:100%">
+          <option value="">Project-level</option>
         </select>
       </div>
       <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px">
-        <label style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-eyebrow)">Report Type</label>
-        <select class="field-select" id="uploadType" style="height:34px;border:1px solid var(--line);border-radius:2px;background:var(--surface);font-family:var(--font);font-size:13px;color:var(--text);padding:0 10px;outline:none;width:100%">
+        <label style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-eyebrow)">Type</label>
+        <select id="uploadType" style="height:34px;border:1px solid var(--line);border-radius:2px;background:var(--surface);font-family:var(--font);font-size:13px;color:var(--text);padding:0 10px;outline:none;width:100%">
           <option value="ADT">ADT</option>
           <option value="TMC">TMC</option>
           <option value="SPD">Speed Survey</option>
@@ -1337,32 +1176,34 @@ let tasksByProject   = {}
 let reportsByTask    = {}
 let uploadFiles      = []
 let uploadProjectId  = null
-let openId           = null
+let cyclesByTask     = {}
 
-// ── HELPERS ────────────────────────────────────────────────────────────────
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+function escapeHtml(str) {
+  return String(str ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+}
+
+function getInitials(name) {
+  if (!name) return '—'
+  return name.split(' ').map(p => p[0]).join('').toUpperCase()
 }
 
 function showToast(msg) {
-  const t = document.getElementById('toast')
-  t.textContent = msg
-  t.classList.add('show')
-  setTimeout(() => t.classList.remove('show'), 2500)
+  const el = document.getElementById('toast')
+  el.textContent = msg
+  el.classList.add('visible')
+  clearTimeout(el._t)
+  el._t = setTimeout(() => el.classList.remove('visible'), 2500)
 }
 
 function fmtDate(iso) {
   if (!iso) return '—'
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  return new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
 }
 
-// ── LOAD ───────────────────────────────────────────────────────────────────
 async function loadArchive() {
   const list = document.getElementById('archiveList')
-
   const { data: projects, error } = await supabase
-    .from('projects')
-    .select('*')
+    .from('projects').select('*')
     .eq('company_id', COMPANY_ID)
     .not('archived_at', 'is', null)
     .order('archived_at', { ascending: false })
@@ -1370,10 +1211,10 @@ async function loadArchive() {
   if (error) { list.innerHTML = '<div class="arc-loading">Error loading archive.</div>'; return }
 
   if (!projects.length) {
-    list.innerHTML = `<div class="empty-state">
-      <div class="empty-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><rect x="1" y="3" width="22" height="5"/><path d="M10 12h4"/></svg></div>
-      <div class="empty-title">No archived projects yet</div>
-      <div class="empty-sub">Archived projects will appear here</div>
+    list.innerHTML = `<div class="arc-empty">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity:.3;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto"><path d="M21 8v13H3V8"/><rect x="1" y="3" width="22" height="5"/><path d="M10 12h4"/></svg>
+      <div class="arc-empty-title">No archived projects yet</div>
+      <div class="arc-empty-sub">Archive a project from the Projects page</div>
     </div>`
     return
   }
@@ -1382,69 +1223,87 @@ async function loadArchive() {
   const ids = projects.map(p => p.id)
 
   const [tr, rr] = await Promise.all([
-    supabase.from('tasks').select('*, study_types(code)').in('project_id', ids).order('site'),
+    supabase.from('tasks').select('*, study_types(code,name)').in('project_id', ids).order('site'),
     supabase.from('reports').select('*').in('project_id', ids).order('generated_at', { ascending: false })
   ])
 
   tasksByProject = {}
   reportsByTask  = {}
-
   if (tr.data) tr.data.forEach(t => {
     if (!tasksByProject[t.project_id]) tasksByProject[t.project_id] = []
     tasksByProject[t.project_id].push(t)
   })
-
   if (rr.data) rr.data.forEach(r => {
     const key = r.task_id || ('proj_' + r.project_id)
     if (!reportsByTask[key]) reportsByTask[key] = []
     reportsByTask[key].push(r)
   })
-
   renderList()
 }
 
-// ── RENDER ─────────────────────────────────────────────────────────────────
 function renderList() {
-  document.getElementById('archiveList').innerHTML =
-    archivedProjects.map(p => renderCard(p)).join('')
+  document.getElementById('archiveList').innerHTML = archivedProjects.map(renderCard).join('')
 }
 
 function renderCard(p) {
   const tasks = tasksByProject[p.id] || []
-  const totalReports = tasks.reduce((s, t) => s + (reportsByTask[t.id]||[]).length, 0)
-
+  const totalReports = tasks.reduce((s,t) => s + (reportsByTask[t.id]||[]).length, 0)
   const badge = totalReports > 0
-    ? `<span class="arc-report-badge has-reports">${totalReports} Report${totalReports>1?'s':''}</span>`
-    : `<span class="arc-report-badge none">None</span>`
+    ? `<span class="arc-report-badge">${totalReports} Report${totalReports>1?'s':''}</span>`
+    : `<span class="arc-report-badge none">No Reports</span>`
 
-  return `<div class="arc-card" id="arc-${p.id}">
-    <div class="arc-row" onclick="toggle('${p.id}')">
-      <div class="arc-col-name">
-        <div class="arc-name">${esc(p.name)}</div>
+  return `<div class="pb" id="arc-${p.id}">
+    <div class="pr-topbar" onclick="toggleArc('${p.id}')">
+      <div class="pr-name-block">
+        <div class="pr-name">${escapeHtml(p.name)}</div>
       </div>
-      <div class="arc-col-mid">
-        ${p.client ? `<div class="arc-client">${esc(p.client)}</div>` : ''}
-        ${p.location ? `<div class="arc-city">${esc(p.location)}</div>` : ''}
+      <div class="pr-middle">
+        <div class="arc-meta-block">
+          ${p.client ? `<div class="arc-meta-field" style="max-width:180px">
+            <span class="arc-meta-label">Client</span>
+            <span class="arc-meta-value">${escapeHtml(p.client)}</span>
+          </div>` : ''}
+          ${p.location ? `<div class="arc-meta-field" style="max-width:160px">
+            <span class="arc-meta-label">City</span>
+            <span class="arc-meta-value">${escapeHtml(p.location)}</span>
+          </div>` : ''}
+          ${p.project_num ? `<div class="arc-meta-field" style="width:110px">
+            <span class="arc-meta-label">Project #</span>
+            <span class="arc-meta-value">${escapeHtml(p.project_num)}</span>
+          </div>` : ''}
+          <div class="arc-meta-field" style="width:120px">
+            <span class="arc-meta-label">Archived</span>
+            <span class="arc-meta-date">${fmtDate(p.archived_at)}</span>
+          </div>
+          <div class="arc-meta-field" style="margin-left:auto;border-right:none">
+            ${badge}
+          </div>
+        </div>
       </div>
-      <div class="arc-col-projnum">${p.project_num ? '#'+esc(p.project_num) : '—'}</div>
-      <div class="arc-col-date">${fmtDate(p.archived_at)}</div>
-      <div class="arc-col-reports">${badge}</div>
-      <div class="arc-chevron">›</div>
+      <div class="ptb-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>
-    <div class="arc-panel" id="arc-panel-${p.id}">
+    <div class="ep" id="arc-ep-${p.id}">
+      <div class="ep-bar">
+        <div class="ep-acts">
+          <button class="ep-act-btn ep-act-btn-green" onclick="openJobSheet('${p.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Job Sheet
+          </button>
+        </div>
+      </div>
       ${renderTasks(p, tasks)}
-      <div class="arc-footer">
+      <div class="arc-panel-footer">
         <span class="arc-footer-meta">${tasks.length} task${tasks.length!==1?'s':''} · ${totalReports} report${totalReports!==1?'s':''}</span>
-        <div class="arc-footer-actions">
-          <button class="btn-upload-report" onclick="openUploadModal('${p.id}')">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <div class="arc-footer-btns">
+          <button class="btn-arc" onclick="openUploadModal('${p.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             Upload
           </button>
-          <button class="btn-dl-all" onclick="downloadAll('${p.id}')">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <button class="btn-arc teal" onclick="downloadAll('${p.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download All
           </button>
-          <button class="btn-unarchive" onclick="unarchive('${p.id}')">Unarchive</button>
+          <button class="btn-arc" onclick="unarchive('${p.id}')">Unarchive</button>
         </div>
       </div>
     </div>
@@ -1453,58 +1312,55 @@ function renderCard(p) {
 
 function renderTasks(p, tasks) {
   if (!tasks.length) return `<div style="padding:14px 16px;font-size:12px;color:var(--text-3);font-style:italic">No tasks.</div>`
-
   const rows = tasks.map(t => {
     const reports = reportsByTask[t.id] || []
     const chips = reports.map(r => {
       const cls = r.format === 'xlsx' ? ' xlsx' : r.uploaded ? ' uploaded' : ''
-      return `<a class="report-chip${cls}" href="javascript:void(0)" onclick="dlReport('${r.id}')" title="${esc(r.filename)}">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        ${esc(r.type)} ${r.format.toUpperCase()}
+      return `<a class="report-chip${cls}" href="javascript:void(0)" onclick="dlReport('${r.id}')" title="${escapeHtml(r.filename)}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        ${escapeHtml(r.type)} ${r.format.toUpperCase()}
       </a>`
     }).join('')
-
-    const genBtn = `<button class="btn-generate" onclick="generate('${t.study_types?.code||''}','${t.id}','${p.id}')">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-      Generate
-    </button>`
-
     return `<tr>
       <td class="arc-task-num">${t.site}</td>
-      <td><span class="arc-task-name">${esc(t.description)}</span></td>
-      <td><span class="arc-task-type">${esc(t.study_types?.code||'—')}</span></td>
+      <td><span class="arc-task-name">${escapeHtml(t.description)}</span></td>
+      <td><span class="arc-task-type">${escapeHtml(t.study_types?.code||'—')}</span></td>
       <td class="arc-reports-cell">
-        <div class="report-chips">${chips}${genBtn}</div>
+        <div class="report-chips">
+          ${chips}
+          <button class="btn-generate" onclick="generate('${t.study_types?.code||''}','${t.id}','${p.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Generate
+          </button>
+        </div>
       </td>
     </tr>`
   }).join('')
-
-  return `<table class="arc-table">
-    <thead><tr>
-      <th style="width:36px">#</th>
-      <th>Task</th>
-      <th style="width:70px">Type</th>
-      <th style="text-align:right;padding-right:16px">Reports</th>
-    </tr></thead>
-    <tbody>${rows}</tbody>
-  </table>`
+  return `<div style="padding:0 16px">
+    <table class="arc-task-table">
+      <thead><tr>
+        <th style="width:36px">#</th>
+        <th>Task</th>
+        <th style="width:70px">Type</th>
+        <th style="text-align:right;padding-right:16px">Reports</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`
 }
 
-// ── TOGGLE ────────────────────────────────────────────────────────────────
-function toggle(id) {
+function toggleArc(id) {
   const card = document.getElementById('arc-' + id)
   if (!card) return
   const wasOpen = card.classList.contains('open')
-  document.querySelectorAll('.arc-card.open').forEach(c => c.classList.remove('open'))
+  document.querySelectorAll('.pb.open').forEach(c => c.classList.remove('open'))
   if (!wasOpen) card.classList.add('open')
 }
-window.toggle = toggle
+window.toggleArc = toggleArc
 
-// ── UNARCHIVE ─────────────────────────────────────────────────────────────
 async function unarchive(id) {
   const { error } = await supabase.from('projects')
-    .update({ archived_at: null, archived_by: null })
-    .eq('id', id)
+    .update({ archived_at: null, archived_by: null }).eq('id', id)
   if (error) { console.error(error); return }
   archivedProjects = archivedProjects.filter(p => p.id !== id)
   renderList()
@@ -1512,59 +1368,535 @@ async function unarchive(id) {
 }
 window.unarchive = unarchive
 
-// ── GENERATE ─────────────────────────────────────────────────────────────
 function generate(type, taskId, projectId) {
   const task = (tasksByProject[projectId]||[]).find(t => t.id === taskId) || {}
   const proj = archivedProjects.find(p => p.id === projectId) || {}
-  const params = new URLSearchParams({
-    location: task.description || '',
-    city:     proj.location    || '',
-    project:  proj.project_num || '',
-    client:   proj.client      || '',
-    type:     type
-  })
+  const params = new URLSearchParams({ location: task.description||'', city: proj.location||'', project: proj.project_num||'', client: proj.client||'', type })
   const map = { TMC:'TMC_Report_Generator.html', SPD:'SPD_Report_Generator.html', ADT:'ADT_Report_Generator.html', CLS:'CLS_Report_Generator.html' }
   window.open((map[type]||'ADT_Report_Generator.html') + '?' + params, '_blank')
 }
 window.generate = generate
 
-// ── DOWNLOAD REPORT ───────────────────────────────────────────────────────
 async function dlReport(reportId) {
   const all = Object.values(reportsByTask).flat()
   const r = all.find(x => x.id === reportId)
-  if (!r?.storage_path) { showToast('No file stored — please re-generate'); return }
+  if (!r?.storage_path) { showToast('No file stored — re-generate to save'); return }
   const { data, error } = await supabase.storage.from('reports').createSignedUrl(r.storage_path, 60)
   if (error) { showToast('Download failed'); return }
   window.open(data.signedUrl, '_blank')
 }
 window.dlReport = dlReport
 
-// ── DOWNLOAD ALL ─────────────────────────────────────────────────────────
 async function downloadAll(projectId) {
   const tasks = tasksByProject[projectId] || []
   const reports = tasks.flatMap(t => reportsByTask[t.id]||[]).filter(r => r.storage_path)
   if (!reports.length) { showToast('No stored reports to download'); return }
-  showToast(`Downloading ${reports.length} report${reports.length>1?'s':''}…`)
+  showToast(`Downloading ${reports.length} report${reports.length>1?'s':''}...`)
   for (const r of reports) {
     const { data } = await supabase.storage.from('reports').createSignedUrl(r.storage_path, 60)
     if (data?.signedUrl) {
       const a = document.createElement('a')
-      a.href = data.signedUrl
-      a.download = r.filename
-      a.click()
-      await new Promise(res => setTimeout(res, 600))
+      a.href = data.signedUrl; a.download = r.filename
+      document.body.appendChild(a); a.click(); document.body.removeChild(a)
+      await new Promise(res => setTimeout(res, 700))
     }
   }
 }
 window.downloadAll = downloadAll
 
-// ── UPLOAD MODAL ──────────────────────────────────────────────────────────
+// ── JOB SHEET ───────────────────────────────────────────────────────────
+async function openJobSheet(projectId) {
+  currentJobSheetProjectId = projectId
+
+  const { data: proj, error: pe } = await supabase
+    .from('projects')
+    .select('id, name, client, location, notes, project_num')
+    .eq('id', projectId)
+    .single()
+
+  if (pe || !proj) { console.error('jobsheet project:', pe); return }
+  currentJobSheetProjectName = proj.name
+
+  const { data: taskRows, error: te } = await supabase
+    .from('tasks')
+    .select('*, study_types:study_type_id(id,code,name), users:tech_id(id,first_name,last_name)')
+    .eq('project_id', projectId)
+    .order('site', { ascending: true })
+
+  if (te) { console.error('jobsheet tasks:', te); return }
+
+  const taskIds = (taskRows || []).map(t => t.id)
+  const jscycles = {}
+  if (taskIds.length) {
+    const { data: cr } = await supabase.from('cycles').select('*').in('task_id', taskIds).order('cycle_num', { ascending: false })
+    ;(cr || []).forEach(c => {
+      if (!jscycles[c.task_id]) jscycles[c.task_id] = []
+      jscycles[c.task_id].push(c)
+    })
+  }
+
+  const tasks = (taskRows || []).map(row => {
+    const cycle = (jscycles[row.id] || [])[0] || null
+    let dur = ''
+    if (cycle?.deployed_at && cycle?.completed_at) dur = fmtDur(new Date(cycle.completed_at) - new Date(cycle.deployed_at))
+    else if (cycle?.deployed_at && row.status === 'in-field') dur = fmtDur(Date.now() - new Date(cycle.deployed_at).getTime())
+    return {
+      id: row.id, site: row.site,
+      desc: row.description || '',
+      type: getStudyTypeCode(row.study_types),
+      tech: getTechName(row.users),
+      status: row.status === 'pending' ? 'Pending' : row.status === 'complete' ? 'Complete' : 'In Field',
+      note: row.notes || '',
+      deployed: cycle?.deployed_at ? fmtTime(cycle.deployed_at) : '',
+      picked:   cycle?.completed_at ? fmtTime(cycle.completed_at) : '',
+      dur
+    }
+  })
+
+  const now = new Date()
+  const dateStr = (now.getMonth()+1) + '/' + now.getDate() + '/' + now.getFullYear()
+
+  let html = '<div class="js-project">'
+  html += '<div class="js-project-name">' + escapeHtml(proj.name) + '</div>'
+  if (proj.client || proj.location) html += '<div class="js-project-meta">' + [proj.client, proj.location].filter(Boolean).map(escapeHtml).join(' · ') + '</div>'
+  if (proj.project_num) html += '<div class="js-project-num">Project #' + escapeHtml(proj.project_num) + '</div>'
+  html += '</div>'
+
+  if (proj.notes) {
+    html += '<div class="js-instructions-card"><div class="js-instructions-header"><span class="js-instructions-title">Instructions</span></div><div class="js-instructions-body">' + escapeHtml(proj.notes) + '</div></div>'
+  }
+
+  const pending  = tasks.filter(t => t.status === 'Pending')
+  const infield  = tasks.filter(t => t.status === 'In Field')
+  const complete = tasks.filter(t => t.status === 'Complete')
+
+  function renderGroup(title, list, headerClass, dotClass) {
+    if (!list.length) return ''
+    let s = '<div class="js-section"><div class="js-section-header ' + headerClass + '"><div class="js-section-left"><span class="js-section-dot ' + dotClass + '"></span><span class="js-section-label">' + title + '</span></div><span class="js-section-count">' + list.length + '</span></div><div class="js-site-list">'
+    list.forEach(t => {
+      s += '<div class="js-site"><div class="js-site-header"><span class="js-site-num">#' + t.site + '</span><span class="js-site-desc">' + escapeHtml(t.desc) + '</span><div class="js-site-tags"><span class="js-site-tag">' + escapeHtml(t.type) + '</span>'
+      if (t.tech) s += '<span class="js-site-tech-init">' + getInitials(t.tech) + '</span>'
+      s += '</div></div>'
+      const times = []
+      if (t.deployed) times.push('<div>Set ' + t.deployed + '</div>')
+      if (t.picked)   times.push('<div>Pickup ' + t.picked + '</div>')
+      if (t.dur)      times.push('<div>' + t.dur + '</div>')
+      if (times.length) s += '<div class="js-site-times">' + times.join('') + '</div>'
+      if (t.note) s += '<div class="js-site-note">' + escapeHtml(t.note) + '</div>'
+      s += '</div>'
+    })
+    s += '</div></div>'
+    return s
+  }
+
+  html += renderGroup('Pending',  pending,  'js-section-header-pending',  'js-section-dot-pending')
+  html += renderGroup('In Field', infield,  'js-section-header-infield',  'js-section-dot-infield')
+  html += renderGroup('Complete', complete, 'js-section-header-complete', 'js-section-dot-complete')
+  html += '<div class="js-footer">Report generated ' + dateStr + ' · <span class="js-footer-brand">The Count Company</span></div>'
+
+  document.getElementById('jsDoc').innerHTML = '<div class="jobsheet-container">' + html + '</div>'
+  document.getElementById('jsOverlay').classList.add('open')
+  document.body.style.overflow = 'hidden'
+}
+
+window.openJobSheet = openJobSheet
+
+window.closeJobSheet = closeJobSheet
+function closeJobSheet() {
+  document.getElementById('jsOverlay').classList.remove('open')
+  document.body.style.overflow = ''
+}
+
+window.printJobSheet = printJobSheet
+function printJobSheet() {
+  const el = document.getElementById('jsOverlay').querySelector('.js-body')
+  const filename = (currentJobSheetProjectName || 'jobsheet').replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.pdf'
+  html2pdf().set({ margin:[10,10,10,10], filename, image:{type:'jpeg',quality:1}, html2canvas:{scale:2,useCORS:true}, jsPDF:{unit:'mm',format:'letter',orientation:'portrait'} }).from(el).save()
+}
+
+// ═══════════════════════════════════════
+// OPEN REPORT
+// ═══════════════════════════════════════
+function openReport(type, location, city) {
+  const params = new URLSearchParams({ location, city })
+  const map = { TMC: 'TMC_Report_Generator.html', SPD: 'Speed_Report_Generator.html', ADT: 'ADT_Report_Generator.html', CLS: 'Class_Report_Generator.html' }
+  window.open((map[type] || 'TMC_Report_Generator.html') + '?' + params.toString(), '_blank')
+}
+
+// ═══════════════════════════════════════
+// SEARCH / FILTER
+// ═══════════════════════════════════════
+function filterProjects(q) {
+  const query = (q || '').toLowerCase()
+  document.querySelectorAll('.pb').forEach(pb => {
+    const proj = projects.find(p => 'pb-' + p.id === pb.id)
+    if (!proj) return
+    const match = !query || proj.name.toLowerCase().includes(query) || (proj.location || '').toLowerCase().includes(query) || (proj.client || '').toLowerCase().includes(query)
+    pb.style.display = match ? '' : 'none'
+  })
+}
+
+// ═══════════════════════════════════════
+// GLOBAL LISTENERS
+// ═══════════════════════════════════════
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('open')
+    }
+  })
+})
+
+// job sheet overlay click outside
+document.getElementById('jsOverlay')?.addEventListener('click', function(e) {
+  if (e.target === this) closeJobSheet()
+})
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return
+  document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'))
+  document.getElementById('jsOverlay')?.classList.remove('open')
+  document.body.style.overflow = ''
+})
+
+document.getElementById('closeJobSheetBtn')?.addEventListener('click', closeJobSheet)
+document.getElementById('printJobSheetBtn')?.addEventListener('click', printJobSheet)
+
+document.getElementById('confirmDeleteTaskBtn')?.addEventListener('click', confirmDeleteTask)
+document.getElementById('closeDeleteTaskModalBtn')?.addEventListener('click', () => closeModal('deleteTaskModal'))
+
+document.getElementById('confirmReopenBtn')?.addEventListener('click', confirmReopenTask)
+document.getElementById('closeReopenModalBtn')?.addEventListener('click', () => closeModal('reopenModal'))
+
+document.getElementById('closeMnpBtn')?.addEventListener('click', () => closeModal('createModal'))
+
+// ═══════════════════════════════════════
+// TASK GRID (spreadsheet)
+// ═══════════════════════════════════════
+const types_g = ['TMC', 'SPD', 'ADT', 'CLS']
+const defaultType = 'TMC'
+const defaultTech = ''
+let rowCount = 0
+
+function buildTechOptions(selected) {
+  let o = '<option value="">— Unassigned</option>'
+  techs.forEach(t => {
+    const name = getTechName(t)
+    o += `<option value="${name}" ${selected === name ? 'selected' : ''}>${name}</option>`
+  })
+  return o
+}
+
+function buildTypeOptions(selected) {
+  return types_g.map(t => `<option value="${t}" ${selected === t ? 'selected' : ''}>${t}</option>`).join('')
+}
+
+function addTaskRow(name='', type=defaultType, tech=defaultTech) {
+  rowCount++
+  const id = rowCount
+  const tbody = document.getElementById('taskGridBody')
+  if (!tbody) return
+  const tr = document.createElement('tr')
+  tr.id = 'tgr-' + id
+  tr.innerHTML = `
+    <td class="tg-td tg-td-num">${id}</td>
+    <td class="tg-td">
+      <input class="tg-inp" type="text" placeholder="Intersection or location name"
+        value="${name}"
+        oninput="updateRowState(${id})"
+        onkeydown="handleTabKey(event, ${id}, 'name')">
+    </td>
+    <td class="tg-td">
+      <select class="tg-sel" onchange="updateRowState(${id}); updateTypeColor(this)" onkeydown="handleTabKey(event, ${id}, 'type')">
+        ${buildTypeOptions(type)}
+      </select>
+    </td>
+    <td class="tg-td">
+      <select class="tg-sel" onchange="updateRowState(${id})" onkeydown="handleTabKey(event, ${id}, 'tech')">
+        ${buildTechOptions(tech)}
+      </select>
+    </td>
+    <td class="tg-td" style="width:28px;padding:0">
+      <button class="tg-del" onclick="deleteTaskRow(${id})" title="Remove">×</button>
+    </td>
+  `
+  tbody.appendChild(tr)
+  const sel = tr.querySelector('.tg-sel')
+  updateTypeColor(sel)
+  updateCount()
+  const inp = tr.querySelector('.tg-inp')
+  inp.addEventListener('paste', function(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    const raw = (e.clipboardData || window.clipboardData).getData('text') || ''
+    const lines = raw.split(/[\r\n]+/).map(function(l){ return l.trim() }).filter(Boolean)
+    if (!lines.length) return
+    if (lines.length === 1) {
+      const s = inp.selectionStart, en = inp.selectionEnd
+      inp.value = inp.value.slice(0,s) + lines[0] + inp.value.slice(en)
+      updateRowState(id); updateCount(); return
+    }
+    // multi-line: collect all existing row values, splice in pasted lines, rebuild
+    const tbody = document.getElementById('taskGridBody')
+    const existingRows = Array.from(tbody.querySelectorAll('tr'))
+    const currentIdx = existingRows.findIndex(function(r){ return r.id === 'tgr-' + id })
+    // get values of all rows
+    const allValues = existingRows.map(function(r) {
+      return {
+        name: r.querySelector('.tg-inp') ? r.querySelector('.tg-inp').value.trim() : '',
+        type: r.querySelectorAll('.tg-sel')[0] ? r.querySelectorAll('.tg-sel')[0].value : defaultType,
+        tech: r.querySelectorAll('.tg-sel')[1] ? r.querySelectorAll('.tg-sel')[1].value : defaultTech
+      }
+    })
+    // replace current row with first pasted line, insert rest after
+    allValues[currentIdx].name = lines[0]
+    const newRows = lines.slice(1).map(function(l){ return { name: l, type: defaultType, tech: defaultTech } })
+    const merged = allValues.slice(0, currentIdx + 1).concat(newRows).concat(allValues.slice(currentIdx + 1))
+    // rebuild grid
+    tbody.innerHTML = ''
+    rowCount = 0
+    merged.forEach(function(v) {
+      addTaskRow(v.name, v.type, v.tech)
+    })
+    updateCount()
+  })
+  if (!name && rowCount === 1) inp.focus()
+}
+
+window.addTaskRow = addTaskRow
+
+function updateTypeColor(sel) {
+  sel.className = 'tg-sel'
+  const v = sel.value.toLowerCase()
+  if (v) sel.classList.add('type-' + v)
+}
+
+function deleteTaskRow(id) {
+  document.getElementById('tgr-' + id)?.remove()
+  updateCount()
+  renumberRows()
+}
+
+window.deleteTaskRow = deleteTaskRow
+
+function renumberRows() {
+  document.querySelectorAll('#taskGridBody tr').forEach((tr, i) => {
+    const c = tr.querySelector('.tg-td-num')
+    if (c) c.textContent = i + 1
+  })
+}
+
+function updateRowState(id) {
+  const tr = document.getElementById('tgr-' + id)
+  if (!tr) return
+  const inp = tr.querySelector('.tg-inp')
+  inp?.value.trim() ? tr.classList.add('tg-row-filled') : tr.classList.remove('tg-row-filled')
+  updateCount()
+}
+
+window.updateRowState = updateRowState
+
+function updateCount() {
+  const filled = document.querySelectorAll('#taskGridBody tr.tg-row-filled').length
+  const el = document.getElementById('taskGridCount')
+  if (el) el.textContent = filled + (filled === 1 ? ' task ready' : ' tasks ready')
+}
+
+function handleTabKey(e, id, field) {
+  if (e.key !== 'Tab') return
+  const rows = document.querySelectorAll('#taskGridBody tr')
+  const lastRow = rows[rows.length - 1]
+  if (field === 'tech' && lastRow && lastRow.id === 'tgr-' + id) {
+    e.preventDefault()
+    addTaskRow()
+  }
+}
+
+window.updateTypeColor = updateTypeColor
+window.handleTabKey = handleTabKey
+
+// ═══════════════════════════════════════
+// PROJECT INLINE EDIT
+// ═══════════════════════════════════════
+function startEditProject(id) {
+  const nameEl = document.getElementById('pname-' + id)
+  if (!nameEl) return
+  const current = nameEl.textContent
+  const input = document.createElement('input')
+  input.className = 'pr-name-input'
+  input.value = current
+  input.style.width = Math.max(current.length * 9, 120) + 'px'
+  nameEl.replaceWith(input)
+  input.focus()
+  input.select()
+
+  async function save() {
+    const val = input.value.trim()
+    if (!val || val === current) {
+      input.replaceWith(nameEl)
+      return
+    }
+    const { error } = await supabase.from('projects').update({ name: val }).eq('id', id)
+    if (error) { console.error('editProject:', error); input.replaceWith(nameEl); return }
+    nameEl.textContent = val
+    const proj = projects.find(p => p.id === id)
+    if (proj) proj.name = val
+    input.replaceWith(nameEl)
+    showToast('Project updated')
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); save() }
+    if (e.key === 'Escape') input.replaceWith(nameEl)
+  })
+  input.addEventListener('blur', save)
+}
+window.startEditProject = startEditProject
+
+// ═══════════════════════════════════════
+// PROJECT DELETE
+// ═══════════════════════════════════════
+let deleteProjectTarget = null
+
+function promptDeleteProject(id) {
+  deleteProjectTarget = id
+  const proj = projects.find(p => p.id === id)
+  document.getElementById('deleteProjectBody').textContent = 'Delete "' + (proj?.name || 'this project') + '"? This permanently removes the project and all its tasks.'
+  openModal('deleteProjectModal')
+}
+window.promptDeleteProject = promptDeleteProject
+
+async function confirmDeleteProject() {
+  if (!deleteProjectTarget) return
+  const id = deleteProjectTarget
+  const { error } = await supabase.from('projects').delete().eq('id', id).eq('company_id', COMPANY_ID)
+  if (error) { console.error('deleteProject:', error); alert(JSON.stringify(error)); return }
+  deleteProjectTarget = null
+  closeModal('deleteProjectModal')
+  if (openId === id) openId = null
+  await loadProjects()
+  showToast('Project deleted')
+}
+
+// ═══════════════════════════════════════
+// TASK INLINE EDIT
+// ═══════════════════════════════════════
+function startEditTask(taskId, projectId) {
+  closeAllKebabs()
+  const tasks = tasksByProject[projectId] || []
+  const task = tasks.find(t => t.id === taskId)
+  if (!task) return
+
+  const nameWrap = document.querySelector(`#tasks-${projectId} .tn-wrap[data-task-id="${taskId}"]`)
+  // find the tn-wrap by traversing from the row
+  const row = document.getElementById('tr-' + taskId)
+  if (!row) return
+  const tnWrap = row.querySelector('.tn-wrap')
+  if (!tnWrap) return
+
+  const current = task.desc
+  const input = document.createElement('input')
+  input.type = 'text'
+  input.value = current
+  input.style.cssText = 'width:100%;border:none;border-bottom:1.5px solid #C8A96A;background:transparent;font-family:var(--font);font-size:13px;font-weight:500;color:var(--text);outline:none;padding:0 2px;'
+  tnWrap.replaceWith(input)
+  input.focus()
+  input.select()
+
+  async function saveTask() {
+    const val = input.value.trim()
+    if (!val || val === current) {
+      input.replaceWith(tnWrap)
+      return
+    }
+    const { error } = await supabase.from('tasks').update({ description: val }).eq('id', taskId)
+    if (error) { console.error('editTask:', error); input.replaceWith(tnWrap); return }
+    task.desc = val
+    tnWrap.textContent = val
+    input.replaceWith(tnWrap)
+    showToast('Task updated')
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); saveTask() }
+    if (e.key === 'Escape') input.replaceWith(tnWrap)
+  })
+  input.addEventListener('blur', saveTask)
+}
+
+// ═══════════════════════════════════════
+// TECH ASSIGN DROPDOWN
+// ═══════════════════════════════════════
+function showTechSelect(taskId, projectId, el) {
+  document.querySelector('.tech-dd')?.remove()
+  console.log('showTechSelect called', taskId, projectId, 'techs:', techs.length)
+  if (!techs.length) {
+    showToast('Loading techs…')
+    loadTechs().then(() => showTechSelect(taskId, projectId, el))
+    return
+  }
+
+  const tasks = tasksByProject[projectId] || []
+  const task = tasks.find(t => t.id === taskId)
+  const dd = document.createElement('div')
+  dd.className = 'tech-dd'
+
+  const allOptions = [{ id: '', label: 'Unassigned' }].concat(
+    techs.map(t => ({ id: t.id, label: getTechName(t) }))
+  )
+
+  allOptions.forEach(item => {
+    const div = document.createElement('div')
+    div.className = 'tech-dd-item' + (item.label === (task?.tech || '') ? ' selected' : '') + (!item.id ? ' unassigned' : '')
+    div.textContent = item.label
+    div.addEventListener('click', async ev => {
+      ev.stopPropagation()
+      const { error } = await supabase.from('tasks').update({ tech_id: item.id || null }).eq('id', taskId)
+      if (error) { console.error('assignTech:', error); dd.remove(); return }
+      dd.remove()
+      cyclesByTask = {}
+      await loadTasksForProject(projectId)
+      await refreshProjectRow(projectId)
+      showToast(item.id ? 'Tech assigned' : 'Unassigned')
+    })
+    dd.appendChild(div)
+  })
+
+  // use fixed positioning to escape table clipping
+  const rect = el.getBoundingClientRect()
+  dd.style.position = 'fixed'
+  dd.style.zIndex = '9999'
+  const spaceBelow = window.innerHeight - rect.bottom
+  if (spaceBelow < 200) {
+    dd.style.bottom = (window.innerHeight - rect.top) + 'px'
+    dd.style.top = 'auto'
+  } else {
+    dd.style.top = (rect.bottom + 4) + 'px'
+    dd.style.bottom = 'auto'
+  }
+  dd.style.left = rect.left + 'px'
+  dd.style.transform = 'none'
+  document.body.appendChild(dd)
+
+  setTimeout(() => {
+    const close = evt => {
+      if (!dd.contains(evt.target)) { dd.remove(); document.removeEventListener('click', close) }
+    }
+    document.addEventListener('click', close)
+  }, 0)
+}
+
+window.openJobSheet  = openJobSheet
+window.closeJobSheet = closeJobSheet
+window.printJobSheet = printJobSheet
+
+// ── UPLOAD ───────────────────────────────────────────────────────────────
 async function openUploadModal(projectId) {
   uploadProjectId = projectId
   uploadFiles = []
   document.getElementById('fileList').innerHTML = ''
   const sel = document.getElementById('uploadTask')
-  sel.innerHTML = '<option value="">Project-level (no specific task)</option>'
+  sel.innerHTML = '<option value="">Project-level</option>'
   const tasks = tasksByProject[projectId] || []
   tasks.forEach(t => {
     const o = document.createElement('option')
@@ -1606,9 +1938,9 @@ function renderFileList() {
   document.getElementById('fileList').innerHTML = uploadFiles.map((f,i) => `
     <div class="upload-file-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      <span>${esc(f.name)}</span>
+      <span>${escapeHtml(f.name)}</span>
       <span style="margin-left:4px;color:var(--text-3);font-size:10px">${(f.size/1024).toFixed(0)} KB</span>
-      <button class="upload-file-remove" onclick="removeFile(${i})">×</button>
+      <button class="upload-file-remove" onclick="removeFile(${i})">x</button>
     </div>`).join('')
 }
 
@@ -1616,25 +1948,20 @@ function removeFile(i) { uploadFiles.splice(i,1); renderFileList() }
 window.removeFile = removeFile
 
 async function submitUpload() {
-  if (!uploadProjectId) return
-  if (!uploadFiles.length) { showToast('Select a file first'); return }
+  if (!uploadProjectId || !uploadFiles.length) { showToast('Select a file first'); return }
   const taskId = document.getElementById('uploadTask').value || null
   const type   = document.getElementById('uploadType').value
 
   for (const file of uploadFiles) {
     const ext  = file.name.endsWith('.xlsx') ? 'xlsx' : 'pdf'
-    const safe = file.name.replace(/[^a-z0-9.\-_]/gi,'_')
+    const safe = file.name.replace(/[^a-z0-9._]/gi,'_')
     const path = `${COMPANY_ID}/${uploadProjectId}/${Date.now()}_${safe}`
-
     const { error: upErr } = await supabase.storage.from('reports').upload(path, file, { contentType: file.type })
     if (upErr) { showToast('Upload failed: ' + upErr.message); continue }
-
     const { data: rep } = await supabase.from('reports').insert({
-      company_id: COMPANY_ID, project_id: uploadProjectId,
-      task_id: taskId, type, format: ext,
-      filename: file.name, storage_path: path, uploaded: true
+      company_id: COMPANY_ID, project_id: uploadProjectId, task_id: taskId,
+      type, format: ext, filename: file.name, storage_path: path, uploaded: true
     }).select().single()
-
     if (rep) {
       const key = taskId || ('proj_' + uploadProjectId)
       if (!reportsByTask[key]) reportsByTask[key] = []
@@ -1642,14 +1969,12 @@ async function submitUpload() {
       if (taskId) await supabase.from('tasks').update({ has_report: true }).eq('id', taskId)
     }
   }
-
   closeUploadModal()
   renderList()
   showToast('Uploaded successfully')
 }
 window.submitUpload = submitUpload
 
-// ── INIT ──────────────────────────────────────────────────────────────────
 await loadArchive()
 </script>
 </body>
