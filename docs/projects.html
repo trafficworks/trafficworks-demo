@@ -311,6 +311,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 .stamp-field::before { background: #6F8F95; }
 .stamp-done  { background: #E3E8DC; color: #5E6B4A; }
 .stamp-done::before  { background: #7E8F63; }
+.stamp-archive { background: #E3E8DC; color: #5E6B4A; cursor: pointer; border: none; font-family: var(--font); }
+.stamp-archive::before { background: #7E8F63; }
+.stamp-archive:hover { background: #d4dece; }
 
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
 
@@ -1420,7 +1423,7 @@ async function refreshProjectRow(projectId) {
     const _inner = _sf + _sp + _sd
     if (_inner) stamps = `<div class="stamps-pill">${_inner}</div>`
     if (p.status === 'complete') {
-      stamps = `<button class="row-btn row-btn-archive" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button>`
+      stamps = `<div class="stamps-pill"><button class="stamp stamp-archive" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button></div>`
     }
     stampsEl.innerHTML = stamps
   }
@@ -1448,7 +1451,7 @@ function renderProjects() {
     const _inner = _sf + _sp + _sd
     if (_inner) stamps = `<div class="stamps-pill">${_inner}</div>`
     if (isComplete) {
-      stamps = `<button class="row-btn row-btn-archive" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button>`
+      stamps = `<div class="stamps-pill"><button class="stamp stamp-archive" onclick="event.stopPropagation();archiveProject('${p.id}')">Archive</button></div>`
       }
 
     const pb = document.createElement('div')
